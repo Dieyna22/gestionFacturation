@@ -1,0 +1,414 @@
+
+nav {
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+}
+
+form button {
+    padding: 8px 20px;
+    border-radius: 7px;
+    border: none;
+    font-weight: 600;
+}
+
+form button a {
+    text-decoration: none;
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.log a {
+    color: white;
+}
+
+.log {
+    background-color: #616EFA;
+}
+
+.log:hover {
+    background-color: #202a97;
+}
+
+.inscription {
+    background-color: #E6E9FF;
+}
+
+.inscription:hover {
+    background-color: #afd6e6;
+}
+
+
+*{
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+section .container{
+    display: grid;
+    grid-template-columns: 40% 50%;
+    justify-content: center;
+    gap: 3rem;
+}
+.txt h1{
+    font-size: 2.7rem;
+    font-weight: 650;
+    margin-top: 5rem;
+    color: #0e1885;
+}
+
+.img img{
+    width: 100%;
+}
+
+.facturer a{
+    text-decoration: none;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.facturer:hover{
+    background-color: #0e1885;
+}
+
+.facturer{
+    background-color: rgb(64, 118, 163);
+    border: none;
+    padding: 6px 22px;
+    border-radius: 7px;
+    box-shadow: rgba(33, 35, 38, 0.1) 0px 10px 10px -10px;
+}
+
+@media screen and (max-width:995px){
+    section .container{
+        display: grid;
+        grid-template-columns: 40% 50%;
+        justify-content: center;
+        gap: 2rem;
+    }
+
+    .txt h1{
+        font-size: 2.2rem;
+        font-weight: 650;
+        margin-top: 3.5rem;
+        color: #0e1885;
+    }
+}
+
+@media screen and (max-width:992px){
+    section .container{
+        display: grid;
+        grid-template-columns: 40% 65%;
+        justify-content: center;
+        gap: 2rem;
+    }
+}
+
+@media screen and (max-width:968px){
+    section .container{
+        display: grid;
+        grid-template-columns: 1fr;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: -3rem;
+    }
+
+    .txt h1{
+        font-size: 2.7rem;
+        font-weight: 650;
+        margin-top: 3.5rem;
+        color: #0e1885;
+    }
+}
+
+.banner{
+    margin-top: 2rem;
+}
+
+/* deuxieme section */
+.section-cartes{
+    margin-top: 4rem;
+    padding-top: rem;
+    background-color: #fdfdfd;
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+}
+
+.title h2{
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #0e1885;
+    text-align: center;
+    padding: 0 10px;
+}
+
+h2 span {
+    text-decoration: underline dotted;
+}
+
+.carte1{
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    width: 270px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.icone{
+    display: flex;
+    justify-content: center;
+}
+
+.icone i{
+    background-color: rgb(255, 255, 255);
+    padding: 7px 10px;
+    border-radius: 30px;
+    font-size: 22px;
+    color: #0e1885;
+}
+
+.sous-titre{
+    display: flex;
+    justify-content: center;
+}
+
+.sous-titre h5{
+    font-weight: bold;
+    color: #0e1885;
+    font-size: 17px;
+}
+
+.mesCartes p{
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.mesCartes{
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+}
+
+/* TROISIEME SECTION */
+.imgg{
+    width: 300px;
+}
+
+.imgg p{
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.txt-img{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+.createFac {
+    display: flex;
+    justify-content: center;
+}
+
+.createFac a{
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.createFac button {
+    border: none;
+    padding: 10px 25px;
+    border-radius: 5px;
+    background-color: rgb(64, 118, 163);
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.createFac button:hover{
+    background-color: #0e1885;
+}
+
+
+/* 4iem section */
+.leTitre img{
+    width: 300px;
+}
+
+.leTitre {
+    display: flex;
+    justify-content: center;
+}
+
+.sous-txt p{
+    text-align: center;
+    font-size: 14px;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 200;
+    color: rgb(83, 83, 83);
+    margin-top: 0.5rem;
+}
+
+.senfacture{
+    width: 380px;
+}
+
+.senfacture i{
+    font-size: 32px;
+}
+
+.senfacture h5{
+    color: #0e1885;
+    font-weight: 700;
+}
+
+.senfacture p{
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.senFAC{
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 3.5rem;
+    flex-wrap: wrap;
+    padding: 0 15px;
+}
+
+/* 5iem section */
+.deuxSec{
+    display: grid;
+    grid-template-columns: 35% 40%;
+    justify-content: center;
+    margin-top: 3rem;
+    gap: 15px;
+}
+
+.deuxSec img{
+    width: 100%;
+    border-radius: 10px;
+}
+
+.sec-card{
+    background-color: #fafafa;
+    width: 100%;
+    padding: 10px;
+    border-radius: 7px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+
+}
+
+.sec-card .arrow{
+    font-size: 20px;
+    color: #0e1885;
+}
+
+.sec-card .txte{
+    font-weight: 700;
+    color: #0e1885;
+}
+
+.sec-card p{
+    color: #797979;
+    font-size: 13px;
+    margin-top: 10px;
+    margin-left:30px;
+}
+
+.btn-accordion{
+    padding-top: 15px;
+}
+
+@media screen and (max-width:1162px){
+    .deuxSec{
+        display: grid;
+        grid-template-columns: 35% 47%;
+        justify-content: center;
+        margin-top: 3rem;
+        gap: 15px;
+    }
+}
+
+@media screen and (max-width: 992px){
+    .deuxSec{
+        display: grid;
+        grid-template-columns: 1fr;
+        padding: 0 4rem;
+    }
+
+    .sec img{
+        display: none;
+    }
+}
+
+
+/* testimonials */
+.testimonial-img{
+    display: flex;
+    justify-content: center;
+    padding-bottom: 10px;
+}
+
+.testimonial-img img{
+    width: 120px;
+}
+
+.star ul{
+    display: flex;
+    margin-left: -40px;
+    
+}
+.star ul li{
+    list-style: none;
+    padding-left: 5px;
+}
+
+.star{
+    width: 300px;
+    border: 1px solid rgb(221, 221, 221);
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.bas{
+    display: flex;
+    gap: 15px;
+}
+
+.bas a{
+   text-decoration: none;
+   font-size: 14px;
+}
+
+.star-card{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 1rem;
+}
+
+
+.logo-footer{
+    display: flex;
+    justify-content: center;
+}
+
+.espaceBleu{
+    background-color: #0e1885;
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.espaceBlanche{
+    background-color: white;
+    width: 100px;
+    border-top-left-radius: 35px;
+    border-top-right-radius: 35px;
+}
