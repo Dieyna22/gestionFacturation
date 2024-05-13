@@ -1,1 +1,144 @@
-<p>login works!</p>
+<div id="main-wrapper" class="container mt-5">
+    <div class="row justify-content-center ">
+        <div class="col-xl-10">
+            <div class="card shadow containerCard">
+                <div class="card-body p-0">
+                    <div class="row no-gutters">
+                        <div class="col-lg-6 d-none d-lg-inline-block">
+                            <div class="account-block rounded-right">
+                                <div class="overlay rounded-right">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="p-5 mt-5">
+
+                                <!-- <img src="../../assets/logo.png" class="mb-3" alt="logo"> -->
+                                <h6 class="h5 mb-4 mt-4">Connexion</h6>
+
+                                <form>
+                                    <div class="mb-3">
+                                        <label for="" class="form-label">Email:</label>
+                                        <input type="text" name="emailLogin" class="form-control" id="email">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="" class="lab form-label">Mot de passe:</label>
+                                        <div class="input-group">
+                                            <input id="passwordInput" name="password" class="form-control"
+                                                id="password">
+                                            <button class="btn btn-outline-secondary" type="button">
+                                                <ng-container>
+                                                    <i class="bi bi-eye"></i>
+                                                </ng-container>
+                                                <ng-template #hideIcon>
+                                                    <i class="bi bi-eye-slash"></i>
+                                                </ng-template>
+                                            </button>
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Le mot de passe doit être supérieur ou égal à 8 caractères.
+                                        </div>
+
+                                        <a class="bg clr mt-4" data-bs-toggle="modal" data-bs-target="#exampleModal">Mot
+                                            de passe oublié ?</a><br>
+                                        <p class="register">
+                                            <a class="bg">Vous n'avez-pas de compte? <span
+                                                    class="clr">Inscrivez-vous</span></a>
+                                        </p>
+                                    </div>
+
+
+                                    <button type="submit" class="btn btn-theme">
+                                        Se connecter
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end card-body -->
+            </div>
+            <div class="card shadow containerCard">
+                <div class="card-body p-0">
+                    <div class="row no-gutters">
+                        <div class="col-lg-6 d-none d-lg-inline-block">
+                            <div class="account-block rounded-right">
+                                <div class="overlay rounded-right"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="p-5">
+                                <h6 class="h5 mb-4  mt-4">Inscription</h6>
+                                <form>
+                                    <div class="row">
+                                        <div class="mb-3 col-lg-6">
+                                            <label for="prenom" class="form-label">Prénom: <span
+                                                    class="clr">*</span></label>
+                                            <input type="text" class="form-control" id="prenom" name=prenom>
+                                            <div class="invalid-feedback">Veuillez saisir un prénom d'au moins 2
+                                                lettres.
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 col-lg-6">
+                                            <label for="nom" class="form-label">Nom: <span class="clr">*</span></label>
+                                            <input type="text" class="form-control" id="nom" name="nom">
+                                        </div>
+                                        <div class="mb-3 col-lg-6">
+                                            <label for="example" class="form-label">Email address: <span
+                                                    class="clr">*</span></label>
+                                            <input type="email" class="form-control" id="example" name="email">
+                                        </div>
+                                        <div class="mb-3 col-lg-6">
+                                            <label for="telephone" class="form-label">Téléphone: <span
+                                                    class="clr">*</span></label>
+                                            <input type="text" class="form-control" id="telephone" name="telephone">
+                                        </div>
+                                        <div class="mb-3 col-lg-6">
+                                            <label for="password" class="form-label">Mot de passe: <span
+                                                    class="clr">*</span></label>
+                                                    <div class="input-group">
+                                                        <input id="passwordInput" name="password" class="form-control"
+                                                            id="password">
+                                                        <button class="btn btn-outline-secondary" type="button">
+                                                            <ng-container>
+                                                                <i class="bi bi-eye"></i>
+                                                            </ng-container>
+                                                            <ng-template #hideIcon>
+                                                                <i class="bi bi-eye-slash"></i>
+                                                            </ng-template>
+                                                        </button>
+                                                    </div>
+
+                                        </div>
+                                        <div class="mb-3 col-lg-6">
+                                            <label for="profil" class="form-label">Confirmation mot de passe:</label>
+                                            <div class="input-group">
+                                                <input id="passwordInput" name="password" class="form-control"
+                                                    id="password">
+                                                <button class="btn btn-outline-secondary" type="button">
+                                                    <ng-container>
+                                                        <i class="bi bi-eye"></i>
+                                                    </ng-container>
+                                                    <ng-template #hideIcon>
+                                                        <i class="bi bi-eye-slash"></i>
+                                                    </ng-template>
+                                                </button>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                    <button class="btn btn-theme mt-5" id="client">S'inscrire</button>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end card-body -->
+            </div>
+        </div>
+        <!-- end col -->
+    </div>
+    <!-- Row -->
+</div>

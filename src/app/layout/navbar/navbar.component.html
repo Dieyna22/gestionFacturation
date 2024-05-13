@@ -1,0 +1,17 @@
+<!-- Navbar  -->
+<div class="navbar mb-5 px-5 shadow-sm sticky-top bg-body">
+    <div>
+        <h5>Administrateur</h5>
+    </div>
+    <div class="dropdown">
+        <ng-container>
+            <img class="rounded-circle "
+                src="http://127.0.0.1:8000/images/profils/"  alt="profile"
+                class="dropbtn" style="width: 40px; height: 40px;"/>
+        </ng-container>
+            <div class="dropdown-content">
+                <a [routerLink]="['/profilUser']">Profil</a>
+                <a style="cursor: pointer;">Déconnexion</a>
+            </div>
+    </div>
+</div>
