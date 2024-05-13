@@ -1,1 +1,120 @@
-<p>sidebar works!</p>
+<!-- sidebar -->
+<div class="sidebar sticky-top">
+
+    <a href="#" routerLink="/accueil"><img src="../../../assets/images/logo.png" alt="Logo" class="logo"></a>
+    <div class="separation"></div>
+    
+    <!-- Les liens  -->
+    <ul class="mt-4 containerLink mb-4">
+
+        <!-- Dashbord  -->
+        <li class="mt-4">
+            <a href="" routerLink="/admin" routerLinkActive="active">
+                <svg width="35" height="35" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 0H25.707V25H0V0Z" fill="white" fill-opacity="0.01"/>
+                    <path d="M12.8548 3.646C6.93914 3.646 2.14355 8.30969 2.14355 14.0627C2.14355 16.7867 3.06121 19.4982 4.82136 21.3543H20.8882C22.6484 19.4982 23.566 16.7867 23.566 14.0627C23.566 8.30969 18.7704 3.646 12.8548 3.646Z" stroke="#9197B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.8542 17.7082C14.0373 17.7082 14.9964 16.7754 14.9964 15.6248C14.9964 14.4742 14.0373 13.5415 12.8542 13.5415C11.671 13.5415 10.7119 14.4742 10.7119 15.6248C10.7119 16.7754 11.671 17.7082 12.8542 17.7082Z" fill="#9197B3" stroke="#9197B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.8555 10.4165V13.5415" stroke="#9197B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.8555 6.25V7.29167" stroke="#9197B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M4.82129 14.5835H5.89241" stroke="#9197B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M6.96387 9.375L7.72126 10.1116" stroke="#9197B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M19.8174 14.5835H20.8885" stroke="#9197B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M18.21 10.1116L18.9674 9.375" stroke="#9197B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                <span class="link ms-3 fs-5">Dashboard</span>
+            </a>
+        </li>
+
+        <!-- Clients  -->
+        <li class="mt-4">
+            <a href="" routerLink="/users" routerLinkActive="active">
+                <svg width="35" height="35" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 0H24V24H0V0Z" fill="white" fill-opacity="0.01"/>
+                    <path d="M11.999 10C13.932 10 15.499 8.433 15.499 6.5C15.499 4.56701 13.932 3 11.999 3C10.066 3 8.49902 4.56701 8.49902 6.5C8.49902 8.433 10.066 10 11.999 10Z" fill="#9197B3" stroke="#9197B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M5.99902 3.62744C5.09227 4.25992 4.49902 5.3107 4.49902 6.5001C4.49902 7.77325 5.17882 8.88765 6.19522 9.5001" stroke="#9197B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M17.999 3.62744C18.9058 4.25992 19.499 5.3107 19.499 6.5001C19.499 7.68945 18.9058 8.7403 17.999 9.37275" stroke="#9197B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M5.99902 20V21H17.999V20C17.999 18.1363 17.999 17.2043 17.6945 16.4692C17.2886 15.4891 16.5099 14.7104 15.5298 14.3045C14.7947 14 13.8628 14 11.999 14C10.1353 14 9.20337 14 8.46827 14.3045C7.48817 14.7104 6.70947 15.4891 6.30352 16.4692C5.99902 17.2043 5.99902 18.1363 5.99902 20Z" fill="#9197B3" stroke="#9197B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M21.9995 21.0001V20.4001C21.9995 18.1599 21.9995 17.0398 21.5635 16.1841C21.18 15.4315 20.5681 14.8195 19.8154 14.436" stroke="#9197B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M1.99902 21.0001V20.4001C1.99902 18.1599 1.99902 17.0398 2.435 16.1841C2.81849 15.4315 3.43041 14.8195 4.18306 14.436" stroke="#9197B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>                    
+                <span class="link ms-3 fs-5">Gestion Clients</span>
+            </a>
+        </li>
+
+        <!--  Activation compte conducteurs  -->
+        <li class="mt-4">
+            <a href="" routerLink="/compte" routerLinkActive="active">
+                <svg width="35" height="35" viewBox="0 0 25 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.5 8.75C9.91797 8.75 11.875 6.79297 11.875 4.375C11.875 1.95703 9.91797 0 7.5 0C5.08203 0 3.125 1.95703 3.125 4.375C3.125 6.79297 5.08203 8.75 7.5 8.75ZM10.5 10H10.1758C9.36328 10.3906 8.46094 10.625 7.5 10.625C6.53906 10.625 5.64062 10.3906 4.82422 10H4.5C2.01562 10 0 12.0156 0 14.5V15.625C0 16.6602 0.839844 17.5 1.875 17.5H13.125C14.1602 17.5 15 16.6602 15 15.625V14.5C15 12.0156 12.9844 10 10.5 10ZM18.75 8.75C20.8203 8.75 22.5 7.07031 22.5 5C22.5 2.92969 20.8203 1.25 18.75 1.25C16.6797 1.25 15 2.92969 15 5C15 7.07031 16.6797 8.75 18.75 8.75ZM20.625 10H20.4766C19.9336 10.1875 19.3594 10.3125 18.75 10.3125C18.1406 10.3125 17.5664 10.1875 17.0234 10H16.875C16.0781 10 15.3438 10.2305 14.6992 10.6016C15.6523 11.6289 16.25 12.9922 16.25 14.5V16C16.25 16.0859 16.2305 16.168 16.2266 16.25H23.125C24.1602 16.25 25 15.4102 25 14.375C25 11.957 23.043 10 20.625 10Z" fill="#9197B3"/>
+                </svg> 
+                <span class="link ms-3 fs-5">Gestion Utilisateurs</span>
+            </a>
+        </li>
+
+        <!-- Conducteurs  -->
+        <li class="mt-4">
+            <a href="" routerLink="/conducteur" routerLinkActive="active">
+                <svg width="35" height="35" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23 1H3C1.89543 1 1 1.89543 1 3V23C1 24.1046 1.89543 25 3 25H23C24.1046 25 25 24.1046 25 23V3C25 1.89543 24.1046 1 23 1Z" fill="#9197B3" stroke="white" stroke-linejoin="round"/>
+                    <path d="M13 7.6665V18.3332" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M7.66699 13H18.3337" stroke="white" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="link ms-3 fs-5">Information supplementaire</span>
+            </a>
+        </li>
+
+        <!-- Voitures  -->
+        <li class="mt-4">
+            <a href="" routerLink="/voitures" routerLinkActive="active">
+                <svg width="40" height="40" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <rect width="25" height="25" fill="url(#pattern0_102_9651)"/>
+                    <defs>
+                    <pattern id="pattern0_102_9651" patternContentUnits="objectBoundingBox" width="1" height="1">
+                    <use xlink:href="#image0_102_9651" transform="scale(0.0333333)"/>
+                    </pattern>
+                    <image id="image0_102_9651" width="25" height="25" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAACR0lEQVR4nO2Wv2sUURDHV4P2IiKKFnZWWtlZ2QiCprDyL9Aq2mjE5hoTm2Bm9riZbBQsohZbqDtzRKJgoQgK9v6IYqFYCYIRxEBcmXebjd7t3q25t6kyMPB47+193sx837wLgk2rYMDSRlYN6rap1v39MCPnkJNRJH2ErKlzN05Gbc32eAeDg2awErc93sFokXYi/AWsl5rNB3vNkdrjNmdr06SnvIOB5XEH3B7vOZTBLWLWhTqElJpblNnccyR9ZmMX+VrK/QkOWbUbbFBgedoNBlLxBjbLlVyQaiC5XJRqZF0E0qvmSPIuGFZcBh8krpBkrFv1IclYLdcpZDmbRfomm1tBljlzIPmdleL1uhqIRWUpzWvKuuDm/mogQDLZWZe5/OAktztgmQyGFVyZkJD1WhkYWSaGAg84lEu1pTcD3llLtbwt/TCO45Fp0uPuI5IvQPIJSW+GrIcrw0kv9LRU1vOFm6GVHEKWKYOV9mOWJ6bwRqOxdRAcSN67q8QyYeN+KUqru3ywq0TU3lE1C57A+bP4HVmiMJKDwYaCOfeVIsVaSYD1hPV7YF0yxfsGm3iWVn+r2by3MyS56EryT4bkh1+wvdPWl1tyBEhvAcnPnoORu1L+I+6bDZKXEMnR/jUm+QykV3B2ft/16OGe7E6u9t//9UUgOd1fXCQvQk7ORNGrbd1raZpuCSk5hiwxkCxXqPdXO3AjjrcHvgxuJLuz5/BjQUqX7Xohzu8K6rI4jkdwRk5mf42+AendcDY5UBtw04J12h+CHZN9UmMYGQAAAABJRU5ErkJggg=="/>
+                    </defs>
+                    </svg>
+                    
+                <span class="link ms-3 fs-5">Produits et Services</span>
+            </a>
+        </li>
+
+        <!-- Newsletter  -->
+        <li class="mt-4" >
+            <a href="" routerLink="/news" routerLinkActive="active">
+                <svg width="30" height="30" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M22.5195 4.6875H3.90625C3.47461 4.6875 3.125 4.33789 3.125 3.90625C3.125 3.47461 3.47461 3.125 3.90625 3.125H22.6562C23.0879 3.125 23.4375 2.77539 23.4375 2.34375C23.4375 1.04932 22.3882 0 21.0938 0H3.125C1.39893 0 0 1.39893 0 3.125V18.75C0 20.4761 1.39893 21.875 3.125 21.875H22.5195C23.8877 21.875 25 20.8237 25 19.5312V7.03125C25 5.73877 23.8877 4.6875 22.5195 4.6875ZM20.3125 14.8438C19.4497 14.8438 18.75 14.144 18.75 13.2812C18.75 12.4185 19.4497 11.7188 20.3125 11.7188C21.1753 11.7188 21.875 12.4185 21.875 13.2812C21.875 14.144 21.1753 14.8438 20.3125 14.8438Z" fill="#9197B3"/>
+                </svg> 
+                <span class="link ms-3 fs-5">Factures</span>
+            </a>
+        </li>
+
+        <!-- Zone  -->
+        <li class="mt-4">
+            <a href="" routerLink="/zone" routerLinkActive="active">
+                <svg width="30" height="30" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15.2344 14.0625H21.875V1.17188C21.875 0.522461 21.3525 0 20.7031 0H1.17188C0.522461 0 0 0.522461 0 1.17188V20.7031C0 21.3525 0.522461 21.875 1.17188 21.875H14.0625V15.2344C14.0625 14.5898 14.5898 14.0625 15.2344 14.0625ZM21.5332 16.748L16.748 21.5332C16.5283 21.7529 16.2305 21.875 15.918 21.875H15.625V15.625H21.875V15.9229C21.875 16.2305 21.7529 16.5283 21.5332 16.748Z" fill="#9197B3"/>
+                </svg>                    
+                <span class="link ms-3 fs-5">Dévis</span>
+            </a>
+        </li>
+    </ul>
+
+    <!-- Le boutton de déconnexion  -->
+    <div class="deconnection mb-5">
+        <li class="btnDeconnect">
+            <a>
+                <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 20 18" fill="none">
+                    <path
+                        d="M14.4203 17L15.4575 17C16.2827 17 17.0741 16.6839 17.6576 16.1213C18.2411 15.5587 18.5689 14.7956 18.5689 14L18.5689 4C18.5689 3.20435 18.2411 2.44129 17.6576 1.87868C17.0741 1.31607 16.2827 1 15.4575 1L14.4203 1M6.12318 5L1.97461 9ZM1.97461 9L6.12318 13ZM1.97461 9L14.4203 9Z"
+                        fill="#9197B3" />
+                    <path
+                        d="M14.4203 17L15.4575 17C16.2827 17 17.0741 16.6839 17.6576 16.1213C18.2411 15.5587 18.5689 14.7956 18.5689 14L18.5689 4C18.5689 3.20435 18.2411 2.44129 17.6576 1.87868C17.0741 1.31607 16.2827 1 15.4575 1L14.4203 1M6.12318 5L1.97461 9M1.97461 9L6.12318 13M1.97461 9L14.4203 9"
+                        stroke="#9197B3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span class="ms-3 fs-5 link" style="cursor: pointer;">Déconnexion</span>
+            </a>
+        </li>
+    </div>
+</div>

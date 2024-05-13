@@ -1,0 +1,128 @@
+.sidebar {
+    background-color:#FFFFFF;
+    color: #9197B3;
+    padding: 4vh 3vh;
+    height: 100%;
+    width: 24%;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+/* .containerLink {
+    height: 75%;
+    overflow: scroll;
+} */
+
+/* Pour les navigateurs chrome et edge  */
+.containerLink::-webkit-scrollbar {
+    display: none;
+}
+
+.sidebar img {
+    width: 40%;
+}
+
+.sidebar img,
+.separation {
+    width: 80%;
+}
+
+.separation {
+    /* width: 25vh;  */
+    border: 1px solid #9197B3;
+    margin: 6% 4%;
+}
+
+
+
+.profil{
+    width: 8vh;
+    height: 8vh;
+    border-radius: 100%;
+}
+
+ul li {
+    list-style: none;
+    margin-left: -3vh;
+    line-height: 6vh;
+    width: 325px;
+}
+
+li a {
+    text-decoration: none;
+    color: #9197B3;
+}
+
+.icone {
+    fill: #9197B3;
+}
+
+.deconnection{
+    margin-top: 120px;
+    text-align: center;
+    height: 71px;
+}
+
+.btnDeconnect {
+    color: #5C6FFF;
+    display: flex;
+    
+}
+
+a{
+    display: flex;
+    margin-top: 5px;
+}
+.active{
+    background-color: #5C6FFF!important;
+    color: white!important;
+    width: 295px;
+    padding: 4px;
+    border-radius: 8px;
+}
+
+.active path{
+    fill: white !important;
+}
+
+
+@media screen and (max-width: 1000px) {
+    .sidebar {
+        padding: 2vh;
+    }
+
+
+    .link {
+        display: none;
+
+    }
+
+    svg {
+        width: 45px;
+        height: 45px;
+    }
+
+    .link:hover {
+        display: block;
+    }
+
+    .sidebar img,
+    .separation {
+        width: 100%;
+    }
+
+    a {
+        display: flex;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    .sidebar {
+        padding: 2%;
+    }
+
+    a {
+        display: flex;
+    }
+}
