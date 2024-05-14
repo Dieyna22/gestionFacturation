@@ -3,7 +3,7 @@
     color: #9197B3;
     padding: 4vh 3vh;
     height: 100%;
-    width: 24%;
+    width: 16.7%;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px;
     position: fixed;
     top: 0;
@@ -44,7 +44,7 @@
 
 ul li {
     list-style: none;
-    margin-left: -3vh;
+    margin-left: -6vh;
     line-height: 6vh;
     width: 325px;
 }
@@ -52,6 +52,7 @@ ul li {
 li a {
     text-decoration: none;
     color: #9197B3;
+    font-size: 10px;
 }
 
 .icone {
@@ -75,15 +76,15 @@ a{
     margin-top: 5px;
 }
 .active{
-    background-color: #5C6FFF!important;
-    color: white!important;
-    width: 295px;
+    color: #5C6FFF!important;
     padding: 4px;
     border-radius: 8px;
+    font-weight: bold;
+
 }
 
 .active path{
-    fill: white !important;
+    fill: #5C6FFF !important;
 }
 
 

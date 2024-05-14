@@ -49,9 +49,9 @@ body {
 
 
 .btn-theme {
-    background-color: #5C6FFF;
-    border-color: #5C6FFF;
-    color: #fff;
+    background-color: #5C6FFF!important;
+    border-color: #5C6FFF!important;
+    color: #fff!important;
     float: right;
 }
 
