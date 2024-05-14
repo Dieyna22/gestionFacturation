@@ -4,9 +4,12 @@
     grid-template-columns: 1fr 5fr;
 }
 
-
-.containerReseau .card {
-    border-radius: 0;
-    min-height: 50vh;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+.cartes{
+    background-image: url("../../../assets/images/card1.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 220px;
+    width: 450px;
 }
+
