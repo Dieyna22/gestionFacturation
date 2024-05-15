@@ -20,4 +20,14 @@ export class RoleService {
   getAllRole(): Observable<any> {
     return this.http.get<any>(`${apiUrl}/listerRole`);
   }
+
+  // modifier un role
+  updateRole(roleId: any, role:any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/modifierRole/${roleId}`, role);
+  }
+
+   // supprimer un role
+   deleteRole(roleId: any): Observable<any> {
+    return this.http.delete(`${apiUrl}/supprimerRole/${roleId}`);
+  }
 }

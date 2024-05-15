@@ -6,6 +6,7 @@ import { AccueilComponent } from './home/accueil/accueil.component';
 import { RoleComponent } from './admin/role/role.component';
 import { UsersComponent } from './admin/users/users.component';
 import { UserArchiverComponent } from './admin/user-archiver/user-archiver.component';
+import { CategorieComponent } from './admin/categorie/categorie.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'accueil', pathMatch: 'full' },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'role', component: RoleComponent, title: 'Role'},
   { path: 'user', component: UsersComponent, title: 'Utilisateurs'},
   { path: 'userArchive', component: UserArchiverComponent, title: 'Utilisateurs Archiver'},
+  { path: 'categorie', component: CategorieComponent, title: 'Categories'},
 ];
 
 @NgModule({

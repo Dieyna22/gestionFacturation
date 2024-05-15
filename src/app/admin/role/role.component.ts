@@ -12,7 +12,8 @@ export class RoleComponent {
    // Déclaration des variables 
    tabRole: any[] = [];
    tabRoleFilter: any[] = [];
-   inputrole:string="" 
+   inputrole:string="" ;
+   champsRole:string="";
 
   constructor(private http: HttpClient, private role: RoleService) { }
 
@@ -24,6 +25,7 @@ export class RoleComponent {
     this.role.addRole(role).subscribe(
       (response) => {
       alert(response);
+      this.listeRole();
     }
   );
   }
@@ -43,6 +45,33 @@ export class RoleComponent {
     )
   }
 
+currentRole: any;
+ChargeInfosRole(paramRole:any){
+    this.currentRole = paramRole;
+    this.champsRole = paramRole.role;
+}
+
+updateRole() {
+  let roles={
+    "role":this.champsRole,
+  }
+  this.role.updateRole(this.currentRole.id,roles).subscribe(
+    (reponse)=>{
+      alert(reponse)
+      this.listeRole();
+      this.champsRole='';
+    }
+  )
+}
+
+deleteRole(roleId:any){
+  this.role.deleteRole(roleId).subscribe(
+    (reponse)=>{
+      alert(reponse)
+      this.listeRole();
+    }
+  )
+}
 
   itemsParPage = 3; // Nombre d'articles par page
   pageActuelle = 1; // Page actuelle
