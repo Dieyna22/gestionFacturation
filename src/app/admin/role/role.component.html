@@ -41,9 +41,9 @@
                                     <td>{{role.role}}</td>
                                     <td>
                                         <button class="btn modif me-2" data-bs-toggle="modal"
-                                            data-bs-target="#modifZone"
+                                            data-bs-target="#modifRole" (click)="ChargeInfosRole(role)"
                                             >Modifier</button>
-                                        <button class="btn sup">Supprimer</button>
+                                        <button class="btn sup" (click)="deleteRole(role.id)">Supprimer</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -74,3 +74,26 @@
             </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="modifRole" tabindex="-1" aria-labelledby="modifRoleLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modifRoleLabel" style="color: #5C6FFF;">Modifier Role</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="inputNom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="inputNom" name="inputNom" [(ngModel)]="champsRole">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class=" btn btnAction" data-bs-dismiss="modal" (click)="updateRole()">Modifier</button>
+                <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+            </div>
+        </div>
+    </div>
+</div>
