@@ -12,6 +12,8 @@ import { FormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/interceptor';
+import { RoleComponent } from './admin/role/role.component';
+import { UsersComponent } from './admin/users/users.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { AuthInterceptor } from './interceptors/interceptor';
     LoginComponent,
     SidebarComponent,
     DashboardComponent,
-    NavbarComponent
+    NavbarComponent,
+    RoleComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,
