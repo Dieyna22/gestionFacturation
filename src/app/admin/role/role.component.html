@@ -1,0 +1,55 @@
+<div class="dashbord">
+    <div class="section sidebar">
+        <app-sidebar></app-sidebar>
+    </div>
+
+    <div class="section">
+        <!-- Le navbar  -->
+        <app-navbar></app-navbar>
+
+        <!-- Contenu dashbord  -->
+        <div class="container  containerReseau mb-5">
+            <div class="row  contenu px-5">
+                <div>
+                    <div class="zoneAjout mb-3">
+                        <h5 class="text-center">Ajout Role</h5>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Ajouter</label>
+                            <input type="text" name="auteur" class="form-control" id="exampleInputEmail1"
+                                aria-describedby="emailHelp" placeholder="role" [(ngModel)]="inputrole">
+                        </div>
+                        <button class="btn ajouter" (click)="ajouterZone()">Ajouter</button>
+                    </div>
+                    <div class="sta">
+                        <h5 class="mb-4">Total Role</h5>
+                        <span class="droite"></span>
+                        <span class="gauche"><i class="bi bi-files"></i></span>
+                    </div>
+                </div>
+                <div class="shadow-sm p-2 ">
+                    <!-- Le tableau des réseaux -->
+                    <div class="table-responsive">
+                        <table class="table mb-4">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nom Role </th>
+                                    <th scope="col">Action </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <button class="btn modif me-2" data-bs-toggle="modal"
+                                            data-bs-target="#modifZone"
+                                            >Modifier</button>
+                                        <button class="btn sup">Supprimer</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+</div>
+
