@@ -20,4 +20,9 @@ export class AuthService {
   connexionAdmin(admin: any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/login`, admin);
   }
+
+  // connexion Admin
+  connexionUser(user: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/login_sousUtilisateur`, user);
+  }
 }

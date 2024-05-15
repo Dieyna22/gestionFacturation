@@ -14,6 +14,9 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/interceptor';
 import { RoleComponent } from './admin/role/role.component';
 import { UsersComponent } from './admin/users/users.component';
+import { UserArchiverComponent } from './admin/user-archiver/user-archiver.component';
+import { CategorieComponent } from './admin/categorie/categorie.component';
+import { ClientsComponent } from './admin/clients/clients.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,10 @@ import { UsersComponent } from './admin/users/users.component';
     DashboardComponent,
     NavbarComponent,
     RoleComponent,
-    UsersComponent
+    UsersComponent,
+    UserArchiverComponent,
+    CategorieComponent,
+    ClientsComponent
   ],
   imports: [
     BrowserModule,
