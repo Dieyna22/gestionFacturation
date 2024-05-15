@@ -15,4 +15,9 @@ export class RoleService {
   addRole(role: any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/ajouterRole`, role);
   }
+
+  // liste role
+  getAllRole(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listerRole`);
+  }
 }

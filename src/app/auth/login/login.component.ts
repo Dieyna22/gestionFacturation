@@ -80,7 +80,7 @@ export class LoginComponent {
         "password": this.passwordLogin
       };
 
-        // Connexion en tant qu'utilisateur normal
+        // Connexion en tant qu'admin
         this.authAdmin.connexionAdmin(user).subscribe(
           (response) => {
             alert(response);
@@ -91,6 +91,20 @@ export class LoginComponent {
             alert(err);
           }
         );
+
+        // Connexion en tant qu'utilisateur normal
+        this.authAdmin.connexionUser(user).subscribe(
+          (response) => {
+            alert(response);
+            localStorage.setItem('userOnline', JSON.stringify(response));
+            this.route.navigate(['/admin']);
+          },
+          (err) => {
+            alert(err);
+          }
+        )
+
+
       }
 
 // validation des formulaires
