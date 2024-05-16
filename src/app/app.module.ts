@@ -17,6 +17,8 @@ import { UsersComponent } from './admin/users/users.component';
 import { UserArchiverComponent } from './admin/user-archiver/user-archiver.component';
 import { CategorieComponent } from './admin/categorie/categorie.component';
 import { ClientsComponent } from './admin/clients/clients.component';
+import { PromosComponent } from './admin/promos/promos.component';
+import { ArticlesComponent } from './admin/articles/articles.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { ClientsComponent } from './admin/clients/clients.component';
     UsersComponent,
     UserArchiverComponent,
     CategorieComponent,
-    ClientsComponent
+    ClientsComponent,
+    PromosComponent,
+    ArticlesComponent
   ],
   imports: [
     BrowserModule,

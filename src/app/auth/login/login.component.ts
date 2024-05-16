@@ -127,7 +127,7 @@ verifPassFonction() {
   this.exactPass = false;
   if (this.passwordLogin == "") {
     this.verifPass = "";
-  }else if (this.passwordLogin.length < 6) {
+  }else if (this.passwordLogin.length < 8) {
     this.verifPass = "Le mot de passe doit contenir au moins six caractéres";
   }else {
     this.verifPass = "";
