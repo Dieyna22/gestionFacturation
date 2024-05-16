@@ -45,7 +45,7 @@
 ul li {
     list-style: none;
     margin-left: -6vh;
-    line-height: 6vh;
+    /* line-height: 6vh; */
     width: 325px;
 }
 

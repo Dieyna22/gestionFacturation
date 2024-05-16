@@ -66,6 +66,7 @@ export class UsersComponent {
       (user:any)=>{
         alert(user);
         this.vider();
+        this.listeUserNoArchiver();
       },
       (err) => {
       }
