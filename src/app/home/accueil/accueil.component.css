@@ -1,4 +1,3 @@
-
 nav {
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
 }
@@ -29,12 +28,16 @@ form button a {
 }
 
 .inscription {
-    background-color: #E6E9FF;
+    background-color: #202a97;
+    color: white!important;
+}
+.connexion{
+    background-color: #fff;
+    color: #202a97;
+    border: thin solid #202a97!important;
 }
 
-.inscription:hover {
-    background-color: #afd6e6;
-}
+
 
 
 *{

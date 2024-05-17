@@ -4,12 +4,49 @@
     grid-template-columns: 1fr 5fr;
 }
 
-.cartes{
-    background-image: url("../../../assets/images/card1.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    height: 220px;
-    width: 450px;
+.cartes {
+    width: 20rem;
+    background: rgb(253, 253, 253);
+background: linear-gradient(0deg, #02016F 0%, rgb(1, 26, 243) 100%);
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.nbr-img {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 4rem;
+}
+
+.nbr-img img {
+    width: 60px;
+}
+
+h5 {
+    color:white;
+}
+
+h1 {
+    color: #ffb62f;
+    /* background-color: white; */
+    padding: 15px;
+    border-radius: 50px;
+}
+
+.mesCartes {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.devis img {
+    width: 80px
+}
+
+.group img {
+    width: 90px;
 }
 

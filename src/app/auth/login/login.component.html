@@ -1,140 +1,50 @@
-<div id="main-wrapper" class="container mt-5">
-    <div class="row justify-content-center ">
-        <div class="col-xl-10">
-            <div class="card shadow containerCard" *ngIf="choixFormulaire">
-                <div class="card-body p-0">
-                    <div class="row no-gutters">
-                        <div class="col-lg-6 d-none d-lg-inline-block">
-                            <div class="account-block rounded-right">
-                                <div class="overlay rounded-right">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="p-5 mt-5">
+<div class="page">
+    <p class="retour"><i class="fa-solid fa-left-long" style="color: #ffffff;"></i><a href=""> Retour à
+            l'accueil</a></p>
 
-                                <!-- <img src="../../assets/logo.png" class="mb-3" alt="logo"> -->
-                                <h6 class="h5 mb-4 mt-4">Connexion</h6>
-
-                                <form>
-                                    <div class="mb-3">
-                                        <label for="" class="form-label">Email:</label>
-                                        <input type="text" name="emailLogin"[(ngModel)]="emailLogin" class="form-control" id="email" (input)="this.verifEmailFonction()">
-                                        <p class="text-danger" *ngIf="!exactEmail">{{verifEmail}}</p>
-                                        <p class="text-success" *ngIf="exactEmail"><i class="bi bi-check2-all"></i> OK!</p>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="" class="lab form-label">Mot de passe:</label>
-                                        <div class="input-group">
-                                            <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput" name="password" [(ngModel)]="passwordLogin" class="form-control"
-                                            (input)="this.verifPassFonction()">
-                                            <button class="btn btn-outline-secondary" type="button"(click)="togglePasswordVisibility()">
-                                                <ng-container *ngIf="showPassword; else hideIcon">
-                                                    <i class="bi bi-eye"></i>
-                                                </ng-container>
-                                                <ng-template #hideIcon>
-                                                    <i class="bi bi-eye-slash"></i>
-                                                </ng-template>
-                                            </button>
-                                        </div>
-                                        <p class="text-danger" *ngIf="!exactPass">{{verifPass}}</p>
-                                        <p class="text-success" *ngIf="exactPass"><i class="bi bi-check2-all"></i> OK!</p>
-
-                                        <a class="bg clr mt-4" data-bs-toggle="modal" data-bs-target="#exampleModal">Mot
-                                            de passe oublié ?</a><br>
-                                        <p class="register" (click)="afficherFormulaire()">
-                                            <a class="bg">Vous n'avez-pas de compte? <span
-                                                    class="clr">Inscrivez-vous</span></a>
-                                        </p>
-                                    </div>
-
-
-                                    <button class="btn btn-theme" [disabled]="!exactEmail || !exactPass" (click)="connexion()">
-                                        Se connecter
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+    <!-- formulaire -->
+    <div class="form-txt">
+        <div class="form">
+            <form action="">
+                <div class="logo">
+                    <img src="../../../assets/images/logo.png" alt="">
                 </div>
-                <!-- end card-body -->
-            </div>
-            <div class="card shadow containerCard" *ngIf="!choixFormulaire">
-                <div class="card-body p-0">
-                    <div class="row no-gutters">
-                        <div class="col-lg-6 d-none d-lg-inline-block">
-                            <div class="account-block rounded-right">
-                                <div class="overlay rounded-right"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="p-5">
-                                <h6 class="h5 mb-2">Inscription</h6>
-                                <form>
-                                    <div class="row">
-                                        <div class="mb-1">
-                                            <label for="prenom" class="form-label">Nom Complet: <span
-                                                    class="clr">*</span></label>
-                                            <input type="text" class="form-control" id="prenom" name=prenom (input)="this.verifNomFonction()" [(ngModel)]="nom">
-                                            <p class="text-danger" *ngIf="!exactNom">{{verifNom}}</p>
-                                            <p class="text-success" *ngIf="exactNom"><i class="bi bi-check2-all"></i> OK!</p>
-                                        </div>
-                                        <div class="mb-1">
-                                            <label for="example" class="form-label">Email address: <span
-                                                    class="clr">*</span></label>
-                                            <input type="email" class="form-control" id="example" name="email"[(ngModel)]="email" (input)="this.verifEmailInsFonction()">
-                                            <p class="text-danger" *ngIf="!exactEmail">{{verifEmail}}</p>
-                                            <p class="text-success" *ngIf="exactEmail"><i class="bi bi-check2-all"></i> OK!</p>
-                                        </div>
-                                        <div class="mb-1">
-                                            <label for="password" class="form-label">Mot de passe: <span
-                                                    class="clr">*</span></label>
-                                                    <div class="input-group">
-                                                        <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput" name="password" class="form-control"
-                                                            id="password" [(ngModel)]="password" (input)="this.verifPassInsFonction()">
-                                                        <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()">
-                                                            <ng-container *ngIf="showPassword; else hideIcon">
-                                                                <i class="bi bi-eye"></i>
-                                                            </ng-container>
-                                                            <ng-template #hideIcon>
-                                                                <i class="bi bi-eye-slash"></i>
-                                                            </ng-template>
-                                                        </button>
-                                                    </div>
-                                                    <p class="text-danger" *ngIf="!exactPass">{{verifPass}}</p>
-                                                    <p class="text-success" *ngIf="exactPass"><i class="bi bi-check2-all"></i> OK!</p>
-                                        </div>
-                                        <div class="mb-1">
-                                            <label for="profil" class="form-label">Confirmation mot de passe:</label>
-                                            <div class="input-group">
-                                                <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput" name="password" class="form-control"
-                                                    [(ngModel)]="ConfPassword" (input)="this.verifPassConfFonction()">
-                                                <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()">
-                                                    <ng-container *ngIf="showPassword; else hideIcon">
-                                                        <i class="bi bi-eye"></i>
-                                                    </ng-container>
-                                                    <ng-template #hideIcon>
-                                                        <i class="bi bi-eye-slash"></i>
-                                                    </ng-template>
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <p class="text-danger" *ngIf="!exactPassConf">{{verifPassConf}}</p>
-                                        <p class="text-success" *ngIf="exactPassConf"><i class="bi bi-check2-all"></i> OK!</p>
 
-
-                                    </div>
-                                    <button class="btn btn-theme" id="client" (click)="inscription()" [disabled]="!exactEmail || !exactPass || !exactPassConf  || !exactNom" >S'inscrire</button>
-
-                                </form>
-                            </div>
-                        </div>
-                    </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Email:<span class="etoile">*</span></label>
+                    <input type="text" name="email" [(ngModel)]="emailLogin"(input)="this.verifEmailFonction()" >
+                    <p class="text-danger" *ngIf="!exactEmail">{{verifEmail}}</p>
+                    <p class="text-success" *ngIf="exactEmail"><i class="bi bi-check2-all"></i> OK!</p>
                 </div>
-                <!-- end card-body -->
-            </div>
+                <div class="mb-3 between">
+                    <label for="" class="lab form-label">Mot de passe:<span class="etoile">*</span></label>
+                    <div class="input-group">
+                        <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput" name="password" [(ngModel)]="passwordLogin" class="form-control"
+                        (input)="this.verifPassFonction()">
+                        <button class="btn btn-outline-secondary" type="button"(click)="togglePasswordVisibility()">
+                            <ng-container *ngIf="showPassword; else hideIcon">
+                                <i class="bi bi-eye"></i>
+                            </ng-container>
+                            <ng-template #hideIcon>
+                                <i class="bi bi-eye-slash"></i>
+                            </ng-template>
+                        </button>
+                    </div>
+                    <p class="text-danger" *ngIf="!exactPass">{{verifPass}}</p>
+                    <p class="text-success" *ngIf="exactPass"><i class="bi bi-check2-all"></i> OK!</p>
+                </div>
+                <div class="mdp-forget">
+                    <a href="#">Mot de passe oublié</a>
+                </div>
+
+                <button class="btn btnLogin" [disabled]="!exactEmail || !exactPass" (click)="connexion()">
+                    Se connecter
+                </button>
+                <br>
+                <p class="bas">Vous ne disposez pas de compte. <a href=""
+                        routerLink="/register"><i>Inscrivez-vous</i></a></p>
+            </form>
         </div>
-        <!-- end col -->
     </div>
-    <!-- Row -->
+
 </div>

@@ -19,6 +19,8 @@ import { CategorieComponent } from './admin/categorie/categorie.component';
 import { ClientsComponent } from './admin/clients/clients.component';
 import { PromosComponent } from './admin/promos/promos.component';
 import { ArticlesComponent } from './admin/articles/articles.component';
+import { InfosComponent } from './admin/infos/infos.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { ArticlesComponent } from './admin/articles/articles.component';
     CategorieComponent,
     ClientsComponent,
     PromosComponent,
-    ArticlesComponent
+    ArticlesComponent,
+    InfosComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

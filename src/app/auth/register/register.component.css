@@ -1,0 +1,255 @@
+.bloc {
+    background-image: url(../../../assets/images/bg-inscription.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Times New Roman', Times, serif;
+  }
+  
+  
+  .Formulaire-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    /* box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px; */
+    padding: 5px;
+    width: 85%;
+    
+    font-family: 'Times New Roman', Times, serif;
+  
+  
+  }
+
+  form{
+    height: auto;
+  }
+  
+  form h2 {
+    color: #0f193e;
+    text-align: center;
+    padding-top: 1rem;
+    padding-bottom: 15px;
+  
+  }
+  
+  .lnc {
+    width: 100%;
+    /* height: 55px; */
+    margin: 5px 0;
+    border-radius: 5px;
+  }
+  
+  .bbb {
+    height: auto;
+    width: 55%;
+    box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+    padding: 15px 20px;
+    border-radius: 15px;
+    background-color: #ffffff;
+    margin-top: 3rem;
+  }
+
+
+  .btnn button{
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    background-color: #5379F6;
+    color: #ffffff;
+    width: 100%;
+    font-weight: 700;
+  }
+
+  .btnn {
+    padding-bottom: 15px;
+  }
+  
+  button:hover {
+    background-color: #000000;
+    color: #ffffff;
+  }
+  
+  input {
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
+    margin-top: 9.5px;
+    padding: 11px 0;
+    border: none;
+  }
+  
+  .logIn {
+    text-align: center;
+    padding-top: 0.5rem;
+  }
+  
+  .logIn i {
+    font-size: 1rem;
+    color: #5379F6;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+  
+  .logo {
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+  }
+  
+  .logo img {
+    width: 32%;
+  }
+  
+  .link a {
+    color: #0f193e;
+    font-size: 16px;
+    text-decoration: underline;
+  }
+  
+  .link {
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+  
+  .retour {
+    font-size: 18px;
+    text-decoration: underline;
+    color: #fff;
+    margin-left: 1rem;
+  }
+  
+  .retour:hover {
+    color: rgb(15, 108, 151);
+  }
+  
+  
+  @media screen and (max-width: 1268px) {
+    .bbb {
+      height: auto;
+      width: 50%;
+      box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+      padding: 15px 20px;
+      border-radius: 15px;
+      background-color: #ffffff;
+      margin-top: 4rem;
+    }
+  }
+  
+  @media screen and (max-width: 1024px) {
+    .bbb {
+      height: auto;
+      width: 60%;
+      box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+      padding: 15px 20px;
+      border-radius: 15px;
+      background-color: #ffffff;
+      margin-top: 4rem;
+    }
+  }
+  
+  @media screen and (max-width: 867px) {
+    .bbb {
+      height: auto;
+      width: 70% !important;
+      box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+      padding: 15px 20px;
+      border-radius: 15px;
+      background-color: #ffffff;
+      margin-top: 4rem;
+    }
+  
+    .gcu i {
+      font-size: 16px;
+    }
+  }
+  
+  @media screen and (max-width: 767px) {
+    .bbb {
+      height: auto;
+      width: 80% !important;
+      box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+      padding: 10px 20px;
+      border-radius: 15px;
+      background-color: #ffffff;
+      margin-top: 1.5rem;
+    }
+  
+    .gcu i {
+      font-size: 16px;
+    }
+  
+    .bloc {
+      background-image: url(../../../assets/images/bg-inscription.jpg);
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      height: auto;
+      margin: 0;
+      font-family: 'Times New Roman', Times, serif;
+    }
+  }
+  
+  @media screen and (max-width: 650px) {
+    .bbb {
+      height: auto;
+      width: 80% !important;
+      box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+      padding: 15px 20px;
+      border-radius: 15px;
+      background-color: #ffffff;
+      margin-top: 4rem;
+    }
+  
+    .gcu i {
+      font-size: 16px;
+    }
+  }
+  
+  @media screen and (max-width: 550px) {
+    .bbb {
+      height: auto;
+      width: 100% !important;
+      box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+      padding: 15px 20px;
+      border-radius: 15px;
+      background-color: #ffffff;
+      margin-top: 4rem;
+    }
+  
+    .gcu i {
+      font-size: 16px;
+    }
+  }
+  
+  select {
+    box-shadow: rgba(9, 30, 66, 0.25) 0px 1px 1px, rgba(9, 30, 66, 0.13) 0px 0px 1px 1px;
+    padding: 9px 0;
+    width: 100%;
+    border-radius: 5px;
+  }
+  
+  .vvv {
+    padding-bottom: 2rem;
+  }
+  
+  form label {
+    margin-top: 7px;
+  }
+  
+  .etoile
+  {
+    color: red;
+  }
+  
+  input{
+    padding-left: 5px;
+  }
+  
+  form{
+    margin-top: 10px;
+  }

@@ -2,6 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { RoleService } from 'src/app/services/role.service';
 import { UtilisateurService } from 'src/app/services/utilisateur.service';
+import { Report } from 'notiflix/build/notiflix-report-aio';
+import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { Loading } from 'notiflix/build/notiflix-loading-aio';
 
 @Component({
   selector: 'app-user-archiver',
@@ -44,12 +48,26 @@ listeUserArchiver() {
 }
 
 desarchiver(paramUser:any){
- this.userService.desarchiver(paramUser).subscribe(
-   (response)=>{
-     alert(response);
-     this.listeUserArchiver();
-   }
- )
+  Confirm.init({
+    okButtonBackground: '#FF1700',
+    titleColor: '#FF1700'
+  });
+  Confirm.show('Confirmation ',
+  'Voullez-vous vous desarchiver?',
+  'Oui','Non',() => 
+    {
+      Loading.init({
+        svgColor: '#5C6FFF',
+      });
+      Loading.hourglass();
+      this.userService.desarchiver(paramUser).subscribe(
+        (response)=>{
+          Notify.success(response.message);
+          this.listeUserArchiver();
+          Loading.remove();
+        }
+      )
+    });
 }
 
 

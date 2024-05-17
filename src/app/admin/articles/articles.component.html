@@ -39,7 +39,8 @@
                                     <tr>
                                         <th scope="col">Nom </th>
                                         <th scope="col">Description </th>
-                                        <th scope="col">Prix</th>
+                                        <th scope="col">Prix Unitaire</th>
+                                        <th scope="col">Prix Promo</th>
                                         <th scope="col">Type </th>
                                         <th scope="col">Action </th>
                                     </tr>
@@ -49,6 +50,7 @@
                                     <td>{{article.nom_article}}</td>
                                     <td>{{article.description}}</td>
                                     <td>{{article.prix_unitaire}}</td>
+                                    <td>{{article.prix_promo}}</td>
                                     <td>{{article.type_article}}</td>
                                     <td>
                                         <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfosArticle(article)" data-bs-toggle="modal" data-bs-target="#ModalModifier"></i>

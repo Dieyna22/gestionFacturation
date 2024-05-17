@@ -2,6 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { CategorieService } from 'src/app/services/categorie.service';
 import { ClientsService } from 'src/app/services/clients.service';
+import { Report } from 'notiflix/build/notiflix-report-aio';
+import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { Loading } from 'notiflix/build/notiflix-loading-aio';
 
 @Component({
   selector: 'app-clients',
@@ -72,7 +76,7 @@ ajouterUsers(){
  }
  this.clientService.addClient(clients).subscribe(
    (client:any)=>{
-     alert(client);
+    Report.success('Notiflix Success',client.message,'Okay',);
      this.vider();
      this.listeClients();
    },
@@ -113,13 +117,26 @@ vider(){
 }
 
 deleteClient(paramClient:any){
- alert(paramClient);
- this.clientService.deleteClient(paramClient).subscribe(
-   (response)=>{
-     alert(response);
-     this.listeClients();
-   }
- )
+  Confirm.init({
+    okButtonBackground: '#FF1700',
+    titleColor: '#FF1700'
+  });
+  Confirm.show('Confirmer Suppression ',
+  'Voullez-vous supprimer?',
+  'Oui','Non',() => 
+    {
+      Loading.init({
+        svgColor: '#5C6FFF',
+      });
+      Loading.hourglass();
+      this.clientService.deleteClient(paramClient).subscribe(
+        (response)=>{
+         Notify.success(response.message);
+          this.listeClients();
+          Loading.remove();
+        }
+      )
+    });
 }
 
 currentClient: any;
@@ -145,13 +162,27 @@ updateUser() {
     "tel_client":this.inputTelephone,
     "categorie_id":this.inputClient,
   }
- this.clientService.updateClient(this.currentClient.id,clients).subscribe(
-   (reponse)=>{
-     alert(reponse)
-     this.listeClients();
-     this.vider();
-   }
- )
+  Confirm.init({
+    okButtonBackground: '#5C6FFF',
+    titleColor: '#5C6FFF'
+  });
+  Confirm.show('Confirmer modification ',
+  'Voullez-vous modifier?',
+  'Oui','Non',() => 
+    {
+      Loading.init({
+        svgColor: '#5C6FFF',
+      });
+      Loading.hourglass();
+      this.clientService.updateClient(this.currentClient.id,clients).subscribe(
+        (reponse)=>{
+         Notify.success(reponse.message);
+          this.listeClients();
+          this.vider();
+          Loading.remove();
+        }
+      )
+    });
 } 
 
 // Methode de recherche automatique pour un utilisateur

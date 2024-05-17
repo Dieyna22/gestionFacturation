@@ -2,6 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ClientsService } from 'src/app/services/clients.service';
 import { PromoService } from 'src/app/services/promo.service';
+import { Report } from 'notiflix/build/notiflix-report-aio';
+import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { Loading } from 'notiflix/build/notiflix-loading-aio';
 
 
 @Component({
@@ -52,7 +56,7 @@ ajouterPromos(){
  }
  this.promoService.addPromo(promos).subscribe(
    (promo:any)=>{
-     alert(promo);
+    Report.success('Notiflix Success',promo.message,'Okay',);
      this.vider();
      this.listePromos();
      this.nom='';
@@ -87,13 +91,27 @@ vider(){
 }
 
 deletePromo(paramPromo:any){
- alert(paramPromo);
- this.promoService.deletePromo(paramPromo).subscribe(
-   (response)=>{
-     alert(response);
-     this.listePromos();
-   }
- )
+  Confirm.init({
+    okButtonBackground: '#FF1700',
+    titleColor: '#FF1700'
+  });
+  Confirm.show('Confirmer Suppression ',
+  'Voullez-vous supprimer?',
+  'Oui','Non',() => 
+    {
+      Loading.init({
+        svgColor: '#5C6FFF',
+      });
+      Loading.hourglass();
+      this.promoService.deletePromo(paramPromo).subscribe(
+        (response)=>{
+         Notify.success(response.message);
+          this.listePromos();
+          Loading.remove();
+        }
+      )
+    });
+
 }
 
 currentPromo: any;
@@ -111,13 +129,27 @@ updatePromo() {
     "pourcentage_promo":this.inputPourcentage,
     "date_expiration":this.inputDate,
   }
- this.promoService.updatePromo(this.currentPromo.id,promos).subscribe(
-   (reponse)=>{
-     alert(reponse)
-     this.listePromos();
-     this.vider();
-   }
- )
+  Confirm.init({
+    okButtonBackground: '#5C6FFF',
+    titleColor: '#5C6FFF'
+  });
+  Confirm.show('Confirmer modification ',
+  'Voullez-vous modifier?',
+  'Oui','Non',() => 
+    {
+      Loading.init({
+        svgColor: '#5C6FFF',
+      });
+      Loading.hourglass();
+      this.promoService.updatePromo(this.currentPromo.id,promos).subscribe(
+        (reponse)=>{
+         Notify.success(reponse.message);
+         this.listePromos();
+         this.vider();
+         Loading.remove();
+        }
+      )
+    });
 } 
 
 // Methode de recherche automatique pour un utilisateur

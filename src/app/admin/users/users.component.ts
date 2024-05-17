@@ -2,6 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { RoleService } from 'src/app/services/role.service';
 import { UtilisateurService } from 'src/app/services/utilisateur.service';
+import { Report } from 'notiflix/build/notiflix-report-aio';
+import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { Loading } from 'notiflix/build/notiflix-loading-aio';
 
 @Component({
   selector: 'app-users',
@@ -64,7 +68,7 @@ export class UsersComponent {
     }
     this.userService.addUser(users).subscribe(
       (user:any)=>{
-        alert(user);
+        Report.success('Notiflix Success',user.message,'Okay',);
         this.vider();
         this.listeUserNoArchiver();
       },
@@ -99,13 +103,27 @@ export class UsersComponent {
   }
 
   archiver(paramUser:any){
-    alert(paramUser);
-    this.userService.archiver(paramUser).subscribe(
-      (response)=>{
-        alert(response);
-        this.listeUserNoArchiver();
-      }
-    )
+    Confirm.init({
+      okButtonBackground: '#FF1700',
+      titleColor: '#FF1700'
+    });
+    Confirm.show('Confirmation ',
+    'Voullez-vous vous archiver?',
+    'Oui','Non',() => 
+      {
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.userService.archiver(paramUser).subscribe(
+          (response)=>{
+            Notify.success(response.message);
+            this.listeUserNoArchiver();
+            Loading.remove();
+
+          }
+        )
+      });
   }
 
   currentUser: any;
@@ -128,13 +146,28 @@ export class UsersComponent {
       "id_role":this.inputrole,
       "archiver": this.currentUser.archiver,
     }
-    this.userService.updateUser(this.currentUser.id,users).subscribe(
-      (reponse)=>{
-        alert(reponse)
-        this.listeUserNoArchiver();
-        this.vider();
-      }
-    )
+    Confirm.init({
+      okButtonBackground: '#5C6FFF',
+      titleColor: '#5C6FFF'
+    });
+    Confirm.show('Confirmer modification ',
+    'Voullez-vous modifier?',
+    'Oui','Non',() => 
+      {
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.userService.updateUser(this.currentUser.id,users).subscribe(
+          (reponse)=>{
+            Notify.success(reponse.message);
+            this.listeUserNoArchiver();
+            this.vider();
+            Loading.remove();
+          }
+        );
+      });
+    
   } 
 
   // Methode de recherche automatique pour un utilisateur
