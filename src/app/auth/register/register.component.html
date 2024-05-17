@@ -1,0 +1,70 @@
+<div class="bloc">
+    <br>
+    <a href="#" routerLink="/accueil" class="retour"><i class="bi bi-arrow-left"></i> Retour</a>
+    
+    <!-- formulaire -->
+    <div class='Formulaire-container'>
+      <div class='bbb'>
+        <form>
+          <div class="logo">
+            <img src="../../../assets/images/logo.png" alt="">
+          </div>
+          <br>
+
+          <div class="row">
+            <div class="">
+              <label>Nom Complet<span class="etoile">*</span></label><br>
+              <input type='text' name='nom' class='lnc' placeholder="entrer votre nom complet" name=prenom (input)="this.verifNomFonction()" [(ngModel)]="nom"><br>
+              <p class="text-danger" *ngIf="!exactNom">{{verifNom}}</p>
+              <p class="text-success" *ngIf="exactNom"><i class="bi bi-check2-all"></i> OK!</p>
+            </div>
+            <div class="">
+              <label>Email address<span class="etoile">*</span></label><br>
+              <input type='email' name='email' class='lnc' placeholder="entrer votre email" name="email"[(ngModel)]="email" (input)="this.verifEmailInsFonction()">
+              <p class="text-danger" *ngIf="!exactEmail">{{verifEmail}}</p>
+              <p class="text-success" *ngIf="exactEmail"><i class="bi bi-check2-all"></i> OK!</p>
+            </div>
+            <div class="">
+              <label>Mot de passe<span class="etoile">*</span></label><br>
+              <div class="input-group">
+                <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput" placeholder="entrer votre mot de passe"  name="password" class="form-control lnc"
+                    id="password" [(ngModel)]="password" (input)="this.verifPassInsFonction()">
+                <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()">
+                    <ng-container *ngIf="showPassword; else hideIcon">
+                        <i class="bi bi-eye"></i>
+                    </ng-container>
+                    <ng-template #hideIcon>
+                        <i class="bi bi-eye-slash"></i>
+                    </ng-template>
+                </button>
+            </div>
+            <p class="text-danger" *ngIf="!exactPass">{{verifPass}}</p>
+            <p class="text-success" *ngIf="exactPass"><i class="bi bi-check2-all"></i> OK!</p>
+            </div>
+
+            <div class="">
+              <label>Confirmation mot de passe<span class="etoile">*</span></label><br>
+              <div class="input-group">
+                <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput" placeholder="entrer votre mot de passe de confirmation" name="password" class="form-control lnc"
+                    [(ngModel)]="ConfPassword" (input)="this.verifPassConfFonction()">
+                <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()">
+                    <ng-container *ngIf="showPassword; else hideIcon">
+                        <i class="bi bi-eye"></i>
+                    </ng-container>
+                    <ng-template #hideIcon>
+                        <i class="bi bi-eye-slash"></i>
+                    </ng-template>
+                </button>
+            </div>
+            <p class="text-danger" *ngIf="!exactPassConf">{{verifPassConf}}</p>
+            <p class="text-success" *ngIf="exactPassConf"><i class="bi bi-check2-all"></i> OK!</p>
+            </div>
+          </div>
+          <br>
+          <div class="btnn">
+            <button class="btn btn-theme" id="client" (click)="inscription()" [disabled]="!exactEmail || !exactPass || !exactPassConf  || !exactNom" >S'inscrire</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>

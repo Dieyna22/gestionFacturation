@@ -2,6 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { ArticlesService } from 'src/app/services/articles.service';
 import { PromoService } from 'src/app/services/promo.service';
+import { Report } from 'notiflix/build/notiflix-report-aio';
+import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { Loading } from 'notiflix/build/notiflix-loading-aio';
 
 @Component({
   selector: 'app-articles',
@@ -50,7 +54,7 @@ ajouterArticle(){
  }
  this.articleService.addArticle(articles).subscribe(
    (article:any)=>{
-     alert(article);
+     Report.success('Notiflix Success',article.message,'Okay',);
      this.vider();
      this.listeArticles();
    },
@@ -86,12 +90,27 @@ vider(){
 }
 
 deleteAricle(paramArticle:any){
- this.articleService.deleteArticle(paramArticle).subscribe(
-   (response)=>{
-     alert(response);
-     this.listeArticles();
-   }
- )
+  Confirm.init({
+    okButtonBackground: '#FF1700',
+    titleColor: '#FF1700'
+  });
+  Confirm.show('Confirmer Suppression ',
+  'Voullez-vous supprimer?',
+  'Oui','Non',() => 
+    {
+      Loading.init({
+        svgColor: '#5C6FFF',
+      });
+      Loading.hourglass();
+      this.articleService.deleteArticle(paramArticle).subscribe(
+        (response)=>{
+          Notify.success(response.message);
+          this.listeArticles();
+          Loading.remove()
+        }
+      )
+    });
+ 
 }
 
 currentArticle: any;
@@ -111,13 +130,27 @@ updateArticle() {
     "prix_unitaire":this.inputprix,
     "type_article":this.inputtypeArticle,
   }
- this.articleService.updateArticle(this.currentArticle.id,articles).subscribe(
-   (reponse)=>{
-     alert(reponse)
-     this.listeArticles();
-     this.vider();
-   }
- )
+  Confirm.init({
+    okButtonBackground: '#5C6FFF',
+    titleColor: '#5C6FFF'
+  });
+  Confirm.show('Confirmer modification ',
+  'Voullez-vous modifier?',
+  'Oui','Non',() => 
+    {
+      Loading.init({
+        svgColor: '#5C6FFF',
+      });
+      Loading.hourglass();
+      this.articleService.updateArticle(this.currentArticle.id,articles).subscribe(
+        (reponse)=>{
+          Notify.success(reponse.message);
+          this.listeArticles();
+          this.vider();
+          Loading.remove();
+        }
+      );
+    });
 } 
 
 listePromos() {
@@ -140,14 +173,28 @@ listePromos() {
   let promo={
     "promo_id":this.inputpromo,
   }
-
-  this.articleService.affecterArticle(this.idArticle,promo).subscribe(
-    (response) => {
-     console.log(response.message)
-    },
-    (err) => {
-    }
-  )
+  Confirm.init({
+    okButtonBackground: '#5C6FFF',
+    titleColor: '#5C6FFF'
+  });
+  Confirm.show('Confirmation ',
+  'Voullez-vous vous affecter une promotion?',
+  'Oui','Non',() => 
+    {
+      Loading.init({
+        svgColor: '#5C6FFF',
+      });
+      Loading.hourglass();
+      this.articleService.affecterArticle(this.idArticle,promo).subscribe(
+        (response) => {
+          Notify.success(response.message);
+          Loading.remove();
+        },
+        (err) => {
+        }
+      )
+    });
+  
  }
 
 

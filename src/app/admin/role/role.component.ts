@@ -1,6 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { RoleService } from 'src/app/services/role.service';
+import { Report } from 'notiflix/build/notiflix-report-aio';
+import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { Loading } from 'notiflix/build/notiflix-loading-aio';
+
 
 @Component({
   selector: 'app-role',
@@ -19,12 +24,13 @@ export class RoleComponent {
 
   ajouterZone() {
     let role ={
-      "role":this.inputrole
+      "role":this.inputrole,
     }
 
     this.role.addRole(role).subscribe(
       (response) => {
-      alert(response);
+      Report.success('Notiflix Success',response.message,'Okay',);
+      this.inputrole="";
       this.listeRole();
     }
   );
@@ -55,22 +61,50 @@ updateRole() {
   let roles={
     "role":this.champsRole,
   }
-  this.role.updateRole(this.currentRole.id,roles).subscribe(
-    (reponse)=>{
-      alert(reponse)
-      this.listeRole();
-      this.champsRole='';
-    }
-  )
+  Confirm.init({
+    okButtonBackground: '#5C6FFF',
+    titleColor: '#5C6FFF'
+  });
+  Confirm.show('Confirmer modification ',
+  'Voullez-vous modifier?',
+  'Oui','Non',() => 
+    {
+      Loading.init({
+        svgColor: '#5C6FFF',
+      });
+      Loading.hourglass();
+      this.role.updateRole(this.currentRole.id,roles).subscribe(
+        (reponse)=>{
+          this.listeRole();
+          this.champsRole='';
+          Notify.success(reponse.message);
+          Loading.remove();
+        }
+      );
+    });
 }
 
 deleteRole(roleId:any){
-  this.role.deleteRole(roleId).subscribe(
-    (reponse)=>{
-      alert(reponse)
-      this.listeRole();
-    }
-  )
+  Confirm.init({
+    okButtonBackground: '#FF1700',
+    titleColor: '#FF1700'
+  });
+  Confirm.show('Confirmer Suppression ',
+  'Voullez-vous supprimer?',
+  'Oui','Non',() => 
+    {
+      Loading.init({
+        svgColor: '#5C6FFF',
+      });
+      Loading.hourglass();
+      this.role.deleteRole(roleId).subscribe(
+        (reponse)=>{
+          Notify.success(reponse.message);
+          this.listeRole();
+          Loading.remove();
+        }
+      )
+    });
 }
 
   itemsParPage = 3; // Nombre d'articles par page
