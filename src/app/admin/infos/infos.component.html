@@ -13,16 +13,15 @@
                 <div class="mainContainerLeft p-2">
                     <div class="mainContainerLeftImage">
                         <div class="image">
-                            <img src="" alt="">
+                            <img src="http://127.0.0.1:8000/public/storage/images{{InfoSup.logo}}" alt="logo">
                         </div>
                     </div>
                     <div class="mainContainerLeftInfo p-3">
                         <h4 class="text-center p-3">Informations Entreprise</h4>
                         <div class="mainContainerLeftInfoDetail px-1">
-                            <h5 class="mb-4">Nom Entreprise: <span></span></h5>
-                            <h5 class="mb-4">Email: <span></span></h5>
-                            <h5 class="mb-4">Telephone: <span></span></h5>
-                            <h5 class="mb-4">Adresse: <span></span></h5>
+                            <h5 class="mb-4">Nom Entreprise: <span>{{InfoSup.nom_entreprise}}</span></h5>
+                            <h5 class="mb-4">Telephone: <span>{{InfoSup.adress_entreprise}}</span></h5>
+                            <h5 class="mb-4">Adresse: <span>{{InfoSup.tel_entreprise}}</span></h5>
                         </div>
                     </div>
                 </div>
@@ -37,7 +36,7 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link navTabsButton" id="updatePassword-tab" data-bs-toggle="pill"
                                 data-bs-target="#updatePassword" type="button" role="tab" aria-controls="updatePassword"
-                                aria-selected="false">Modifier Information</button>
+                                aria-selected="false" (click)=" chargerInfoSup()">Modifier Information</button>
                         </li>
                     </ul>
             
@@ -47,22 +46,26 @@
                             tabindex="0">
                             <form action="" class="p-3">
                                 <div class="form-floating mb-3">
-                                    <input type="file" class="form-control" id="file" name="profil" (change)="getFile($event)" (ngModel)]="profil"  >
+                                    <input type="file" class="form-control" id="file" name="profil" (change)="getFile($event)" [(ngModel)]="profil"  >
                                     <label for="file">Logo</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="nom" name="nom" (ngModel)]="nom">
+                                    <input type="text" class="form-control" id="nom" name="nom" [(ngModel)]="nom">
                                     <label for="nom">Nom Entreprise</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="nom" name="adress" (ngModel)]="adress">
+                                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" name="desc" [(ngModel)]="desc" ></textarea>
+                                    <label for="nom">Description Entreprise</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="nom" name="adress" [(ngModel)]="adress">
                                     <label for="nom">Adresse Entreprise</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="telephone" name="Tel" (ngModel)]="tel">
+                                    <input type="text" class="form-control" id="telephone" name="Tel" [(ngModel)]="tel">
                                     <label for="telephone">Téléphone</label>
                                 </div>
-                                <button type="submit" class="btn positionbtn">Enregistrer</button>
+                                <button type="submit" class="btn positionbtn" (click)="ajouterInfoSup()">Enregistrer</button>
                             </form>
                         </div>
             
@@ -71,22 +74,26 @@
                             tabindex="0">
                             <form action="" class="p-3">
                                 <div class="form-floating mb-3">
-                                    <input type="file" class="form-control" id="file" name="profil" (change)="getFile($event)" >
+                                    <input type="file" class="form-control" id="file" name="profil" (change)="getFileInputProfil($event)" [(ngModel)]="Inputprofil"  >
                                     <label for="file">Logo</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="nom" name="nom">
+                                    <input type="text" class="form-control" id="nom" name="nom" [(ngModel)]="Inputnom">
                                     <label for="nom">Nom Entreprise</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="nom" name="adress">
+                                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" name="desc" [(ngModel)]="Inputdesc" ></textarea>
+                                    <label for="nom">Description Entreprise</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="nom" name="adress" [(ngModel)]="Inputadress">
                                     <label for="nom">Adresse Entreprise</label>
                                 </div>
                                 <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" id="telephone" name="Tel">
+                                    <input type="text" class="form-control" id="telephone" name="Tel" [(ngModel)]="Inputtel">
                                     <label for="telephone">Téléphone</label>
                                 </div>
-                                <button type="submit" class="btn positionbtn">Enregistrer</button>
+                                <button type="submit" class="btn positionbtn" (click)="updateInfoSup()">Enregistrer</button>
                             </form>
                         </div>
                     </div>
