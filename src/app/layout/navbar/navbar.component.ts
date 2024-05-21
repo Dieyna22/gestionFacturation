@@ -18,9 +18,7 @@ export class NavbarComponent {
   ngOnInit() {
     // Renvoie un tableau de valeurs ou un tableau vide 
     this.dbUsers = JSON.parse(localStorage.getItem("userOnline") || "[]");
-    this.nom = this.dbUsers.user.name
-    console.log(this.nom);
-  
+    this.nom = this.dbUsers.user.name  
   }
 
   logout() {

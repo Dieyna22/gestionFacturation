@@ -71,7 +71,8 @@ ajouterPromos(){
 listePromos() {
  this.promoService.getAllPromo().subscribe(
    (promos: any) => {
-     this.tabPromo = promos;
+     this.tabPromo = promos.promos;
+     console.log(this.tabPromo)
      this.tabPromoFilter = this.tabPromo;
    },
    (err) => {

@@ -66,7 +66,7 @@ ajouterArticle(){
 listeArticles() {
  this.articleService.getAllArticles().subscribe(
    (article: any) => {
-     this.tabArticle = article;
+     this.tabArticle = article.articles;
      this.tabArticleFilter = this.tabArticle;
    },
    (err) => {
@@ -156,7 +156,7 @@ updateArticle() {
 listePromos() {
   this.promoService.getAllPromo().subscribe(
     (promos: any) => {
-      this.tabPromo = promos;
+      this.tabPromo = promos.promos;
     },
     (err) => {
     }

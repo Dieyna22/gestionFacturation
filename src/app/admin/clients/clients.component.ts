@@ -88,7 +88,7 @@ ajouterUsers(){
 listeClients() {
  this.clientService.getAllClients().subscribe(
    (clients: any) => {
-     this.tabClient = clients.clients;
+     this.tabClient = clients;
      this.tabClientFilter = this.tabClient;
    },
    (err) => {

@@ -37,7 +37,23 @@ export class UtilisateurService {
   }
 
     //modifier un user
-    updateUser(userId: any, user:any): Observable<any> {
+  updateUser(userId: any, user:any): Observable<any> {
       return this.http.post<any>(`${apiUrl}/modifierSousUtilisateur/${userId}`, user);
-    }
+  }
+
+   // ajout infos supp
+   addInfoSup(info: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/completerInfoEntreprise`, info);
+  }
+
+   // liste information
+   getAllInfoSup(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/afficherInfoEntreprise`);
+  }
+
+    //modifier information
+    updateInfoSup(user:any): Observable<any> {
+      return this.http.post<any>(`${apiUrl}/modifierInfoEntreprise/`, user);
+  }
+
 }
