@@ -12,6 +12,7 @@ import { PromosComponent } from './admin/promos/promos.component';
 import { ArticlesComponent } from './admin/articles/articles.component';
 import { InfosComponent } from './admin/infos/infos.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { FactureComponent } from './admin/facture/facture.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'accueil', pathMatch: 'full' },
@@ -27,6 +28,8 @@ const routes: Routes = [
   { path: 'promo', component: PromosComponent, title: 'Promo'},
   { path: 'article', component: ArticlesComponent, title: 'Produits et Services'},
   { path: 'infos', component: InfosComponent, title: 'Informations supplémentaire'},
+  { path: 'facture', component: FactureComponent, title: 'Factures '},
+  
 ];
 
 @NgModule({

@@ -110,7 +110,7 @@ verifPassConfFonction() {
     this.verifPassConf = "";
   }else if (this.ConfPassword.length < 6) {
     this.verifPassConf = "Le mot de passe doit contenir au moins huit caractéres";
-  }else if (this.password.toLowerCase() != this.ConfPassword.toLowerCase()) {
+  }else if (this.password != this.ConfPassword) {
     this.verifPassConf = "Les deux mots de passe doivent etres indentiques";
   }else {
     this.verifPassConf = "";

@@ -14,26 +14,22 @@
       <li>
         <a routerLink="/admin" routerLinkActive="active"><i class="fas fa-home"></i>Dashboard</a>
       </li>
-      <!-- Information Suplémentaire  -->
-      <li>
-        <a routerLink="/infos" routerLinkActive="active"infos><i class="fas fa-cog"></i>Info supplémentaire</a>
-      </li>
-      <!-- Roles  -->
-      <li>
-        <a routerLink="/role" routerLinkActive="active"><i class="fas fa-sliders-h"></i>Roles</a>
-      </li>
-      <!-- Utilisateurs  -->
-      <li>
-        <a routerLink="/user" routerLinkActive="active"><i class="bi bi-person-fill"></i>Utilisateurs</a>
-      </li>
-      <!-- Utilisateurs Archiver  -->
-      <li>
-        <a routerLink="/userArchive" routerLinkActive="active"><i class="bi bi-person-fill-x"></i>Utilisateurs Archiver</a>
-      </li>
-      <!-- Catégorie  -->
-      <li>
-        <a routerLink="/categorie" routerLinkActive="active"><i class="bi bi-copy"></i>Catégories</a>
-      </li>
+      <ng-container *ngIf="isSuperAdmin">
+        <!-- Information Suplémentaire  -->
+        <li>
+          <a routerLink="/infos" routerLinkActive="active"><i class="fas fa-cog"></i>Info supplémentaire</a>
+        </li>
+      </ng-container>
+      <ng-container *ngIf="isSuperAdmin">
+        <!-- Utilisateurs  -->
+        <li>
+          <a routerLink="/user" routerLinkActive="active"><i class="bi bi-person-fill"></i>Utilisateurs</a>
+        </li>
+        <!-- Utilisateurs Archiver  -->
+        <li>
+          <a routerLink="/userArchive" routerLinkActive="active"><i class="bi bi-person-fill-x"></i>Utilisateurs Archiver</a>
+        </li>
+      </ng-container>
       <!-- Clients  -->
       <li>
         <a routerLink="/client" routerLinkActive="active"><i class="bi bi-people-fill"></i>Clients</a>
@@ -48,7 +44,7 @@
       </li>
       <!-- Factures  -->
       <li>
-        <a><i class="bi bi-file-earmark-spreadsheet-fill"></i>Factures</a>
+        <a routerLink="/facture" routerLinkActive="active"><i class="bi bi-file-earmark-spreadsheet-fill"></i>Factures</a>
       </li>
       <!-- Dévis  -->
       <li>

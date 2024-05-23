@@ -64,7 +64,7 @@ export class UsersComponent {
       "prenom":this.prenom,
       "email":this.mail,
       "password":this.pass,
-      "id_role":this.role,
+      "role":this.role,
     }
     this.userService.addUser(users).subscribe(
       (user:any)=>{
@@ -108,7 +108,7 @@ export class UsersComponent {
       titleColor: '#FF1700'
     });
     Confirm.show('Confirmation ',
-    'Voullez-vous vous archiver?',
+    'Voullez-vous vous bloquer cette utilisateur?',
     'Oui','Non',() => 
       {
         Loading.init({
@@ -133,7 +133,7 @@ export class UsersComponent {
     this.inputnom = paramUser.nom;
     this.inputprenom = paramUser.prenom;
     this.inputmail = paramUser.email;
-    this.inputrole = paramUser.id_role;
+    this.inputrole = paramUser.role;
     this.inputpass =paramUser.password;
   }
 
@@ -143,7 +143,7 @@ export class UsersComponent {
       "prenom":this.inputprenom,
       "email":this.inputmail,
       "password":this.inputpass,
-      "id_role":this.inputrole,
+      "role":this.inputrole,
       "archiver": this.currentUser.archiver,
     }
     Confirm.init({

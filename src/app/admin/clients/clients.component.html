@@ -7,16 +7,19 @@
         <!-- Le navbar  -->
         <app-navbar></app-navbar>
 
+        
         <!-- Contenu dashbord  -->
-        <div class="container containerReseau mb-5">
+        <div class="container mt-3 containerReseau mb-5">
+          <!-- catégorie -->
+          <app-categorie></app-categorie>
             <div class="row px-5">
                 <!-- Button modal Ajout Utilisateurs -->
-                <button type="button" class="btn btnAction btnClose col-md-2 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Ajout
+                <button type="button" class="btn btnAction  col-md-2 mb-3 mt-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Ajouter Client
                 </button>
                 <!-- Liste des Utilisateurs  -->
                 <div class="col-md-12 px-4">
-                    <div class="card px-4 py-2 pt-4 shadow-sm rounded-4">
+                    <div class="card mb-4 px-4 py-2 pt-4 shadow-sm rounded-4">
                         <!-- Recherhcer une utilisateur  -->
                         <div class="row sectionEspace ligneReseauSearch mb-3">
                             <div class="col-md-7">

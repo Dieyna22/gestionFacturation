@@ -1,0 +1,61 @@
+.dashbord {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+}
+.containerReseau .card {
+    border: none;
+    border-radius: 0;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.btnAnnuler {
+    background-color: #5c636a!important;
+    color: white!important;
+  }
+
+.btnEnregistrer {
+    background-color: #02016F!important;
+    color: white!important;
+    border: none;
+}
+
+.btnDelete i{
+  color: white!important;
+}
+
+thead tr th {
+    background-color: #02016F;
+    color: white;
+}
+
+  .containerModal {
+    .invoice {
+      background: #fff;
+      width: 100%;
+      padding: 50px;
+    }
+  
+    .logo {
+      width: 3.5cm !important;
+    }
+  
+    .document-type {
+      text-align: right;
+      color: #444;
+    }
+  
+    .conditions {
+      font-size: 0.7em;
+      color: #666;
+    }
+  
+    .bottom-page {
+      font-size: 0.7em;
+    }
+  }
+
+  .btnPosition{
+   display: flex;
+   justify-content: end;
+}

@@ -21,6 +21,9 @@ import { PromosComponent } from './admin/promos/promos.component';
 import { ArticlesComponent } from './admin/articles/articles.component';
 import { InfosComponent } from './admin/infos/infos.component';
 import { RegisterComponent } from './auth/register/register.component';
+import { CategorieArticleComponent } from './admin/categorie-article/categorie-article.component';
+import { FactureComponent } from './admin/facture/facture.component';
+import { NgxPrintModule } from 'ngx-print';
 
 @NgModule({
   declarations: [
@@ -38,13 +41,16 @@ import { RegisterComponent } from './auth/register/register.component';
     PromosComponent,
     ArticlesComponent,
     InfosComponent,
-    RegisterComponent
+    RegisterComponent,
+    CategorieArticleComponent,
+    FactureComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    NgxPrintModule
   ],
   providers: [
     AuthService,

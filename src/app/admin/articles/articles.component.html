@@ -9,10 +9,12 @@
 
         <!-- Contenu dashbord  -->
         <div class="container containerReseau mb-5">
+          <!-- catégorie article -->
+          <app-categorie-article></app-categorie-article>
             <div class="row px-5">
                 <!-- Button modal Ajout Utilisateurs -->
                 <button type="button" class="btn btnAction btnClose col-md-2 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                    Ajout
+                    Ajouter Article
                 </button>
                 <!-- Liste des Utilisateurs  -->
                 <div class="col-md-12 px-4">
@@ -38,24 +40,34 @@
                                 <thead>
                                     <tr>
                                         <th scope="col">Nom </th>
-                                        <th scope="col">Description </th>
+                                        <th scope="col">Type Artcicle </th>
+                                        <th scope="col">Catégorie Artcicle </th>
+                                        <th scope="col">Prix D'achat</th>
                                         <th scope="col">Prix Unitaire</th>
+                                        <th scope="col">Quantité</th>
+                                        <th scope="col">Quantité D'alerte</th>
                                         <th scope="col">Prix Promo</th>
-                                        <th scope="col">Type </th>
                                         <th scope="col">Action </th>
                                     </tr>
                                 </thead>
                                 <tbody *ngFor="let article of getItemsPage()">
                                 <tr>
                                     <td>{{article.nom_article}}</td>
-                                    <td>{{article.description}}</td>
-                                    <td>{{article.prix_unitaire}}</td>
-                                    <td>{{article.prix_promo}}</td>
                                     <td>{{article.type_article}}</td>
+                                    <td>{{article.nom_categorie}}</td>
+                                    <td>{{article.prix_achat}}</td>
+                                    <td>{{article.prix_unitaire}}</td>
+                                    <td>{{article.quantite}}</td>
+                                    <td>{{article.quantite_alert}}</td>
+                                    <td>{{article.prix_promo}}</td>
                                     <td>
                                         <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfosArticle(article)" data-bs-toggle="modal" data-bs-target="#ModalModifier"></i>
                                         <i class="bi bi-trash3 me-2" title="Supprimer" (click)="deleteAricle(article.id)"></i>
-                                        <i class="bi bi-plus-circle" title="Affecter promo" (click)="recupIdArticle(article.id)" data-bs-toggle="modal" data-bs-target="#affecterPromo"></i>
+                                        <i class="bi bi-plus-circle me-2" title="Affecter promo" (click)="recupIdArticle(article.id)" data-bs-toggle="modal" data-bs-target="#affecterPromo"></i>
+                                        <i class="bi bi-collection" title="Affecter catégorie" (click)="recupIdArticle(article.id)" data-bs-toggle="modal" data-bs-target="#affecterCategorie"></i>
+                                        <ng-container *ngIf="isSuperAdmin">
+                                          <img src="../../../assets/images/stock.png" title="modifier stock" style="cursor: pointer;" (click)="chargerInfosArticle(article)"  data-bs-toggle="modal" data-bs-target="#modifStock">
+                                        </ng-container>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -88,7 +100,7 @@
 </div>
 
 
-<!-- Modal Ajout users -->
+<!-- Modal Ajout article -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -107,11 +119,30 @@
              <input type="text" class="form-control" id="validationServer02" name="desc" [(ngModel)]="desc">
             </div>
             <div class="mb-3">
-              <label for="validationServer02" class="form-label">Prix</label>
-              <input type="text" class="form-control" id="validationServer02" name="prix" [(ngModel)]="prix">
+              <label for="validationServer02" class="form-label">Prix d'achat</label>
+              <input type="text" class="form-control" id="validationServer02" name="achat" [(ngModel)]="achat">
              </div>
+             <div class="mb-3">
+              <label for="validationServer02" class="form-label">Prix de vente</label>
+              <input type="text" class="form-control" id="validationServer02" name="vente" [(ngModel)]="vente">
+             </div>
+             <div class="mb-3">
+              <label for="validationServer02" class="form-label">Quantité</label>
+              <input type="text" class="form-control" id="validationServer02" name="quantite" [(ngModel)]="quantite">
+             </div>
+             <div class="mb-3">
+              <label for="validationServer02" class="form-label">Quantité Alerte</label>
+              <input type="text" class="form-control" id="validationServer02" name="quantiteAlerte" [(ngModel)]="quantiteAlerte">
+             </div>
+             <div class="mb-3 ">
+              <label for="exampleInputPassword1" class="form-label">Catégorie article</label>
+            <select class="form-select" aria-label="Default select example" name="promo" [(ngModel)]="CategorieArticle">
+              <option selected disabled>Choisisez une catégorie</option>
+              <option *ngFor="let categorieArticle of tabCategorie" [value]="categorieArticle.id">{{categorieArticle.nom_categorie_article}}</option>
+            </select>
+          </div>
             <div class="mb-3 ">
-                <label for="exampleInputPassword1" class="form-label">Type</label>
+                <label for="exampleInputPassword1" class="form-label">Type Article</label>
               <select class="form-select" aria-label="Default select example" name="type" [(ngModel)]="typeArticle">
                 <option selected disabled>Choisisez un role</option>
                 <option value="produit">Produit</option>
@@ -128,7 +159,7 @@
     </div>
   </div>
   
-<!-- Modal modifier user -->
+<!-- Modal modifier article -->
 <div class="modal fade" id="ModalModifier" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -147,9 +178,23 @@
                  <input type="text" class="form-control" id="validationServer02" name="desc" [(ngModel)]="inputdesc">
                 </div>
                 <div class="mb-3">
-                  <label for="validationServer02" class="form-label">Prix</label>
-                  <input type="text" class="form-control" id="validationServer02" name="prix" [(ngModel)]="inputprix">
+                  <label for="validationServer02" class="form-label">Prix d'achat</label>
+                  <input type="text" class="form-control" id="validationServer02" name="achat" [(ngModel)]="inputachat">
                  </div>
+                 <div class="mb-3">
+                  <label for="validationServer02" class="form-label">Prix de vente</label>
+                  <input type="text" class="form-control" id="validationServer02" name="vente" [(ngModel)]="inputvente">
+                 </div>
+                 <ng-container *ngIf="isSuperAdmin">
+                  <div class="mb-3">
+                    <label for="validationServer02" class="form-label">Quantité</label>
+                    <input type="text" class="form-control" id="validationServer02" name="quantite" [(ngModel)]="inputquantite">
+                   </div>
+                   <div class="mb-3">
+                    <label for="validationServer02" class="form-label">Quantité Alerte</label>
+                    <input type="text" class="form-control" id="validationServer02" name="quantiteAlerte" [(ngModel)]="inputquantiteAlerte">
+                   </div>
+                 </ng-container>
                 <div class="mb-3 ">
                     <label for="exampleInputPassword1" class="form-label">Type</label>
                   <select class="form-select" aria-label="Default select example" name="type" [(ngModel)]="inputtypeArticle">
@@ -166,7 +211,7 @@
         </div>
       </div>
     </div>
-  </div>
+</div>
   
  <!-- Modal Affecter promo -->
 <div class="modal fade" id="affecterPromo" tabindex="-1" aria-labelledby="affecterPromoLabel" aria-hidden="true">
@@ -193,5 +238,56 @@
     </div>
   </div>
   
-  
+   <!-- Modal Affecter categorie -->
+<div class="modal fade" id="affecterCategorie" tabindex="-1" aria-labelledby="affecterCategorieLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="affecterCategorieLabel">Catégorie Article</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <div class="mb-3 ">
+              <label for="exampleInputPassword1" class="form-label">Catégorie article Disponible</label>
+            <select class="form-select" aria-label="Default select example" name="promo" [(ngModel)]="inputCategorieArticle">
+              <option selected disabled>Choisisez une catégorie</option>
+              <option *ngFor="let categorieArticle of tabCategorie" [value]="categorieArticle.id">{{categorieArticle.nom_categorie_article}}</option>
+            </select>
+          </div>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btnAction" (click)="affecterCategorieArticle()">Enregistrer</button>
+        <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal modifier stock -->
+<div class="modal fade" id="modifStock" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modifier Stock</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form>
+               <div class="mb-3">
+                <label for="validationServer02" class="form-label">Quantité</label>
+                <input type="text" class="form-control" id="validationServer02" name="quantite" [(ngModel)]="inputquantite">
+               </div>
+               <div class="mb-3">
+                <label for="validationServer02" class="form-label">Note</label>
+                <textarea class="form-control" placeholder="note" id="floatingTextarea2" style="height: 100px" name="note" [(ngModel)]="note"></textarea>
+               </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btnAction" (click)="updateStockArticle()">Modifier</button>
+        <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
 

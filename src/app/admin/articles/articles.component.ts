@@ -6,6 +6,7 @@ import { Report } from 'notiflix/build/notiflix-report-aio';
 import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
+import { CategorieArticleService } from 'src/app/services/categorie-article.service';
 
 @Component({
   selector: 'app-articles',
@@ -16,30 +17,64 @@ export class ArticlesComponent {
 // Déclaration des variables 
 tabArticle: any[] = [];
 tabArticleFilter: any[] = [];
-tabPromo: any[] = []
+tabPromo: any[] = [];
+tabCategorie: any[] = [];
+dbUsers: any;
+role: string = ''
 
 filterValue: string = "";
 nom: string = "";
 desc: string = "";
-prix: string = "";
+vente: string = "";
 typeArticle: string = "";
+achat: string = "";
+quantite: string = "";
+quantiteAlerte: string = "";
+CategorieArticle:string="";
+note:string="";
+
+
 
 inputnom: string = "";
 inputdesc: string = "";
-inputprix: string = "";
+inputvente: string = "";
+inputachat: string = "";
+inputquantite: string = "";
+inputquantiteAlerte: string = "";
 inputtypeArticle: string = "";
 inputpromo: string = "";
+inputCategorieArticle:string="";
+
+isSuperAdmin: boolean = false;
+isAdmin: boolean = false;
+isUser: boolean = false;
 
 
-
-
-constructor(private http: HttpClient, private articleService:ArticlesService,private promoService:PromoService) { }
+constructor(private http: HttpClient, private articleService:ArticlesService,private promoService:PromoService,private Categorie: CategorieArticleService) { }
 
 
 
 ngOnInit(): void {
  this.listeArticles();
  this.listePromos();
+ this.listeCategorie();
+
+ this.dbUsers = JSON.parse(localStorage.getItem("userOnline") || "[]"); 
+ this.role = this.dbUsers.user.role
+
+ if (this.role == "super_admin") {
+   this.isSuperAdmin = true;
+   this.isAdmin = false;
+   this.isUser = false;
+ } else if (this.role == "administrateur") {
+   this.isSuperAdmin = false;
+   this.isAdmin = true;
+   this.isUser = false;
+ }else if (this.role == "utilisateur_simple") {
+   this.isSuperAdmin = false;
+   this.isAdmin = false;
+   this.isUser = true;
+ }
 }
 
 
@@ -49,8 +84,13 @@ ajouterArticle(){
  let articles={
    "nom_article":this.nom,
    "description":this.desc,
-   "prix_unitaire":this.prix,
+   "prix_unitaire":this.vente,
    "type_article":this.typeArticle,
+   "prix_achat":this.achat,
+   "quantite":this.quantite,
+   "quantite_alert":this.quantiteAlerte,
+   "id_categorie_article":this.CategorieArticle,
+
  }
  this.articleService.addArticle(articles).subscribe(
    (article:any)=>{
@@ -68,6 +108,7 @@ listeArticles() {
    (article: any) => {
      this.tabArticle = article.articles;
      this.tabArticleFilter = this.tabArticle;
+     console.log(this.tabArticle)
    },
    (err) => {
    }
@@ -78,13 +119,22 @@ listeArticles() {
 vider(){
  this.nom='';
  this.desc='';
- this.prix='';
+ this.vente='';
  this.typeArticle='';
+ this.achat='';
+ this.quantite='';
+ this.quantiteAlerte='';
+ this.CategorieArticle='';
+ this.note='';
 
  this.inputnom='';
  this.inputdesc='';
- this.inputprix='';
+ this.inputvente='';
  this.inputtypeArticle='';
+ this.inputachat='';
+ this.inputquantite='';
+ this.inputquantiteAlerte='';
+ this.inputCategorieArticle='';
  
 
 }
@@ -119,16 +169,24 @@ chargerInfosArticle(paramArticle:any){
  this.currentArticle = paramArticle;
  this.inputnom = paramArticle.nom_article;
  this.inputdesc = paramArticle.description;
- this.inputprix = paramArticle.prix_unitaire;
+ this.inputvente = paramArticle.prix_unitaire;
  this.inputtypeArticle = paramArticle.type_article;
+ this.inputachat=paramArticle.prix_achat;
+ this.inputquantite=paramArticle.quantite;
+ this.inputquantiteAlerte=paramArticle.quantite_alert;
 }
 
 updateArticle() {
   let articles={
     "nom_article":this.inputnom,
     "description":this.inputdesc,
-    "prix_unitaire":this.inputprix,
+    "prix_unitaire":this.inputvente,
     "type_article":this.inputtypeArticle,
+    "prix_achat":this.inputachat,
+    "quantite":this.inputquantite,
+    "quantite_alert":this.inputquantiteAlerte,
+    "id_categorie_article":this.inputCategorieArticle,
+
   }
   Confirm.init({
     okButtonBackground: '#5C6FFF',
@@ -153,6 +211,34 @@ updateArticle() {
     });
 } 
 
+updateStockArticle() {
+  let stock={
+    "quantite":this.inputquantite,
+    "note":this.note,
+  }
+  Confirm.init({
+    okButtonBackground: '#5C6FFF',
+    titleColor: '#5C6FFF'
+  });
+  Confirm.show('Confirmer modification ',
+  'Voullez-vous modifier?',
+  'Oui','Non',() => 
+    {
+      Loading.init({
+        svgColor: '#5C6FFF',
+      });
+      Loading.hourglass();
+      this.articleService.updateStockArticle(this.currentArticle.id,stock).subscribe(
+        (reponse)=>{
+          Notify.success(reponse.message);
+          this.listeArticles();
+          this.vider();
+          Loading.remove();
+        }
+      );
+    });
+}
+
 listePromos() {
   this.promoService.getAllPromo().subscribe(
     (promos: any) => {
@@ -166,7 +252,6 @@ listePromos() {
  idArticle:any;
  recupIdArticle(paramArticle:any){
   this.idArticle=paramArticle;
-  console.log(this.idArticle);
  }
 
  affecterPromo(){
@@ -197,6 +282,43 @@ listePromos() {
   
  }
 
+ listeCategorie() {
+ this.Categorie.getAllCategorieArticle().subscribe(
+   (categories: any) => {
+     this.tabCategorie = categories.CategorieArticle;
+   },
+   (err) => {
+   }
+ )
+}
+
+affecterCategorieArticle(){
+  let CategorieArticle={
+    "id_categorie_article":this.inputCategorieArticle,
+  }
+  Confirm.init({
+    okButtonBackground: '#5C6FFF',
+    titleColor: '#5C6FFF'
+  });
+  Confirm.show('Confirmation ',
+  'Voullez-vous vous affecter une catégorie à cette article?',
+  'Oui','Non',() => 
+    {
+      Loading.init({
+        svgColor: '#5C6FFF',
+      });
+      Loading.hourglass();
+      this.articleService.affecterCategorieArticle(this.idArticle,CategorieArticle).subscribe(
+        (response) => {
+          Notify.success(response.message);
+          Loading.remove();
+        },
+        (err) => {
+        }
+      )
+    });
+  
+ }
 
 // Methode de recherche automatique pour un utilisateur
 onSearch() {

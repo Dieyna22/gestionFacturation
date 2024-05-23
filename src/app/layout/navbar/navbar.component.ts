@@ -12,6 +12,10 @@ import { Loading } from 'notiflix/build/notiflix-loading-aio';
 export class NavbarComponent {
   dbUsers: any;
   nom: string = '';
+  role: string = '';
+  usernom: string = '';
+
+  
 
   constructor(private route: Router) { }
 
@@ -19,6 +23,9 @@ export class NavbarComponent {
     // Renvoie un tableau de valeurs ou un tableau vide 
     this.dbUsers = JSON.parse(localStorage.getItem("userOnline") || "[]");
     this.nom = this.dbUsers.user.name  
+    this.role = this.dbUsers.user.role
+    this.usernom = this.dbUsers.user.prenom
+
   }
 
   logout() {

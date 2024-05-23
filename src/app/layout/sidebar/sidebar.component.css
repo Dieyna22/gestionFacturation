@@ -94,10 +94,15 @@ i.fa-bars{
   transition: all 0.3s ease;
   padding-bottom: 5px;
 }
+
 #sidebar .list-items li:hover{
  background: #5C6FFF;
  color: white;
 }
+
+#sidebar .list-items li .active{
+  color: #5C6FFF !important;
+ }
 
 #sidebar .list-items li a:hover{
   color: white;

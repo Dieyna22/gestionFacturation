@@ -31,8 +31,18 @@ export class ArticlesService {
     return this.http.post<any>(`${apiUrl}/modifierArticle/${articleID}`, article);
   }
 
-  //affecter une article
+   //modifier stock  article
+   updateStockArticle(articleID: any, stock:any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/articles_modifier_quantite/${articleID}`, stock);
+  }
+
+  //affecter promo à une article
   affecterArticle(articleID: any, promo:any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/affecterPromoArticle/${articleID}`, promo);
+  }
+
+   //affecter catégorie à une article
+   affecterCategorieArticle(articleID: any, categorie:any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/affecterCategorieArticle/${articleID}`, categorie);
   }
 }
