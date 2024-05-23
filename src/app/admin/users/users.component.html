@@ -49,10 +49,10 @@
                                     <td>{{user.nom}}</td>
                                     <td>{{user.prenom}}</td>
                                     <td>{{user.email}}</td>
-                                    <td>{{user.nom_role}}</td>
+                                    <td>{{user.role}}</td>
                                     <td>
                                         <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfosUser(user)" data-bs-toggle="modal" data-bs-target="#ModalModifier"></i>
-                                        <i class="bi bi-archive" title="archiver" (click)="archiver(user.id)"></i>
+                                        <i class="bi bi-archive" title="bloquer" (click)="archiver(user.id)"></i>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -125,7 +125,8 @@
                     <label for="exampleInputPassword1" class="form-label">Role</label>
                   <select class="form-select" aria-label="Default select example" name="role" [(ngModel)]="role">
                     <option selected disabled>Choisisez un role</option>
-                    <option *ngFor="let role of tabRole" [value]="role.id">{{role.role}}
+                    <option value="administrateur">Administrateur</option>
+                    <option value="utilisateur_simple">Utilisateur</option>
                   </select>
                 </div>
             </form>
@@ -178,7 +179,8 @@
                     <label for="exampleInputPassword1" class="form-label">Role</label>
                   <select class="form-select" aria-label="Default select example" name="role" [(ngModel)]="inputrole">
                     <option selected disabled>Choisisez un role</option>
-                    <option *ngFor="let role of tabRole" [value]="role.id">{{role.role}}
+                    <option value="administrateur">Administrateur</option>
+                    <option value="utilisateur_simple">Utilisateur</option>
                   </select>
                 </div>
             </form>

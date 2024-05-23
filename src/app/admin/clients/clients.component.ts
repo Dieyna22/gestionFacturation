@@ -90,6 +90,7 @@ listeClients() {
    (clients: any) => {
      this.tabClient = clients;
      this.tabClientFilter = this.tabClient;
+     console.log(this.tabClient)
    },
    (err) => {
    }

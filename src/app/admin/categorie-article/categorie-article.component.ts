@@ -1,31 +1,32 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { CategorieService } from 'src/app/services/categorie.service';
 import { Report } from 'notiflix/build/notiflix-report-aio';
 import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
+import { CategorieArticleService } from 'src/app/services/categorie-article.service';
 
 @Component({
-  selector: 'app-categorie',
-  templateUrl: './categorie.component.html',
-  styleUrls: ['./categorie.component.css']
+  selector: 'app-categorie-article',
+  templateUrl: './categorie-article.component.html',
+  styleUrls: ['./categorie-article.component.css']
 })
-export class CategorieComponent {
+export class CategorieArticleComponent {
+
 // Déclaration des variables 
 tabCategorie: any[] = [];
 tabCategorieFilter: any[] = [];
 inputCategorie:string="" ;
 categorie:string="";
 
-constructor(private http: HttpClient, private Categorie: CategorieService) { }
+constructor(private http: HttpClient, private Categorie: CategorieArticleService) { }
 
 ajouterCategorie() {
  let categorie ={
-   "nom_categorie":this.inputCategorie
+   "nom_categorie_article":this.inputCategorie
  }
 
- this.Categorie.addCategorie(categorie).subscribe(
+ this.Categorie.addCategorieArticle(categorie).subscribe(
    (response) => {
     Report.success('Notiflix Success',response.message,'Okay',);
    this.listeCategorie();
@@ -39,9 +40,9 @@ ngOnInit(): void {
 }
 
 listeCategorie() {
- this.Categorie.getAllCategorie().subscribe(
+ this.Categorie.getAllCategorieArticle().subscribe(
    (categories: any) => {
-     this.tabCategorie = categories.CategorieClient;
+     this.tabCategorie = categories.CategorieArticle;
      this.tabCategorieFilter = this.tabCategorie;
    },
    (err) => {
@@ -52,12 +53,12 @@ listeCategorie() {
 CurrentCategorie: any;
 chargerInfosCategorie(paramCategorie:any){
     this.CurrentCategorie = paramCategorie;
-    this.categorie = paramCategorie.nom_categorie;
+    this.categorie = paramCategorie.nom_categorie_article;
 }
 
 updateCategorie() {
   let categories={
-    "nom_categorie":this.categorie,
+    "nom_categorie_article":this.categorie,
   }
   Confirm.init({
     okButtonBackground: '#5C6FFF',
@@ -71,7 +72,7 @@ updateCategorie() {
         svgColor: '#5C6FFF',
       });
       Loading.hourglass();
-      this.Categorie.updateCategorie(this.CurrentCategorie.id,categories).subscribe(
+      this.Categorie.updateCategorieArticle(this.CurrentCategorie.id,categories).subscribe(
         (reponse)=>{
           Notify.success(reponse.message);
           this.listeCategorie();
@@ -96,7 +97,7 @@ deleteCategorie(categorieId:any){
         svgColor: '#5C6FFF',
       });
       Loading.hourglass();
-      this.Categorie.deleteCategorie(categorieId).subscribe(
+      this.Categorie.deleteCategorieArticle(categorieId).subscribe(
         (reponse)=>{
           Notify.success(reponse.message);
           this.listeCategorie();

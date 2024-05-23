@@ -1,0 +1,124 @@
+  <div class="dashbord">
+    <div class="section sidebar">
+        <app-sidebar></app-sidebar>
+    </div>
+
+    <div class="section">
+        <!-- Le navbar  -->
+        <app-navbar></app-navbar>
+
+        <!-- Contenu dashbord  -->
+        <div class="container containerReseau mb-5">
+            <div class="card px-4 py-2 pt-4 shadow rounded-4" id="print-section">
+                    <div class="invoice">
+                      <div class="row">
+                        <div class="col-7">
+                          <!-- <img src="http://127.0.0.1:8000/storage/images/{{InfoSup.logo}}" class="logo"> <br> <br> -->
+                        
+                          <div class="company-info" *ngIf="InfoSup">
+                            <h3>{{ InfoSup.nom_entreprise }}</h3>
+                            <p>{{ InfoSup.adress_entreprise }}</p>
+                            <p>Tél: {{ InfoSup.tel_entreprise }}</p>
+                          </div>
+                         
+                          <h6>{{ currentDate }}</h6>
+                          
+                        </div>
+                        <div class="col-5">
+                          <div class="invoice-number">
+                            <h2>FACTURE</h2>
+                            <p>Numéro: <strong>numéro</strong></p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-7">
+                        </div>
+                        <div class="col-5">
+                          <label for="client-select">Sélectionner un client :</label> <br><br>
+                          <select  class="form-select form-select-lg mb-5" id="client-select" [(ngModel)]="selectedClient" (change)="onClientSelected()">
+                            <option *ngFor="let client of tabClient" [value]="client.id">{{client.prenom_client}} {{client.nom_client}}</option>
+                          </select>
+                          <div *ngFor="let clientSelect of currentClient">
+                            <h6>{{clientSelect?.nom_entreprise}}</h6>
+                            <p> {{clientSelect?.prenom_client}} {{clientSelect?.nom_client}}</p>
+                            <p>{{clientSelect?.adress_client}}</p>
+                            <p>{{clientSelect?.tel_client}}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <br>
+                      <br>
+                      <br>
+                      <table class="table table-bordered border-light">
+                        <thead>
+                          <tr>
+                            <th>Description</th>
+                            <th>Quantité</th>
+                            <th>PU</th>
+                            <th>Total</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr *ngFor="let row of rows; let i = index">
+                            <td>  
+                              <select class="form-control" [(ngModel)]="row.selectedProduct" (change)="onProductSelect(row)">
+                              <option value="0">Sélectionnez un produit/service</option>
+                              <option *ngFor="let product of products" [value]="product.id">{{ product.nom_article }}</option>
+                            </select>
+                          </td>
+                            <td><input type="number" class="form-control" [(ngModel)]="row.quantity" (input)="calculateTotal(row)" placeholder="Quantité"></td>
+                            <td>
+                              <span *ngIf="row.promotionalPrice; else regularPrice">{{ row.promotionalPrice | number:'1.2-2' }}</span>
+                              <ng-template #regularPrice>{{ row.unitPrice | number:'1.2-2' }}</ng-template>
+                            </td>
+                            <td><span class="total text-right">{{ row.total | number:'1.2-2' }}</span></td>
+                            <td><button class="btn btn-danger  btnDelete btn-sm" (click)="deleteRow(i)"><i class="bi bi-trash"></i></button></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <button class="btn btn-primary" (click)="addRow()"><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne</button>
+                      <div class="row">
+                        <div class="col-6">
+                        </div>
+                        <div class="col-6">
+                          <br>
+                          <br>
+                          <table class="table table-sm text-right">
+                            <tr>
+                              <td><strong>Total à payer</strong></td>
+                              <td class="text-right"> <span class="font-weight-bold">{{ total | number:'1.2-2' }}</span> FCfa</td>
+                            </tr>
+                            <tr>
+                              <td><strong>Montant verser</strong></td>
+                              <td class="text-right">montantVerser FCfa</td>
+                            </tr>
+                            <tr>
+                              <td><strong>Montant Total Payée</strong></td>
+                              <td class="text-right">montant_payement FCfa</td>
+                            </tr>
+                            <tr>
+                              <td><strong>Montant Restante</strong></td>
+                              <td class="text-right">montant_restant FCfa</td>
+                            </tr>
+                          </table>
+                        </div>
+                        <div class="btnPosition mb-5 mt-5">
+                          <button type="button" class="btn me-3 btnAnnuler" data-bs-dismiss="modal">Annuler</button>
+                          <button type="button" class="btn btnEnregistrer" [printStyle]="{img: {'width':'2.5cm'}}" [useExistingCss]="true"
+                          styleSheetFile="../facture/facture.component.css" printSectionId="print-section"
+                          ngxPrint >Enregistrer</button>
+                        </div>     
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+  
+  
+

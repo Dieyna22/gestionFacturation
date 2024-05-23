@@ -53,7 +53,7 @@ desarchiver(paramUser:any){
     titleColor: '#FF1700'
   });
   Confirm.show('Confirmation ',
-  'Voullez-vous vous desarchiver?',
+  'Voullez-vous vous débloquer cette utilisateur?',
   'Oui','Non',() => 
     {
       Loading.init({

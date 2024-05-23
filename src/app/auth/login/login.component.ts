@@ -81,6 +81,8 @@ export class LoginComponent {
             Loading.remove();
           },
           (err) => {
+            Notify.failure(err.error.message);
+            Loading.remove();
           }
         )
 
