@@ -29,6 +29,30 @@ thead tr th {
     color: white;
 }
 
+.thead-custom {
+  background-color: #02016F;
+  color: white;
+}
+
+.color-input {
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  padding: 0;
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.color-input::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.color-input::-webkit-color-swatch {
+  border: none;
+  border-radius: 4px;
+}
+
   .containerModal {
     .invoice {
       background: #fff;
