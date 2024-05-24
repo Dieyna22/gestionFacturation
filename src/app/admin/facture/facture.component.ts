@@ -1,9 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
-import { map } from 'rxjs';
+import { Component, Renderer2 } from '@angular/core';
 import { ArticlesService } from 'src/app/services/articles.service';
 import { ClientsService } from 'src/app/services/clients.service';
 import { UtilisateurService } from 'src/app/services/utilisateur.service';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-facture',
@@ -17,8 +18,12 @@ export class FactureComponent {
   clientId: string = "";
   filterValue: string = "";
 
-  constructor(private http: HttpClient, private clientService:ClientsService, private userService:UtilisateurService,private productService:ArticlesService,) { 
+  constructor(private http: HttpClient, private clientService:ClientsService, private userService:UtilisateurService,private productService:ArticlesService,private renderer: Renderer2) { 
     this.currentDate = this.getCurrentDate();
+  }
+
+  ngAfterViewInit() {
+    this.updateTableHeaderColor();
   }
 
   ngOnInit(){
@@ -27,10 +32,21 @@ export class FactureComponent {
     this.listeClients();
     this.listeInfoSup();
     this.listeArticles();
-
-    
   }
 
+  color: string = '#02016F';
+
+  onColorChange() {
+    this.updateTableHeaderColor();
+ 
+  }
+  private updateTableHeaderColor() {
+    const theadCells = document.querySelectorAll('thead th');
+    theadCells.forEach((cell: any) => {
+      this.renderer.setStyle(cell, 'background-color', this.color);
+      this.renderer.setStyle(cell, 'color', 'white');
+    });
+  }
 
 listeClients() {
   this.clientService.getAllClients().subscribe(
@@ -108,5 +124,33 @@ listeClients() {
   }
 
 
+  isPreview: boolean = false;
 
+  togglePreviewMode() {
+    this.isPreview = !this.isPreview;
+  }
+
+
+  generatePdf() {
+    // Récupérer le contenu du div "print-section"
+    const printSection = document.getElementById('print-section');
+    if (printSection) {
+      // Capturer une image du contenu du div "print-section"
+      html2canvas(printSection).then(canvas => {
+        // Créer un nouveau document PDF
+        const pdf = new jsPDF();
+  
+        // Ajouter l'image du contenu au PDF
+        const imgData = canvas.toDataURL('image/png');
+        // Avec 8 arguments
+        pdf.addImage(imgData, 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), 'myImage', 'FAST');
+        
+        // Enregistrer le PDF
+        pdf.save('facture.pdf');
+      });
+    } else {
+      // Gérer le cas où printSection est null
+      console.error('printSection est null');
+    }
+  }
 }

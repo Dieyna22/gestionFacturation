@@ -35,10 +35,12 @@
                         <div class="col-7">
                         </div>
                         <div class="col-5">
-                          <label for="client-select">Sélectionner un client :</label> <br><br>
-                          <select  class="form-select form-select-lg mb-5" id="client-select" [(ngModel)]="selectedClient" (change)="onClientSelected()">
-                            <option *ngFor="let client of tabClient" [value]="client.id">{{client.prenom_client}} {{client.nom_client}}</option>
-                          </select>
+                          <ng-container *ngIf="!isPreview">
+                            <label for="client-select">Sélectionner un client :</label> <br><br>
+                            <select  class="form-select form-select-lg mb-5" id="client-select" [(ngModel)]="selectedClient" (change)="onClientSelected()">
+                              <option *ngFor="let client of tabClient" [value]="client.id">{{client.prenom_client}} {{client.nom_client}}</option>
+                            </select>
+                          </ng-container>
                           <div *ngFor="let clientSelect of currentClient">
                             <h6>{{clientSelect?.nom_entreprise}}</h6>
                             <p> {{clientSelect?.prenom_client}} {{clientSelect?.nom_client}}</p>
@@ -51,13 +53,13 @@
                       <br>
                       <br>
                       <table class="table table-bordered border-light">
-                        <thead>
+                        <thead  class="thead-custom">
                           <tr>
                             <th>Description</th>
                             <th>Quantité</th>
                             <th>PU</th>
                             <th>Total</th>
-                            <th></th>
+                            <th *ngIf="!isPreview"></th>
                           </tr>
                         </thead>
                         <tbody>
@@ -74,13 +76,17 @@
                               <ng-template #regularPrice>{{ row.unitPrice | number:'1.2-2' }}</ng-template>
                             </td>
                             <td><span class="total text-right">{{ row.total | number:'1.2-2' }}</span></td>
-                            <td><button class="btn btn-danger  btnDelete btn-sm" (click)="deleteRow(i)"><i class="bi bi-trash"></i></button></td>
+                            <td *ngIf="!isPreview"><button class="btn btn-danger  btnDelete btn-sm" (click)="deleteRow(i)"><i class="bi bi-trash"></i></button></td>
                           </tr>
                         </tbody>
                       </table>
-                      <button class="btn btn-primary" (click)="addRow()"><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne</button>
+                      <button class="btn btn-primary" (click)="addRow()" *ngIf="!isPreview"><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne</button>
                       <div class="row">
-                        <div class="col-6">
+                        <div class="col-6 mt-5">
+                          <ng-container *ngIf="!isPreview">
+                            <h5>Personnaliser votre facture</h5>
+                            <input type="color" class="color-input" [(ngModel)]="color" (input)="onColorChange()">
+                          </ng-container>
                         </div>
                         <div class="col-6">
                           <br>
@@ -105,10 +111,10 @@
                           </table>
                         </div>
                         <div class="btnPosition mb-5 mt-5">
-                          <button type="button" class="btn me-3 btnAnnuler" data-bs-dismiss="modal">Annuler</button>
+                          <button class="btn  me-3 btnEnregistrer"  (click)="generatePdf()">Générer le PDF</button>
+                          <button type="button" class="btn me-3 btnAnnuler" (click)="togglePreviewMode()" *ngIf="!isPreview">Prévisualiser</button>
                           <button type="button" class="btn btnEnregistrer" [printStyle]="{img: {'width':'2.5cm'}}" [useExistingCss]="true"
-                          styleSheetFile="../facture/facture.component.css" printSectionId="print-section"
-                          ngxPrint >Enregistrer</button>
+                          styleSheetFile="../facture/facture.component.css" printSectionId="print-section" ngxPrint *ngIf="!isPreview">Enregistrer</button>
                         </div>     
                     </div>
                 </div>
