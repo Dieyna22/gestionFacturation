@@ -22,6 +22,28 @@ export class FactureComponent {
     this.currentDate = this.getCurrentDate();
   }
 
+  // Gestion bouton
+boutonActif=1;
+
+//model active
+modelActif=1;
+
+// Initialiser le contenu actuel
+currentContent: string = 'Personnaliser';
+
+// Mettre à jour le contenu actuel
+showComponant(contentId: string): void {
+  this.currentContent = contentId; 
+}
+
+
+currentModel : string = 'bloc'
+
+// Mettre à jour le modèle actuel
+showModel(modelId: string): void {
+  this.currentModel = modelId; 
+}
+
   ngAfterViewInit() {
     this.updateTableHeaderColor();
   }
@@ -41,7 +63,7 @@ export class FactureComponent {
  
   }
   private updateTableHeaderColor() {
-    const theadCells = document.querySelectorAll('thead th');
+    const theadCells = document.querySelectorAll('thead tr th');
     theadCells.forEach((cell: any) => {
       this.renderer.setStyle(cell, 'background-color', this.color);
       this.renderer.setStyle(cell, 'color', 'white');
@@ -66,6 +88,7 @@ listeClients() {
   }
 
   currentDate: string;
+  
 
   getCurrentDate(): string {
     const currentDate = new Date();

@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Dosis:wght@300&family=Gruppo&family=Hahmlet&family=Oxygen:wght@300&family=Poppins:wght@100&family=Quicksand:wght@300&family=Roboto:wght@300&display=swap');
 
     .page {
-        background-image: url(../../../assets/images/bg-connection.jpg);
+        background-image: url(../../../assets/images/bg-connection.png);
         background-size: cover;
         background-attachment: fixed;
         background-position: center;
@@ -75,8 +75,8 @@
 
 
     .btnLogin {
-        background-color: #00223d;
-        color: white;
+        background-color: #004F42!important;
+        color: white!important;
         width: 102%;
         border-radius: 6px;
         border: none;
@@ -86,7 +86,7 @@
     }
 
     .btnLogin:hover {
-        background-color: #c29200;
+        background-color: #FFA500;
 
     }
 
@@ -95,7 +95,7 @@
     }
 
     .bas a {
-        color: #00223d;
+        color: #004F42;
         font-weight: 550;
     }
 
@@ -237,7 +237,7 @@
     }
 
     .mdp-forget a {
-        color: #0463b1;
+        color: #FFA500;
         font-size: 15px;
     }
 

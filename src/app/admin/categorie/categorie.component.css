@@ -10,22 +10,17 @@
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
     padding: 8px;
 }
-.ajouter{
-    background-color: #5C6FFF!important;
-    color: #FFFFFF!important;
-    float: right;
-}
 .modif{
-    background-color: #5C6FFF!important;
+    background-color: #000!important;
     color: #FFFFFF!important;
 }
 .sup{
-    background-color: #FFFFFF!;
-    color: #5C6FFF!important;
-    border: thin solid #5C6FFF;
+    background-color: #FFFFFF!important;
+    color: #BF0024!important;
+    border: thin solid #BF0024!important;
 }
 .sta{
-    background-color: #5C6FFF;
+    background-color: #5066EF;
     color: #FFFFFF;
     width: 220px;
     height: 105px;
@@ -44,16 +39,8 @@
     font-size: 24px;
 }
 
-.btnClose {
-    background-color: #FFFFFF;
-    color: #5C6FFF;
-    border: thin solid #5C6FFF;
-}
 
-.btnSave {
-    background-color: #5C6FFF!important;
-    color: #FFFFFF!important;
-}
+
 
 .details {
     display: grid;
@@ -68,74 +55,36 @@
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
-.btnClose {
-    background-color: #FFFFFF;
-    color: #5C6FFF !important;
-    border: thin solid #5C6FFF;
-}
 
-.fondText {
-    color: #5C6FFF;
-}
-
-.dashbord {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 5fr;
-}
-
-
-.containerReseau .card {
-    border: none;
-    border-radius: 0;
-    min-height: 50vh;
+.containerReseau  {
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
-.containerReseau .cardAjout {
-    border-top-left-radius: 4vh;
-    border-bottom-right-radius: 4vh;
-}
 
 /* table{
     box-shadow: 0px 4px 10px 2px rgba(160, 153, 153, 0.25);
 } */
 /* le tableau  */
 thead tr th {
-    background-color: #222;
-    color: white;
+    background-color:#467aea !important;
+    color: white!important;
 }
+thead th:first-child {
+    border-top-left-radius: 15px;
+  }
+  thead th:last-child {
+   border-top-right-radius: 15px;
+  }
 
-.btnAction {
-    border: 1px solid #5C6FFF;
-    background-color: white;
-    color: #5C6FFF !important;
-}
 
-.btnReseaux {
-    padding: 0 8.5vh;
-}
 
-.btn {
-    background-color: var(--base1);
-    color: white;
-    font-weight: bold;
-}
 
 .titre {
-    color: #5C6FFF;
+    color: #5066EF;
 }
 
 .require {
     color: var(--base1);
-}
-
-/* pagination  */
-.pageActuelle {
-    color: #5C6FFF;
-    font-weight: bold;
-    border: 1px solid #5C6FFF;
-    padding: 4px;
 }
 
 
@@ -151,10 +100,10 @@ thead tr th {
 }
 
 .btnEnvoie {
-    color: #5C6FFF;
+    color: #5066EF;
     font-family: Poppins;
     border-radius: 5px;
-    border: 1px solid #5C6FFF;
+    border: 1px solid #5066EF;
     background: #FFF;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     margin-right: 18px;

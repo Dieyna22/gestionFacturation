@@ -13,6 +13,8 @@ import { ArticlesComponent } from './admin/articles/articles.component';
 import { InfosComponent } from './admin/infos/infos.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { FactureComponent } from './admin/facture/facture.component';
+import { ServicesComponent } from './admin/services/services.component';
+import { ModelComponent } from './admin/model/model.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'accueil', pathMatch: 'full' },
@@ -26,10 +28,11 @@ const routes: Routes = [
   { path: 'categorie', component: CategorieComponent, title: 'Categories'},
   { path: 'client', component: ClientsComponent, title: 'Clients'},
   { path: 'promo', component: PromosComponent, title: 'Promo'},
-  { path: 'article', component: ArticlesComponent, title: 'Produits et Services'},
+  { path: 'article', component: ArticlesComponent, title: 'Produits'},
+  { path: 'service', component: ServicesComponent, title: ' Services'},
   { path: 'infos', component: InfosComponent, title: 'Informations supplémentaire'},
   { path: 'facture', component: FactureComponent, title: 'Factures '},
-  
+  { path: 'model', component: ModelComponent, title: 'Modéle de document '},
 ];
 
 @NgModule({

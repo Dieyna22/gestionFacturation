@@ -42,15 +42,16 @@ thead th:first-child {
     color: var(--base2);
 }
 
-
-
+.btnEven {
+    background-color: #5066EF!important;
+    color: white!important;
+    font-weight: bold;
+}
 .btnColor {
     color: #222;
     border: 1px solid #222;
     background-color: white;
 }
-
-
 
 .page {
     background-color: white;

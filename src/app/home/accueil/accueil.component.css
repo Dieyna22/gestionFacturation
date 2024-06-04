@@ -1,5 +1,9 @@
-nav {
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+nav{
+	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    background-image: linear-gradient(25deg, #167576, #479b92, #6fc3af, #97eccd);
+}
+.navbar{
+	z-index: 99995;
 }
 
 form button {
@@ -25,21 +29,21 @@ form button a {
 }
 
 .log:hover {
-    background-color: #202a97;
+    background-color: #FFA500;
 }
 
 .inscription {
-    background-color: #202a97;
+    background-color: #004F42;
     color: white!important;
     padding: 6px;
 }
 .connexion{
     background-color: #fff;
-    border: thin solid #202a97!important;
+    border: thin solid #004F42!important;
 }
 
 .colorText{
-    color: #202a97!important;
+    color: #004F42!important;
 }
 
 
@@ -57,7 +61,7 @@ section .container{
     font-size: 2.7rem;
     font-weight: 650;
     margin-top: 5rem;
-    color: #0e1885;
+    color: #F97316;
 }
 
 .img img{
@@ -72,11 +76,11 @@ section .container{
 }
 
 .facturer:hover{
-    background-color: #0e1885;
+    background-color: #FFA500;
 }
 
 .facturer{
-    background-color: rgb(64, 118, 163);
+    background-color: #004F42;
     border: none;
     padding: 6px 22px;
     border-radius: 7px;
@@ -95,7 +99,7 @@ section .container{
         font-size: 2.2rem;
         font-weight: 650;
         margin-top: 3.5rem;
-        color: #0e1885;
+        color: #004F42;
     }
 }
 
@@ -141,7 +145,7 @@ section .container{
 .title h2{
     font-size: 1.5rem;
     font-weight: 700;
-    color: #0e1885;
+    color: #F97316;
     text-align: center;
     padding: 0 10px;
 }
@@ -167,7 +171,7 @@ h2 span {
     padding: 7px 10px;
     border-radius: 30px;
     font-size: 22px;
-    color: #0e1885;
+    color: #004F42;
 }
 
 .sous-titre{
@@ -177,7 +181,7 @@ h2 span {
 
 .sous-titre h5{
     font-weight: bold;
-    color: #0e1885;
+    color: #FFA500;
     font-size: 17px;
 }
 
@@ -230,12 +234,12 @@ h2 span {
     border: none;
     padding: 10px 25px;
     border-radius: 5px;
-    background-color: rgb(64, 118, 163);
+    background-color: #004F42;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
 .createFac button:hover{
-    background-color: #0e1885;
+    background-color: #FFA500;
 }
 
 
@@ -267,7 +271,7 @@ h2 span {
 }
 
 .senfacture h5{
-    color: #0e1885;
+    color: #F97316;
     font-weight: 700;
 }
 
@@ -310,12 +314,12 @@ h2 span {
 
 .sec-card .arrow{
     font-size: 20px;
-    color: #0e1885;
+    color: #004F42;
 }
 
 .sec-card .txte{
     font-weight: 700;
-    color: #0e1885;
+    color: #F97316;
 }
 
 .sec-card p{

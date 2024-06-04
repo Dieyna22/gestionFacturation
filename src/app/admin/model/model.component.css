@@ -1,8 +1,3 @@
-.containerReseau .card {
-    border: none;
-    border-radius: 0;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
-}
 
 .btnAnnuler {
     background-color: #5c636a!important;
@@ -19,11 +14,12 @@
   color: white!important;
 }
 
-
-.thead-custom {
-  background-color: #02016F!important;
-  color: white;
+thead tr th{
+    background-color: #467aea;
+    color: white;
 }
+
+
 
 .color-input {
   width: 45px;
@@ -98,14 +94,6 @@
   margin: 0 auto;
 }
 
-
-.invoice-container {
-  max-width: 800px;
-  margin: 40px auto;
-  background-color: #fff;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  padding: 40px;
-}
 
 .positionTitre{
   float: right;
@@ -185,6 +173,79 @@ th {
   color: #777;
 }
 
-.model{
-  border: 3px solide red;
+.activemodele{
+    border: 2px solid #F97316;
+    border-radius: 4px;
+    padding: 5px;
+    width: 150px;
 }
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.city-date {
+    text-align: right;
+}
+
+h1 {
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+.order-details {
+    text-align: left;
+    margin: 20px 0;
+}
+
+.order-details p {
+    margin: 5px 0;
+}
+
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+footer p {
+    color: #0070c0;
+}
+
+
+
+.new-container header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #00b4d8;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.new-container header h1 {
+    color: #00b4d8;
+    font-size: 24px;
+}
+
+.new-container header .new-logo {
+    background-color: #fbbf24;
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+}
+

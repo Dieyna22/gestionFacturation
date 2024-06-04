@@ -5,51 +5,55 @@
     <i class="fas fa-times"></i>
   </label>
   <nav id="sidebar">
-    <div class="title"><img src="../../../assets/images/logo.png"></div>
+    <div class="title"><img src="../../../assets/images/logo.png" alt="Logo" class="logo"></div>
     <br>
     <br>
-    <!-- Les liens  -->
-    <ul class="list-items">
-      <!-- Dashbord  -->
+   <!-- Les liens  -->
+  <ul class="list-items mt-4 containerLink mb-4">
+    <!-- Dashbord  -->
+    <li>
+      <a routerLink="/admin" routerLinkActive="active"><i class="fas fa-home me-3"></i>Dashboard</a>
+    </li>
+    <ng-container *ngIf="isSuperAdmin">
+      <!-- Information Suplémentaire  -->
       <li>
-        <a routerLink="/admin" routerLinkActive="active"><i class="fas fa-home"></i>Dashboard</a>
+        <a routerLink="/infos" routerLinkActive="active"><i class="fas fa-cog  me-3"></i>Info supplémentaire</a>
       </li>
-      <ng-container *ngIf="isSuperAdmin">
-        <!-- Information Suplémentaire  -->
-        <li>
-          <a routerLink="/infos" routerLinkActive="active"><i class="fas fa-cog"></i>Info supplémentaire</a>
-        </li>
-      </ng-container>
-      <ng-container *ngIf="isSuperAdmin">
-        <!-- Utilisateurs  -->
-        <li>
-          <a routerLink="/user" routerLinkActive="active"><i class="bi bi-person-fill"></i>Utilisateurs</a>
-        </li>
-        <!-- Utilisateurs Archiver  -->
-        <li>
-          <a routerLink="/userArchive" routerLinkActive="active"><i class="bi bi-person-fill-x"></i>Utilisateurs Archiver</a>
-        </li>
-      </ng-container>
-      <!-- Clients  -->
+    </ng-container>
+    <ng-container *ngIf="isSuperAdmin">
+      <!-- Utilisateurs  -->
       <li>
-        <a routerLink="/client" routerLinkActive="active"><i class="bi bi-people-fill"></i>Clients</a>
+        <a routerLink="/user" routerLinkActive="active"><i class="bi bi-person-fill  me-3"></i>Utilisateurs</a>
       </li>
-      <!-- Promotions  -->
+      <!-- Utilisateurs Archiver  -->
       <li>
-        <a routerLink="/promo" routerLinkActive="active"><i class="bi bi-tags-fill"></i>Promotions</a>
+        <a routerLink="/userArchive" routerLinkActive="active"><i class="bi bi-person-fill-x  me-3"></i>Utilisateurs Archiver</a>
       </li>
-      <!-- Produit & Services  -->
-      <li>
-        <a routerLink="/article" routerLinkActive="active"><i class="fas fa-stream"></i>Produits & Services</a>
-      </li>
-      <!-- Factures  -->
-      <li>
-        <a routerLink="/facture" routerLinkActive="active"><i class="bi bi-file-earmark-spreadsheet-fill"></i>Factures</a>
-      </li>
-      <!-- Dévis  -->
-      <li>
-        <a><i class="bi bi-file-ruled-fill"></i>Devis</a>
-      </li>
-    </ul>
+    </ng-container>
+    <!-- Clients  -->
+    <li>
+      <a routerLink="/client" routerLinkActive="active"><i class="bi bi-people-fill  me-3"></i>Clients</a>
+    </li>
+    <!-- Promotions  -->
+    <li>
+      <a routerLink="/promo" routerLinkActive="active"><i class="bi bi-tags-fill  me-3"></i>Promotions</a>
+    </li>
+    <!-- Produit -->
+    <li>
+      <a routerLink="/article" routerLinkActive="active"><i class="fas fa-stream  me-3"></i>Produits</a>
+    </li>
+    <!-- Services  -->
+    <li>
+      <a routerLink="/service" routerLinkActive="active"><i class="bi bi-suitcase-lg me-3"></i>Services</a>
+    </li>
+    <!-- Factures  -->
+    <li>
+      <a routerLink="/facture" routerLinkActive="active"><i class="bi bi-calculator me-3"></i>Ventes</a>
+    </li>
+    <!-- Dévis  -->
+    <li>
+      <a><i class="bi bi-pie-chart-fill me-3"></i>Rapports</a>
+    </li>
+  </ul>
   </nav>
 </div>

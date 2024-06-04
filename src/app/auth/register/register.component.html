@@ -38,6 +38,7 @@
                     </ng-template>
                 </button>
             </div>
+            <p *ngIf="tabError" style="color: red;">{{tabError.password}}</p>
             <p class="text-danger" *ngIf="!exactPass">{{verifPass}}</p>
             <p class="text-success" *ngIf="exactPass"><i class="bi bi-check2-all"></i> OK!</p>
             </div>

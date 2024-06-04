@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
-@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 *{
   margin: 0;
   padding: 0;
@@ -10,17 +9,19 @@
   height: 100%;
   width: 300px;
   position: relative;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 .wrapper .menu-btn{
-  position: absolute;
-  left: 247px; 
-  top: 10px;
-  background: #5C6FFF;
+  position: fixed;
+  top: 150px;
+  left: 5px;
+  /* background-image: linear-gradient(25deg, #b42305, #cc540f, #e37b1b, #f9a228); */
+  background-color: #004FFC;
   color: #fff;
   height: 45px;
-  width: 45px;
+  width: 75px;
   z-index: 9999;
-  border: 1px solid #5C6FFF;
+  border: none;
   border-radius: 5px;
   cursor: pointer;
   display: flex;
@@ -29,90 +30,66 @@
   transition: all 0.3s ease;
 }
 #btn:checked ~ .menu-btn{
-  left: 20px; 
+  left: 247px;
 }
 .wrapper .menu-btn i{
   position: absolute;
-  transform: rotate(0deg); 
+  transform: rotate(-180deg);
   font-size: 23px;
   transition: all 0.3s ease;
 }
 .wrapper .menu-btn i.fa-times{
-  opacity: 1; 
+  opacity: 0;
 }
-
-i.fa-bars{
-  display:none;
-}
-
 #btn:checked ~ .menu-btn i.fa-times{
-  opacity: 0; 
+  opacity: 1;
+  transform: rotate(-180deg);
+}
+#btn:checked ~ .menu-btn i.fa-bars{
+  opacity: 0;
   transform: rotate(180deg);
 }
-#btn:checked ~ .menu-btn i.fa-bars{
-  opacity: 1; 
-  transform: rotate(0deg);
-}
-
-#btn:checked ~ .menu-btn i.fa-bars{
-  display:block;
-}
-
 #sidebar{
   position: fixed;
-  background: #ffffff !important;
+  top: 0;
+  z-index: 99992;
+  background: rgba(0, 0, 0, 0.696);
   height: 100%;
   width: 270px;
   overflow: hidden;
-  left: 0; 
+  left: -270px;
   transition: all 0.3s ease;
   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 #btn:checked ~ #sidebar{
-  left: -270px; 
+  left: 0;
 }
 #sidebar .title{
   line-height: 65px;
   text-align: center;
-  background: #ffffff;
   font-size: 25px;
   font-weight: 600;
   color: #f2f2f2;
 }
 #sidebar .list-items{
   position: relative;
-  background: #ffffff;
   width: 100%;
   height: 100%;
   list-style: none;
 }
 #sidebar .list-items li{
-  padding-left: 40px;
+  padding-left: 10px;
   line-height: 50px;
   border-top: 1px solid rgba(255, 255, 255);
   border-bottom: 1px solid #ffffff;
   transition: all 0.3s ease;
   padding-bottom: 5px;
 }
-
-#sidebar .list-items li:hover{
- background: #5C6FFF;
- color: white;
-}
-
-#sidebar .list-items li .active{
-  color: #5C6FFF !important;
- }
-
-#sidebar .list-items li a:hover{
-  color: white;
- }
-
 #sidebar .list-items li:first-child{
   border-top: none;
 }
 #sidebar .list-items li a{
-  color: #000000;
+  color: #fff;
   text-decoration: none;
   font-size: 15px;
   font-weight: 500;

@@ -9,12 +9,13 @@ import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import { CategorieArticleService } from 'src/app/services/categorie-article.service';
 
 @Component({
-  selector: 'app-articles',
-  templateUrl: './articles.component.html',
-  styleUrls: ['./articles.component.css']
+  selector: 'app-services',
+  templateUrl: './services.component.html',
+  styleUrls: ['./services.component.css']
 })
-export class ArticlesComponent {
-// Déclaration des variables 
+export class ServicesComponent {
+
+  // Déclaration des variables 
 tabArticle: any[] = [];
 tabArticleFilter: any[] = [];
 tabPromo: any[] = [];
@@ -57,7 +58,6 @@ constructor(private http: HttpClient, private articleService:ArticlesService,pri
 ngOnInit(): void {
  this.listeArticles();
  this.listePromos();
- this.listeCategorie();
 
  this.dbUsers = JSON.parse(localStorage.getItem("userOnline") || "[]"); 
  this.role = this.dbUsers.user.role
@@ -94,7 +94,7 @@ ajouterArticle(){
    "nom_article":this.nom,
    "description":this.desc,
    "prix_unitaire":this.vente,
-   "type_article":'produit',
+   "type_article":'service',
    "prix_achat":this.achat,
    "quantite":this.quantite,
    "quantite_alert":this.quantiteAlerte,
@@ -116,7 +116,7 @@ listeArticles() {
  this.articleService.getAllArticles().subscribe(
    (article: any) => {
      this.tabArticle = article.articles;
-     this.tabArticleFilter = this.tabArticle.filter((article: any) => article.type_article == 'produit');
+     this.tabArticleFilter = this.tabArticle.filter((article: any) => article.type_article == 'service');
    },
    (err) => {
    }
@@ -219,33 +219,7 @@ updateArticle() {
     });
 } 
 
-updateStockArticle() {
-  let stock={
-    "quantite":this.inputquantite,
-    "note":this.note,
-  }
-  Confirm.init({
-    okButtonBackground: '#5C6FFF',
-    titleColor: '#5C6FFF'
-  });
-  Confirm.show('Confirmer modification ',
-  'Voullez-vous modifier?',
-  'Oui','Non',() => 
-    {
-      Loading.init({
-        svgColor: '#5C6FFF',
-      });
-      Loading.hourglass();
-      this.articleService.updateStockArticle(this.currentArticle.id,stock).subscribe(
-        (reponse)=>{
-          Notify.success(reponse.message);
-          this.listeArticles();
-          this.vider();
-          Loading.remove();
-        }
-      );
-    });
-}
+
 
 listePromos() {
   this.promoService.getAllPromo().subscribe(
@@ -290,43 +264,7 @@ listePromos() {
   
  }
 
- listeCategorie() {
- this.Categorie.getAllCategorieArticle().subscribe(
-   (categories: any) => {
-     this.tabCategorie = categories.CategorieArticle;
-   },
-   (err) => {
-   }
- )
-}
 
-affecterCategorieArticle(){
-  let CategorieArticle={
-    "id_categorie_article":this.inputCategorieArticle,
-  }
-  Confirm.init({
-    okButtonBackground: '#5C6FFF',
-    titleColor: '#5C6FFF'
-  });
-  Confirm.show('Confirmation ',
-  'Voullez-vous vous affecter une catégorie à cette article?',
-  'Oui','Non',() => 
-    {
-      Loading.init({
-        svgColor: '#5C6FFF',
-      });
-      Loading.hourglass();
-      this.articleService.affecterCategorieArticle(this.idArticle,CategorieArticle).subscribe(
-        (response) => {
-          Notify.success(response.message);
-          Loading.remove();
-        },
-        (err) => {
-        }
-      )
-    });
-  
- }
 
 // Methode de recherche automatique pour un utilisateur
 onSearch() {
@@ -363,6 +301,4 @@ get totalPages(): number {
  afficherChamps(){
   this.showChamps=!this.showChamps;
  }
-
-
 }

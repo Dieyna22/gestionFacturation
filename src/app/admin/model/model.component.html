@@ -1,0 +1,584 @@
+<app-navbar></app-navbar>
+<app-sidebar></app-sidebar>
+<div class="d-grid gap-2 d-md-flex container mt-4 mb-4 justify-content-md-end">
+    <button class="btn me-md-2" type="button" [ngClass]="{'fond-btn': boutonActif === 1}" (click)="showComponant('facture')" (click)="boutonActif = 1">Factures</button>
+    <button class="btn" type="button" [ngClass]="{'fond-btn': boutonActif === 2}" (click)="showComponant('devis')" (click)="boutonActif = 2">Devis</button>
+    <button class="btn" type="button" [ngClass]="{'fond-btn': boutonActif === 3}" (click)="showComponant('bons')" (click)="boutonActif = 3">Bons</button>
+</div>
+   
+<!-- Modéle de facture -->
+<div class="facture" *ngIf="currentContent==='facture'">
+    <div class="model" id="Personnaliser" >
+        <div class="row persoFacture mb-2 container">
+          <div class="col-md-6">
+            <h5>Personnaliser votre document</h5>
+            <input type="color" class="color-input" [(ngModel)]="color" (input)="onColorChange()">
+          </div>
+          <div class="col-md-6">
+            <img src="../../../assets/images/bloc.png" class="me-3" alt="" (click)="showModel('bloc')"  [ngClass]="{'activemodele': modelActif === 1}" (click)="modelActif = 1" >
+            <img src="../../../assets/images/compact.png" alt="" (click)="showModel('compact')" [ngClass]="{'activemodele': modelActif === 2}" (click)="modelActif = 2">
+          </div>
+        </div>
+        <div class="modelFacture">
+          <div class="invoice-container" id="bloc" id="factureModelOne" *ngIf="currentModel==='bloc'">
+            <div class="row mb-4">
+              <div class="invoice-header">
+                <div class="logo-container">
+                  <img src="logo.png" alt="Logo" class="logo">
+                </div>
+                <div class="positionTitre">
+                  <div class="invoice-title">Facture</div>
+                  <div class="invoice-number">Facture #123456</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="invoice-details">
+                <div class="company-info">
+                  <h3>Informations entreprise</h3>
+                  <p>Nom de l'entreprise : Acme Inc.</p>
+                  <p>Adresse : 456 Avenue des Champs-Élysées, 75008 Paris</p>
+                  <p>Téléphone : 01 98 76 54 32</p>
+                  <p>Email : contact.com</p>
+                </div>
+          
+                <div class="client-info">
+                  <h3>Informations client</h3>
+                  <p>Nom : John Doe</p>
+                  <p>Adresse : 123 Rue de la Paix, 75000 Paris</p>
+                  <p>Téléphone : 01 23 45 67 89</p>
+                  <p>Email : john.doe.com</p>
+                </div>
+              </div>
+            </div>
+        
+            <div class="invoice-items">
+              <table class="table table-bordered border-light">
+                <thead  class="thead-custom">
+                  <tr>
+                    <th>Description</th>
+                    <th>Quantité</th>
+                    <th>PU</th>
+                    <th>Total</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>  
+                      <select class="form-control">
+                      <option value="0">Sélectionnez un produit/service</option>
+                      <option  [value]=""></option>
+                    </select>
+                  </td>
+                    <td><input type="number" class="form-control" placeholder="Quantité"></td>
+                    <td>
+                      <span></span>
+                      <ng-template #regularPrice></ng-template>
+                    </td>
+                    <td><span class="total text-right"></span></td>
+                    <td ><button class="btn btn-danger  btnDelete btn-sm"><i class="bi bi-trash"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+              <button class="btn" ><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne</button>
+              <div class="row">
+                <div class="col-4 mt-5">
+                </div>
+                <div class="col-8">
+                  <br>
+                  <br>
+                  <table class="table table-sm text-right">
+                    <tr>
+                      <td><strong>Total à payer</strong></td>
+                      <td class="text-right"> <span class="font-weight-bold"></span> FCfa</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Montant verser</strong></td>
+                      <td class="text-right">montantVerser FCfa</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Montant Total Payée</strong></td>
+                      <td class="text-right">montant_payement FCfa</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Montant Restante</strong></td>
+                      <td class="text-right">montant_restant FCfa</td>
+                    </tr>
+                  </table>
+                </div>    
+            </div>
+            </div>
+          </div>
+          <div class="invoice" id="compact" id="factureModelTwo"  *ngIf="currentModel==='compact'">
+            <div class="row">
+              <div class="col-7">
+                <!-- <img src="http://127.0.0.1:8000/storage/images/{{InfoSup.logo}}" class="logo"> <br> <br> -->
+              
+                <div class="company-info">
+                    <h3>Informations entreprise</h3>
+                    <p>Nom de l'entreprise : Acme Inc.</p>
+                    <p>Adresse : 456 Avenue des Champs-Élysées, 75008 Paris</p>
+                    <p>Téléphone : 01 98 76 54 32</p>
+                    <p>Email : contact.com</p>
+                </div>
+               
+                <h6>{{ currentDate }}</h6>
+                
+              </div>
+              <div class="col-5">
+                <div class="invoice-number">
+                  <h2>FACTURE</h2>
+                  <p>Numéro: <strong>numéro</strong></p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-7">
+              </div>
+              <div class="col-5">
+                  <label for="client-select">Sélectionner un client :</label> <br><br>
+                  <select  class="form-select form-select-lg mb-5" id="client-select">
+                    <option  [value]=""></option>
+                  </select>
+                <div>
+                    <h3>Informations client</h3>
+                    <p>Nom : John Doe</p>
+                    <p>Adresse : 123 Rue de la Paix, 75000 Paris</p>
+                    <p>Téléphone : 01 23 45 67 89</p>
+                    <p>Email : john.doe.com</p>
+              </div>
+            </div>
+            <br>
+            <br>
+            <br>
+            <table class="table table-bordered border-light">
+              <thead  class="thead-custom">
+                <tr>
+                  <th>Description</th>
+                  <th>Quantité</th>
+                  <th>PU</th>
+                  <th>Total</th>
+                  <th ></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>  
+                    <select class="form-control">
+                    <option value="0">Sélectionnez un produit/service</option>
+                    <option [value]=""></option>
+                  </select>
+                </td>
+                  <td><input type="number" class="form-control"  placeholder="Quantité"></td>
+                  <td>
+                    <span></span>
+                    <ng-template #regularPrice></ng-template>
+                  </td>
+                  <td><span class="total text-right"></span></td>
+                  <td ><button class="btn btn-danger  btnDelete btn-sm"><i class="bi bi-trash"></i></button></td>
+                </tr>
+              </tbody>
+            </table>
+            <button class="btn" ><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne</button>
+            <div class="row">
+              <div class="col-6 mt-5">
+              </div>
+              <div class="col-6">
+                <br>
+                <br>
+                <table class="table table-sm text-right">
+                  <tr>
+                    <td><strong>Total à payer</strong></td>
+                    <td class="text-right"> <span class="font-weight-bold"></span> FCfa</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Montant verser</strong></td>
+                    <td class="text-right">montantVerser FCfa</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Montant Total Payée</strong></td>
+                    <td class="text-right">montant_payement FCfa</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Montant Restante</strong></td>
+                    <td class="text-right">montant_restant FCfa</td>
+                  </tr>
+                </table>
+              </div>    
+          </div>
+              </div>
+          </div>
+        </div>
+</div>
+</div>
+
+
+<!-- Modélé de desvis -->
+<div class="devis" *ngIf="currentContent==='devis'">
+    <div class="model" id="Personnaliser" >
+        <div class="row persoFacture mb-2 container">
+          <div class="col-md-6">
+            <h5>Personnaliser votre document</h5>
+            <input type="color" class="color-input" [(ngModel)]="color" (input)="onColorChange()">
+          </div>
+          <div class="col-md-6">
+            <img src="../../../assets/images/bloc.png" class="me-3" alt="" (click)="showModel('bloc')"  [ngClass]="{'activemodele': modelActif === 1}" (click)="modelActif = 1" >
+            <img src="../../../assets/images/compact.png" alt="" (click)="showModel('compact')" [ngClass]="{'activemodele': modelActif === 2}" (click)="modelActif = 2">
+          </div>
+        </div>
+        <div class="modelFacture">
+          <div class="invoice-container" id="bloc" id="devisModelOne" *ngIf="currentModel==='bloc'">
+            <div class="row mb-4">
+              <div class="invoice-header">
+                <div class="logo-container">
+                  <img src="logo.png" alt="Logo" class="logo">
+                </div>
+                <div class="positionTitre">
+                  <div class="invoice-title">Devis</div>
+                  <div class="invoice-number">devis #123456</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="row">
+              <div class="invoice-details">
+                <div class="company-info">
+                  <h3>Informations entreprise</h3>
+                  <p>Nom de l'entreprise : Acme Inc.</p>
+                  <p>Adresse : 456 Avenue des Champs-Élysées, 75008 Paris</p>
+                  <p>Téléphone : 01 98 76 54 32</p>
+                  <p>Email : contact.com</p>
+                </div>
+          
+                <div class="client-info">
+                  <h3>Informations client</h3>
+                  <p>Nom : John Doe</p>
+                  <p>Adresse : 123 Rue de la Paix, 75000 Paris</p>
+                  <p>Téléphone : 01 23 45 67 89</p>
+                  <p>Email : john.doe.com</p>
+                </div>
+              </div>
+            </div>
+        
+            <div class="invoice-items">
+              <table class="table table-bordered border-light">
+                <thead  class="thead-custom">
+                  <tr>
+                    <th>Description</th>
+                    <th>Quantité</th>
+                    <th>PU</th>
+                    <th>Total</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>  
+                      <select class="form-control">
+                      <option value="0">Sélectionnez un produit/service</option>
+                      <option  [value]=""></option>
+                    </select>
+                  </td>
+                    <td><input type="number" class="form-control" placeholder="Quantité"></td>
+                    <td>
+                      <span></span>
+                      <ng-template #regularPrice></ng-template>
+                    </td>
+                    <td><span class="total text-right"></span></td>
+                    <td ><button class="btn btn-danger  btnDelete btn-sm"><i class="bi bi-trash"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+              <button class="btn" ><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne</button>
+              <div class="row">
+                <div class="col-4 mt-5">
+                </div>
+                <div class="col-8">
+                  <br>
+                  <br>
+                  <table class="table table-sm text-right">
+                    <tr>
+                      <td><strong>Total à payer</strong></td>
+                      <td class="text-right"> <span class="font-weight-bold"></span> FCfa</td>
+                    </tr>
+                  </table>
+                </div>    
+            </div>
+            <div class="row mt-5">
+                <h6 class="mb-4">Validité du devis : 3 mois </h6>
+                <div class="col-6">
+                    <h5>pour l'entreprise</h5>
+                     <span>cacher et signature</span>
+                </div>
+                <div class="col-6">
+                    <h5>pour le client</h5>
+                    <span>signature précédé de la mention :
+                        "BON POUR ACCORD ET EXECUTION DU DEVIS"</span>
+                </div>
+            </div>
+            </div>
+          </div>
+          <div class="invoice" id="compact" id="devisModelTwo"  *ngIf="currentModel==='compact'">
+            <div class="row">
+              <div class="col-7">
+                <!-- <img src="http://127.0.0.1:8000/storage/images/{{InfoSup.logo}}" class="logo"> <br> <br> -->
+              
+                <div class="company-info">
+                    <h3>Informations entreprise</h3>
+                    <p>Nom de l'entreprise : Acme Inc.</p>
+                    <p>Adresse : 456 Avenue des Champs-Élysées, 75008 Paris</p>
+                    <p>Téléphone : 01 98 76 54 32</p>
+                    <p>Email : contact.com</p>
+                </div>
+               
+                <h6>{{ currentDate }}</h6>
+                
+              </div>
+              <div class="col-5">
+                <div class="invoice-number">
+                  <h2>Devis</h2>
+                  <p>Numéro: <strong>numéro</strong></p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-7">
+              </div>
+              <div class="col-5">
+                  <label for="client-select">Sélectionner un client :</label> <br><br>
+                  <select  class="form-select form-select-lg mb-5" id="client-select">
+                    <option  [value]=""></option>
+                  </select>
+                <div>
+                    <h3>Informations client</h3>
+                    <p>Nom : John Doe</p>
+                    <p>Adresse : 123 Rue de la Paix, 75000 Paris</p>
+                    <p>Téléphone : 01 23 45 67 89</p>
+                    <p>Email : john.doe.com</p>
+              </div>
+            </div>
+            <br>
+            <br>
+            <br>
+            <table class="table table-bordered border-light">
+              <thead  class="thead-custom">
+                <tr>
+                  <th>Description</th>
+                  <th>Quantité</th>
+                  <th>PU</th>
+                  <th>Total</th>
+                  <th ></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>  
+                    <select class="form-control">
+                    <option value="0">Sélectionnez un produit/service</option>
+                    <option [value]=""></option>
+                  </select>
+                </td>
+                  <td><input type="number" class="form-control"  placeholder="Quantité"></td>
+                  <td>
+                    <span></span>
+                    <ng-template #regularPrice></ng-template>
+                  </td>
+                  <td><span class="total text-right"></span></td>
+                  <td ><button class="btn btn-danger  btnDelete btn-sm"><i class="bi bi-trash"></i></button></td>
+                </tr>
+              </tbody>
+            </table>
+            <button class="btn" ><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne</button>
+            <div class="row">
+                <div class="col-4 mt-5">
+                </div>
+                <div class="col-8">
+                  <br>
+                  <br>
+                  <table class="table table-sm text-right">
+                    <tr>
+                      <td><strong>Total à payer</strong></td>
+                      <td class="text-right"> <span class="font-weight-bold"></span> FCfa</td>
+                    </tr>
+                  </table>
+                </div>    
+            </div>
+            <div class="row mt-5">
+                <h6 class="mb-4">Validité du devis : 3 mois </h6>
+                <div class="col-6">
+                    <h5>pour l'entreprise</h5>
+                     <span>cacher et signature</span>
+                </div>
+                <div class="col-6">
+                    <h5>pour le client</h5>
+                    <span>signature précédé de la mention :
+                        "BON POUR ACCORD ET EXECUTION DU DEVIS"</span>
+                </div>
+            </div>
+              </div>
+          </div>
+        </div>
+</div>
+</div>
+
+
+<!-- Modéle bon de commande -->
+<div class="bonDeCommande" *ngIf="currentContent==='bons'">
+    <div class="model" id="Personnaliser" >
+        <div class="row persoFacture mb-2 container">
+          <div class="col-md-6">
+            <h5>Personnaliser votre document</h5>
+            <input type="color" class="color-input" [(ngModel)]="color" (input)="onColorChange()">
+          </div>
+          <div class="col-md-6">
+            <img src="../../../assets/images/bloc.png" class="me-3" alt="" (click)="showModel('bloc')"  [ngClass]="{'activemodele': modelActif === 1}" (click)="modelActif = 1" >
+            <img src="../../../assets/images/compact.png" alt="" (click)="showModel('compact')" [ngClass]="{'activemodele': modelActif === 2}" (click)="modelActif = 2">
+          </div>
+        </div>
+        <div class="modelFacture">
+            <div class="container" id="bloc" id="bonMedelOne" *ngIf="currentModel==='bloc'" >
+                <header>
+                    <p class="city-date">« Ville », le « date »</p>
+                    <h1>BON DE COMMANDE n° XXXXX</h1>
+                    <div class="order-details">
+                        <p>Date de la commande :</p>
+                        <p>Date de livraison :</p>
+                        <p>Adresse de livraison (si différente de celle du destinataire) :</p>
+                    </div>
+                </header>
+                <main>
+                    <table class="table table-bordered border-light">
+                        <thead  class="thead-custom">
+                          <tr>
+                            <th>Description</th>
+                            <th>Quantité</th>
+                            <th>PU</th>
+                            <th>Total</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>  
+                              <select class="form-control">
+                              <option value="0">Sélectionnez un produit/service</option>
+                              <option  [value]=""></option>
+                            </select>
+                          </td>
+                            <td><input type="number" class="form-control" placeholder="Quantité"></td>
+                            <td>
+                              <span></span>
+                              <ng-template #regularPrice></ng-template>
+                            </td>
+                            <td><span class="total text-right"></span></td>
+                            <td ><button class="btn btn-danger  btnDelete btn-sm"><i class="bi bi-trash"></i></button></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <button class="btn" ><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne</button>
+                      <div class="row">
+                        <div class="col-4 mt-5">
+                        </div>
+                        <div class="col-8">
+                          <br>
+                          <br>
+                          <table class="table table-sm text-right">
+                            <tr>
+                              <td><strong>Total à payer</strong></td>
+                              <td class="text-right"> <span class="font-weight-bold"></span> FCfa</td>
+                            </tr>
+                          </table>
+                        </div>    
+                    </div>
+                    <div class="row mt-5">
+                        <h6 class="mb-4">Validité du devis : 3 mois </h6>
+                        <div class="col-6">
+                        </div>
+                        <div class="col-6">
+                            <h5>pour le client</h5>
+                            <span>Signature, précédée de la mention "bon pour accord"</span>
+                        </div>
+                    </div>
+                </main>
+                <!-- <footer>
+                    <p>Signature, précédée de la mention "bon pour accord"</p>
+                    <p>Taktyl est une marque commerciale de ALYMIA SAS au Capital de 1.000.000 FCFA</p>
+                    <p>NINEA 008540892 RCCM SN-DKR-2021 B 14645</p>
+                </footer> -->
+            </div>
+            <div class="new-container" id="compact"  id="bonMedelTwo"  *ngIf="currentModel==='compact'" >
+                <header>
+                    <h1>Bon de commande</h1>
+                    <div class="new-logo">Logo</div>
+                </header>
+                <p class="city-date">« Ville », le « date »</p>
+                <h1>BON DE COMMANDE n° XXXXX</h1>
+                <div class="order-details">
+                    <p>Date de la commande :</p>
+                    <p>Date de livraison :</p>
+                    <p>Adresse de livraison (si différente de celle du destinataire) :</p>
+                </div>
+                <main>
+                    <table class="table table-bordered border-light">
+                        <thead  class="thead-custom">
+                          <tr>
+                            <th>Description</th>
+                            <th>Quantité</th>
+                            <th>PU</th>
+                            <th>Total</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>  
+                              <select class="form-control">
+                              <option value="0">Sélectionnez un produit/service</option>
+                              <option  [value]=""></option>
+                            </select>
+                          </td>
+                            <td><input type="number" class="form-control" placeholder="Quantité"></td>
+                            <td>
+                              <span></span>
+                              <ng-template #regularPrice></ng-template>
+                            </td>
+                            <td><span class="total text-right"></span></td>
+                            <td ><button class="btn btn-danger  btnDelete btn-sm"><i class="bi bi-trash"></i></button></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <button class="btn" ><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne</button>
+                      <div class="row">
+                        <div class="col-4 mt-5">
+                        </div>
+                        <div class="col-8">
+                          <br>
+                          <br>
+                          <table class="table table-sm text-right">
+                            <tr>
+                              <td><strong>Total à payer</strong></td>
+                              <td class="text-right"> <span class="font-weight-bold"></span> FCfa</td>
+                            </tr>
+                          </table>
+                        </div>    
+                    </div>
+                    <div class="row mt-5">
+                        <h6 class="mb-4">Validité du devis : 3 mois </h6>
+                        <div class="col-6">
+                        </div>
+                        <div class="col-6">
+                            <h5>pour le client</h5>
+                            <span>Signature, précédée de la mention "bon pour accord"</span>
+                        </div>
+                    </div>
+                </main>
+                <!-- <footer>
+                    <p >Taktyl est une marque commerciale de ALYMIA SAS au Capital de 1.000.000 FCFA</p>
+                    <p>NINEA 008540892 RCCM SN-DKR-2021 B 14645</p>
+                </footer> -->
+            </div>
+        </div>
+</div>
+</div>

@@ -13,6 +13,18 @@ import { Loading } from 'notiflix/build/notiflix-loading-aio';
   styleUrls: ['./clients.component.css']
 })
 export class ClientsComponent {
+
+// Gestion bouton
+boutonActif=1;
+
+// Initialiser le contenu actuel
+currentContent: string = 'categorie';
+
+// Mettre à jour le contenu actuel
+showComponant(contentId: string): void {
+  this.currentContent = contentId; 
+}
+
 // Déclaration des variables 
 tabClient: any[] = [];
 tabClientFilter: any[] = [];
@@ -90,7 +102,6 @@ listeClients() {
    (clients: any) => {
      this.tabClient = clients;
      this.tabClientFilter = this.tabClient;
-     console.log(this.tabClient)
    },
    (err) => {
    }

@@ -1,130 +1,365 @@
-  <div class="dashbord">
-    <div class="section sidebar">
-        <app-sidebar></app-sidebar>
-    </div>
+<app-navbar></app-navbar>
+<app-sidebar></app-sidebar>
+<div class="zoneSearch container mb-4 mt-4">
+  <div class="input-group">
+      <input type="search" class="form-control" aria-label="Recipient's username" placeholder="prénom,nom,entreprise" [(ngModel)]="filterValue">
+      <button class="btn btnSearch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+    </div>          
+</div>
 
-    <div class="section">
-        <!-- Le navbar  -->
-        <app-navbar></app-navbar>
 
-        <!-- Contenu dashbord  -->
-        <div class="container containerReseau mb-5">
-            <div class="card px-4 py-2 pt-4 shadow rounded-4" id="print-section">
-                    <div class="invoice">
-                      <div class="row">
-                        <div class="col-7">
-                          <!-- <img src="http://127.0.0.1:8000/storage/images/{{InfoSup.logo}}" class="logo"> <br> <br> -->
-                        
-                          <div class="company-info" *ngIf="InfoSup">
-                            <h3>{{ InfoSup.nom_entreprise }}</h3>
-                            <p>{{ InfoSup.adress_entreprise }}</p>
-                            <p>Tél: {{ InfoSup.tel_entreprise }}</p>
-                          </div>
-                         
-                          <h6>{{ currentDate }}</h6>
-                          
-                        </div>
-                        <div class="col-5">
-                          <div class="invoice-number">
-                            <h2>FACTURE</h2>
-                            <p>Numéro: <strong>numéro</strong></p>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-7">
-                        </div>
-                        <div class="col-5">
-                          <ng-container *ngIf="!isPreview">
-                            <label for="client-select">Sélectionner un client :</label> <br><br>
-                            <select  class="form-select form-select-lg mb-5" id="client-select" [(ngModel)]="selectedClient" (change)="onClientSelected()">
-                              <option *ngFor="let client of tabClient" [value]="client.id">{{client.prenom_client}} {{client.nom_client}}</option>
-                            </select>
-                          </ng-container>
-                          <div *ngFor="let clientSelect of currentClient">
-                            <h6>{{clientSelect?.nom_entreprise}}</h6>
-                            <p> {{clientSelect?.prenom_client}} {{clientSelect?.nom_client}}</p>
-                            <p>{{clientSelect?.adress_client}}</p>
-                            <p>{{clientSelect?.tel_client}}</p>
-                          </div>
-                        </div>
-                      </div>
-                      <br>
-                      <br>
-                      <br>
-                      <table class="table table-bordered border-light">
-                        <thead  class="thead-custom">
-                          <tr>
-                            <th>Description</th>
-                            <th>Quantité</th>
-                            <th>PU</th>
-                            <th>Total</th>
-                            <th *ngIf="!isPreview"></th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let row of rows; let i = index">
-                            <td>  
-                              <select class="form-control" [(ngModel)]="row.selectedProduct" (change)="onProductSelect(row)">
-                              <option value="0">Sélectionnez un produit/service</option>
-                              <option *ngFor="let product of products" [value]="product.id">{{ product.nom_article }}</option>
-                            </select>
-                          </td>
-                            <td><input type="number" class="form-control" [(ngModel)]="row.quantity" (input)="calculateTotal(row)" placeholder="Quantité"></td>
-                            <td>
-                              <span *ngIf="row.promotionalPrice; else regularPrice">{{ row.promotionalPrice | number:'1.2-2' }}</span>
-                              <ng-template #regularPrice>{{ row.unitPrice | number:'1.2-2' }}</ng-template>
-                            </td>
-                            <td><span class="total text-right">{{ row.total | number:'1.2-2' }}</span></td>
-                            <td *ngIf="!isPreview"><button class="btn btn-danger  btnDelete btn-sm" (click)="deleteRow(i)"><i class="bi bi-trash"></i></button></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <button class="btn btn-primary" (click)="addRow()" *ngIf="!isPreview"><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne</button>
-                      <div class="row">
-                        <div class="col-6 mt-5">
-                          <ng-container *ngIf="!isPreview">
-                            <h5>Personnaliser votre facture</h5>
-                            <input type="color" class="color-input" [(ngModel)]="color" (input)="onColorChange()">
-                          </ng-container>
-                        </div>
-                        <div class="col-6">
-                          <br>
-                          <br>
-                          <table class="table table-sm text-right">
-                            <tr>
-                              <td><strong>Total à payer</strong></td>
-                              <td class="text-right"> <span class="font-weight-bold">{{ total | number:'1.2-2' }}</span> FCfa</td>
-                            </tr>
-                            <tr>
-                              <td><strong>Montant verser</strong></td>
-                              <td class="text-right">montantVerser FCfa</td>
-                            </tr>
-                            <tr>
-                              <td><strong>Montant Total Payée</strong></td>
-                              <td class="text-right">montant_payement FCfa</td>
-                            </tr>
-                            <tr>
-                              <td><strong>Montant Restante</strong></td>
-                              <td class="text-right">montant_restant FCfa</td>
-                            </tr>
-                          </table>
-                        </div>
-                        <div class="btnPosition mb-5 mt-5">
-                          <button class="btn  me-3 btnEnregistrer"  (click)="generatePdf()">Générer le PDF</button>
-                          <button type="button" class="btn me-3 btnAnnuler" (click)="togglePreviewMode()" *ngIf="!isPreview">Prévisualiser</button>
-                          <button type="button" class="btn btnEnregistrer" [printStyle]="{img: {'width':'2.5cm'}}" [useExistingCss]="true"
-                          styleSheetFile="../facture/facture.component.css" printSectionId="print-section" ngxPrint *ngIf="!isPreview">Enregistrer</button>
-                        </div>     
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+ <!-- Contenu dashbord  -->
+ <div class="container containerReseau mb-5">
+  <!-- Button trigger modal -->
+<button type="button" class="btn  ajouter mb-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Créer votre facture
+</button>
+
+<div class="contenu">
+  <h1>on aura un table qui affiche la liste des facture deja créér</h1>
+</div>
 </div>
 
 
 
   
-  
 
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="d-grid gap-2 d-md-flex justify-content-md-end container mb-5 mt-2">
+        <button class="btn " type="button" [ngClass]="{'fond-btn': boutonActif === 1}" (click)="showComponant('Personnaliser')" (click)="boutonActif = 1">Personnaliser votre modele</button>
+        <button class="btn  me-md-2" type="button" [ngClass]="{'fond-btn': boutonActif === 2}" (click)="showComponant('facture')" (click)="boutonActif = 2">Créer Facture</button>
+      </div> 
+      <div class="modal-body">
+        <div class="model" id="Personnaliser" *ngIf="currentContent==='Personnaliser'">
+          <div class="row persoFacture mb-2 container">
+            <div class="col-md-6">
+              <h5>Personnaliser votre facture</h5>
+              <input type="color" class="color-input" [(ngModel)]="color" (input)="onColorChange()">
+            </div>
+            <div class="col-md-6">
+              <img src="../../../assets/images/bloc.png" class="me-3 model" alt="" (click)="showModel('bloc')"  [ngClass]="{'model': modelActif === 1}" (click)="modelActif = 1" >
+              <img src="../../../assets/images/compact.png" alt="" (click)="showModel('compact')" [ngClass]="{'model': modelActif === 2}" (click)="modelActif = 2">
+            </div>
+          </div>
+          <div class="modelFacture">
+            <div class="invoice-container" id="bloc" *ngIf="currentModel==='bloc'">
+              <div class="row mb-4">
+                <div class="invoice-header">
+                  <div class="logo-container">
+                    <img src="logo.png" alt="Logo" class="logo">
+                  </div>
+                  <div class="positionTitre">
+                    <div class="invoice-title">Facture</div>
+                    <div class="invoice-number">Facture #123456</div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="row">
+                <div class="invoice-details">
+                  <div class="company-info">
+                    <h3>Informations entreprise</h3>
+                    <p>Nom de l'entreprise : Acme Inc.</p>
+                    <p>Adresse : 456 Avenue des Champs-Élysées, 75008 Paris</p>
+                    <p>Téléphone : 01 98 76 54 32</p>
+                    <p>Email : contact.com</p>
+                  </div>
+            
+                  <div class="client-info">
+                    <h3>Informations client</h3>
+                    <p>Nom : John Doe</p>
+                    <p>Adresse : 123 Rue de la Paix, 75000 Paris</p>
+                    <p>Téléphone : 01 23 45 67 89</p>
+                    <p>Email : john.doe.com</p>
+                  </div>
+                </div>
+              </div>
+          
+              <div class="invoice-items">
+                <table class="table table-bordered border-light">
+                  <thead  class="thead-custom">
+                    <tr>
+                      <th>Description</th>
+                      <th>Quantité</th>
+                      <th>PU</th>
+                      <th>Total</th>
+                      <th *ngIf="!isPreview"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of rows; let i = index">
+                      <td>  
+                        <select class="form-control" [(ngModel)]="row.selectedProduct" (change)="onProductSelect(row)">
+                        <option value="0">Sélectionnez un produit/service</option>
+                        <option *ngFor="let product of products" [value]="product.id">{{ product.nom_article }}</option>
+                      </select>
+                    </td>
+                      <td><input type="number" class="form-control" [(ngModel)]="row.quantity" (input)="calculateTotal(row)" placeholder="Quantité"></td>
+                      <td>
+                        <span *ngIf="row.promotionalPrice; else regularPrice">{{ row.promotionalPrice | number:'1.2-2' }}</span>
+                        <ng-template #regularPrice>{{ row.unitPrice | number:'1.2-2' }}</ng-template>
+                      </td>
+                      <td><span class="total text-right">{{ row.total | number:'1.2-2' }}</span></td>
+                      <td *ngIf="!isPreview"><button class="btn btn-danger  btnDelete btn-sm" (click)="deleteRow(i)"><i class="bi bi-trash"></i></button></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <button class="btn" (click)="addRow()" *ngIf="!isPreview"><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne</button>
+                <div class="row">
+                  <div class="col-4 mt-5">
+                  </div>
+                  <div class="col-8">
+                    <br>
+                    <br>
+                    <table class="table table-sm text-right">
+                      <tr>
+                        <td><strong>Total à payer</strong></td>
+                        <td class="text-right"> <span class="font-weight-bold">{{ total | number:'1.2-2' }}</span> FCfa</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Montant verser</strong></td>
+                        <td class="text-right">montantVerser FCfa</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Montant Total Payée</strong></td>
+                        <td class="text-right">montant_payement FCfa</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Montant Restante</strong></td>
+                        <td class="text-right">montant_restant FCfa</td>
+                      </tr>
+                    </table>
+                  </div>    
+              </div>
+              </div>
+            </div>
+            <div class="invoice" id="compact" *ngIf="currentModel==='compact'">
+              <div class="row">
+                <div class="col-7">
+                  <!-- <img src="http://127.0.0.1:8000/storage/images/{{InfoSup.logo}}" class="logo"> <br> <br> -->
+                
+                  <div class="company-info" *ngIf="InfoSup">
+                    <h3>{{ InfoSup.nom_entreprise }}</h3>
+                    <p>{{ InfoSup.adress_entreprise }}</p>
+                    <p>Tél: {{ InfoSup.tel_entreprise }}</p>
+                  </div>
+                 
+                  <h6>{{ currentDate }}</h6>
+                  
+                </div>
+                <div class="col-5">
+                  <div class="invoice-number">
+                    <h2>FACTURE</h2>
+                    <p>Numéro: <strong>numéro</strong></p>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-7">
+                </div>
+                <div class="col-5">
+                  <ng-container *ngIf="!isPreview">
+                    <label for="client-select">Sélectionner un client :</label> <br><br>
+                    <select  class="form-select form-select-lg mb-5" id="client-select" [(ngModel)]="selectedClient" (change)="onClientSelected()">
+                      <option *ngFor="let client of tabClient" [value]="client.id">{{client.prenom_client}} {{client.nom_client}}</option>
+                    </select>
+                  </ng-container>
+                  <div *ngFor="let clientSelect of currentClient">
+                    <h6>{{clientSelect?.nom_entreprise}}</h6>
+                    <p> {{clientSelect?.prenom_client}} {{clientSelect?.nom_client}}</p>
+                    <p>{{clientSelect?.adress_client}}</p>
+                    <p>{{clientSelect?.tel_client}}</p>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <br>
+              <br>
+              <table class="table table-bordered border-light">
+                <thead  class="thead-custom">
+                  <tr>
+                    <th>Description</th>
+                    <th>Quantité</th>
+                    <th>PU</th>
+                    <th>Total</th>
+                    <th *ngIf="!isPreview"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let row of rows; let i = index">
+                    <td>  
+                      <select class="form-control" [(ngModel)]="row.selectedProduct" (change)="onProductSelect(row)">
+                      <option value="0">Sélectionnez un produit/service</option>
+                      <option *ngFor="let product of products" [value]="product.id">{{ product.nom_article }}</option>
+                    </select>
+                  </td>
+                    <td><input type="number" class="form-control" [(ngModel)]="row.quantity" (input)="calculateTotal(row)" placeholder="Quantité"></td>
+                    <td>
+                      <span *ngIf="row.promotionalPrice; else regularPrice">{{ row.promotionalPrice | number:'1.2-2' }}</span>
+                      <ng-template #regularPrice>{{ row.unitPrice | number:'1.2-2' }}</ng-template>
+                    </td>
+                    <td><span class="total text-right">{{ row.total | number:'1.2-2' }}</span></td>
+                    <td *ngIf="!isPreview"><button class="btn btn-danger  btnDelete btn-sm" (click)="deleteRow(i)"><i class="bi bi-trash"></i></button></td>
+                  </tr>
+                </tbody>
+              </table>
+              <button class="btn btn-primary" (click)="addRow()" *ngIf="!isPreview"><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne</button>
+              <div class="row">
+                <div class="col-6 mt-5">
+                  <ng-container *ngIf="!isPreview">
+                    <h5>Personnaliser votre facture</h5>
+                    <input type="color" class="color-input" [(ngModel)]="color" (input)="onColorChange()">
+                  </ng-container>
+                </div>
+                <div class="col-6">
+                  <br>
+                  <br>
+                  <table class="table table-sm text-right">
+                    <tr>
+                      <td><strong>Total à payer</strong></td>
+                      <td class="text-right"> <span class="font-weight-bold">{{ total | number:'1.2-2' }}</span> FCfa</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Montant verser</strong></td>
+                      <td class="text-right">montantVerser FCfa</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Montant Total Payée</strong></td>
+                      <td class="text-right">montant_payement FCfa</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Montant Restante</strong></td>
+                      <td class="text-right">montant_restant FCfa</td>
+                    </tr>
+                  </table>
+                </div>    
+            </div>
+        </div>
+          </div>
+        </div>
+        <div class="card px-4 py-2 pt-4 shadow rounded-4" id="print-section facture" *ngIf="currentContent === 'facture'">
+          <div class="invoice">
+            <div class="row">
+              <div class="col-7">
+                <!-- <img src="http://127.0.0.1:8000/storage/images/{{InfoSup.logo}}" class="logo"> <br> <br> -->
+              
+                <div class="company-info" *ngIf="InfoSup">
+                  <h3>{{ InfoSup.nom_entreprise }}</h3>
+                  <p>{{ InfoSup.adress_entreprise }}</p>
+                  <p>Tél: {{ InfoSup.tel_entreprise }}</p>
+                </div>
+               
+                <h6>{{ currentDate }}</h6>
+                
+              </div>
+              <div class="col-5">
+                <div class="invoice-number">
+                  <h2>FACTURE</h2>
+                  <p>Numéro: <strong>numéro</strong></p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-7">
+              </div>
+              <div class="col-5">
+                <ng-container *ngIf="!isPreview">
+                  <label for="client-select">Sélectionner un client :</label> <br><br>
+                  <select  class="form-select form-select-lg mb-5" id="client-select" [(ngModel)]="selectedClient" (change)="onClientSelected()">
+                    <option *ngFor="let client of tabClient" [value]="client.id">{{client.prenom_client}} {{client.nom_client}}</option>
+                  </select>
+                </ng-container>
+                <div *ngFor="let clientSelect of currentClient">
+                  <h6>{{clientSelect?.nom_entreprise}}</h6>
+                  <p> {{clientSelect?.prenom_client}} {{clientSelect?.nom_client}}</p>
+                  <p>{{clientSelect?.adress_client}}</p>
+                  <p>{{clientSelect?.tel_client}}</p>
+                </div>
+              </div>
+            </div>
+            <br>
+            <br>
+            <br>
+            <table class="table table-bordered border-light">
+              <thead  class="thead-custom">
+                <tr>
+                  <th>Description</th>
+                  <th>Quantité</th>
+                  <th>PU</th>
+                  <th>Total</th>
+                  <th *ngIf="!isPreview"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of rows; let i = index">
+                  <td>  
+                    <select class="form-control" [(ngModel)]="row.selectedProduct" (change)="onProductSelect(row)">
+                    <option value="0">Sélectionnez un produit/service</option>
+                    <option *ngFor="let product of products" [value]="product.id">{{ product.nom_article }}</option>
+                  </select>
+                </td>
+                  <td><input type="number" class="form-control" [(ngModel)]="row.quantity" (input)="calculateTotal(row)" placeholder="Quantité"></td>
+                  <td>
+                    <span *ngIf="row.promotionalPrice; else regularPrice">{{ row.promotionalPrice | number:'1.2-2' }}</span>
+                    <ng-template #regularPrice>{{ row.unitPrice | number:'1.2-2' }}</ng-template>
+                  </td>
+                  <td><span class="total text-right">{{ row.total | number:'1.2-2' }}</span></td>
+                  <td *ngIf="!isPreview"><button class="btn btn-danger  btnDelete btn-sm" (click)="deleteRow(i)"><i class="bi bi-trash"></i></button></td>
+                </tr>
+              </tbody>
+            </table>
+            <button class="btn btn-primary" (click)="addRow()" *ngIf="!isPreview"><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne</button>
+            <div class="row">
+              <div class="col-6 mt-5">
+                <ng-container *ngIf="!isPreview">
+                  <h5>Personnaliser votre facture</h5>
+                  <input type="color" class="color-input" [(ngModel)]="color" (input)="onColorChange()">
+                </ng-container>
+              </div>
+              <div class="col-6">
+                <br>
+                <br>
+                <table class="table table-sm text-right">
+                  <tr>
+                    <td><strong>Total à payer</strong></td>
+                    <td class="text-right"> <span class="font-weight-bold">{{ total | number:'1.2-2' }}</span> FCfa</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Montant verser</strong></td>
+                    <td class="text-right">montantVerser FCfa</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Montant Total Payée</strong></td>
+                    <td class="text-right">montant_payement FCfa</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Montant Restante</strong></td>
+                    <td class="text-right">montant_restant FCfa</td>
+                  </tr>
+                </table>
+              </div>
+              <div class="btnPosition mb-5 mt-5">
+                <button class="btn  me-3 btnEnregistrer"  (click)="generatePdf()">Générer le PDF</button>
+                <button type="button" class="btn me-3 btnAnnuler" (click)="togglePreviewMode()" *ngIf="!isPreview">Prévisualiser</button>
+                <button type="button" class="btn btnEnregistrer" [printStyle]="{img: {'width':'2.5cm'}}" [useExistingCss]="true"
+                styleSheetFile="../facture/facture.component.css" printSectionId="print-section" ngxPrint *ngIf="!isPreview">Enregistrer</button>
+              </div>     
+          </div>
+      </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

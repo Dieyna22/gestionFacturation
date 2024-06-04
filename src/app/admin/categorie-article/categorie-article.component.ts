@@ -107,6 +107,14 @@ deleteCategorie(categorieId:any){
     });
 }
 
+filterValue: string = "";
+onSearch() {
+  // Recherche se fait selon le nom ou le prenom 
+  this.tabCategorieFilter = this.tabCategorie.filter(
+    (elt: any) => (elt?.nom_categorie_article.toLowerCase().includes(this.filterValue.toLowerCase()))
+  );
+ }
+
 itemsParPage = 2; // Nombre d'articles par page
 pageActuelle = 1; // Page actuelle
 

@@ -6,21 +6,6 @@
     margin-top: -0.2rem !important;
 
 }
-.btnClose{
-    background-color: #FFFFFF;
-    color: #5C6FFF!important;
-    border: thin solid #5C6FFF;
-}
-.fondText{
-    color: #5C6FFF;
-}
-
-.dashbord {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 5fr;
-}
-
 
 .containerReseau .card {
     border: none;
@@ -28,61 +13,6 @@
     min-height: 50vh;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
-
-.containerReseau .cardAjout {
-    border-top-left-radius: 4vh;
-    border-bottom-right-radius: 4vh;
-}
-
-/* Recherche réseaux  */
-.ligneReseauSearch input {
-    border-right-color: white;
-}
-
-.ligneReseauSearch .iconesearch {
-    background-color: white;
-    border-left-color: white;
-    color: var(--base2);
-}
-
-/* le tableau  */
-thead tr th {
-    background-color: #222;
-    color: white;
-}
-
-.btnAction {
-    border: 1px solid #5C6FFF!important;
-    background-color: #5C6FFF!important;
-    color: #fff!important;
-}
-
-.btnReseaux {
-    padding: 0 8.5vh;
-}
-
-.btn {
-    background-color: var(--base1);
-    color: white;
-    font-weight: bold;
-}
-
-.titre {
-    color: #5C6FFF;
-}
-
-.require {
-    color: var(--base1);
-}
-
-/* pagination  */
-.pageActuelle {
-    color: #5C6FFF;
-    font-weight: bold;
-    border: 1px solid #5C6FFF;
-    padding: 4px;
-}
-
 
 .btnColor {
     color: #222;
@@ -94,3 +24,14 @@ thead tr th {
     background-color: white;
     border: none;
 }
+
+thead tr th {
+    background-color:#467aea !important;
+    color: white!important;
+}
+thead th:first-child {
+    border-top-left-radius: 15px;
+  }
+  thead th:last-child {
+   border-top-right-radius: 15px;
+  }
