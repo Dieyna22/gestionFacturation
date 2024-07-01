@@ -31,9 +31,10 @@
                  </span>
             </ng-container>
             <div class="dropdown-content">
-                <a [routerLink]="['/profilUser']">Profil</a>
-                <a [routerLink]="['/user']">Utilisateur</a>
-                <a [routerLink]="['/model']">Modéles</a>
+              <a [routerLink]="['/user']">Utilisateur</a>
+              <a [routerLink]="['/model']">Modéles</a>
+              <a [routerLink]="['/grille']">Grille tarifaire</a>
+              <a [routerLink]="['/payement']">Payement</a>
                 <hr class="dropdown-divider">
                 <a (click)=" logout()" style="cursor: pointer;">Déconnexion</a>
             </div>		

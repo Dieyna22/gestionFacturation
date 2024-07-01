@@ -7,11 +7,11 @@ import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import { CategorieArticleService } from 'src/app/services/categorie-article.service';
 
 @Component({
-  selector: 'app-categorie-article',
-  templateUrl: './categorie-article.component.html',
-  styleUrls: ['./categorie-article.component.css']
+  selector: 'app-categorie-service',
+  templateUrl: './categorie-service.component.html',
+  styleUrls: ['./categorie-service.component.css']
 })
-export class CategorieArticleComponent {
+export class CategorieServiceComponent {
 
 // Déclaration des variables 
 tabCategorie: any[] = [];
@@ -24,7 +24,7 @@ constructor(private http: HttpClient, private Categorie: CategorieArticleService
 ajouterCategorie() {
  let categorie ={
    "nom_categorie_article":this.inputCategorie,
-   "type_categorie_article":'produit',
+   "type_categorie_article":'service',
  }
 
  this.Categorie.addCategorieArticle(categorie).subscribe(
@@ -41,9 +41,10 @@ ngOnInit(): void {
 }
 
 listeCategorie() {
- this.Categorie.getAllCategorieArticle().subscribe(
+ this.Categorie.getAllCategorieService().subscribe(
    (categories: any) => {
      this.tabCategorie = categories.CategorieArticle;
+     console.log(this.tabCategorie)
      this.tabCategorieFilter = this.tabCategorie;
    },
    (err) => {
@@ -60,7 +61,7 @@ chargerInfosCategorie(paramCategorie:any){
 updateCategorie() {
   let categories={
     "nom_categorie_article":this.categorie,
-    "type_categorie_article":'produit',
+    "type_categorie_article":'service',
   }
   Confirm.init({
     okButtonBackground: '#5C6FFF',

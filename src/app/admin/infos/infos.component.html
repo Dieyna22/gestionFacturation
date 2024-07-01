@@ -3,10 +3,10 @@
  <!-- Contenu dashbord  -->
  <div class="container containerReseau mb-5">
     <main class="container mb-5 mt-5">
-        <div class="mainContainerLeft p-2">
+        <div class="mainContainerLeft p-2" *ngIf="InfoSup">
             <div class="mainContainerLeftImage">
                 <div class="image">
-                    <img src="http://127.0.0.1:8000/{{InfoSup.logo}}" alt="logo">
+                    <img src="http://127.0.0.1:8000{{InfoSup.logo}}" alt="logo">
                 </div>
             </div>
             <div class="mainContainerLeftInfo p-3">

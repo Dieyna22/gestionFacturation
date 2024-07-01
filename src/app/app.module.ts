@@ -26,6 +26,9 @@ import { FactureComponent } from './admin/facture/facture.component';
 import { NgxPrintModule } from 'ngx-print';
 import { ServicesComponent } from './admin/services/services.component';
 import { ModelComponent } from './admin/model/model.component';
+import { CategorieServiceComponent } from './categorie-service/categorie-service.component';
+import { GrilleTarifaireComponent } from './admin/grille-tarifaire/grille-tarifaire.component';
+import { PayementComponent } from './admin/payement/payement.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +50,10 @@ import { ModelComponent } from './admin/model/model.component';
     CategorieArticleComponent,
     FactureComponent,
     ServicesComponent,
-    ModelComponent
+    ModelComponent,
+    CategorieServiceComponent,
+    GrilleTarifaireComponent,
+    PayementComponent
   ],
   imports: [
     BrowserModule,

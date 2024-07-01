@@ -1,50 +1,51 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { RoleService } from 'src/app/services/role.service';
 import { Report } from 'notiflix/build/notiflix-report-aio';
 import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
-import { CategorieArticleService } from 'src/app/services/categorie-article.service';
+import { PayementService } from 'src/app/services/payement.service';
 
 @Component({
-  selector: 'app-categorie-article',
-  templateUrl: './categorie-article.component.html',
-  styleUrls: ['./categorie-article.component.css']
+  selector: 'app-payement',
+  templateUrl: './payement.component.html',
+  styleUrls: ['./payement.component.css']
 })
-export class CategorieArticleComponent {
+export class PayementComponent {
 
+   
 // Déclaration des variables 
-tabCategorie: any[] = [];
-tabCategorieFilter: any[] = [];
-inputCategorie:string="" ;
-categorie:string="";
+tabPayement: any[] = [];
+tabPayementFilter: any[] = [];
+inputPayement:string="" ;
+payement:string="";
 
-constructor(private http: HttpClient, private Categorie: CategorieArticleService) { }
+constructor(private http: HttpClient,private payementService:PayementService) { }
 
-ajouterCategorie() {
- let categorie ={
-   "nom_categorie_article":this.inputCategorie,
-   "type_categorie_article":'produit',
+ajouterPayement() {
+ let payement ={
+   "nom_payement":this.inputPayement,
  }
 
- this.Categorie.addCategorieArticle(categorie).subscribe(
+ this.payementService.addPayement(payement).subscribe(
    (response) => {
     Report.success('Notiflix Success',response.message,'Okay',);
-   this.listeCategorie();
-   this.inputCategorie='';
+   this.listePayement();
+   this.inputPayement='';
  }
 );
 }
 
 ngOnInit(): void {
- this.listeCategorie();
+ this.listePayement();
 }
 
-listeCategorie() {
- this.Categorie.getAllCategorieArticle().subscribe(
-   (categories: any) => {
-     this.tabCategorie = categories.CategorieArticle;
-     this.tabCategorieFilter = this.tabCategorie;
+listePayement() {
+ this.payementService.getAllPayement().subscribe(
+   (paye: any) => {
+     this.tabPayement = paye;
+     this.tabPayementFilter = this.tabPayement;
    },
    (err) => {
    }
@@ -54,13 +55,12 @@ listeCategorie() {
 CurrentCategorie: any;
 chargerInfosCategorie(paramCategorie:any){
     this.CurrentCategorie = paramCategorie;
-    this.categorie = paramCategorie.nom_categorie_article;
+    this.payement = paramCategorie.nom_payement;
 }
 
 updateCategorie() {
-  let categories={
-    "nom_categorie_article":this.categorie,
-    "type_categorie_article":'produit',
+  let payement={
+    "nom_payement":this.payement,
   }
   Confirm.init({
     okButtonBackground: '#5C6FFF',
@@ -74,11 +74,11 @@ updateCategorie() {
         svgColor: '#5C6FFF',
       });
       Loading.hourglass();
-      this.Categorie.updateCategorieArticle(this.CurrentCategorie.id,categories).subscribe(
+      this.payementService.updatePayement(this.CurrentCategorie.id,payement).subscribe(
         (reponse)=>{
           Notify.success(reponse.message);
-          this.listeCategorie();
-          this.categorie='';
+          this.listePayement();
+          this.payement='';
           Loading.remove();
         }
       );
@@ -99,10 +99,10 @@ deleteCategorie(categorieId:any){
         svgColor: '#5C6FFF',
       });
       Loading.hourglass();
-      this.Categorie.deleteCategorieArticle(categorieId).subscribe(
+      this.payementService.deletePayement(categorieId).subscribe(
         (reponse)=>{
           Notify.success(reponse.message);
-          this.listeCategorie();
+          this.listePayement();
           Loading.remove();
         }
       )
@@ -112,8 +112,8 @@ deleteCategorie(categorieId:any){
 filterValue: string = "";
 onSearch() {
   // Recherche se fait selon le nom ou le prenom 
-  this.tabCategorieFilter = this.tabCategorie.filter(
-    (elt: any) => (elt?.nom_categorie_article.toLowerCase().includes(this.filterValue.toLowerCase()))
+  this.tabPayementFilter = this.tabPayement.filter(
+    (elt: any) => (elt?.nom_payement.toLowerCase().includes(this.filterValue.toLowerCase()))
   );
  }
 
@@ -125,17 +125,17 @@ pageActuelle = 1; // Page actuelle
 getItemsPage(): any[] {
  const indexDebut = (this.pageActuelle - 1) * this.itemsParPage;
  const indexFin = indexDebut + this.itemsParPage;
- return this.tabCategorieFilter.slice(indexDebut, indexFin);
+ return this.tabPayementFilter.slice(indexDebut, indexFin);
 }
 
 // // Méthode pour générer la liste des pages
 get pages(): number[] {
- const totalPages = Math.ceil(this.tabCategorieFilter.length / this.itemsParPage);
+ const totalPages = Math.ceil(this.tabPayementFilter.length / this.itemsParPage);
  return Array(totalPages).fill(0).map((_, index) => index + 1);
 }
 
 // // Méthode pour obtenir le nombre total de pages
 get totalPages(): number {
- return Math.ceil(this.tabCategorieFilter.length / this.itemsParPage);
+ return Math.ceil(this.tabPayementFilter.length / this.itemsParPage);
 }
 }

@@ -45,4 +45,19 @@ export class ArticlesService {
    affecterCategorieArticle(articleID: any, categorie:any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/affecterCategorieArticle/${articleID}`, categorie);
   }
+
+  // ajouter entrepot
+  addEntrepot(entrepot: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/ajouterEntrepot`, entrepot);
+  }
+
+    // liste entrepot
+    getAllEntrepot(): Observable<any> {
+      return this.http.get<any>(`${apiUrl}/listerEntrepots`);
+    }
+
+    // liste autre prix par article
+    getOtherPriceByArticle(articleId: any): Observable<any> {
+      return this.http.get<any>(`${apiUrl}/listerAutrePrixArticle/${articleId}`);
+    }
 }

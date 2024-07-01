@@ -33,6 +33,11 @@ quantite: string = "";
 quantiteAlerte: string = "";
 CategorieArticle:string="";
 note:string="";
+unite:string="";
+tva:string="";
+titrePrix:string="";
+tvaPrix:string="";
+prixVente:string="";
 
 
 
@@ -45,6 +50,11 @@ inputquantiteAlerte: string = "";
 inputtypeArticle: string = "";
 inputpromo: string = "";
 inputCategorieArticle:string="";
+inputtva: string = "";
+inputunite: string = "";
+inputtitrePrix: string = "";
+inputtvaPrix: string = "";
+inputprixVente: string = "";
 
 isSuperAdmin: boolean = false;
 isAdmin: boolean = false;
@@ -58,6 +68,7 @@ constructor(private http: HttpClient, private articleService:ArticlesService,pri
 ngOnInit(): void {
  this.listeArticles();
  this.listePromos();
+ this.listeCategorie();
 
  this.dbUsers = JSON.parse(localStorage.getItem("userOnline") || "[]"); 
  this.role = this.dbUsers.user.role
@@ -89,16 +100,30 @@ showComponant(contentId: string): void {
   this.currentContent = contentId; 
 }
 
+menu: string = 'information';
+Actif=1;
+// Mettre à jour le contenu actuel
+showMenu(menuId: string): void {
+  this.menu = menuId;
+}
+
 ajouterArticle(){
  let articles={
-   "nom_article":this.nom,
-   "description":this.desc,
-   "prix_unitaire":this.vente,
-   "type_article":'service',
-   "prix_achat":this.achat,
-   "quantite":this.quantite,
-   "quantite_alert":this.quantiteAlerte,
-   "id_categorie_article":this.CategorieArticle,
+  "nom_article": this.nom,
+  "description": this.desc,
+  "prix_achat":this.achat,
+  "prix_unitaire": this.vente,
+  "tva": this.tva,
+  "type_article": "service",
+  "unité": this.unite,
+  "id_categorie_article":this.CategorieArticle,
+  "autres_prix": [
+    {
+      "titrePrix": this.titrePrix,
+      "montant": this.prixVente,
+      "tva": this.tvaPrix
+    }
+  ],
 
  }
  this.articleService.addArticle(articles).subscribe(
@@ -115,7 +140,7 @@ ajouterArticle(){
 listeArticles() {
  this.articleService.getAllArticles().subscribe(
    (article: any) => {
-     this.tabArticle = article.articles;
+     this.tabArticle = article;
      this.tabArticleFilter = this.tabArticle.filter((article: any) => article.type_article == 'service');
    },
    (err) => {
@@ -134,6 +159,11 @@ vider(){
  this.quantiteAlerte='';
  this.CategorieArticle='';
  this.note='';
+ this.unite='';
+ this.tva='';
+ this.prixVente='';
+ this.titrePrix='';
+ this.tvaPrix='';
 
  this.inputnom='';
  this.inputdesc='';
@@ -143,6 +173,12 @@ vider(){
  this.inputquantite='';
  this.inputquantiteAlerte='';
  this.inputCategorieArticle='';
+ this.inputtva='';
+ this.inputunite='';
+ this.inputtitrePrix='';
+ this.inputtvaPrix='';
+ this.inputprixVente='';
+ 
  
 
 }
@@ -172,6 +208,7 @@ deleteAricle(paramArticle:any){
 }
 
 currentArticle: any;
+numArticles: any;
 // Methode pour charger les infos de l'article  à modifier
 chargerInfosArticle(paramArticle:any){
  this.currentArticle = paramArticle;
@@ -182,18 +219,33 @@ chargerInfosArticle(paramArticle:any){
  this.inputachat=paramArticle.prix_achat;
  this.inputquantite=paramArticle.quantite;
  this.inputquantiteAlerte=paramArticle.quantite_alert;
+ this.inputCategorieArticle=paramArticle.id_categorie_article;
+ this.inputtva=paramArticle.tva;
+ this.inputunite=paramArticle.unité;
+//  this.inputtitrePrix=paramArticle.autres_prix[0].titrePrix;
+//  this.inputtvaPrix=paramArticle.autres_prix[0].tva;
+//  this.inputprixVente=paramArticle.autres_prix[0].montant;
+ this.numArticles=paramArticle.num_article;
 }
 
 updateArticle() {
   let articles={
+    "num_article":this.numArticles,
     "nom_article":this.inputnom,
     "description":this.inputdesc,
     "prix_unitaire":this.inputvente,
     "type_article":this.currentArticle.type_article,
     "prix_achat":this.inputachat,
-    "quantite":this.inputquantite,
-    "quantite_alert":this.inputquantiteAlerte,
     "id_categorie_article":this.inputCategorieArticle,
+    "unité":this.inputunite,
+    "tva":this.inputtva,
+    "autres_prix": [
+      {
+        "titrePrix": this.inputtitrePrix,
+        "montant": this.inputprixVente,
+        "tva": this.inputtvaPrix
+      }
+    ],
 
   }
   Confirm.init({
@@ -265,6 +317,18 @@ listePromos() {
  }
 
 
+ listeCategorie() {
+  this.Categorie.getAllCategorieService().subscribe(
+    (categories: any) => {
+      this.tabCategorie = categories.CategorieArticle;
+      console.log(this.tabCategorie)
+    },
+    (err) => {
+    }
+  )
+ }
+
+
 
 // Methode de recherche automatique pour un utilisateur
 onSearch() {
@@ -301,4 +365,10 @@ get totalPages(): number {
  afficherChamps(){
   this.showChamps=!this.showChamps;
  }
+
+ formPrix: boolean=false;
+ afficherChampsPrix(){
+   this.formPrix=!this.formPrix;
+ }
+ 
 }

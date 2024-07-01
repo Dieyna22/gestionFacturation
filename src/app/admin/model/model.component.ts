@@ -7,6 +7,9 @@ import { Component,Renderer2 } from '@angular/core';
 })
 export class ModelComponent {
 
+
+  titre: string = 'Facture';
+
     // Gestion bouton
 boutonActif=1;
 
@@ -19,6 +22,7 @@ currentContent: string = 'facture';
 // Mettre à jour le contenu actuel
 showComponant(contentId: string): void {
   this.currentContent = contentId; 
+  this.titre = contentId;
 }
 currentModel : string = 'bloc'
 

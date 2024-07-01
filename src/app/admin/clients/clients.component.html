@@ -89,12 +89,10 @@
     </div>
 </div>
 
-
-
 <!-- Modal Ajout users -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content  mt-5">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalLabel">Ajout Client</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -102,42 +100,132 @@
         <div class="modal-body">
           <form>
             <div class="row">
-              <div class="mb-3 col-md-6 ">
+              <div class="mb-3 col-md-4 ">
                 <label for="validationServer01" class="form-label">Prénom</label>
                 <input type="text" class="form-control" id="validationServer01" name="prenom" [(ngModel)]="prenom">
               </div>
-              <div class="mb-3 col-md-6 ">
+              <div class="mb-3 col-md-4 ">
                <label for="validationServer02" class="form-label">Nom</label>
                <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="nom">
               </div>
-            </div>
-            <div class="row">
-              <div class="mb-3 col-md-6 ">
+              <div class="mb-3 col-md-4 ">
                 <label for="validationServer02" class="form-label">Nom Entreprise</label>
                 <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="entreprise">
                </div>
-               <div class="mb-3 col-md-6 ">
+            </div>
+            <div class="row">
+               <div class="mb-3 col-md-4 ">
                 <label for="validationServer02" class="form-label">Adresse</label>
                 <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="adress">
                </div>
+               <div class="mb-3 col-md-4 ">
+                <label for="validationServer02" class="form-label">Téléphone</label>
+                <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="telephone">
+               </div>
+               <div class="mb-3 col-md-4 ">
+                <label for="validationServer02" class="form-label">Email</label>
+                <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="mail">
+               </div>
             </div>
-           <div class="row">
-             <div class="mb-3 col-md-6 ">
-              <label for="validationServer02" class="form-label">Téléphone</label>
-              <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="telephone">
+            <div class="row">
+              <div class="mb-3 col-md-6 ">
+               <label for="validationServer02" class="form-label">Statut</label>
+                  <select class="form-select" aria-label="Default select example" name="statut" [(ngModel)]="statut">
+                    <option selected>Sélectionner le statut du client</option>
+                    <option value="client">Client</option>
+                    <option value="prospect">Prospect</option>
+                  </select>
+              </div>
+              <div class="mb-3 col-md-6 ">
+               <label for="validationServer02" class="form-label">Type</label>
+                <select class="form-select" aria-label="Default select example" name="type" [(ngModel)]="type">
+                  <option selected>Sélectionner le type du client</option>
+                  <option value="particulier">Particulier</option>
+                  <option value="entreprise">Entreprise</option>
+                </select>
+              </div>
              </div>
-             <div class="mb-3 col-md-6 ">
-              <label for="validationServer02" class="form-label">Email</label>
-              <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="mail">
+             <div class="row mb-3">
+              <div class="form-check ms-3" (click)="afficherChampsAddressPrincipal()">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate">
+                <label class="form-check-label" for="flexCheckIndeterminate">
+                  Adresse Principal
+                </label>
+              </div>
+              <form class="row g-3 needs-validation" novalidate *ngIf="showChampsAddressPrincipal">
+                <div class="col-md-4">
+                  <label for="validationCustom01" class="form-label">Pays</label>
+                  <input type="text" class="form-control" id="validationCustom01" name="paysClient" [(ngModel)]="paysClient">
+                </div>
+                <div class="col-md-4">
+                  <label for="validationCustom02" class="form-label">Ville</label>
+                  <input type="text" class="form-control" id="validationCustom02" name="villeClient" [(ngModel)]="villeClient">
+                </div>
+                <div class="col-md-4">
+                  <label for="validationCustomUsername" class="form-label">Numéro fiscal</label>
+                  <input type="text" class="form-control" id="validationCustom02" name="fiscal" [(ngModel)]="fiscal">
+                </div>
+              </form>
              </div>
-            </div>
-            <div class="mb-3 ">
-                <label for="exampleInputPassword1" class="form-label">Catégorie</label>
-              <select class="form-select" aria-label="Default select example" name="role" [(ngModel)]="typeClient">
-                <option selected disabled>Choisisez un role</option>
-                <option *ngFor="let categorie of tabCategorie" [value]="categorie.id">{{categorie.nom_categorie}}</option>
-              </select>
-            </div>
+             <div class="row mb-3">
+              <div class="form-check ms-3" (click)="afficherChampsAddressLivraison()">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate">
+                <label class="form-check-label" for="flexCheckIndeterminate">
+                  Adresse de livraison
+                </label>
+              </div>
+              <form class="row g-3 needs-validation" novalidate  *ngIf="showChampsAddressLivraison">
+                <div class="col-md-4">
+                  <label for="validationCustom01" class="form-label">Nom </label>
+                  <input type="text" class="form-control" id="validationCustom01" name="nomDestinataire" [(ngModel)]="nomDestinataire">
+                </div>
+                <div class="col-md-4">
+                  <label for="validationCustomUsername" class="form-label">code postal</label>
+                  <input type="text" class="form-control" id="validationCustom02" name="postal" [(ngModel)]="postal">
+                </div>
+                <div class="col-md-4">
+                  <label for="validationCustomUsername" class="form-label">Pays de livraison</label>
+                  <input type="text" class="form-control" id="validationCustom02" name="paysLivraison" [(ngModel)]="paysLivraison">
+                </div>
+                <div class="col-md-4">
+                  <label for="validationCustomUsername" class="form-label">ville de livraison</label>
+                  <input type="text" class="form-control" id="validationCustom02" name="villeLivraison" [(ngModel)]="villeLivraison">
+                </div>
+                <div class="col-md-4">
+                  <label for="validationCustom03" class="form-label">Téléphone</label>
+                  <input type="text" class="form-control" id="validationCustom03" name="telDestinataire" [(ngModel)]="telDestinataire">
+                </div>
+                <div class="col-md-4">
+                  <label for="validationCustom03" class="form-label">Email</label>
+                  <input type="text" class="form-control" id="validationCustom03" name="emailDestinataire" [(ngModel)]="emailDestinataire">
+                </div>
+                <div class="form-floating col-md-12">
+                  <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" name="infos" [(ngModel)]="infos"></textarea>
+                  <label for="floatingTextarea2">Informations supplémentaires</label>
+                </div>
+              </form>
+             </div>
+             <div class="row">
+              <div class="form-check ms-3" (click)="afficherChampsOther()">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate">
+                <label class="form-check-label" for="flexCheckIndeterminate">
+                  Autres
+                </label>
+              </div>
+              <div *ngIf="showChampsOther">
+                <div class="mb-3 ">
+                  <label for="exampleInputPassword1" class="form-label">Catégorie</label>
+                  <select class="form-select" aria-label="Default select example" name="role" [(ngModel)]="typeClient">
+                    <option selected disabled>Choisisez un role</option>
+                    <option *ngFor="let categorie of tabCategorie" [value]="categorie.id">{{categorie.nom_categorie}}</option>
+                  </select>
+                </div>
+                <div class="form-floating">
+                  <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" name="notes" [(ngModel)]="notes"></textarea>
+                  <label for="floatingTextarea2">Notes</label>
+                </div>
+              </div>
+             </div>
         </form>
         </div>
         <div class="modal-footer">
@@ -150,52 +238,142 @@
   
 <!-- Modal modifier user -->
 <div class="modal fade" id="ModalModifier" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+      <div class="modal-content mt-5">
         <div class="modal-header">
           <h1 class="modal-title fs-5" id="exampleModalLabel">Modifier Client</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form>
-              <div class="row">
-                <div class="mb-3 col-md-6">
-                  <label for="validationServer01" class="form-label">Prénom</label>
-                  <input type="text" class="form-control" id="validationServer01" name="prenom" [(ngModel)]="inputprenom">
-                </div>
-                <div class="mb-3 col-md-6">
-                 <label for="validationServer02" class="form-label">Nom</label>
-                 <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="inputnom">
-                </div>
+          <form>
+            <div class="row">
+              <div class="mb-3 col-md-4 ">
+                <label for="validationServer01" class="form-label">Prénom</label>
+                <input type="text" class="form-control" id="validationServer01" name="prenom" [(ngModel)]="inputprenom">
               </div>
-               <div class="row">
-                <div class="mb-3 col-md-6">
-                  <label for="validationServer02" class="form-label">Nom Entreprise</label>
-                  <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="inputEntreprise">
-                 </div>
-                 <div class="mb-3 col-md-6">
-                  <label for="validationServer02" class="form-label">Adresse</label>
-                  <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="inputAdress">
-                 </div>
+              <div class="mb-3 col-md-4 ">
+               <label for="validationServer02" class="form-label">Nom</label>
+               <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="inputnom">
+              </div>
+              <div class="mb-3 col-md-4 ">
+                <label for="validationServer02" class="form-label">Nom Entreprise</label>
+                <input type="text" class="form-control" id="validationServer02" name="nomEntreprise" [(ngModel)]="inputEntreprise">
                </div>
-               <div class="row">
-                 <div class="mb-3 col-md-6">
-                  <label for="validationServer02" class="form-label">Téléphone</label>
-                  <input type="text" class="form-control" id="validationServer02" name="tel" [(ngModel)]="inputTelephone">
-                 </div>
-                 <div class="mb-3 col-md-6">
-                  <label for="exampleInputEmail1" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="mail" [(ngModel)]="inputmail"> 
+            </div>
+            <div class="row">
+               <div class="mb-3 col-md-4 ">
+                <label for="validationServer02" class="form-label">Adresse</label>
+                <input type="text" class="form-control" id="validationServer02" name="adress" [(ngModel)]="inputAdress">
+               </div>
+               <div class="mb-3 col-md-4 ">
+                <label for="validationServer02" class="form-label">Téléphone</label>
+                <input type="text" class="form-control" id="validationServer02" name="tel" [(ngModel)]="inputTelephone">
+               </div>
+               <div class="mb-3 col-md-4 ">
+                <label for="validationServer02" class="form-label">Email</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="mail" [(ngModel)]="inputmail"> 
+               </div>
+            </div>
+            <div class="row">
+              <div class="mb-3 col-md-6 ">
+               <label for="validationServer02" class="form-label">Statut</label>
+                  <select class="form-select" aria-label="Default select example" name="statut" [(ngModel)]="inputstatut">
+                    <option selected>Sélectionner le statut du client</option>
+                    <option value="client">Client</option>
+                    <option value="prospect">Prospect</option>
+                  </select>
+              </div>
+              <div class="mb-3 col-md-6 ">
+               <label for="validationServer02" class="form-label">Type</label>
+                <select class="form-select" aria-label="Default select example" name="type" [(ngModel)]="inputtype">
+                  <option selected>Sélectionner le type du client</option>
+                  <option value="particulier">Particulier</option>
+                  <option value="entreprise">Entreprise</option>
+                </select>
+              </div>
+             </div>
+             <div class="row mb-3">
+              <div class="form-check ms-3" (click)="afficherChampsAddressPrincipal()">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate">
+                <label class="form-check-label" for="flexCheckIndeterminate">
+                  Adresse Principal
+                </label>
+              </div>
+              <form class="row g-3 needs-validation" novalidate *ngIf="showChampsAddressPrincipal">
+                <div class="col-md-4">
+                  <label for="validationCustom01" class="form-label">Pays</label>
+                  <input type="text" class="form-control" id="validationCustom01" name="paysClient" [(ngModel)]="inputpaysClient">
                 </div>
-               </div>
+                <div class="col-md-4">
+                  <label for="validationCustom02" class="form-label">Ville</label>
+                  <input type="text" class="form-control" id="validationCustom02" name="villeClient" [(ngModel)]="inputvilleClient">
+                </div>
+                <div class="col-md-4">
+                  <label for="validationCustomUsername" class="form-label">Numéro fiscal</label>
+                  <input type="text" class="form-control" id="validationCustom02" name="fiscal" [(ngModel)]="inputfiscal">
+                </div>
+              </form>
+             </div>
+             <div class="row mb-3">
+              <div class="form-check ms-3" (click)="afficherChampsAddressLivraison()">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate">
+                <label class="form-check-label" for="flexCheckIndeterminate">
+                  Adresse de livraison
+                </label>
+              </div>
+              <form class="row g-3 needs-validation" novalidate  *ngIf="showChampsAddressLivraison">
+                <div class="col-md-4">
+                  <label for="validationCustom01" class="form-label">Nom </label>
+                  <input type="text" class="form-control" id="validationCustom01" name="nomDestinataire" [(ngModel)]="inputnomDestinataire">
+                </div>
+                <div class="col-md-4">
+                  <label for="validationCustomUsername" class="form-label">code postal</label>
+                  <input type="text" class="form-control" id="validationCustom02" name="postal" [(ngModel)]="inputpostal">
+                </div>
+                <div class="col-md-4">
+                  <label for="validationCustomUsername" class="form-label">Pays de livraison</label>
+                  <input type="text" class="form-control" id="validationCustom02" name="paysLivraison" [(ngModel)]="inputpaysLivraison">
+                </div>
+                <div class="col-md-4">
+                  <label for="validationCustomUsername" class="form-label">ville de livraison</label>
+                  <input type="text" class="form-control" id="validationCustom02" name="villeLivraison" [(ngModel)]="inputvilleLivraison">
+                </div>
+                <div class="col-md-4">
+                  <label for="validationCustom03" class="form-label">Téléphone</label>
+                  <input type="text" class="form-control" id="validationCustom03" name="telDestinataire" [(ngModel)]="inputtelDestinataire">
+                </div>
+                <div class="col-md-4">
+                  <label for="validationCustom03" class="form-label">Email</label>
+                  <input type="text" class="form-control" id="validationCustom03" name="emailDestinataire" [(ngModel)]="inputemailDestinataire">
+                </div>
+                <div class="form-floating col-md-12">
+                  <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" name="infos" [(ngModel)]="inputinfos"></textarea>
+                  <label for="floatingTextarea2">Informations supplémentaires</label>
+                </div>
+              </form>
+             </div>
+             <div class="row">
+              <div class="form-check ms-3" (click)="afficherChampsOther()">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate">
+                <label class="form-check-label" for="flexCheckIndeterminate">
+                  Autres
+                </label>
+              </div>
+              <div *ngIf="showChampsOther">
                 <div class="mb-3 ">
-                    <label for="exampleInputPassword1" class="form-label">Catégorie</label>
+                  <label for="exampleInputPassword1" class="form-label">Catégorie</label>
                   <select class="form-select" aria-label="Default select example" name="role" [(ngModel)]="inputClient">
-                    <option selected disabled>Choisisez un catégorie</option>
+                    <option selected disabled>Choisisez un role</option>
                     <option *ngFor="let categorie of tabCategorie" [value]="categorie.id">{{categorie.nom_categorie}}</option>
                   </select>
                 </div>
-            </form>
+                <div class="form-floating">
+                  <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" name="notes" [(ngModel)]="inputnotes"></textarea>
+                  <label for="floatingTextarea2">Notes</label>
+                </div>
+              </div>
+             </div>
+        </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btnAction" (click)="updateUser()">Modifier</button>
@@ -204,6 +382,3 @@
       </div>
     </div>
   </div>
-  
-
-  

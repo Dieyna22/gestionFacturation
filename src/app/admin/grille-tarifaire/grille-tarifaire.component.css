@@ -42,39 +42,17 @@ thead th:first-child {
     color: var(--base2);
 }
 
-.btnEven {
-    background-color: #5066EF!important;
-    color: white!important;
-    font-weight: bold;
-}
+
+
 .btnColor {
     color: #222;
     border: 1px solid #222;
     background-color: white;
 }
 
+
+
 .page {
     background-color: white;
     border: none;
 }
-
-.currentItemNav{
-    color: #F97316!important;
-  }
-  
-  .nav {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .nav li {
-    display: inline;
-    margin-right: 20px;
-  }
-  
-  .nav li a {
-    color: #222;
-    text-decoration: none;
-    cursor: pointer;
-  }

@@ -1,0 +1,89 @@
+<div class="zoneSearch container mb-4">
+    <div class="input-group">
+        <input type="search" class="form-control" aria-label="Recipient's username" placeholder="nom Catégorie article" [(ngModel)]="filterValue"
+        (input)="onSearch()">
+        <button class="btn btnSearch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+      </div>          
+</div>
+<div class="row  contenu px-5">
+    <div>
+        <div class="zoneAjout mb-3">
+            <h5 class="text-center">Ajout Catégorie article</h5>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Ajouter</label>
+                <input type="text" name="auteur" class="form-control" id="exampleInputEmail1"
+                    aria-describedby="emailHelp" placeholder="Catégorie" [(ngModel)]="inputCategorie">
+            </div>
+            <button class="btn ajouter" (click)="ajouterCategorie()">Ajouter</button>
+        </div>
+    </div>
+    
+    <div class=" containerReseau rounded-2 p-2 ">
+        <!-- Le tableau des réseaux -->
+        <div class="table-responsive">
+            <table class="table mb-4">
+                <thead>
+                    <tr>
+                        <th scope="col">Nom Catégorie </th>
+                        <th scope="col">Action </th>
+                    </tr>
+                </thead>
+                <tbody *ngFor="let Categorie of getItemsPage()">
+                    <tr>
+                        <td>{{Categorie.nom_categorie_article}}</td>
+                        <td>
+                            <button class="btn modif me-2" data-bs-toggle="modal"
+                                data-bs-target="#modifcategorie" (click)="chargerInfosCategorie(Categorie)"
+                                >Modifier</button>
+                            <button class="btn sup" (click)="deleteCategorie(Categorie.id)">Supprimer</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+         <!-- Pagination  -->
+         <div *ngIf="getItemsPage().length">
+            <div class="d-flex justify-content-end mb-2">
+                <button class="border border-0 btnColor  mx-2" [disabled]="pageActuelle === 1"
+                    (click)="pageActuelle = pageActuelle - 1">
+                    <i class="bi bi-arrow-left-circle fs-4"></i>
+                </button>
+                <button class=" rounded-circle mx-2 page" *ngFor="let page of pages" (click)="pageActuelle = page">
+                    <span class="pageActuelle fs-5" *ngIf="page===pageActuelle">{{page}}</span>
+                    <span *ngIf="page != pageActuelle">{{page}}</span>
+                </button>
+                <button class="border border-0 btnColor mx-2" [disabled]="pageActuelle === totalPages"
+                    (click)="pageActuelle = pageActuelle + 1">
+                    <i class="bi bi-arrow-right-circle fs-4"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+   
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modifcategorie" tabindex="-1" aria-labelledby="modifcategorieLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modifcategorieLabel">Modifier Zone</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="inputNom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="inputNom" name="inputNom" [(ngModel)]="categorie">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class=" btn btnAction" data-bs-dismiss="modal" (click)="updateCategorie()">Modifier</button>
+                <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+            </div>
+        </div>
+    </div>
+</div>

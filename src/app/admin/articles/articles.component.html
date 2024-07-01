@@ -104,57 +104,164 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
+          <div class="header mb-4 d-grid gap-2 d-md-flex justify-content-md-end">
+            <ul class="nav">
+              <li><a [ngClass]="{'currentItemNav': Actif === 1}" (click)="showMenu('information')" (click)="Actif = 1">Informations</a></li>
+              <li><a [ngClass]="{'currentItemNav': Actif === 2}" (click)="showMenu('stock')" (click)="Actif = 2">Stock</a></li>
+              <li><a [ngClass]="{'currentItemNav': Actif === 3}" (click)="showMenu('autre')" (click)="Actif = 3">Autres</a></li>
+            </ul>
+          </div>
           <form>
-            <div class="row">
-              <div class="mb-3 col-6">
-                <label for="validationServer01" class="form-label">Nom</label>
-                <input type="text" class="form-control" id="validationServer01" name="nom" [(ngModel)]="nom">
+            <!-- Informations  -->
+            <div id="infomation" *ngIf="menu === 'information'">
+              <div class="row">
+                <div class="mb-3 col-4">
+                  <label for="validationServer01" class="form-label">Nom</label>
+                  <input type="text" class="form-control" id="validationServer01" name="nom" [(ngModel)]="nom">
+                </div>
+                <div class="mb-3 col-4">
+                 <label for="validationServer02" class="form-label">Description</label>
+                 <input type="text" class="form-control" id="validationServer02" name="desc" [(ngModel)]="desc">
+                </div>
+                <div class="mb-3 col-4">
+                  <label for="validationServer02" class="form-label">Prix d'achat</label>
+                  <input type="text" class="form-control" id="validationServer02" name="achat" [(ngModel)]="achat">
+                 </div>
               </div>
-              <div class="mb-3 col-6">
-               <label for="validationServer02" class="form-label">Description</label>
-               <input type="text" class="form-control" id="validationServer02" name="desc" [(ngModel)]="desc">
+              <div class="row">
+                 <div class="mb-3 col-4 ">
+                  <label for="validationServer02" class="form-label">Prix de vente</label>
+                  <input type="text" class="form-control" id="validationServer02" name="vente" [(ngModel)]="vente">
+                 </div>
+                 <div class="mb-3 col-4 ">
+                  <label for="validationServer02" class="form-label">Quantité</label>
+                  <input type="text" class="form-control" id="validationServer02" name="quantite" [(ngModel)]="quantite">
+                 </div>
+                 <div class="mb-3 col-4 ">
+                  <label for="validationServer02" class="form-label">Quantité Alerte</label>
+                  <input type="text" class="form-control" id="validationServer02" name="quantiteAlerte" [(ngModel)]="quantiteAlerte">
+                 </div>
+              </div>
+              <div class="row mb-3">
+                <div class="col-md-6">
+                  <label for="validationDefault03" class="form-label">TVA</label>
+                  <input type="text" class="form-control" id="validationDefault03" name="tva" [(ngModel)]="tva">
+                </div>
+                <div class="col-md-6">
+                  <label for="validationDefault04" class="form-label">Unité</label>
+                  <select class="form-select" id="validationDefault04" name="unite" [(ngModel)]="unite">
+                    <option selected disabled value="">Sélectionner une unité...</option>
+                    <option value="g">gramme</option>
+                    <option value="kg">kilogramme</option>
+                    <option value="l">Livre</option>
+                    <option value="tonne">Tonne</option>
+                    <option></option>
+                    <option value="cm">centimètre</option>
+                    <option value="m">mètre</option>
+                    <option value="m2">mètre carré</option>
+                    <option value="m3">mètre cube</option>
+                    <option></option>
+                    <option value="h">Heure</option>
+                    <option value="jour">Jour</option>
+                    <option value="semaine">Semaine</option>
+                    <option value="mois">Mois</option>  
+                  </select>
+                </div>
               </div>
             </div>
-            <div class="row">
-              <div class="mb-3 col-6">
-                <label for="validationServer02" class="form-label">Prix d'achat</label>
-                <input type="text" class="form-control" id="validationServer02" name="achat" [(ngModel)]="achat">
-               </div>
-               <div class="mb-3 col-6 ">
-                <label for="validationServer02" class="form-label">Prix de vente</label>
-                <input type="text" class="form-control" id="validationServer02" name="vente" [(ngModel)]="vente">
-               </div>
+            <!-- stock -->
+            <div id="stock" *ngIf="menu ==='stock'">
+              <div class="row">
+                <div class="form-check form-check-inline" (click)="afficherChampsEntrepot()">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                  <label class="form-check-label" for="inlineCheckbox1">Entrepôt</label>
+                </div>
+                <form class="row " *ngIf="entrepot">
+                  <div class="col-md-6">
+                    <label for="validationDefault02" class="form-label">Entrepôt</label>
+                    <div class="input-group">
+                      <select class="form-control" name="entrepotName" [(ngModel)]="entrepotName">
+                        <option disabled>Sélectionnez une Entrepôt </option>
+                        <option *ngFor="let entrepot of tabEntrepot" [value]="entrepot.id">{{entrepot.nomEntrepot}}</option>
+                      </select>
+                      <button class="btn ajouter"  data-bs-toggle="modal" data-bs-target="#entrepot">Ajouter</button>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label for="validationDefault02" class="form-label">Quantité</label>
+                    <input type="number" class="form-control" id="validationDefault02" name="quantiteInEntrepot" [(ngModel)]="quantiteInEntrepot">
+                  </div>
+                </form>
+              </div>
+              <div class="row">
+                <div class="form-check form-check-inline" (click)="afficherChampsLot()">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                  <label class="form-check-label" for="inlineCheckbox1">lot</label>
+                </div>
+                <form class="row" *ngIf="lot">
+                  <div class="col-md-6">
+                    <label for="validationDefault01" class="form-label">Nom</label>
+                    <input type="text" class="form-control" id="validationDefault01" name="nomLot" [(ngModel)]="Lotnom">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="validationDefault02" class="form-label">Quantité</label>
+                    <input type="number" class="form-control" id="validationDefault02" name="quantiteLot" [(ngModel)]="Lotquantite">
+                  </div>
+                </form>
+              </div>
+              <div class="row">
+                <div class="form-check form-check-inline" (click)="afficherChampsVariantes()">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                  <label class="form-check-label" for="inlineCheckbox1">Variantes</label>
+                </div>
+                <form class="row" *ngIf="variantes">
+                  <div class="col-md-6">
+                    <label for="validationDefault01" class="form-label">Nom</label>
+                    <input type="text" class="form-control" id="validationDefault01" name="nomVariantes" [(ngModel)]="nomVariantes">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="validationDefault02" class="form-label">Quantité</label>
+                    <input type="number" class="form-control" id="validationDefault02" name="quantiteVariantes" [(ngModel)]="quantiteVariantes">
+                  </div>
+                </form>
+              </div>
             </div>
-            <div class="row">
-              <div class="mb-3 col-6 ">
-                <label for="validationServer02" class="form-label">Quantité</label>
-                <input type="text" class="form-control" id="validationServer02" name="quantite" [(ngModel)]="quantite">
-               </div>
-               <div class="mb-3 col-6 ">
-                <label for="validationServer02" class="form-label">Quantité Alerte</label>
-                <input type="text" class="form-control" id="validationServer02" name="quantiteAlerte" [(ngModel)]="quantiteAlerte">
-               </div>
+            <!-- Autre -->
+            <div id="autre" *ngIf="menu ==='autre'">
+              <div class="row">
+                <div class="form-check form-check-inline" (click)="afficherChamps()">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                  <label class="form-check-label" for="inlineCheckbox1">Ajouter Catégorie</label>
+                </div>
+                <div class="mb-3" *ngIf="showChamps">
+                    <label for="exampleInputPassword1" class="form-label">Catégorie article</label>
+                  <select class="form-select" aria-label="Default select example" name="CategorieArticle" [(ngModel)]="CategorieArticle">
+                    <option selected disabled>Choisisez une catégorie</option>
+                    <option *ngFor="let categorieArticle of tabCategorie" [value]="categorieArticle.id">{{categorieArticle.nom_categorie_article}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row ">
+                <div class="form-check form-check-inline" (click)="afficherChampsPrix()">
+                  <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                  <label class="form-check-label" for="inlineCheckbox1">Autre prix</label>
+                </div>
+                <form class="row g-3" *ngIf="formPrix">
+                  <div class="col-md-4">
+                    <label for="validationDefault01" class="form-label">Titre</label>
+                    <input type="text" class="form-control" id="validationDefault01" name="titrePrix" [(ngModel)]="titrePrix">
+                  </div>
+                  <div class="col-md-4">
+                    <label for="validationDefault02" class="form-label">TVA</label>
+                    <input type="text" class="form-control" id="validationDefault02" name="tvaPrix" [(ngModel)]="tvaPrix">
+                  </div>
+                  <div class="col-md-4">
+                    <label for="validationDefault03" class="form-label">Prix de vente</label>
+                    <input type="text" class="form-control" id="validationDefault03" name="PrixVente" [(ngModel)]="prixVente">
+                  </div>
+                </form>
+              </div>
             </div>
-            <!-- <div class="mb-3 ">
-              <label for="exampleInputPassword1" class="form-label">Type Article</label>
-            <select class="form-select" aria-label="Default select example" name="type" [(ngModel)]="typeArticle">
-              <option selected disabled>Choisisez un role</option>
-              <option value="produit">Produit</option>
-              <option value="service">Service</option>
-            </select>
-          </div> -->
-          <div class="form-check form-check-inline" (click)="afficherChamps()">
-            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
-            <label class="form-check-label" for="inlineCheckbox1">Ajouter Catégorie</label>
-          </div>
-          <div class="mb-3" *ngIf="showChamps">
-              <label for="exampleInputPassword1" class="form-label">Catégorie article</label>
-            <select class="form-select" aria-label="Default select example" name="promo" [(ngModel)]="CategorieArticle">
-              <option selected disabled>Choisisez une catégorie</option>
-              <option *ngFor="let categorieArticle of tabCategorie" [value]="categorieArticle.id">{{categorieArticle.nom_categorie_article}}</option>
-            </select>
-          </div>
-            
         </form>
         </div>
         <div class="modal-footer">
@@ -174,49 +281,165 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
+          <div class="header mb-4 d-grid gap-2 d-md-flex justify-content-md-end">
+            <ul class="nav">
+              <li><a [ngClass]="{'currentItemNav': Actif === 1}" (click)="showMenu('information')" (click)="Actif = 1">Informations</a></li>
+              <li><a [ngClass]="{'currentItemNav': Actif === 2}" (click)="showMenu('stock')" (click)="Actif = 2">Stock</a></li>
+              <li><a [ngClass]="{'currentItemNav': Actif === 3}" (click)="showMenu('autre')" (click)="Actif = 3">Autres</a></li>
+            </ul>
+          </div>
             <form>
-              <div class="row">
-                <div class="mb-3 col-6">
-                  <label for="validationServer01" class="form-label">Nom</label>
-                  <input type="text" class="form-control" id="validationServer01" name="nom" [(ngModel)]="inputnom">
-                </div>
-                <div class="mb-3 col-6">
-                 <label for="validationServer02" class="form-label">Description</label>
-                 <input type="text" class="form-control" id="validationServer02" name="desc" [(ngModel)]="inputdesc">
-                </div>
-              </div>
+              <!-- Informations  -->
+              <div id="infomation" *ngIf="menu === 'information'">
                 <div class="row">
-                  <div class="mb-3 col-6">
+                  <div class="mb-3 col-4">
+                    <label for="validationServer01" class="form-label">Nom</label>
+                    <input type="text" class="form-control" id="validationServer01" name="nom" [(ngModel)]="inputnom">
+                  </div>
+                  <div class="mb-3 col-4">
+                   <label for="validationServer02" class="form-label">Description</label>
+                   <input type="text" class="form-control" id="validationServer02" name="desc" [(ngModel)]="inputdesc">
+                  </div>
+                  <div class="mb-3 col-4">
                     <label for="validationServer02" class="form-label">Prix d'achat</label>
                     <input type="text" class="form-control" id="validationServer02" name="achat" [(ngModel)]="inputachat">
                    </div>
-                   <div class="mb-3 col-6 ">
+                </div>
+                <div class="row">
+                   <div class="mb-3 col-4 ">
                     <label for="validationServer02" class="form-label">Prix de vente</label>
                     <input type="text" class="form-control" id="validationServer02" name="vente" [(ngModel)]="inputvente">
                    </div>
+                   <div class="mb-3 col-4 ">
+                    <label for="validationServer02" class="form-label">Quantité</label>
+                    <input type="text" class="form-control" id="validationServer02" name="quantite" [(ngModel)]="inputquantite">
+                   </div>
+                   <div class="mb-3 col-4 ">
+                    <label for="validationServer02" class="form-label">Quantité Alerte</label>
+                    <input type="text" class="form-control" id="validationServer02" name="quantiteAlerte" [(ngModel)]="inputquantiteAlerte">
+                   </div>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <label for="validationDefault03" class="form-label">TVA</label>
+                    <input type="text" class="form-control" id="validationDefault03" name="tva" [(ngModel)]="inputtva">
+                  </div>
+                  <div class="col-md-6">
+                    <label for="validationDefault04" class="form-label">Unité</label>
+                    <select class="form-select" id="validationDefault04" name="unite" [(ngModel)]="inputunite">
+                      <option selected disabled value="">Sélectionner une unité...</option>
+                      <option value="g">gramme</option>
+                      <option value="kg">kilogramme</option>
+                      <option value="l">Livre</option>
+                      <option value="tonne">Tonne</option>
+                      <option></option>
+                      <option value="cm">centimètre</option>
+                      <option value="m">mètre</option>
+                      <option value="m2">mètre carré</option>
+                      <option value="m3">mètre cube</option>
+                      <option></option>
+                      <option value="h">Heure</option>
+                      <option value="jour">Jour</option>
+                      <option value="semaine">Semaine</option>
+                      <option value="mois">Mois</option>  
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <!-- stock -->
+              <div id="stock" *ngIf="menu ==='stock'">
+                <div class="row">
+                  <div class="form-check form-check-inline" (click)="afficherChampsEntrepot()">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                    <label class="form-check-label" for="inlineCheckbox1">Entrepôt</label>
+                  </div>
+                  <form class="row " *ngIf="entrepot">
+                    <div class="col-md-6">
+                      <label for="validationDefault02" class="form-label">Entrepôt</label>
+                      <div class="input-group">
+                        <select class="form-control" name="entrepotName" [(ngModel)]="inputentrepotName">
+                          <option disabled>Sélectionnez une Entrepôt </option>
+                          <option *ngFor="let entrepot of tabEntrepot" [value]="entrepot.id">{{entrepot.nomEntrepot}}</option>
+                        </select>
+                        <button class="btn ajouter"  data-bs-toggle="modal" data-bs-target="#entrepot">Ajouter</button>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <label for="validationDefault02" class="form-label">Quantité</label>
+                      <input type="number" class="form-control" id="validationDefault02" name="quantiteInEntrepot" [(ngModel)]="inputquantiteInEntrepot">
+                    </div>
+                  </form>
                 </div>
                 <div class="row">
-                  <ng-container *ngIf="isSuperAdmin">
-                    <div class="mb-3 col-6">
-                      <label for="validationServer02" class="form-label">Quantité</label>
-                      <input type="text" class="form-control" id="validationServer02" name="quantite" [(ngModel)]="inputquantite">
-                     </div>
-                     <div class="mb-3 col-6">
-                      <label for="validationServer02" class="form-label">Quantité Alerte</label>
-                      <input type="text" class="form-control" id="validationServer02" name="quantiteAlerte" [(ngModel)]="inputquantiteAlerte">
-                     </div>
-                   </ng-container>
+                  <div class="form-check form-check-inline" (click)="afficherChampsLot()">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                    <label class="form-check-label" for="inlineCheckbox1">lot</label>
+                  </div>
+                  <form class="row" *ngIf="lot">
+                    <div class="col-md-6">
+                      <label for="validationDefault01" class="form-label">Nom</label>
+                      <input type="text" class="form-control" id="validationDefault01" name="nomLot" [(ngModel)]="inputLotnom">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="validationDefault02" class="form-label">Quantité</label>
+                      <input type="number" class="form-control" id="validationDefault02" name="quantiteLot" [(ngModel)]="inputLotquantite">
+                    </div>
+                  </form>
                 </div>
-                
-                <!-- <div class="mb-3 ">
-                    <label for="exampleInputPassword1" class="form-label">Type</label>
-                  <select class="form-select" aria-label="Default select example" name="type" [(ngModel)]="inputtypeArticle">
-                    <option selected disabled>Choisisez un role</option>
-                    <option value="produit">Produit</option>
-                    <option value="service">Service</option>
-                  </select>
-                </div> -->
-            </form>
+                <div class="row">
+                  <div class="form-check form-check-inline" (click)="afficherChampsVariantes()">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                    <label class="form-check-label" for="inlineCheckbox1">Variantes</label>
+                  </div>
+                  <form class="row" *ngIf="variantes">
+                    <div class="col-md-6">
+                      <label for="validationDefault01" class="form-label">Nom</label>
+                      <input type="text" class="form-control" id="validationDefault01" name="nomVariantes" [(ngModel)]="inputnomVariantes">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="validationDefault02" class="form-label">Quantité</label>
+                      <input type="number" class="form-control" id="validationDefault02" name="quantiteVariantes" [(ngModel)]="inputquantiteVariantes">
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <!-- Autre -->
+              <div id="autre" *ngIf="menu ==='autre'">
+                <div class="row">
+                  <div class="form-check form-check-inline" (click)="afficherChamps()">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                    <label class="form-check-label" for="inlineCheckbox1">Ajouter Catégorie</label>
+                  </div>
+                  <div class="mb-3" *ngIf="showChamps">
+                      <label for="exampleInputPassword1" class="form-label">Catégorie article</label>
+                    <select class="form-select" aria-label="Default select example" name="CategorieArticle" [(ngModel)]="inputCategorieArticle">
+                      <option selected disabled>Choisisez une catégorie</option>
+                      <option *ngFor="let categorieArticle of tabCategorie" [value]="categorieArticle.id">{{categorieArticle.nom_categorie_article}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row ">
+                  <div class="form-check form-check-inline" (click)="afficherChampsPrix()">
+                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+                    <label class="form-check-label" for="inlineCheckbox1">Autre prix</label>
+                  </div>
+                  <form class="row g-3" *ngIf="formPrix">
+                    <div class="col-md-4">
+                      <label for="validationDefault01" class="form-label">Titre</label>
+                      <input type="text" class="form-control" id="validationDefault01" name="titrePrix" [(ngModel)]="inputtitrePrix">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="validationDefault02" class="form-label">TVA</label>
+                      <input type="text" class="form-control" id="validationDefault02" name="tvaPrix" [(ngModel)]="inputtvaPrix">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="validationDefault03" class="form-label">Prix de vente</label>
+                      <input type="text" class="form-control" id="validationDefault03" name="PrixVente" [(ngModel)]="inputprixVente">
+                    </div>
+                  </form>
+                </div>
+              </div>
+          </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btnAction" (click)="updateArticle()">Modifier</button>
@@ -304,3 +527,26 @@
   </div>
 </div>
 
+
+<!-- Modal ajouter entrepot -->
+<div class="modal fade" id="entrepot" tabindex="-1" aria-labelledby="entrepotLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content mt-5">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="entrepotLabel">Ajouter Entrepôt</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Email address</label>
+          <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="nom entrepot" name="addEntrepot" [(ngModel)]="addEntrepot">
+        </div>
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btnAction" (click)="ajouterEntrepot()"  data-bs-toggle="modal" data-bs-target="#exampleModal">Ajouter</button>
+        <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
