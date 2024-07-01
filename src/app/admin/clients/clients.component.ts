@@ -13,6 +13,18 @@ import { Loading } from 'notiflix/build/notiflix-loading-aio';
   styleUrls: ['./clients.component.css']
 })
 export class ClientsComponent {
+
+// Gestion bouton
+boutonActif=1;
+
+// Initialiser le contenu actuel
+currentContent: string = 'categorie';
+
+// Mettre à jour le contenu actuel
+showComponant(contentId: string): void {
+  this.currentContent = contentId; 
+}
+
 // Déclaration des variables 
 tabClient: any[] = [];
 tabClientFilter: any[] = [];
@@ -26,7 +38,19 @@ typeClient: string = "";
 entreprise: string = "";
 adress: string = "";
 telephone: string = "";
-
+statut: string = "";
+type: string = "";
+paysClient: string = "";
+villeClient: string = "";
+fiscal: string = "";
+nomDestinataire: string = "";
+postal: string = "";
+paysLivraison: string = "";
+villeLivraison: string = "";
+telDestinataire: string = "";
+emailDestinataire: string = "";
+infos: string = "";
+notes: string = ""; 
 
 
 inputprenom: string = "";
@@ -36,6 +60,19 @@ inputEntreprise: string = "";
 inputClient: string = "";
 inputAdress: string = "";
 inputTelephone: string = "";
+inputstatut: string = "";
+inputtype: string = "";
+inputpaysClient: string = "";
+inputvilleClient: string = "";
+inputfiscal: string = "";
+inputnomDestinataire: string = "";
+inputpostal: string = "";
+inputpaysLivraison: string = "";
+inputvilleLivraison: string = "";
+inputtelDestinataire: string = "";
+inputemailDestinataire: string = "";
+inputinfos: string = "";
+inputnotes: string = "";
 
 
 
@@ -73,6 +110,20 @@ ajouterUsers(){
    "email_client":this.mail,
    "tel_client":this.telephone,
    "categorie_id":this.typeClient,
+   "statut_client":this.statut,
+   "type_client":this.type,
+   "pays_client":this.paysClient,
+   "ville_client":this.villeClient,
+   "num_id_fiscal":this.fiscal,
+   "nom_destinataire":this.nomDestinataire,
+   "code_postal_livraison":this.postal,
+   "pays_livraison":this.paysLivraison,
+   "ville_livraison":this.villeLivraison,
+   "tel_destinataire":this.telDestinataire,
+   "email_destinataire":this.emailDestinataire,
+   "infoSupplemnt":this.infos,
+   "noteInterne_client":this.notes,
+
  }
  this.clientService.addClient(clients).subscribe(
    (client:any)=>{
@@ -90,7 +141,6 @@ listeClients() {
    (clients: any) => {
      this.tabClient = clients;
      this.tabClientFilter = this.tabClient;
-     console.log(this.tabClient)
    },
    (err) => {
    }
@@ -106,6 +156,19 @@ vider(){
  this.entreprise='';
  this.adress='';
  this.telephone='';
+ this.statut='';
+ this.type='';
+ this.paysClient='';
+ this.villeClient='';
+ this.fiscal='';
+ this.nomDestinataire='';
+ this.postal='';
+ this.paysLivraison='';
+ this.villeLivraison='';
+ this.telDestinataire='';
+ this.emailDestinataire='';
+ this.infos='';
+ this.notes='';
 
  this.inputnom='';
  this.inputprenom='';
@@ -114,6 +177,19 @@ vider(){
  this.inputClient='';
  this.inputTelephone='';
  this.inputAdress='';
+ this.inputstatut='';
+ this.inputtype='';
+ this.inputpaysClient='';
+ this.inputvilleClient='';
+ this.inputfiscal='';
+ this.inputnomDestinataire='';
+ this.inputpostal='';
+ this.inputpaysLivraison='';
+ this.inputvilleLivraison='';
+ this.inputtelDestinataire='';
+ this.inputemailDestinataire='';
+ this.inputinfos='';
+ this.inputnotes='';
 
 }
 
@@ -151,6 +227,20 @@ chargerInfosClient(paramClient:any){
  this.inputEntreprise =paramClient.nom_entreprise;
  this.inputTelephone = paramClient.tel_client;
  this.inputAdress = paramClient.adress_client;
+ this.inputstatut = paramClient.statut_client;
+ this.inputtype = paramClient.type_client;
+ this.inputpaysClient = paramClient.pays_client;
+ this.inputvilleClient = paramClient.ville_client;
+ this.inputfiscal = paramClient.num_id_fiscal;
+ this.inputnomDestinataire = paramClient.nom_destinataire;
+ this.inputpostal = paramClient.code_postal_livraison;
+ this.inputpaysLivraison = paramClient.pays_livraison;
+ this.inputvilleLivraison = paramClient.ville_livraison;
+ this.inputtelDestinataire = paramClient.tel_destinataire;
+ this.inputemailDestinataire = paramClient.email_destinataire;
+ this.inputinfos = paramClient.infoSupplemnt;
+ this.inputnotes = paramClient.noteInterne_client;
+
 }
 
 updateUser() {
@@ -162,6 +252,19 @@ updateUser() {
     "email_client":this.inputmail,
     "tel_client":this.inputTelephone,
     "categorie_id":this.inputClient,
+    "statut_client":this.inputstatut,
+    "type_client":this.inputtype,
+    "pays_client":this.inputpaysClient,
+    "ville_client":this.inputvilleClient,
+    "num_id_fiscal":this.inputfiscal,
+    "nom_destinataire":this.inputnomDestinataire,
+    "code_postal_livraison":this.inputpostal,
+    "pays_livraison":this.inputpaysLivraison,
+    "ville_livraison":this.inputvilleLivraison,
+    "tel_destinataire":this.inputtelDestinataire,
+    "email_destinataire":this.inputemailDestinataire,
+    "infoSupplemnt":this.inputinfos,
+    "noteInterne_client":this.inputnotes,
   }
   Confirm.init({
     okButtonBackground: '#5C6FFF',
@@ -215,4 +318,23 @@ get pages(): number[] {
 get totalPages(): number {
  return Math.ceil(this.tabClientFilter.length / this.itemsParPage);
 }
+
+showChampsAddressPrincipal: boolean=false;
+showChampsAddressLivraison: boolean=false;
+showChampsOther: boolean=false;
+
+afficherChampsAddressPrincipal(){
+ this.showChampsAddressPrincipal=!this.showChampsAddressPrincipal;
+}
+
+afficherChampsAddressLivraison(){
+  this.showChampsAddressLivraison=!this.showChampsAddressLivraison;
+ }
+
+ afficherChampsOther(){
+  this.showChampsOther=!this.showChampsOther;
+ }
+
+
+
 }

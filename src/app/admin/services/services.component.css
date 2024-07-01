@@ -1,0 +1,80 @@
+.details{
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+}
+.imageProfilUser img {
+    margin-top: -0.2rem !important;
+
+}
+
+thead tr th {
+    background-color:#467aea !important;
+    color: white!important;
+}
+thead th:first-child {
+    border-top-left-radius: 15px;
+  }
+  thead th:last-child {
+   border-top-right-radius: 15px;
+  }
+
+
+.containerReseau .card {
+    border: none;
+    border-radius: 0;
+    min-height: 50vh;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
+
+.containerReseau .cardAjout {
+    border-top-left-radius: 4vh;
+    border-bottom-right-radius: 4vh;
+}
+
+/* Recherche réseaux  */
+.ligneReseauSearch input {
+    border-right-color: white;
+}
+
+.ligneReseauSearch .iconesearch {
+    background-color: white;
+    border-left-color: white;
+    color: var(--base2);
+}
+
+.btnEven {
+    background-color: #5066EF!important;
+    color: white!important;
+    font-weight: bold;
+}
+.btnColor {
+    color: #222;
+    border: 1px solid #222;
+    background-color: white;
+}
+
+.page {
+    background-color: white;
+    border: none;
+}
+
+.currentItemNav{
+    color: #F97316!important;
+  }
+  
+  .nav {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .nav li {
+    display: inline;
+    margin-right: 20px;
+  }
+  
+  .nav li a {
+    color: #222;
+    text-decoration: none;
+    cursor: pointer;
+  }

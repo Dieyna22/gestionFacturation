@@ -33,4 +33,10 @@ export class SidebarComponent {
     }
 
   }
+
+    isSidebarOpen = true;
+
+  toggleSidebar() {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
 }

@@ -49,6 +49,7 @@ export class LoginComponent {
     this.passwordLogin = "";
   }
 
+
     // connexion 
     connexion() {
       let user = {
@@ -69,10 +70,7 @@ export class LoginComponent {
             Loading.remove();
           },
           (err) => {
-          }
-        );
-
-        // Connexion en tant qu'utilisateur normal
+            // Connexion en tant qu'utilisateur normal
         this.authAdmin.connexionUser(user).subscribe(
           (response) => {
             Notify.success('connexion reussie');
@@ -85,6 +83,8 @@ export class LoginComponent {
             Loading.remove();
           }
         )
+          }
+        );
 
 
       }

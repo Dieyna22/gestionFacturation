@@ -1,9 +1,4 @@
 
-.dashbord {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 5fr;
-}
 .contenu{
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -108,7 +103,7 @@
 } */
 /* le tableau  */
 thead tr th {
-    background-color: #222;
+    background-color: #467aea;
     color: white;
 }
 

@@ -72,7 +72,6 @@ listePromos() {
  this.promoService.getAllPromo().subscribe(
    (promos: any) => {
      this.tabPromo = promos.promos;
-     console.log(this.tabPromo)
      this.tabPromoFilter = this.tabPromo;
    },
    (err) => {

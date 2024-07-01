@@ -21,6 +21,7 @@ tabPromo: any[] = [];
 tabCategorie: any[] = [];
 dbUsers: any;
 role: string = ''
+tabEntrepot: any[] =[];
 
 filterValue: string = "";
 nom: string = "";
@@ -32,7 +33,18 @@ quantite: string = "";
 quantiteAlerte: string = "";
 CategorieArticle:string="";
 note:string="";
-
+unite:string="";
+tva:string="";
+titrePrix:string="";
+tvaPrix:string="";
+prixVente:string="";
+entrepotName:string="";
+addEntrepot:string="";
+Lotnom:string="";
+Lotquantite:string="";
+nomVariantes:string="";
+quantiteVariantes:string="";
+quantiteInEntrepot:string="";
 
 
 inputnom: string = "";
@@ -44,6 +56,19 @@ inputquantiteAlerte: string = "";
 inputtypeArticle: string = "";
 inputpromo: string = "";
 inputCategorieArticle:string="";
+inputtva: string = "";
+inputunite: string = "";
+inputentrepotName: string = "";
+inputLotnom: string = "";
+inputLotquantite: string = "";
+inputnomVariantes: string = "";
+inputquantiteVariantes: string = "";
+inputquantiteInEntrepot: string = "";
+inputtitrePrix: string = "";
+inputtvaPrix: string = "";
+inputprixVente: string = "";
+
+
 
 isSuperAdmin: boolean = false;
 isAdmin: boolean = false;
@@ -58,6 +83,7 @@ ngOnInit(): void {
  this.listeArticles();
  this.listePromos();
  this.listeCategorie();
+ this.listeEntrepot();
 
  this.dbUsers = JSON.parse(localStorage.getItem("userOnline") || "[]"); 
  this.role = this.dbUsers.user.role
@@ -78,20 +104,87 @@ ngOnInit(): void {
 }
 
 
+// Gestion bouton
+boutonActif=1;
 
+// Initialiser le contenu actuel
+currentContent: string = 'categorie';
+
+// Mettre à jour le contenu actuel
+showComponant(contentId: string): void {
+  this.currentContent = contentId; 
+}
+
+menu: string = 'information';
+Actif=1;
+// Mettre à jour le contenu actuel
+showMenu(menuId: string): void {
+  this.menu = menuId;
+}
+
+ajouterEntrepot(){
+  let entrepot={
+    "nom_entrepot":this.addEntrepot,
+  }
+  this.articleService.addEntrepot(entrepot).subscribe(
+    (entrepot:any)=>{
+      Report.success('Notiflix Success',entrepot.message,'Okay',);
+      this.vider();
+      this.listeArticles();
+    },
+    (err) => {
+    }
+  )
+}
+
+listeEntrepot(){
+  this.articleService.getAllEntrepot().subscribe(
+    (entrepot:any)=>{
+      this.tabEntrepot=entrepot;
+    },
+    (err) => {
+    }
+  )
+}
 
 ajouterArticle(){
- let articles={
-   "nom_article":this.nom,
-   "description":this.desc,
-   "prix_unitaire":this.vente,
-   "type_article":this.typeArticle,
-   "prix_achat":this.achat,
-   "quantite":this.quantite,
-   "quantite_alert":this.quantiteAlerte,
-   "id_categorie_article":this.CategorieArticle,
-
- }
+let articles={
+  "nom_article": this.nom,
+  "description": this.desc,
+  "prix_achat":this.achat,
+  "prix_unitaire": this.vente,
+  "tva": this.tva,
+  "type_article": "produit",
+  "unité": this.unite,
+  "quantite": this.quantite,
+  "quantite_alert":this.quantiteAlerte,
+  "id_categorie_article":this.CategorieArticle,
+  "autres_prix": [
+    {
+      "titrePrix": this.titrePrix,
+      "montant": this.prixVente,
+      "tva": this.tvaPrix
+    }
+  ],
+  "variantes": [
+    {
+      "nomVariante": this.nomVariantes,
+      "quantiteVariante": this.quantiteVariantes
+    }
+  ],
+  "lots": [
+    {
+      "nomLot": this.Lotnom,
+      "quantiteLot": this.Lotquantite
+    }
+  ],
+  "entrepots": [
+    {
+      "entrepot_id": this.entrepotName,
+      "quantiteArt_entrepot": this.quantiteInEntrepot
+    }
+  ]
+}
  this.articleService.addArticle(articles).subscribe(
    (article:any)=>{
      Report.success('Notiflix Success',article.message,'Okay',);
@@ -106,9 +199,8 @@ ajouterArticle(){
 listeArticles() {
  this.articleService.getAllArticles().subscribe(
    (article: any) => {
-     this.tabArticle = article.articles;
-     this.tabArticleFilter = this.tabArticle;
-     console.log(this.tabArticle)
+     this.tabArticle = article;
+     this.tabArticleFilter = this.tabArticle.filter((article: any) => article.type_article == 'produit');
    },
    (err) => {
    }
@@ -126,6 +218,18 @@ vider(){
  this.quantiteAlerte='';
  this.CategorieArticle='';
  this.note='';
+ this.unite='';
+ this.tva='';
+ this.titrePrix='';
+ this.tvaPrix='';
+ this.prixVente='';
+ this.entrepotName='';
+ this.addEntrepot='';
+ this.Lotnom='';
+ this.Lotquantite='';
+ this.nomVariantes='';
+ this.quantiteVariantes='';
+ this.quantiteInEntrepot='';
 
  this.inputnom='';
  this.inputdesc='';
@@ -135,8 +239,17 @@ vider(){
  this.inputquantite='';
  this.inputquantiteAlerte='';
  this.inputCategorieArticle='';
- 
-
+ this.inputtva='';
+ this.inputunite='';
+ this.inputentrepotName='';
+ this.inputLotnom='';
+ this.inputLotquantite='';
+ this.inputnomVariantes='';
+ this.inputquantiteVariantes='';
+ this.inputquantiteInEntrepot='';
+ this.inputtitrePrix='';
+ this.inputtvaPrix='';
+ this.inputprixVente='';
 }
 
 deleteAricle(paramArticle:any){
@@ -164,8 +277,10 @@ deleteAricle(paramArticle:any){
 }
 
 currentArticle: any;
+numArticles: any;
 // Methode pour charger les infos de l'article  à modifier
 chargerInfosArticle(paramArticle:any){
+  console.log(paramArticle);
  this.currentArticle = paramArticle;
  this.inputnom = paramArticle.nom_article;
  this.inputdesc = paramArticle.description;
@@ -174,18 +289,59 @@ chargerInfosArticle(paramArticle:any){
  this.inputachat=paramArticle.prix_achat;
  this.inputquantite=paramArticle.quantite;
  this.inputquantiteAlerte=paramArticle.quantite_alert;
+ this.inputCategorieArticle=paramArticle.id_categorie_article;
+ this.inputunite=paramArticle.unité;
+ this.inputtva=paramArticle.tva;
+//  this.inputentrepotName=paramArticle.entrepots[0].entrepot_id;
+//  this.inputLotnom=paramArticle.lots[0].nomLot;
+//  this.inputLotquantite=paramArticle.lots[0].quantiteLot;
+//  this.inputnomVariantes=paramArticle.variantes[0].nomVariante;
+//  this.inputquantiteVariantes=paramArticle.variantes[0].quantiteVariante;
+//  this.inputquantiteInEntrepot=paramArticle.entrepots[0].quantiteArt_entrepot;
+//  this.inputtitrePrix=paramArticle.autres_prix[0].titrePrix;
+//  this.inputtvaPrix=paramArticle.autres_prix[0].tva;
+//  this.inputprixVente=paramArticle.autres_prix[0].montant;
+ this.numArticles=paramArticle.num_article;
 }
 
 updateArticle() {
   let articles={
+    "num_article":this.numArticles,
     "nom_article":this.inputnom,
     "description":this.inputdesc,
     "prix_unitaire":this.inputvente,
-    "type_article":this.inputtypeArticle,
+    "type_article":this.currentArticle.type_article,
     "prix_achat":this.inputachat,
     "quantite":this.inputquantite,
     "quantite_alert":this.inputquantiteAlerte,
     "id_categorie_article":this.inputCategorieArticle,
+    "unité":this.inputunite,
+    "tva":this.inputtva,
+    "autres_prix": [
+      {
+        "titrePrix": this.inputtitrePrix,
+        "montant": this.inputprixVente,
+        "tva": this.inputtvaPrix
+      }
+    ],
+    "variantes": [
+      {
+        "nomVariante": this.inputnomVariantes,
+        "quantiteVariante": this.inputquantiteVariantes
+      }
+    ],
+    "lots": [
+      {
+        "nomLot": this.inputLotnom,
+        "quantiteLot": this.inputLotquantite
+      }
+    ],
+    "entrepots": [
+      {
+        "entrepot_id": this.inputentrepotName,
+        "quantiteArt_entrepot": this.inputquantiteInEntrepot
+      }
+    ]
 
   }
   Confirm.init({
@@ -273,6 +429,7 @@ listePromos() {
       this.articleService.affecterArticle(this.idArticle,promo).subscribe(
         (response) => {
           Notify.success(response.message);
+          this.listeArticles();
           Loading.remove();
         },
         (err) => {
@@ -311,6 +468,7 @@ affecterCategorieArticle(){
       this.articleService.affecterCategorieArticle(this.idArticle,CategorieArticle).subscribe(
         (response) => {
           Notify.success(response.message);
+          this.listeArticles();
           Loading.remove();
         },
         (err) => {
@@ -324,7 +482,7 @@ affecterCategorieArticle(){
 onSearch() {
  // Recherche se fait selon le nom ou le prenom 
  this.tabArticleFilter = this.tabArticle.filter(
-   (elt: any) => (elt?.nom_article.toLowerCase().includes(this.filterValue.toLowerCase()) || elt?.type_article.toLowerCase().includes(this.filterValue.toLowerCase()) || elt?.prix_unitaire.toLowerCase().includes(this.filterValue.toLowerCase()))
+   (elt: any) => (elt?.nom_article.toLowerCase().includes(this.filterValue.toLowerCase()) || elt?.nom_categorie.toLowerCase().includes(this.filterValue.toLowerCase()))
  );
 }
 // Attribut pour la pagination
@@ -349,4 +507,31 @@ get pages(): number[] {
 get totalPages(): number {
  return Math.ceil(this.tabArticleFilter.length / this.itemsParPage);
 }
+
+ showChamps: boolean=false;
+
+ afficherChamps(){
+  this.showChamps=!this.showChamps;
+ }
+ 
+formPrix: boolean=false;
+afficherChampsPrix(){
+  this.formPrix=!this.formPrix;
+}
+
+entrepot: boolean=false;
+afficherChampsEntrepot(){
+  this.entrepot=!this.entrepot;
+}
+
+lot:boolean=false;
+afficherChampsLot(){
+  this.lot=!this.lot;
+}
+
+variantes:boolean=false;
+afficherChampsVariantes(){
+  this.variantes=!this.variantes;
+}
+
 }

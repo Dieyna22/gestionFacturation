@@ -65,6 +65,7 @@ export class InfosComponent {
     this.userService.getAllInfoSup().subscribe(
       (infoSup: any) => {
         this.InfoSup=infoSup.user;
+        console.log(this.InfoSup)
       },
       (err) => {
       }
@@ -77,7 +78,7 @@ export class InfosComponent {
     this.Inputnom = this.InfoSup.nom_entreprise;
     this.Inputtel = this.InfoSup.tel_entreprise;
     this.Inputdesc = this.InfoSup.description_entreprise;
-    this.Inputadress = this.InfoSup.adress_entreprise;
+    this.Inputadress = this.InfoSup.adresse_entreprise;
   }
 
   updateInfoSup(){

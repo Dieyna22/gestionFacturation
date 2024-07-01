@@ -18,7 +18,12 @@ export class CategorieArticleService {
 
   // liste categorie article
   getAllCategorieArticle(): Observable<any> {
-    return this.http.get<any>(`${apiUrl}/listerCategorieArticle`);
+    return this.http.get<any>(`${apiUrl}/listerCategorieProduit`);
+  }
+
+   // liste categorie service
+   getAllCategorieService(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listerCategorieService`);
   }
 
   //modifier un categorie article

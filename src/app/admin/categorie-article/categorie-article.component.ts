@@ -23,7 +23,8 @@ constructor(private http: HttpClient, private Categorie: CategorieArticleService
 
 ajouterCategorie() {
  let categorie ={
-   "nom_categorie_article":this.inputCategorie
+   "nom_categorie_article":this.inputCategorie,
+   "type_categorie_article":'produit',
  }
 
  this.Categorie.addCategorieArticle(categorie).subscribe(
@@ -59,6 +60,7 @@ chargerInfosCategorie(paramCategorie:any){
 updateCategorie() {
   let categories={
     "nom_categorie_article":this.categorie,
+    "type_categorie_article":'produit',
   }
   Confirm.init({
     okButtonBackground: '#5C6FFF',
@@ -106,6 +108,14 @@ deleteCategorie(categorieId:any){
       )
     });
 }
+
+filterValue: string = "";
+onSearch() {
+  // Recherche se fait selon le nom ou le prenom 
+  this.tabCategorieFilter = this.tabCategorie.filter(
+    (elt: any) => (elt?.nom_categorie_article.toLowerCase().includes(this.filterValue.toLowerCase()))
+  );
+ }
 
 itemsParPage = 2; // Nombre d'articles par page
 pageActuelle = 1; // Page actuelle

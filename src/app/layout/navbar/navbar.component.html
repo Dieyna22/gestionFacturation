@@ -1,34 +1,44 @@
 <!-- Navbar  -->
-<div class="entete container">
-    <div class="welcome">
-        <h4>Bienvenu 👋🏼,</h4>
-    </div>
-    <!-- -------------- -->
-    <div class="dropdown">
-        <span>
-           <img src="profil.png" alt="">
-        </span>
+   <nav class="navbar navbar-expand-lg mb-2 sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand fs-3 ms-5" routerLink="/admin">SenFacture</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-        <span>
-           <b>{{usernom}} {{nom}}</b> <br> <i>{{role}}</i>
-        </span>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <span>
-            <div class="container mt-4">
-                <div class="dropdown">
-                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton">
-                    <!-- <i class="bi bi-chevron-down"></i> -->
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li>
-                            <button class="dropdown-item btn "> Profil</button>
-                        </li>
-                        <li>
-                            <button class="dropdown-item btn" (click)="logout()">Déconnexion</button>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </span>
+        <ul class="navbar-nav navItems me-auto mb-2 mb-lg-0">
+            <li class="nav-item" routerLinkActive="navbarActive">
+              <a class="nav-link fs-5" routerLink="/client" routerLinkActive="navbarActive"><i class="fas fa-sliders-h me-2"></i>clients</a>
+            </li>
+            <li class="nav-item" routerLinkActive="navbarActive">
+              <a class="nav-link fs-5" routerLink="/article" routerLinkActive="navbarActive"><i class="fas fa-stream me-2"></i>Produits</a>
+            </li>
+            <li class="nav-item" routerLinkActive="navbarActive">
+              <a class="nav-link fs-5" routerLink="/service" routerLinkActive="navbarActive"><i class="bi bi-suitcase-lg me-2"></i>Services</a>
+            </li>
+            <li class="nav-item" routerLinkActive="navbarActive">
+              <a class="nav-link fs-5" routerLink="/facture" routerLinkActive="navbarActive"><i class="bi bi-calculator me-2"></i>Ventes</a>
+            </li>
+            <li class="nav-item" routerLinkActive="navbarActive">
+              <a class="nav-link fs-5"><i class="fas bi-pie-chart-fill me-2"></i>Rapports</a>
+            </li>
+          </ul>
+          <div class="dropdown me-5 mt-4">
+            <ng-container *ngIf="dbUsers">
+                <span style="cursor: pointer;" class="dropdown-toggle">
+                    <b>{{usernom}} {{nom}}</b> <br> <i>{{role}}</i>
+                 </span>
+            </ng-container>
+            <div class="dropdown-content">
+              <a [routerLink]="['/user']">Utilisateur</a>
+              <a [routerLink]="['/model']">Modéles</a>
+              <a [routerLink]="['/grille']">Grille tarifaire</a>
+              <a [routerLink]="['/payement']">Payement</a>
+                <hr class="dropdown-divider">
+                <a (click)=" logout()" style="cursor: pointer;">Déconnexion</a>
+            </div>		
+          </div>
+      </div>
     </div>
-   </div>
+</nav>

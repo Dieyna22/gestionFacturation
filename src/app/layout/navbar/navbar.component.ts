@@ -42,7 +42,7 @@ export class NavbarComponent {
         });
         Loading.hourglass();
         localStorage.removeItem('userOnline');
-        this.route.navigate(['/accueil']);
+        this.route.navigate(['/connexion']);
         Loading.remove();
       
       });
