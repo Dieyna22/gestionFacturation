@@ -29,6 +29,11 @@
   font-size: 20px;
   cursor: pointer;
 }
+.bi-eye{
+  color: #101BC7;
+  font-size: 20px;
+  cursor: pointer;
+}
 
   thead tr{
     padding: 8px;
