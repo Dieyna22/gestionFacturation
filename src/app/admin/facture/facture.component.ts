@@ -33,14 +33,19 @@ export class FactureComponent {
   tabCategorie: any[] = [];
 
   prenom: string = "";
-nom: string = "";
-mail: string = "";
-typeClient: string = "";
-entreprise: string = "";
-adress: string = "";
-telephone: string = "";
+  nom: string = "";
+  mail: string = "";
+  typeClient: string = "";
+  entreprise: string = "";
+  adress: string = "";
+  telephone: string = "";
 
- 
+  selectedPrefix: string = '';
+  customPrefix: string = '';
+  nextNumber: string = '00000O';
+  baseNumber: string = '000000';
+  prefix: string = '';
+  updateNum: string ='';
 
 
 desc: string = "";
@@ -68,17 +73,24 @@ commentaire:string="";
   // Gestion bouton
 boutonActif=1;
 
+sectionFacture=1;
+
 //model active
 modelActif=1;
 
 // Initialiser le contenu actuel
-currentContent: string = 'factOne';
+currentContent: string = ' ';
 
 titre: string = 'Facture';
 // Mettre à jour le contenu actuel
 showComponant(contentId: string): void {
   this.currentContent = contentId; 
-  this.titre=contentId;
+}
+
+currentDoc : string = 'Facture'
+showTypeDocument(docId:string):void{
+ this.currentDoc=docId
+ this.titre=docId;
 }
 
 currentModel : string = 'bloc'
@@ -93,6 +105,16 @@ showfactureType( typeID: string) {
   this.currentfactureType = typeID
 }
 
+currentDetail: string = 'Récapitulatif'
+showDetailFacture( detailId: string) {
+  this.currentDetail = detailId
+}
+
+currentNumConfig : string = 'sansPrefixes';
+showNumConfig(configId: string) {
+  this.currentNumConfig = configId
+}
+
 
   ngAfterViewInit() {
     this.updateTableHeaderColor();
@@ -100,7 +122,8 @@ showfactureType( typeID: string) {
 
   ngOnInit(){
     this.dbUsers = JSON.parse(localStorage.getItem("userOnline") || "[]"); 
-    
+    this.updatePrefix();
+
     this.listeClients();
     this.listeInfoSup();
     this.listeArticles();
@@ -108,6 +131,46 @@ showfactureType( typeID: string) {
     this.listePayement();
     this.listeFacture();
   }
+
+  updatePrefix() {
+    const now = new Date();
+    let datePart = '';
+
+    switch (this.selectedPrefix) {
+      case 'custom':
+        this.prefix = this.customPrefix;
+        break;
+      case 'year':
+        datePart = now.getFullYear().toString();
+        break;
+      case 'yearMonth':
+        datePart = `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}`;
+        break;
+      case 'yearMonthDay':
+        datePart = `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}`;
+        break;
+    }
+
+    if (this.selectedPrefix !== 'custom') {
+      this.prefix = this.customPrefix + datePart;
+    }
+
+    this.nextNumber = this.prefix + this.baseNumber;
+  }
+
+
+  modifyNextNumber() {
+    // Logique pour modifier le numéro de base
+    // Par exemple, ouvrir un dialogue pour éditer this.baseNumber
+    // Après modification, appeler this.updatePrefix()
+  }
+
+  onSearch() {
+    // Recherche se fait selon le nom ou le prenom 
+    this.tabFactureFilter = this.tabFactures.filter(
+      (elt: any) => (elt?.nom_client.toLowerCase().includes(this.filterValue.toLowerCase()) || elt?.type_paiement.toLowerCase().includes(this.filterValue.toLowerCase()) || elt?.num_fact.toLowerCase().includes(this.filterValue.toLowerCase()) || elt?.prenom_client.toLowerCase().includes(this.filterValue.toLowerCase()))
+    );
+   }
 
   color: string = '#467aea';
 
@@ -381,6 +444,28 @@ listeClients() {
 
 
 
+  createFactureAcompte(){
+    let  factureAcompte =
+      {
+        "titreAccomp": this.acompte,
+        "dateAccompt": this.dateDebut,
+        "dateEcheance": this.dateFin,
+        "montant": this.montantAcompte,
+        "commentaire": this.commentaire
+      }
+      this.docService.createFactureAcompte(factureAcompte).subscribe(
+        (facture)=>{
+          // console.log(facture.message);
+          Report.success('Notiflix Success',facture.message,'Okay',);
+          this.viderchamps();
+        },
+        (err)=>{
+          console.log(err);
+        }
+      )
+    
+  }
+
   noteFacture:string="";
   createFacture(){
     let facture = 
@@ -458,15 +543,20 @@ listeClients() {
         prix_total_article: number,
         prix_total_tva_article: number
       }>,
-      "facture_accompts": [
-        {
-          titreAccomp: this.acompte,
-          dateAccompt: this.dateDebut,
-          dateEcheance: this.dateFin,
-          montant: this.montantAcompte,
-          commentaire: this.commentaire
-        }
-      ]
+          // titreAccomp: this.acompte,
+          // dateAccompt: this.dateDebut,
+          // dateEcheance: this.dateFin,
+          // montant: this.montantAcompte,
+          // commentaire: this.commentaire
+      // "facture_accompts": [
+      //   {
+      //     titreAccomp: this.acompte,
+      //     dateAccompt: this.dateDebut,
+      //     dateEcheance: this.dateFin,
+      //     montant: this.montantAcompte,
+      //     commentaire: this.commentaire
+      //   }
+      // ]
     }
     
     for (let i = 0; i < this.rows.length; i++) {
@@ -523,7 +613,7 @@ listeClients() {
     if(this.typePaiement=='immediat'){
       this.docService.createFacture(facture).subscribe(
         (facture)=>{
-          // console.log(facture.message);
+          console.log(facture.message);
           Report.success('Notiflix Success',facture.message,'Okay',);
           this.viderchamps();
         },
@@ -545,7 +635,7 @@ listeClients() {
     }  if (this.typePaiement=='facture_Accompt'){
       this.docService.createFacture(factureAcompte).subscribe(
         (facture)=>{
-          // console.log(facture.message);
+          console.log(facture);
           Report.success('Notiflix Success',facture.message,'Okay',);
           this.viderchamps();
         },
@@ -558,11 +648,12 @@ listeClients() {
 
   tabFactures:any[] =[];
   tabFactureFilter:any[] =[];
-  listeFacture(){
+  listeFacture(){ 
     this.docService.getAllFacture().subscribe(
       (factures) => {
         this.tabFactures = factures.factures;
         this.tabFactureFilter = this.tabFactures;
+        console.log(this.tabFactures);
       },
       (err) => {
         console.log(err);
@@ -596,6 +687,157 @@ listeClients() {
       }
     )
   }
+
+
+
+client:any
+article:any
+echeance:any
+acompteFacture:any
+detailFacture:any;
+currentIdFacture:any
+  details(paramFacture :any){
+    this.currentIdFacture = paramFacture;
+    this.docService.DetailFacture(paramFacture).subscribe(
+      (detail) => {
+        this.detailFacture = detail.facture_details;
+        this.client  =this.detailFacture.client
+        this.article  =this.detailFacture.articles
+        this.echeance  =this.detailFacture.echeances
+        this.acompteFacture  =this.detailFacture.factures_accomptes
+      this.listeEcheanceFacture();
+      this.listePaiementFacture();
+      },
+      (err) => {
+        console.log(err);
+      }
+    )
+  }
+
+
+
+  supprimerFacture(idFacture :any){
+    console.log(idFacture);
+    Confirm.init({
+      okButtonBackground: '#FF1700',
+      titleColor: '#FF1700'
+    });
+    Confirm.show('Confirmation',
+    'Voullez-vous supprimer cette facture?',
+    'Oui','Non',() => 
+      {
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.docService.deleteFacture(idFacture).subscribe(
+          (response)=>{
+            Notify.success(response.message);
+            this.listeFacture();
+            Loading.remove()
+          }
+        )
+      });
+  }
+
+
+   // liste echeance par facture
+   tabEcheanceFacture:any[]=[]
+   listeEcheanceFacture(){
+    this.docService.echeanceParFacture(this.currentIdFacture).subscribe(
+      (echeances) => {
+        this.tabEcheanceFacture = echeances.echeances;
+        console.log(this.tabEcheanceFacture);
+      },
+      (err) => {
+        console.log(err);
+      }
+    )
+  }
+
+
+  datePrevu: string = '';
+  dateRecu: string = '';
+  montantEcheance: string = '';
+  moyen: string = '';
+  noteEcheance: string = '';
+  currentEcheance:any;
+  chargerInfosEcheance(paramEcheance:any){
+    this.currentEcheance = paramEcheance;
+    this.datePrevu = paramEcheance.date_pay_echeance;
+    this.montantEcheance = paramEcheance.montant_echeance;
+    this.noteEcheance = paramEcheance.commentaire;
+  }
+
+  echeanceEnPayementRecu(){
+    let echeance ={
+      date_prevu: this.datePrevu,
+      date_reçu: this.dateRecu,
+      montant: this.montantEcheance,
+      commentaire: this.noteEcheance,
+      id_paiement: this.moyen,
+    }
+    this.docService.payerEcheance(this.currentEcheance.id , echeance).subscribe(
+      (res) => {
+        console.log(res);
+        Report.success('Notiflix Success',res.message,'Okay',);
+        this.viderchampsEcheance();
+        this.listeEcheanceFacture();
+        this.listePaiementFacture();
+      },
+      (err) => {
+        console.log(err);
+      }
+    )
+  }
+
+  viderchampsEcheance(){
+    this.datePrevu = '';
+    this.dateRecu = '';
+    this.montantEcheance = '';
+    this.noteEcheance = '';
+    this.moyen = '';
+  }
+
+  // liste payment reçu par facture
+  tabPaiementFacture:any[]=[]
+  listePaiementFacture(){
+    this.docService.paymentRecuParFacture(this.currentIdFacture).subscribe(
+      (paiements) => {
+        this.tabPaiementFacture = paiements.paiements_recus;
+        console.log(this.tabPaiementFacture);
+      },
+      (err) => {
+        console.log(err);
+      }
+    )
+  }
+
+  paymentRecuEnecheance(paramPayment:any){
+      Confirm.init({
+        okButtonBackground: '#FF1700',
+        titleColor: '#FF1700'
+      });
+      Confirm.show('Confirmation',
+      'Voullez-vous transformer ce payment reçu en échèance?',
+      'Oui','Non',() => 
+        {
+          Loading.init({
+            svgColor: '#5C6FFF',
+          });
+          Loading.hourglass();
+          this.docService.PaiementEnEcheance(paramPayment).subscribe(
+            (response)=>{
+              Notify.success(response.message);
+              this.listeEcheanceFacture();
+              this.listePaiementFacture();
+              Loading.remove()
+            }
+          )
+        });
+  }
+
+
 
   isPreview: boolean = false;
 
