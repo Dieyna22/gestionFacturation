@@ -28,7 +28,18 @@
               "src/styles.css",
               "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
-            "scripts": []
+            "scripts": [],
+            "allowedCommonJsDependencies": [
+              "canvg",
+              "core-js",
+              "raf",
+              "rgbcolor",
+              "html2canvas",
+              "notiflix/build/notiflix-report-aio",
+              "notiflix/build/notiflix-loading-aio",
+              "notiflix/build/notiflix-notify-aio",
+              "notiflix/build/notiflix-confirm-aio"
+            ]
           },
           "configurations": {
             "production": {

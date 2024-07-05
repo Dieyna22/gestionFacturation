@@ -268,7 +268,7 @@ padding: 10px;
 
 .btnPosition{
  display: flex;
- justify-content: end;
+ justify-content: flex-end;
 }
 
 .company-info p{
@@ -631,4 +631,61 @@ textarea {
   cursor: pointer;
   width: 100%;
   margin-top: 20px;
+}
+
+.date-inputs {
+  margin-top: 20px;
+}
+.date-input {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.date-input label {
+  margin-right: 10px;
+  min-width: 150px;
+}
+.date-input input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+.actions {
+  margin-bottom: 20px;
+}
+.actions a {
+  display: block;
+  color: #0066cc;
+  margin-bottom: 10px;
+}
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.buttons .btn {
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 250px;
+}
+.buttons .btn-primary {
+  background-color: #0088cc;
+  color: white;
+}
+.buttons .btn-success {
+  background-color: #28a745;
+  color: white;
+}
+.buttons .btn-secondary {
+  background-color: #f8f9fa;
+  color: #333;
+  border: 1px solid #ccc;
+}
+.buttons .btn-Annuler{
+  background-color: #e74c3c;
+  color: white;
 }

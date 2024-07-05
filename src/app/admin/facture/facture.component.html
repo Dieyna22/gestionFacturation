@@ -37,7 +37,7 @@
                     <li><a [ngClass]="{'currentItemNav': sectionFacture === 1}" (click)="showfactureType('tout')" (click)="sectionFacture = 1" (click)="listeFacture()" >Tout</a></li>
                     <li><a [ngClass]="{'currentItemNav': sectionFacture === 2}" (click)="showfactureType('echeance')" (click)="sectionFacture = 2" (click)="listeFactureEcheance()">Facture d'échèance</a></li>
                     <li><a [ngClass]="{'currentItemNav': sectionFacture === 3}" (click)="showfactureType('acompte')" (click)="sectionFacture = 3" (click)="listeFactureAcompte()" >Facture d'acompte</a></li>
-                    <li><a  >Facture Profromat</a></li>
+                    <li><a [ngClass]="{'currentItemNav': sectionFacture === 4}" (click)="showfactureType('immediat')" (click)="sectionFacture = 4 "  (click)="listeFactureImmediat()">Facture Profromat</a></li>
                 </ul>
               </div>
         </div>
@@ -139,6 +139,38 @@
             </tbody>
         </table>
     </div>
+     <!-- immediat -->
+     <div class="table-responsive" id="immediat"  *ngIf="currentfactureType==='immediat'" >
+      <table class="table table-hover mb-4">
+          <thead class="mb-2">
+              <tr>
+                  <th scope="col">Numéro </th>
+                  <th scope="col">Date Facture </th>
+                  <th scope="col">Type Facture </th>
+                  <th scope="col">Client </th>
+                  <th scope="col">TotalHT </th>
+                  <th scope="col">TotalTTC </th>
+                  <th scope="col">Statut </th>
+                  <th scope="col">Action </th>
+              </tr>
+          </thead>
+          <tbody *ngFor="let facture of  getItemsPage()">
+          <tr>
+              <td>{{facture.num_fact}}</td>
+              <td>{{facture.date_creation}}</td>
+              <td>{{facture.type_paiement}}</td>
+              <td>{{facture.prenom_client}}</td>
+              <td>{{facture.prix_HT}}</td>
+              <td>{{facture.prix_TTC}}</td>
+              <td>{{facture.statut_paiement}}</td>
+              <td>
+                <i class="bi bi-eye me-2" title="details" data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.id)"></i>
+                <i class="bi bi-trash3" title="Supprimer" (click)="supprimerFacture(facture.id)" ></i>
+              </td>
+          </tr>
+          </tbody>
+      </table>
+  </div>
 
         <!-- Pagination  -->
         <div *ngIf="getItemsPage().length">
@@ -252,7 +284,7 @@
           <div class="invoice container">
             <div class="row">
               <div class="col-7" *ngIf="InfoSup">
-                <img src="http://127.0.0.1:8000{{InfoSup.logo}}" class="logo" style="width: 125px; height: 125px;">
+                <!-- <img src="http://127.0.0.1:8000{{InfoSup.logo}}" class="logo" style="width: 125px; height: 125px;"> -->
               
                 <div class="company-info" *ngIf="InfoSup">
                   <h3>Informations entreprise</h3>
@@ -390,13 +422,13 @@
           
 
           <div class="form-check ">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" (click)="showNumConfig('sansPrefixes')" checked>
+            <input class="form-check-input" type="radio" name="flexRadioDefault" value="par_defaut" [(ngModel)]="numerotation"  id="flexRadioDefault1" (click)="showNumConfig('sansPrefixes')" checked>
             <label class="form-check-label" for="flexRadioDefault1">
               Numérotation par défaut (incrémentée de façon alphanumérique)
             </label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" (click)="showNumConfig('avecPrefixes')" >
+            <input class="form-check-input" type="radio" name="flexRadioDefault" value="avec_prefixe" [(ngModel)]="numerotation" id="flexRadioDefault2" (click)="showNumConfig('avecPrefixes')" >
             <label class="form-check-label" for="flexRadioDefault2">
               Numérotation avec préfixe
             </label>
@@ -410,249 +442,33 @@
                 <input type="text" [disabled]="selectedPrefix !== 'custom'" [(ngModel)]="customPrefix" (ngModelChange)="updatePrefix()">
               </label>
               <label class="radio-label">
-                <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="year" (change)="updatePrefix()">
+                <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="annee" (change)="updatePrefix()">
                 Préfixe avec l'année en cours
               </label>
               <label class="radio-label">
-                <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="yearMonth" (change)="updatePrefix()">
+                <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="annee_mois" (change)="updatePrefix()">
                 Préfixe avec l'année et le mois en cours
               </label>
               <label class="radio-label">
-                <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="yearMonthDay" (change)="updatePrefix()">
+                <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="annee_mois_jour" (change)="updatePrefix()">
                 Préfixe avec l'année, le mois et le jour en cours
               </label>
             </div>
             <div class="next-number">
               <label>Prochain numéro :</label>
-              <input type="text"  [value]="nextNumber +1" [(ngModel)]="nextNumber" readonly>
-              <a href="#" class="modify-link" (click)="modifyNextNumber()">+ Modifier le prochain numéro</a>
+              <input type="text" [(ngModel)]="nextNumber" readonly>
             </div>
           </div>
 
           <div  id="sansPrefixes" *ngIf="currentNumConfig==='sansPrefixes'">
             <div class="next-number">
               <label>Prochain numéro :</label>
-              <input type="text" [disabled]="updateNum !== 'custom'">
-              <input type="radio" name="prefix" value="custom" [(ngModel)]="updateNum">
-               Modifier le prochain numéro
-              <a href="#" class="modify-link"></a>
+              <input type="text"  [(ngModel)]="nextNumber" readonly>
             </div>
-
-            <!-- <div class="form-check">
-              <input class="form-check-input" type="checkbox" name="updateNum"  value="custom" [(ngModel)]="updateNum" id="flexCheckIndeterminate">
-              <label class="form-check-label" for="flexCheckIndeterminate">
-                Modifier le prochain numéro
-              </label>
-            </div> -->
           </div>
           
           
-          <button class="save-btn" data-bs-toggle="modal" data-bs-target="#facture">Sauvegarder</button>
-      </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal creation facture -->
-<div class="modal fade mt-5" id="facture" tabindex="-1" aria-labelledby="factureLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered  modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="factureLabel">{{titre}}</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body ">
-        <div class="seeFact" data-bs-toggle="modal" data-bs-target="#seeModéle">
-          <i class="bi bi-eye"></i>
-        </div>
-        <div class="containerFacture">
-          <div class="headerFacture">
-              <div class="date-input">
-                  <label for="date">Date:&nbsp;</label>
-                  <input type="date" id="date" value="2024-07-02">
-              </div>
-              <div class="numero-input">
-                  <label for="numero">Numéro :&nbsp;</label>
-                  <input type="text" id="numero" value="000007" readonly>&nbsp;
-                  <i class="bi bi-gear" data-bs-toggle="modal" data-bs-target="#setting"></i>
-              </div>
-          </div>
-          
-          <div class="section">
-              <div class="section-title">1. À qui je-vends ?</div>
-              <label class="checkbox-label">
-                  <input type="checkbox">&nbsp; Ne pas associer un client à cette vente
-              </label>
-              <div class="input-group mb-5">
-                <select class="form-select form-select-lg " id="client-select" [(ngModel)]="selectedClient" (change)="onClientSelected()" (input)="verifClientFonction()">
-                  <option *ngFor="let client of tabClient" [value]="client.id">{{client.prenom_client}} {{client.nom_client}}</option>
-                </select>
-                <button type="button" class="btn ajouter" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                  Ajouter un client
-                </button>
-              </div>
-              <button class="suivant-btn btn mt-3" [disabled]="!exactClient" (click)="showStep('data')">Suivant ▼</button>
-          </div>
-          
-          <div class="section">
-              <div class="section-title">2. Quels produits / services ?</div>
-              <div class="stepTwo" id="data" *ngIf="currentStep==='data'">
-                <table class="table table-bordered border-light">
-                  <thead class="thead-custom">
-                    <tr>
-                      <th>Description</th>
-                      <th>Quantité</th>
-                      <th>PU</th>
-                      <th>Réduction</th>
-                      <th>TVA</th>
-                      <th>Total HT</th>
-                      <th>Total TTC</th>
-                      <th *ngIf="!isPreview"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr *ngFor="let row of rows; let i = index">
-                      <td>
-                        <div class="input-group mb-2 me-2">
-                          <select class="form-control"  [(ngModel)]="row.selectedProduct" (change)="onProductSelect(row)"
-                            (change)="listeGrille(row)" (change)="listePriceByArticle(row)" (input)="verifProduitFonction(row)">
-                            <option value="0">Sélectionnez un produit/service</option>
-                            <option *ngFor="let product of products" [value]="product.id">{{ product.nom_article }}</option>
-                          </select>
-                          <div class="dropdown">
-                            <button class="btn ajouter text-white dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                              aria-expanded="false">Ajouter</button>
-                            <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#produit">Produit</a></li>
-                              <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#service">Service</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </td>
-                      <td><input type="number" class="form-control" [(ngModel)]="row.quantity" (input)="calculateTotal(row)"
-                          (input)="verifProduitFonction(row)"  (input)="calculateTotalTva(row)" placeholder="Quantité"></td>
-                      <td>
-                        <span *ngIf="row.promotionalPrice; else grillePrice">{{ row.promotionalPrice | number:'1.2-2' }}</span>
-                        <ng-template #grillePrice>
-                          <span *ngIf="row.grillePrice; else regularPrice">{{ row.grillePrice | number:'1.2-2' }}</span>
-                          <ng-template #regularPrice>
-                            <span>{{ row.unitPrice | number:'1.2-2' }}</span>
-                          </ng-template>
-                        </ng-template>
-                      </td>
-                      <td><input type="number" class="form-control" [(ngModel)]="row.reductionArticle"
-                          (input)="calculateTotal(row)" (input)="calculateTotalTva(row)"  (input)="verifProduitFonction(row)" placeholder="réduction"></td>
-                      <td><input type="number" class="form-control" [(ngModel)]="row.tva"
-                            (input)="calculateTotalTva(row)" (input)="verifProduitFonction(row)" placeholder="tva"></td>
-                      <td><span class="text-right">{{row.total | number:'1.2-2' }}</span></td>
-                      <td><span class="text-right">{{row.totalTTC | number:'1.2-2' }}</span></td>
-                      <td *ngIf="!isPreview"><button class="btn btn-danger btnDelete btn-sm" (click)="deleteRow(i)"><i
-                            class="bi bi-trash"></i></button></td>
-                    </tr>
-                  </tbody>
-                </table>
-                <button class="btn " (click)="addRow()" *ngIf="!isPreview"><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne
-                </button>
-                <div class="row mb-5">
-                  <div class="col-4 mt-5">
-                    <div class="form-floating">
-                      <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"
-                        name="noteFacture" [(ngModel)]="noteFacture"></textarea>
-                      <label for="floatingTextarea2">note</label>
-                    </div>
-                  </div>
-                  <div class="col-8">
-                    <br>
-                    <br>
-                    <table class="table table-sm text-right">
-                      <tr>
-                        <td><strong>Total HT</strong></td>
-                        <td class="text-right"> <span class="font-weight-bold">{{ total | number:'1.2-2' }}</span> FCfa</td>
-                      </tr>
-                      <tr>
-                        <td><strong>TVA</strong></td>
-                        <td class="text-right"> <span class="font-weight-bold">{{ totalTVA | number:'1.2-2' }}</span> FCfa</td>
-                      </tr>
-                      <tr>
-                        <td><strong>Total TTC</strong></td>
-                        <td class="text-right"> <span class="font-weight-bold">{{ totalTTC | number:'1.2-2' }}</span> FCfa</td>
-                      </tr>
-                      <tr>
-                        <td><strong>Remise</strong></td>
-                        <input type="number" name="remise" [(ngModel)]="remise" (input)="calculateGrandTotalAvecRemise()">
-                      </tr>
-                      <tr>
-                        <td><strong>Total net à payer</strong></td>
-                        <td class="text-right"> <span class="font-weight-bold">{{ totalRemise | number:'1.2-2' }}</span> FCfa</td>
-                      </tr>
-                    </table>
-                  </div>
-                </div>
-                <button class="suivant-btn btn mt-3" type="button" [disabled]="!exactData" (click)="showStep('prix')">Suivant ▼</button>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                  <button class="btn btnClose me-md-2" type="button" (click)="showStep('client')">Précédent ▲ </button>
-                </div>
-              </div>
-          </div>
-          
-          <div class="section">
-              <div class="section-title">3. Quand serai-je payé ?</div>
-              <div class="stepThree" id="prix" *ngIf="currentStep==='prix'">
-                <div class="section mx-auto mb-5">
-                  <div class="section-content radio-group">
-                    <div class="-title">Type de paiement :</div>
-                      <label><input type="radio" name="type-paiement" (click)="showComponant('factOne')" value="immediat" [(ngModel)]="typePaiement"> Immediat</label>
-                      <label><input type="radio" name="type-paiement" (click)="showComponant('factTwo')" value="echeance" [(ngModel)]="typePaiement"> Une ou plusieurs échéances</label>
-                      <label><input type="radio" name="type-paiement" (click)="showComponant('factThree')" value="facture_Accompt" [(ngModel)]="typePaiement"> Une ou plusieurs factures d'acompte</label>
-                  </div>
-                  <div class="section factures" id="factOne" *ngIf="currentContent==='factOne'">
-                    <div class="row g-3 align-items-center">
-                      <div class="col-auto">
-                        <label for="inputPassword6" class="col-form-label">Moyen de paiement</label>
-                        <select class="form-select form-select-lg" id="client-select" placeholder="Type de paiement..." [(ngModel)]="moyenPayement">
-                          <option *ngFor="let paye of tabPayement" [value]="paye.id">{{paye.nom_payement}}</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="section Échéance text-center w-75 mx-auto p-2" id="factTwo" *ngIf="currentContent==='factTwo'" >
-                    <span class="font-weight-bold"> <strong>Total net à payer</strong>  {{ totalRemise | number:'1.2-2' }}</span> FCfa <br>
-                    <div class="row">
-                      <ng-container class="mb-2" *ngFor="let item of input; let i = index">
-                        <div class="col-2"><label for="echeance1" class="me-1">Échéance {{i+1}}: </label></div>
-                        <div class="col-4"><input type="date"  id="echeance1" class="me-2" value="" [(ngModel)]="item.date" ></div>
-                        <div class="col-4"><input type="number" id="montant1"  class="me-2" value="" [(ngModel)]="item.prix"> </div>
-                        <div class="col-2"><i class="bi bi-x-lg" style="color: red; cursor: pointer;" (click)="deleteInput(i)"></i></div>
-                      </ng-container >
-                      <span (click)="addInput()" style="cursor: pointer;"><i class="bi bi-plus-circle me-2"></i>ajouter</span>
-                    </div>
-                  </div>
-                  <div class="section factures w-75 mx-auto p-2" id="factThree" *ngIf="currentContent==='factThree'" >
-                    <div class="section-title">Factures d'acompte :</div>
-                    <table>
-                        <tr>
-                            <th>Numéro</th>
-                            <th>Date</th>
-                            <th>Montant</th>
-                        </tr>
-                        <tr>
-                            <td colspan="3">Aucune facture d'acompte n'a été ajoutée</td>
-                        </tr>
-                    </table>
-                    <div class="section-content mt-2 mb-2">
-                       <!-- Button trigger modal -->
-                      <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#echeance">
-                        Ajouter Facture d'accompte
-                      </button>
-                    </div>
-                </div>
-                </div>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                  <button class="btn btnClose me-md-2" type="button" (click)="showStep('data')">Précédent ▲ </button>
-                  <button class="btn btnAction" type="button" [disabled]="!exactData" (click)="createFacture()">Sauvegarder</button>
-                </div>
-          </div>
+          <button class="save-btn" data-bs-toggle="modal" data-bs-target="#facture" (click)="configurationNumero()">Sauvegarder</button>
       </div>
       </div>
     </div>
@@ -821,60 +637,6 @@
   </div>
 </div>
 
-<!-- Modal facture d'accompte -->
-<div class="modal fade" id="echeance" tabindex="-1" aria-labelledby="echeanceLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="echeanceLabel">facture d'acompte</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body p-2">
-        <h2>Ajouter facture d'acompte</h2>
-        <form>
-            <div class="form-group">
-                <label for="intitule">Intitulé :</label>
-                <input type="text" id="intitule" name="intitule" name="acompte" [(ngModel)]="acompte" placeholder="Acompte 1">
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <label for="dateDebut">Date début:</label>
-                <input type="date" id="dateDebut" name="dateDebut" [(ngModel)]="dateDebut">
-              </div>
-              <div class="col-6">
-                <label for="dateFin">Date fin:</label>
-                <input type="date" id="dateFin" name="dateFin" [(ngModel)]="dateFin">
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-6">
-                <label for="totalHT">Total HT de la vente :</label>
-                <div class="currency-input">
-                    <input type="number" id="totalHT" name="totalAcompte" [(ngModel)]="totalAcompte" step="0.01">
-                </div>
-              </div>
-              <div class="col-6">
-                <label for="montant">Montant de l'acompte:</label>
-                <div class="currency-input">
-                    <input type="number" id="montant" name="montantAcompte" [(ngModel)]="montantAcompte" step="0.01">
-                </div>
-              </div>
-            </div>
-            <div class="form-group">
-                <label for="commentaire">Commentaire (affiché dans la facture) :</label>
-                <textarea id="commentaire" name="commentaire" [(ngModel)]="commentaire" rows="4"></textarea>
-            </div>
-            
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="submit"  class="btn btnAction" (click)="createFactureAcompte()" data-bs-toggle="modal" data-bs-target="#facture">Ajouter acompte</button>
-        <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- Modal détail facture -->
 <div class="modal fade mt-5" id="detailFacture" tabindex="-1" aria-labelledby="detailFactureLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -887,7 +649,7 @@
         <div class="header mb-4 d-grid gap-2 d-md-flex justify-content-md-end">
           <ul class="nav">
               <li><a [ngClass]="{'currentItemNav': boutonActif === 1}" (click)="showDetailFacture('Récapitulatif')" (click)="boutonActif = 1" >Récapitulatif</a></li>
-              <li><a [ngClass]="{'currentItemNav': boutonActif === 2}" (click)="showDetailFacture('Réglements')" (click)="boutonActif = 2">Réglements</a></li>
+              <li><a [ngClass]="{'currentItemNav': boutonActif === 2}" (click)="showDetailFacture('Réglements')" (click)="boutonActif = 2" *ngIf="detailFacture && detailFacture.type_paiement!='immediat'">Réglements</a></li>
           </ul>
         </div>
         
@@ -994,7 +756,7 @@
             <div class="payment-schedule">
               <p>
                 <span>Type de paiement : {{detailFacture.type_paiement}} </span> <br>
-                <span>Moyen de paiement : {{detailFacture.type_paiement}}</span>
+                <span>Moyen de paiement : {{detailFacture.moyen_paiement}}</span>
               </p>
               </div>
         </div> 
@@ -1126,6 +888,60 @@
   </div>
 </div>
 
+<!-- Modal facture d'accompte -->
+<div class="modal fade" id="echeance" tabindex="-1" aria-labelledby="echeanceLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="echeanceLabel">facture d'acompte</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-2">
+        <h2>Ajouter facture d'acompte</h2>
+        <form>
+            <div class="form-group">
+                <label for="intitule">Intitulé :</label>
+                <input type="text" id="intitule" name="intitule" name="acompte" [(ngModel)]="acompte" placeholder="Acompte 1">
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <label for="dateDebut">Date début:</label>
+                <input type="date" id="dateDebut" name="dateDebut" [(ngModel)]="dateDebut">
+              </div>
+              <div class="col-6">
+                <label for="dateFin">Date fin:</label>
+                <input type="date" id="dateFin" name="dateFin" [(ngModel)]="dateFin">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <label for="totalHT">Total HT de la vente :</label>
+                <div class="currency-input">
+                    <input type="number" id="totalHT" name="totalAcompte" [(ngModel)]="totalAcompte" step="0.01">
+                </div>
+              </div>
+              <div class="col-6">
+                <label for="montant">Montant de l'acompte:</label>
+                <div class="currency-input">
+                    <input type="number" id="montant" name="montantAcompte" [(ngModel)]="montantAcompte" step="0.01">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+                <label for="commentaire">Commentaire (affiché dans la facture) :</label>
+                <textarea id="commentaire" name="commentaire" [(ngModel)]="commentaire" rows="4"></textarea>
+            </div>
+            
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="submit"  class="btn btnAction" (click)="createFactureAcompte()" data-bs-toggle="modal" data-bs-target="#facture">Ajouter acompte</button>
+        <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal Echeance en payement -->
 <div class="modal fade mt-5" id="EncheanceEnPayement" tabindex="-1" aria-labelledby="EncheanceEnPayementLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -1178,146 +994,386 @@
   </div>
 </div>
 
+<!-- Modal creation facture -->
+<div class="modal fade mt-5" id="facture" tabindex="-1" aria-labelledby="factureLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered  modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="factureLabel">{{titre}}</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body ">
+        <div class="seeFact" data-bs-toggle="modal" data-bs-target="#seeModéle">
+          <i class="bi bi-eye"></i>
+        </div>
+        <div class="containerFacture">
+          <div class="headerFacture">
+              <div class="date-input">
+                  <label for="date">Date:&nbsp;</label>
+                  <input type="date" id="date" value="2024-07-02">
+              </div>
+              <div class="numero-input">
+                  <label for="numero">Numéro :&nbsp;</label>
+                  <input type="text" id="numero" [(ngModel)]="nextNumber" readonly>&nbsp;
+                  <i class="bi bi-gear" data-bs-toggle="modal" data-bs-target="#setting"></i>
+              </div>
+          </div>
+          
+          <div class="section">
+              <div class="section-title">1. À qui je-vends ?</div>
+              <label class="checkbox-label">
+                  <input type="checkbox">&nbsp; Ne pas associer un client à cette vente
+              </label>
+              <div class="input-group mb-5">
+                <select class="form-select form-select-lg " id="client-select" [(ngModel)]="selectedClient" (change)="onClientSelected()" (input)="verifClientFonction()">
+                  <option *ngFor="let client of tabClient" [value]="client.id">{{client.prenom_client}} {{client.nom_client}}</option>
+                </select>
+                <button type="button" class="btn ajouter" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  Ajouter un client
+                </button>
+              </div>
+              <button class="suivant-btn btn mt-3" [disabled]="!exactClient" (click)="showStep('data')">Suivant ▼</button>
+          </div>
+          
+          <div class="section">
+              <div class="section-title">2. Quels produits / services ?</div>
+              <div class="stepTwo" id="data" *ngIf="currentStep==='data'">
+                <table class="table table-bordered border-light">
+                  <thead class="thead-custom">
+                    <tr>
+                      <th>Description</th>
+                      <th>Quantité</th>
+                      <th>PU</th>
+                      <th>Réduction</th>
+                      <th>TVA</th>
+                      <th>Total HT</th>
+                      <th>Total TTC</th>
+                      <th *ngIf="!isPreview"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of rows; let i = index">
+                      <td>
+                        <div class="input-group mb-2 me-2">
+                          <select class="form-control"  [(ngModel)]="row.selectedProduct" (change)="onProductSelect(row)"
+                            (change)="listeGrille(row)" (change)="listePriceByArticle(row)" (input)="verifProduitFonction(row)">
+                            <option value="0">Sélectionnez un produit/service</option>
+                            <option *ngFor="let product of products" [value]="product.id">{{ product.nom_article }}</option>
+                          </select>
+                          <div class="dropdown">
+                            <button class="btn ajouter text-white dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                              aria-expanded="false">Ajouter</button>
+                            <ul class="dropdown-menu">
+                              <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#produit">Produit</a></li>
+                              <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#service">Service</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </td>
+                      <td><input type="number" class="form-control" [(ngModel)]="row.quantity" (input)="calculateTotal(row)"
+                          (input)="verifProduitFonction(row)"  (input)="calculateTotalTva(row)" placeholder="Quantité"></td>
+                      <td>
+                        <span *ngIf="row.promotionalPrice; else grillePrice">{{ row.promotionalPrice | number:'1.2-2' }}</span>
+                        <ng-template #grillePrice>
+                          <span *ngIf="row.grillePrice; else regularPrice">{{ row.grillePrice | number:'1.2-2' }}</span>
+                          <ng-template #regularPrice>
+                            <span>{{ row.unitPrice | number:'1.2-2' }}</span>
+                          </ng-template>
+                        </ng-template>
+                      </td>
+                      <td><input type="number" class="form-control" [(ngModel)]="row.reductionArticle"
+                          (input)="calculateTotal(row)" (input)="calculateTotalTva(row)"  (input)="verifProduitFonction(row)" placeholder="réduction"></td>
+                      <td><input type="number" class="form-control" [(ngModel)]="row.tva"
+                            (input)="calculateTotalTva(row)" (input)="verifProduitFonction(row)" placeholder="tva"></td>
+                      <td><span class="text-right">{{row.total | number:'1.2-2' }}</span></td>
+                      <td><span class="text-right">{{row.totalTTC | number:'1.2-2' }}</span></td>
+                      <td *ngIf="!isPreview"><button class="btn btn-danger btnDelete btn-sm" (click)="deleteRow(i)"><i
+                            class="bi bi-trash"></i></button></td>
+                    </tr>
+                    <!-- liste acompte du factute -->
+                    <tr class="mt-3">
+                      <td>Acompte 1 - Facture N° 000001 (du 28/06/2024)</td>
+                      <td>1</td>
+                      <td>PU</td>
+                      <td>Remise</td>
+                      <td>Sans TVA</td>
+                      <td>-15 000,00</td>
+                      <td>-15 000,00</td>
+                  </tr>
+                  </tbody>
+                </table>
+                <button class="btn " (click)="addRow()" *ngIf="!isPreview"><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne
+                </button>
+                <div class="row mb-5">
+                  <div class="col-4 mt-5">
+                    <div class="form-floating">
+                      <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"
+                        name="noteFacture" [(ngModel)]="noteFacture"></textarea>
+                      <label for="floatingTextarea2">note</label>
+                    </div>
+                  </div>
+                  <div class="col-8">
+                    <br>
+                    <br>
+                    <table class="table table-sm text-right">
+                      <tr>
+                        <td><strong>Total HT</strong></td>
+                        <td class="text-right"> <span class="font-weight-bold">{{ total | number:'1.2-2' }}</span> FCfa</td>
+                      </tr>
+                      <tr>
+                        <td><strong>TVA</strong></td>
+                        <td class="text-right"> <span class="font-weight-bold">{{ totalTVA | number:'1.2-2' }}</span> FCfa</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Total TTC</strong></td>
+                        <td class="text-right"> <span class="font-weight-bold">{{ totalTTC | number:'1.2-2' }}</span> FCfa</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Remise</strong></td>
+                        <input type="number" name="remise" [(ngModel)]="remise" (input)="calculateGrandTotalAvecRemise()">
+                      </tr>
+                      <tr>
+                        <td><strong>Total net à payer</strong></td>
+                        <td class="text-right"> <span class="font-weight-bold">{{ totalRemise | number:'1.2-2' }}</span> FCfa</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+                <button class="suivant-btn btn mt-3" type="button" [disabled]="!exactData" (click)="showStep('prix')">Suivant ▼</button>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                  <button class="btn btnClose me-md-2" type="button" (click)="showStep('client')">Précédent ▲ </button>
+                </div>
+              </div>
+          </div>
+          
+          <div class="section">
+              <div class="section-title">3. Quand serai-je payé ?</div>
+              <div class="stepThree" id="prix" *ngIf="currentStep==='prix'">
+                <div class="section mx-auto mb-5">
+                  <div class="section-content radio-group">
+                    <div class="-title">Type de paiement :</div>
+                      <label><input type="radio" name="type-paiement" (click)="showComponant('factOne')" value="immediat" [(ngModel)]="typePaiement"> Immediat</label>
+                      <label><input type="radio" name="type-paiement" (click)="showComponant('factTwo')" value="echeance" [(ngModel)]="typePaiement"> Une ou plusieurs échéances</label>
+                      <label><input type="radio" name="type-paiement" (click)="showComponant('factThree')" value="facture_Accompt" [(ngModel)]="typePaiement"> Une ou plusieurs factures d'acompte</label>
+                  </div>
+                  <div class="section factures" id="factOne" *ngIf="currentContent==='factOne'">
+                    <div class="row g-3 align-items-center">
+                      <div class="col-auto">
+                        <label for="inputPassword6" class="col-form-label">Moyen de paiement</label>
+                        <select class="form-select form-select-lg" id="client-select" placeholder="Type de paiement..." [(ngModel)]="moyenPayement">
+                          <option *ngFor="let paye of tabPayement" [value]="paye.id">{{paye.nom_payement}}</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="section Échéance text-center w-75 mx-auto p-2" id="factTwo" *ngIf="currentContent==='factTwo'" >
+                    <span class="font-weight-bold"> <strong>Total net à payer</strong>  {{ totalRemise | number:'1.2-2' }}</span> FCfa <br>
+                    <div class="row">
+                      <ng-container class="mb-2" *ngFor="let item of input; let i = index">
+                        <div class="col-2"><label for="echeance1" class="me-1">Échéance {{i+1}}: </label></div>
+                        <div class="col-4"><input type="date"  id="echeance1" class="me-2" value="" [(ngModel)]="item.date" ></div>
+                        <div class="col-4"><input type="number" id="montant1"  class="me-2" value="" [(ngModel)]="item.prix"> </div>
+                        <div class="col-2"><i class="bi bi-x-lg" style="color: red; cursor: pointer;" (click)="deleteInput(i)"></i></div>
+                      </ng-container >
+                      <span (click)="addInput()" style="cursor: pointer;"><i class="bi bi-plus-circle me-2"></i>ajouter</span>
+                    </div>
+                  </div>
+                  <div class="section factures w-75 mx-auto p-2" id="factThree" *ngIf="currentContent==='factThree'" >
+                    <div class="section-title">Factures d'acompte :</div>
+                    <table>
+                        <tr>
+                            <th>Numéro</th>
+                            <th>Date</th>
+                            <th>Montant</th>
+                        </tr>
+                        <tr>
+                            <td colspan="3">Aucune facture d'acompte n'a été ajoutée</td>
+                        </tr>
+                    </table>
+                    <div class="section-content mt-2 mb-2">
+                       <!-- Button trigger modal -->
+                      <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#echeance">
+                        Ajouter Facture d'accompte
+                      </button>
+                    </div>
+                </div>
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                  <button class="btn btnClose me-md-2" type="button" (click)="showStep('data')">Précédent ▲ </button>
+                  <button class="btn btnAction" type="button" [disabled]="!exactData" (click)="createFacture()">Sauvegarder</button>
+                </div>
+          </div>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
 
 <!-- Modal creation Dévis -->
 <div class="modal fade" id="devis" tabindex="-1" aria-labelledby="devisLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered  modal-xl">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="devisLabel">{{titre}}</h1>
+        <h1 class="modal-title fs-5" id="factureLabel">{{titre}}</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body container">
+      <div class="modal-body ">
         <div class="seeFact" data-bs-toggle="modal" data-bs-target="#seeModéle">
           <i class="bi bi-eye"></i>
         </div>
-       <div class="stepOne" id="client" *ngIf="currentStep==='client'">
-        <label for="client-select">Sélectionner un client :</label> <br><br>
-          <div class="input-group mb-5">
-            <select class="form-select form-select-lg" id="client-select" [(ngModel)]="selectedClient" (change)="onClientSelected()" (input)="verifClientFonction()">
-              <option *ngFor="let client of tabClient" [value]="client.id">{{client.prenom_client}} {{client.nom_client}}</option>
-            </select>
-            <button type="button" class="btn ajouter" data-bs-toggle="modal" data-bs-target="#exampleModal">
-              Ajouter un client
-            </button>
+        <div class="containerFacture">
+          <div class="headerFacture">
+            <div class="date-inputs">
+              <div class="date-input">
+                  <label for="date-devis">Date du devis :</label>
+                  <input type="date" id="date-devis" value="05/07/2024">
+              </div>
+              <div class="date-input">
+                  <label for="date-validite">Valable jusqu'au :</label>
+                  <input type="date" id="date-validite">
+              </div>
           </div>
-        <button class="btn btnAction float-end" [disabled]="!exactClient" (click)="showStep('data')">Suivant</button>
-       </div>
-       <div class="stepTwo" id="data" *ngIf="currentStep==='data'">
-        <table class="table table-bordered border-light">
-          <thead class="thead-custom">
-            <tr>
-              <th>Description</th>
-              <th>Quantité</th>
-              <th>PU</th>
-              <th>Réduction</th>
-              <th>TVA</th>
-              <th>Total HT</th>
-              <th>Total TTC</th>
-              <th *ngIf="!isPreview"></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let row of rows; let i = index">
-              <td>
-                <div class="input-group mb-2 me-2">
-                  <select class="form-control"  [(ngModel)]="row.selectedProduct" (change)="onProductSelect(row)"
-                    (change)="listeGrille(row)" (change)="listePriceByArticle(row)" (input)="verifProduitFonction(row)">
-                    <option value="0">Sélectionnez un produit/service</option>
-                    <option *ngFor="let product of products" [value]="product.id">{{ product.nom_article }}</option>
-                  </select>
-                  <div class="dropdown">
-                    <button class="btn ajouter text-white dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                      aria-expanded="false">Ajouter</button>
-                    <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#produit">Produit</a></li>
-                      <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#service">Service</a></li>
-                    </ul>
+              <div class="numero-input">
+                  <label for="numero">Numéro :&nbsp;</label>
+                  <input type="text" id="numero" [(ngModel)]="nextNumber" readonly>&nbsp;
+                  <i class="bi bi-gear" data-bs-toggle="modal" data-bs-target="#setting"></i>
+              </div>
+          </div>
+          
+          <div class="section">
+              <div class="section-title">1. À qui je-vends ?</div>
+              <label class="checkbox-label">
+                  <input type="checkbox">&nbsp; Ne pas associer un client à cette vente
+              </label>
+              <div class="input-group mb-5">
+                <select class="form-select form-select-lg " id="client-select" [(ngModel)]="selectedClient" (change)="onClientSelected()" (input)="verifClientFonction()">
+                  <option *ngFor="let client of tabClient" [value]="client.id">{{client.prenom_client}} {{client.nom_client}}</option>
+                </select>
+                <button type="button" class="btn ajouter" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  Ajouter un client
+                </button>
+              </div>
+              <button class="suivant-btn btn mt-3" [disabled]="!exactClient" (click)="showStep('data')">Suivant ▼</button>
+          </div>
+          
+          <div class="section">
+              <div class="section-title">2. Quels produits / services ?</div>
+              <div class="stepTwo" id="data" *ngIf="currentStep==='data'">
+                <table class="table table-bordered border-light">
+                  <thead class="thead-custom">
+                    <tr>
+                      <th>Description</th>
+                      <th>Quantité</th>
+                      <th>PU</th>
+                      <th>Réduction</th>
+                      <th>TVA</th>
+                      <th>Total HT</th>
+                      <th>Total TTC</th>
+                      <th *ngIf="!isPreview"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let row of rows; let i = index">
+                      <td>
+                        <div class="input-group mb-2 me-2">
+                          <select class="form-control"  [(ngModel)]="row.selectedProduct" (change)="onProductSelect(row)"
+                            (change)="listeGrille(row)" (change)="listePriceByArticle(row)" (input)="verifProduitFonction(row)">
+                            <option value="0">Sélectionnez un produit/service</option>
+                            <option *ngFor="let product of products" [value]="product.id">{{ product.nom_article }}</option>
+                          </select>
+                          <div class="dropdown">
+                            <button class="btn ajouter text-white dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                              aria-expanded="false">Ajouter</button>
+                            <ul class="dropdown-menu">
+                              <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#produit">Produit</a></li>
+                              <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#service">Service</a></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </td>
+                      <td><input type="number" class="form-control" [(ngModel)]="row.quantity" (input)="calculateTotal(row)"
+                          (input)="verifProduitFonction(row)"  (input)="calculateTotalTva(row)" placeholder="Quantité"></td>
+                      <td>
+                        <span *ngIf="row.promotionalPrice; else grillePrice">{{ row.promotionalPrice | number:'1.2-2' }}</span>
+                        <ng-template #grillePrice>
+                          <span *ngIf="row.grillePrice; else regularPrice">{{ row.grillePrice | number:'1.2-2' }}</span>
+                          <ng-template #regularPrice>
+                            <span>{{ row.unitPrice | number:'1.2-2' }}</span>
+                          </ng-template>
+                        </ng-template>
+                      </td>
+                      <td><input type="number" class="form-control" [(ngModel)]="row.reductionArticle"
+                          (input)="calculateTotal(row)" (input)="calculateTotalTva(row)"  (input)="verifProduitFonction(row)" placeholder="réduction"></td>
+                      <td><input type="number" class="form-control" [(ngModel)]="row.tva"
+                            (input)="calculateTotalTva(row)" (input)="verifProduitFonction(row)" placeholder="tva"></td>
+                      <td><span class="text-right">{{row.total | number:'1.2-2' }}</span></td>
+                      <td><span class="text-right">{{row.totalTTC | number:'1.2-2' }}</span></td>
+                      <td *ngIf="!isPreview"><button class="btn btn-danger btnDelete btn-sm" (click)="deleteRow(i)"><i
+                            class="bi bi-trash"></i></button></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <button class="btn " (click)="addRow()" *ngIf="!isPreview"><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne
+                </button>
+                <div class="row mb-5">
+                  <div class="col-4 mt-5">
+                    <div class="form-floating">
+                      <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"
+                        name="noteFacture" [(ngModel)]="noteFacture"></textarea>
+                      <label for="floatingTextarea2">note</label>
+                    </div>
+                  </div>
+                  <div class="col-8">
+                    <br>
+                    <br>
+                    <table class="table table-sm text-right">
+                      <tr>
+                        <td><strong>Total HT</strong></td>
+                        <td class="text-right"> <span class="font-weight-bold">{{ total | number:'1.2-2' }}</span> FCfa</td>
+                      </tr>
+                      <tr>
+                        <td><strong>TVA</strong></td>
+                        <td class="text-right"> <span class="font-weight-bold">{{ totalTVA | number:'1.2-2' }}</span> FCfa</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Total TTC</strong></td>
+                        <td class="text-right"> <span class="font-weight-bold">{{ totalTTC | number:'1.2-2' }}</span> FCfa</td>
+                      </tr>
+                      <tr>
+                        <td><strong>Remise</strong></td>
+                        <input type="number" name="remise" [(ngModel)]="remise" (input)="calculateGrandTotalAvecRemise()">
+                      </tr>
+                      <tr>
+                        <td><strong>Total net à payer</strong></td>
+                        <td class="text-right"> <span class="font-weight-bold">{{ totalRemise | number:'1.2-2' }}</span> FCfa</td>
+                      </tr>
+                    </table>
                   </div>
                 </div>
-              </td>
-              <td><input type="number" class="form-control" [(ngModel)]="row.quantity" (input)="calculateTotal(row)"
-                  (input)="verifProduitFonction(row)"  (input)="calculateTotalTva(row)" placeholder="Quantité"></td>
-              <td>
-                <span *ngIf="row.promotionalPrice; else grillePrice">{{ row.promotionalPrice | number:'1.2-2' }}</span>
-                <ng-template #grillePrice>
-                  <span *ngIf="row.grillePrice; else regularPrice">{{ row.grillePrice | number:'1.2-2' }}</span>
-                  <ng-template #regularPrice>
-                    <span>{{ row.unitPrice | number:'1.2-2' }}</span>
-                  </ng-template>
-                </ng-template>
-              </td>
-              <td><input type="number" class="form-control" [(ngModel)]="row.reductionArticle"
-                  (input)="calculateTotal(row)" (input)="calculateTotalTva(row)"  (input)="verifProduitFonction(row)" placeholder="réduction"></td>
-              <td><input type="number" class="form-control" [(ngModel)]="row.tva"
-                    (input)="calculateTotalTva(row)" (input)="verifProduitFonction(row)" placeholder="tva"></td>
-              <td><span class="text-right">{{row.total | number:'1.2-2' }}</span></td>
-              <td><span class="text-right">{{row.totalTTC | number:'1.2-2' }}</span></td>
-              <td *ngIf="!isPreview"><button class="btn btn-danger btnDelete btn-sm" (click)="deleteRow(i)"><i
-                    class="bi bi-trash"></i></button></td>
-            </tr>
-          </tbody>
-        </table>
-        <button class="btn " (click)="addRow()" *ngIf="!isPreview"><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne
-        </button>
-        <div class="row mb-5">
-          <div class="col-4 mt-5">
-            <div class="form-floating">
-              <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"
-                name="noteFacture" [(ngModel)]="noteFacture"></textarea>
-              <label for="floatingTextarea2">note</label>
-            </div>
+                <button class="suivant-btn btn mt-3" type="button" [disabled]="!exactData" (click)="showStep('prix')">Suivant ▼</button>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                  <button class="btn btnClose me-md-2" type="button" (click)="showStep('client')">Précédent ▲ </button>
+                </div>
+              </div>
           </div>
-          <div class="col-8">
-            <br>
-            <br>
-            <table class="table table-sm text-right">
-              <tr>
-                <td><strong>Total HT</strong></td>
-                <td class="text-right"> <span class="font-weight-bold">{{ total | number:'1.2-2' }}</span> FCfa</td>
-              </tr>
-              <tr>
-                <td><strong>TVA</strong></td>
-                <td class="text-right"> <span class="font-weight-bold">{{ totalTVA | number:'1.2-2' }}</span> FCfa</td>
-              </tr>
-              <tr>
-                <td><strong>Total TTC</strong></td>
-                <td class="text-right"> <span class="font-weight-bold">{{ totalTTC | number:'1.2-2' }}</span> FCfa</td>
-              </tr>
-              <tr>
-                <td><strong>Remise</strong></td>
-                <input type="number" name="remise" [(ngModel)]="remise" (input)="calculateGrandTotalAvecRemise()">
-              </tr>
-              <tr>
-                <td><strong>Total net à payer</strong></td>
-                <td class="text-right"> <span class="font-weight-bold">{{ totalRemise | number:'1.2-2' }}</span> FCfa</td>
-              </tr>
-            </table>
+          
+          <div class="section" id="prix" *ngIf="currentStep==='prix'">
+            <div class="actions">
+              <a href="#">Associer un échéancier</a>
+              <a href="#">Associer une facture d'acompte</a>
           </div>
-        </div>
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <button class="btn btnClose me-md-2" type="button" (click)="showStep('client')">Précèdent</button>
-          <button class="btn btnAction" type="button" [disabled]="!exactData" (click)="showStep('prix')">Suivant</button>
-        </div>
+          <div class="buttons">
+              <button class="btn btn-primary">Valider devis</button>
+              <button class="btn btn-success">Transformer en vente</button>
+              <button class="btn btn-secondary">Transformer en commande</button>
+              <button class="btn btn-Annuler">Annuler ce devis</button>
+          </div>
+          <button class="btn suivant-btn mt-3" type="button" (click)="showStep('data')">Précédent ▲ </button>
       </div>
-       <div class="stepThree" id="prix" *ngIf="currentStep==='prix'">
-        <p>
-          <span><a href="">Associer à une facture d'échèance</a></span> <br>
-          <span><a href="">Associer à une facture d'acompte</a></span>
-        </p>
-
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-          <button class="btn btnClose me-md-2" type="button" (click)="showStep('data')">Précèdent</button>
-          <button class="valider btn btn-sm">Valider ce devis</button>
-          <button class="transformer-vente btn btn-sm">Transformer en vente</button>
-          <button class="transformer-commande btn btn-sm">Transformer en commande</button>
-          <button class="annuler btn btn-sm">Annuler ce devis</button>
-          <!-- <div class="containerbtn">
-        </div> -->
-        </div>
-     
-       </div>
       </div>
     </div>
   </div>
+</div>
 </div>
