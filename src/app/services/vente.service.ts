@@ -11,6 +11,12 @@ export class VenteService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
+
+  // Configuration numéro facture
+  configNumero(numeroFacture:any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/configurerNumeros`,numeroFacture);
+  }
+
   // crée facture 
   createFacture(facture: any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/creerFacture`, facture);

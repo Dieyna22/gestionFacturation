@@ -46,6 +46,7 @@ export class FactureComponent {
   baseNumber: string = '000000';
   prefix: string = '';
   updateNum: string ='';
+  numerotation : string ='';
 
 
 desc: string = "";
@@ -132,6 +133,27 @@ showNumConfig(configId: string) {
     this.listeFacture();
   }
 
+
+
+  configurationNumero(){
+    let numFacture =
+    {
+      type_document:'facture',
+      type_numerotation:this.numerotation,
+      prefixe:this.customPrefix,
+      format:this.selectedPrefix,
+    }
+
+    this.docService.configNumero(numFacture).subscribe(
+      (response) => {
+        console.log('Configuration numero : ', response);
+      },
+      (error) => {
+        console.error('Erreur lors de la configuration du numérotation : ', error);
+      }
+    )
+  }
+
   updatePrefix() {
     const now = new Date();
     let datePart = '';
@@ -140,13 +162,13 @@ showNumConfig(configId: string) {
       case 'custom':
         this.prefix = this.customPrefix;
         break;
-      case 'year':
+      case 'annee':
         datePart = now.getFullYear().toString();
         break;
-      case 'yearMonth':
+      case 'annee_mois':
         datePart = `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}`;
         break;
-      case 'yearMonthDay':
+      case 'annee_mois_jour':
         datePart = `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}`;
         break;
     }
@@ -155,14 +177,7 @@ showNumConfig(configId: string) {
       this.prefix = this.customPrefix + datePart;
     }
 
-    this.nextNumber = this.prefix + this.baseNumber;
-  }
-
-
-  modifyNextNumber() {
-    // Logique pour modifier le numéro de base
-    // Par exemple, ouvrir un dialogue pour éditer this.baseNumber
-    // Après modification, appeler this.updatePrefix()
+    this.nextNumber = this.prefix + this.baseNumber +1;
   }
 
   onSearch() {
@@ -218,7 +233,6 @@ vider(){
   this.entreprise='';
   this.adress='';
   this.telephone='';
- 
  }
 
 listeClients() {
@@ -646,14 +660,37 @@ listeClients() {
    
   }
 
+  innoviceNumber:any
   tabFactures:any[] =[];
   tabFactureFilter:any[] =[];
   listeFacture(){ 
     this.docService.getAllFacture().subscribe(
       (factures) => {
         this.tabFactures = factures.factures;
+        this.innoviceNumber = factures.factures;
         this.tabFactureFilter = this.tabFactures;
-        console.log(this.tabFactures);
+        console.log(this.innoviceNumber[0].num_fact);
+        // this.nextNumber = this.innoviceNumber[0].num_fact +1;
+        let currentInvoiceNumber = this.innoviceNumber[0].num_fact;
+        let prefix = currentInvoiceNumber.slice(0, -6); // "DS2024"
+        let numericPart = parseInt(currentInvoiceNumber.slice(-6)); // 000001
+
+        let nextInvoiceNumber = numericPart + 1; // 2
+        this.nextNumber = prefix + nextInvoiceNumber.toString().padStart(6, '0');
+        console.log(this.nextNumber);
+      },
+      (err) => {
+        console.log(err);
+      }
+    )
+  }
+
+  tabFacturesImmediat:any[]=[];
+  listeFactureImmediat(){ 
+    this.docService.getAllFacture().subscribe(
+      (factures) => {
+        this.tabFacturesImmediat = factures.factures;
+        this.tabFactureFilter = this.tabFacturesImmediat.filter((facture: any) => facture.type_paiement== 'immediat');
       },
       (err) => {
         console.log(err);
