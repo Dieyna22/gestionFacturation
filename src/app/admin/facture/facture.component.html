@@ -25,7 +25,7 @@
   <!-- Tableau Facture -->
   <div class="col-md-12 px-4" id="Facture" *ngIf="currentDoc==='Facture'">
     <div class="card mb-4 px-4 py-2 pt-4 rounded-4">
-      <button type="button" class="btn ajouter  col-md-2 mb-3 mt-4" data-bs-toggle="modal" data-bs-target="#facture">
+      <button type="button" class="btn ajouter  col-md-2 mb-3 mt-4" data-bs-toggle="modal" data-bs-target="#facture" (click)="removeLocalStorage()">
         Ajouter Vente
      </button>
         <div class="row sectionEspace ligneReseauSearch mb-3">
@@ -266,10 +266,9 @@
 <div class="modal fade mt-5" id="seeModéle" tabindex="-1" aria-labelledby="seeModéleLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
-      <!-- <div class="modal-header">
-        <h1 class="modal-title fs-5" id="seeModéleLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div> -->
+      <div class="d-grid gap-2 p-2 d-md-flex justify-content-md-end">
+        <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
+      </div>
       <div class="modal-body container">
         <div class="imprimFact" >
           <i class="bi bi-printer"></i>
@@ -284,22 +283,30 @@
           <div class="invoice container">
             <div class="row">
               <div class="col-7" *ngIf="InfoSup">
-                <!-- <img src="http://127.0.0.1:8000{{InfoSup.logo}}" class="logo" style="width: 125px; height: 125px;"> -->
-              
-                <div class="company-info" *ngIf="InfoSup">
-                  <h3>Informations entreprise</h3>
-                    <p>Nom de l'entreprise :  {{ InfoSup.nom_entreprise }} </p>
-                    <p>Adresse : {{ InfoSup.adress_entreprise}}</p>
-                    <p>Téléphone : {{ InfoSup.tel_entreprise }}</p>
-                </div><br>
+                <img src="http://127.0.0.1:8000{{InfoSup.logo}}" class="logo" style="width: 125px; height: 125px;">
+                <table>
+                  <thead class="thead-custom">
+                      <tr>
+                        <th> Informations entreprise</th>
+                      </tr>
+                  </thead>
+                  <tbody class="bg-secondary text-dark p-5 bg-opacity-25" >
+                    <p class="me-3 ms-3">Nom de l'entreprise :  {{ InfoSup.nom_entreprise }} </p>
+                    <p class="me-3 ms-3">Adresse : {{ InfoSup.adress_entreprise}}</p>
+                    <p class="me-3 ms-3">Téléphone : {{ InfoSup.tel_entreprise }}</p>
+                  </tbody>
+                </table>
                
-                <h6>{{ currentDate }}</h6>
+                <h4>{{ currentDate }}</h4>
                 
               </div>
               <div class="col-5">
                 <div class="invoice-number">
                   <h2>{{titre}}</h2>
-                  <p>Numéro: <strong>numéro</strong></p>
+                  <p class="fw-bold fs-5 row">
+                    <label class="col-3">Numéro: </label>
+                    <input type="text" id="numero" class="border border-0 col-4" [(ngModel)]="nextNumber" readonly>&nbsp;
+                 </p>
                 </div>
               </div>
             </div>
@@ -307,13 +314,19 @@
               <div class="col-7">
               </div>
               <div class="col-5">
-                <div class="company-info"  *ngFor="let clientSelect of currentClient">
-                  <h3>Informations client</h3>
-                  <p>Nom : {{clientSelect?.prenom_client}} {{clientSelect?.nom_client}}</p>
-                  <p>Adresse : {{clientSelect?.adress_client}}</p>
-                  <p>Téléphone : {{clientSelect?.tel_client}}</p>
-                  <p>Entreprise : {{clientSelect?.nom_entreprise}}</p>
-                </div>
+                <table>
+                  <thead class="">
+                      <tr>
+                        <th> Informations client</th>
+                      </tr>
+                  </thead>
+                  <tbody class="bg-secondary text-dark p-5 bg-opacity-25" *ngFor="let clientSelect of currentClient">
+                    <p class="me-3 ms-3">Nom : {{clientSelect?.prenom_client}} {{clientSelect?.nom_client}}</p>
+                    <p class="me-3 ms-3">Adresse : {{clientSelect?.adress_client}}</p>
+                    <p class="me-3 ms-3">Téléphone : {{clientSelect?.tel_client}}</p>
+                    <p class="me-3 ms-3">Entreprise : {{clientSelect?.nom_entreprise}}</p>
+                  </tbody>
+                </table>
               </div>
             </div>
             <br>
@@ -363,7 +376,25 @@
               </tbody>
             </table>
             <div class="row">
-              <div class="col-6 mt-5">
+              <div class="col-6 mt-5"  >
+                <ng-container *ngIf="naturefacture==='echeance'">
+                  <h2>Échéances</h2>
+                  <table>
+                    <thead>
+                        <tr>
+                            <th>Prévue le :</th>
+                            <th>Montant :</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of input; let i = index">
+                            <td><input type="date" class="border border-0"  id="echeance1"  [(ngModel)]="item.date" ></td>
+                            <td><input type="number" class="border border-0" id="montant1"   [(ngModel)]="item.prix"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                </ng-container>
+               
               </div>
               <div class="col-6">
                 <br>
@@ -392,13 +423,29 @@
                 </table>
               </div>     
           </div>
+          <div class="row"  *ngIf="naturefacture==='facture_Accompt'">
+            <table  class="table table-bordered">
+              <thead class="thead-custom">
+                <tr>
+                  <th>Facture Acompte</th>
+                  <th>Total</th>
+              </tr>
+              </thead>
+               <tbody>
+                <tr *ngFor="let acompte of tabAcompte">
+                  <td>{{ acompte.titreAccomp }} - Facture N° {{ acompte.num_facture }} (du {{ acompte.dateEcheance }})</td>
+                  <td>{{ acompte.montant | number:'1.2-2' }}</td>
+                </tr>
+               </tbody>
+            </table>
+            <p class="total mt-2">Solde: {{totalRemise}}XOF</p>
+          </div>
           </div>
          </div>
       </div>
     </div>
   </div>
 </div>
-
 
 <!-- Modal configuration numéro -->
 <div class="modal fade mt-5" id="setting" tabindex="-1" aria-labelledby="settingLabel" aria-hidden="true">
@@ -456,7 +503,7 @@
             </div>
             <div class="next-number">
               <label>Prochain numéro :</label>
-              <input type="text" [(ngModel)]="nextNumber" readonly>
+              <input type="text" name="nextNumber" [(ngModel)]="nextNumber" readonly>
             </div>
           </div>
 
@@ -572,14 +619,6 @@
               <input type="text" class="form-control" id="validationServer02" name="quantiteAlerte" [(ngModel)]="quantiteAlerte">
              </div>
           </div>
-          <!-- <div class="mb-3 ">
-            <label for="exampleInputPassword1" class="form-label">Type Article</label>
-          <select class="form-select" aria-label="Default select example" name="type" [(ngModel)]="typeArticle">
-            <option selected disabled>Choisisez un role</option>
-            <option value="produit">Produit</option>
-            <option value="service">Service</option>
-          </select>
-        </div> -->
         <div class="form-check form-check-inline" (click)="afficherChamps()">
           <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
           <label class="form-check-label" for="inlineCheckbox1">Ajouter Catégorie</label>
@@ -646,6 +685,9 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
+        <div class="seeFact" data-bs-toggle="modal" data-bs-target="#pdfModel">
+          <i class="bi bi-eye"></i>
+        </div>
         <div class="header mb-4 d-grid gap-2 d-md-flex justify-content-md-end">
           <ul class="nav">
               <li><a [ngClass]="{'currentItemNav': boutonActif === 1}" (click)="showDetailFacture('Récapitulatif')" (click)="boutonActif = 1" >Récapitulatif</a></li>
@@ -710,39 +752,31 @@
           <table class="acompteTab">
               <thead>
                   <tr>
-                      <th>Produit / Service</th>
-                      <th>Quantité</th>
-                      <th>TVA</th>
-                      <th>Prix (unit.)</th>
-                      <th>Total</th>
+                    <th>Produit / Service</th>
+                    <th>Quantité</th>
+                    <th>TVA</th>
+                    <th>Prix unitaire</th>
+                    <th>Prix Total TTC</th>
+                    <th>Total</th>
                   </tr>
               </thead>
               <tbody>
-                  <tr>
-                      <td>montre</td>
-                      <td>1 </td>
-                      <td>Sans TVA</td>
-                      <td>75 000,00</td>
-                      <td>75 000,00</td>
-                  </tr>
-                  <tr>
-                      <td>Acompte 2 - Facture N° 000002 (du 30/06/2024)</td>
-                      <td>1</td>
-                      <td>Sans TVA</td>
-                      <td>-15 000,00</td>
-                      <td>-15 000,00</td>
-                  </tr>
-                  <tr>
-                      <td>Acompte 1 - Facture N° 000001 (du 28/06/2024)</td>
-                      <td>1</td>
-                      <td>Sans TVA</td>
-                      <td>-15 000,00</td>
-                      <td>-15 000,00</td>
+                <tr *ngFor="let article of article" >
+                  <td>{{article.nom_article}}</td>
+                  <td>{{article.quantite_article}}</td>
+                  <td>{{article.prix_achat}}</td>
+                  <td>{{article.prix_unitaire_article}}</td>
+                  <td>{{article.prix_total_tva_article}}</td>
+                  <td>{{detailFacture.prix_TTC}}</td>
+                </tr>
+                  <tr *ngFor="let acompte of acompteFacture">
+                      <td colspan="5">{{acompte.titreAccomp}} - Facture N° {{detailFacture.numero_facture}} (du {{acompte.dateEcheance}})</td>
+                      <td>{{acompte.montant}}</td>
                   </tr>
               </tbody>
               <tfoot>
                   <tr class="total-row">
-                      <td colspan="4" style="text-align: right;">Total</td>
+                      <td colspan="5" style="text-align: right;">Total</td>
                       <td>45 000,00 XOF</td>
                   </tr>
               </tfoot>
@@ -793,17 +827,14 @@
                   </tr>
               </thead>
               <tbody>
-                  <tr>
+                  <tr *ngFor="let acompte of acompteFacture">
                       <td>000001</td>
-                      <td>28/06/2024</td>
-                      <td>15 000,00 XOF</td>
-                      <td><span class="status-icon" style="color: red;">⚠</span></td>
-                  </tr>
-                  <tr>
-                      <td>000002</td>
-                      <td>30/06/2024</td>
-                      <td>15 000,00 XOF</td>
-                      <td><span class="status-icon" style="color: green;">✓</span></td>
+                      <td>{{acompte.dateEcheance}}</td>
+                      <td>{{acompte.montant}} XOF</td>
+                      <td>
+                        <span class="status-icon" style="color: red;">⚠</span>
+                        <span class="status-icon" style="color: green;">✓</span>
+                      </td>
                   </tr>
               </tbody>
           </table>
@@ -879,10 +910,237 @@
         </div>
         </div>
        </ng-container>
+       <ng-container *ngIf="detailFacture && detailFacture.type_paiement==='facture_Accompt'">
+        <div  id="Réglements"  *ngIf="currentDetail==='Réglements'">
+          <div class="totalRéglements">
+            Total: {{detailFacture.prix_TTC}}XOF
+        </div>
         
+        <div class="payment-section">
+            <div class="received-payments ">
+                <h3>Paiements reçus</h3>
+                <table>
+                  <thead>
+                      <tr>
+                          <th>Numéro</th>
+                          <th>Date</th>
+                          <th>Montant</th>
+                          <th>Action</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let paiement of tabPaiementFacture">
+                          <td>{{paiement.num_paiement}}</td>
+                          <td>{{paiement.date_recu}}</td>
+                          <td>{{paiement.montant}}</td>
+                          <td class="text-center"> <i class="bi bi-reply" title="transformer en échèance" (click)="paymentRecuEnecheance(paiement.id)"></i></td>
+                      </tr>
+                  </tbody>
+              </table>
+            </div>
+            
+            <div class="pending-payments">
+                <h3>Acomptes en attente</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Prévu</th>
+                            <th>Montant</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let acompte of tabAcompteFacture">
+                            <td>{{acompte.dateEcheance}}</td>
+                            <td>{{acompte.montant}}</td>
+                            <td class="text-center"> <i class="bi bi-wallet-fill" title="Ajouter payement" (click)="chargerInfosEcheance(acompte)" data-bs-toggle="modal" data-bs-target="#EncheanceEnPayement"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <a href="#" class="add-link">+ Ajouter une échéance</a>
+            </div>
+        </div>
+        
+        <div class="reminders">
+            <span>⚙</span> Relances automatiques (désactivé)
+        </div>
+        </div>
+       </ng-container>
     </div>
       <div class="modal-footer">
         <button type="button" class="btn btnClose" data-bs-dismiss="modal">Fermer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal pour télécharger facture -->
+<div class="modal fade mt-5" id="pdfModel" tabindex="-1" aria-labelledby="pdfModelLabel" aria-hidden="true" *ngIf="detailFacture">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="d-grid gap-2 p-2 d-md-flex justify-content-md-end">
+        <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
+      </div>
+      <div class="modal-body container">
+        <div class="imprimFact" >
+          <i class="bi bi-printer"></i>
+        </div>
+        <div class="pdfFact" (click)="generatePdf()">
+          <i class="bi bi-file-earmark-pdf"></i>
+        </div>
+        <div class="colorModéle">
+          <input type="color"  class="form-control form-control-color "  [(ngModel)]="color" (input)="onColorChange()">
+        </div>
+        <div  class="card px-4 py-2 pt-4 shadow rounded-4 container" id="print-section">
+          <div class="invoice container">
+            <div class="row">
+              <div class="col-7" *ngIf="InfoSup">
+                <img src="http://127.0.0.1:8000{{InfoSup.logo}}" class="logo" style="width: 125px; height: 125px;">
+                <table>
+                  <thead class="thead-custom">
+                      <tr>
+                        <th> Informations entreprise</th>
+                      </tr>
+                  </thead>
+                  <tbody class="bg-secondary text-dark p-5 bg-opacity-25" >
+                    <p class="me-3 ms-3">Nom de l'entreprise :  {{ InfoSup.nom_entreprise }} </p>
+                    <p class="me-3 ms-3">Adresse : {{ InfoSup.adress_entreprise}}</p>
+                    <p class="me-3 ms-3">Téléphone : {{ InfoSup.tel_entreprise }}</p>
+                  </tbody>
+                </table>
+               
+                <h4 class="mt-5"><span>{{detailFacture.date_creation | date:'yyyy-MM-dd'}}</span></h4>
+                
+              </div>
+              <div class="col-5">
+                <div class="invoice-number">
+                  <h2>{{titre}}</h2>
+                  <p class="fw-bold fs-5 row">
+                    <label class="col-3">Numéro: </label>
+                    <span>{{detailFacture.numero_facture}}</span>&nbsp;
+                 </p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-7">
+              </div>
+              <div class="col-5">
+                <table>
+                  <thead class="">
+                      <tr>
+                        <th> Informations client</th>
+                      </tr>
+                  </thead>
+                  <tbody class="bg-secondary text-dark p-5 bg-opacity-25" *ngIf="client">
+                    <span>{{client.prenom}} {{client.nom}}</span>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <br>
+            <br>
+            <br>
+           <ng-container *ngIf="detailFacture.type_paiement==='immediat' || detailFacture.type_paiement==='echeance' ">
+            <table class="detailFacture">
+              <thead>
+                  <tr>
+                      <th>Produit / Service</th>
+                      <th>Quantité</th>
+                      <th>TVA</th>
+                      <th>Prix unitaire</th>
+                      <th>Prix Total TTC</th>
+                      <th>Total</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let article of article" >
+                    <td>{{article.nom_article}}</td>
+                    <td>{{article.quantite_article}}</td>
+                    <td>{{article.prix_achat}}</td>
+                    <td>{{article.prix_unitaire_article}}</td>
+                    <td>{{article.prix_total_tva_article}}</td>
+                    <td>{{detailFacture.prix_TTC}}</td>
+                  </tr>
+              </tbody>
+          </table>
+          <p class="total mt-2">Total: {{detailFacture.prix_TTC}} XOF</p>
+           </ng-container>
+           <ng-container  *ngIf="detailFacture.type_paiement==='facture_Accompt'">
+            <table class="acompteTab">
+              <thead>
+                  <tr>
+                    <th>Produit / Service</th>
+                    <th>Quantité</th>
+                    <th>TVA</th>
+                    <th>Prix unitaire</th>
+                    <th>Prix Total TTC</th>
+                    <th>Total</th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let article of article" >
+                  <td>{{article.nom_article}}</td>
+                  <td>{{article.quantite_article}}</td>
+                  <td>{{article.prix_achat}}</td>
+                  <td>{{article.prix_unitaire_article}}</td>
+                  <td>{{article.prix_total_tva_article}}</td>
+                  <td>{{detailFacture.prix_TTC}}</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                  <tr class="total-row">
+                      <td colspan="5" style="text-align: right;">Total</td>
+                      <td>{{detailFacture.prix_TTC}} XOF</td>
+                  </tr>
+              </tfoot>
+          </table>
+           </ng-container>
+            <div class="row">
+              <div class="col-6 mt-5"  >
+                <ng-container *ngIf="detailFacture.type_paiement==='echeance'">
+                  <h2>Échéances</h2>
+                  <table>
+                    <thead>
+                        <tr>
+                            <th>Numéro</th>
+                            <th>Prévue le :</th>
+                            <th>Montant :</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let echeance of echeance; let i = index">
+                        <td>{{detailFacture.numero_facture}}-{{i+1}}</td>
+                        <td>{{echeance.date_pay_echeance}}</td>
+                        <td>{{echeance.montant_echeance}}</td>
+                      </tr>
+                    </tbody>
+                </table>
+                </ng-container>
+               
+              </div>
+              <div class="col-6">
+              </div>     
+          </div>
+          <div class="row"  *ngIf="detailFacture.type_paiement==='facture_Accompt'">
+            <table  class="table table-bordered">
+              <thead class="thead-custom">
+                <tr>
+                  <th>Facture Acompte</th>
+                  <th>Total</th>
+              </tr>
+              </thead>
+               <tbody>
+                <tr *ngFor="let acompte of acompteFacture">
+                  <td>{{acompte.titreAccomp}} - Facture N° {{detailFacture.numero_facture}}  (du {{acompte.dateEcheance}})</td>
+                  <td>{{acompte.montant}}</td>
+              </tr>
+               </tbody>
+            </table>
+            <p class="total mt-2">Solde: {{totalRemise}}XOF</p>
+          </div>
+          </div>
+         </div>
       </div>
     </div>
   </div>
@@ -917,7 +1175,7 @@
               <div class="col-6">
                 <label for="totalHT">Total HT de la vente :</label>
                 <div class="currency-input">
-                    <input type="number" id="totalHT" name="totalAcompte" [(ngModel)]="totalAcompte" step="0.01">
+                    <input type="number" id="totalHT" name="totalAcompte" [(ngModel)]="totalRemise" step="0.01">
                 </div>
               </div>
               <div class="col-6">
@@ -935,7 +1193,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="submit"  class="btn btnAction" (click)="createFactureAcompte()" data-bs-toggle="modal" data-bs-target="#facture">Ajouter acompte</button>
+        <button type="submit"  class="btn btnAction"  data-bs-toggle="modal" data-bs-target="#facture" (click)="createAcompte()">Ajouter acompte</button>
         <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
       </div>
     </div>
@@ -946,9 +1204,6 @@
 <div class="modal fade mt-5" id="EncheanceEnPayement" tabindex="-1" aria-labelledby="EncheanceEnPayementLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <!-- <div class="modal-header">
-        <h1 class="modal-title fs-5" id="EncheanceEnPayementLabel">Modal title</h1>
-      </div> -->
       <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       <div class="modal-body">
         <div class="containerEcheance">
@@ -982,17 +1237,15 @@
                   <label for="commentaire">Commentaire (affiché dans le reçu) :</label>
                   <textarea id="commentaire" rows="3" name="noteEcheance" [(ngModel)]="noteEcheance"></textarea>
               </div>
-              <button type="submit" class="submit-btn" (click)="echeanceEnPayementRecu()" data-bs-toggle="modal" data-bs-target="#detailFacture">Transformer en paiement reçu</button>
+              <button *ngIf="detailFacture && detailFacture.type_paiement==='echeance'" type="submit" class="submit-btn" (click)="echeanceEnPayementRecu()" data-bs-toggle="modal" data-bs-target="#detailFacture">Transformer en paiement reçu</button>
+              <button  *ngIf="detailFacture && detailFacture.type_paiement==='facture_Accompt'" type="submit" class="submit-btn" (click)="echeanceEnPayementRecu()" data-bs-toggle="modal" data-bs-target="#detailFacture">Transformer en paiement reçu</button>
           </form>
       </div>
       </div>
-      <!-- <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div> -->
     </div>
   </div>
 </div>
+
 
 <!-- Modal creation facture -->
 <div class="modal fade mt-5" id="facture" tabindex="-1" aria-labelledby="factureLabel" aria-hidden="true">
@@ -1014,7 +1267,7 @@
               </div>
               <div class="numero-input">
                   <label for="numero">Numéro :&nbsp;</label>
-                  <input type="text" id="numero" [(ngModel)]="nextNumber" readonly>&nbsp;
+                  <input type="text" id="numero" name="nextNumber"[(ngModel)]="nextNumber" readonly>&nbsp;
                   <i class="bi bi-gear" data-bs-toggle="modal" data-bs-target="#setting"></i>
               </div>
           </div>
@@ -1091,15 +1344,10 @@
                             class="bi bi-trash"></i></button></td>
                     </tr>
                     <!-- liste acompte du factute -->
-                    <tr class="mt-3">
-                      <td>Acompte 1 - Facture N° 000001 (du 28/06/2024)</td>
-                      <td>1</td>
-                      <td>PU</td>
-                      <td>Remise</td>
-                      <td>Sans TVA</td>
-                      <td>-15 000,00</td>
-                      <td>-15 000,00</td>
-                  </tr>
+                    <tr *ngFor="let acompte of tabAcompte" class="mt-3">
+                      <td colspan="6" >{{ acompte.titreAccomp }} - Facture N° {{ acompte.num_facture }} (du {{ acompte.dateEcheance }})</td>
+                      <td>{{ acompte.montant | number:'1.2-2' }}</td>
+                    </tr>
                   </tbody>
                 </table>
                 <button class="btn " (click)="addRow()" *ngIf="!isPreview"><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne
@@ -1186,8 +1434,10 @@
                             <th>Date</th>
                             <th>Montant</th>
                         </tr>
-                        <tr>
-                            <td colspan="3">Aucune facture d'acompte n'a été ajoutée</td>
+                        <tr *ngFor="let acompte of tabAcompte" class="mt-3">
+                          <td>{{ acompte.titreAccomp }} - Facture N° {{ acompte.num_facture }} (du {{ acompte.dateEcheance }})</td>
+                          <td>{{ acompte.dateEcheance }}</td>
+                          <td>{{ acompte.montant | number:'1.2-2' }}</td>
                         </tr>
                     </table>
                     <div class="section-content mt-2 mb-2">

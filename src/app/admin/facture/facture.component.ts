@@ -121,9 +121,18 @@ showNumConfig(configId: string) {
     this.updateTableHeaderColor();
   }
 
+
+  tabAcompte:any[]=[];
   ngOnInit(){
     this.dbUsers = JSON.parse(localStorage.getItem("userOnline") || "[]"); 
     this.updatePrefix();
+
+    if (!localStorage.getItem("tabAcompte")) {
+      localStorage.setItem("tabAcompte", JSON.stringify(this.tabAcompte));
+    }
+
+    this.tabAcompte = JSON.parse(localStorage.getItem("tabAcompte") || '[]');
+
 
     this.listeClients();
     this.listeInfoSup();
@@ -131,6 +140,7 @@ showNumConfig(configId: string) {
     this.listeCategorie();
     this.listePayement();
     this.listeFacture();
+    this.listeNumber();
   }
 
 
@@ -152,6 +162,63 @@ showNumConfig(configId: string) {
         console.error('Erreur lors de la configuration du numérotation : ', error);
       }
     )
+  }
+
+  formatFinal:any
+  tabNum:any[]=[];
+  numComplet:any
+  listeNumber() {
+    const now = new Date();
+    this.docService.getAllNumeroFacture().subscribe(
+      (response) => {
+        if (response.configuration && response.configuration.length > 0) {
+          this.tabNum = response.configuration;
+          console.log('Liste des numéros : ', response);
+  
+          const config = this.tabNum[0];
+          let prefixe = String(config.prefixe).toLowerCase();
+          let format = config.format;
+          let compteur = parseInt(config.compteur) || 0;
+  
+          console.log('Prefixe:', prefixe);
+          console.log('Format:', format);
+          console.log('Compteur:', compteur);
+  
+          // Génère la partie date du numéro
+          let datePart = '';
+          switch (format) {
+            case 'annee':
+              datePart = now.getFullYear().toString();
+              break;
+            case 'annee_mois':
+              datePart = `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}`;
+              break;
+            case 'annee_mois_jour':
+              datePart = `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}`;
+              break;
+            default:
+              datePart = now.getFullYear().toString();
+          }
+  
+          // Incrémente le compteur
+          compteur++;
+  
+          // Formate le numéro complet
+          this.numComplet = `${prefixe}${datePart}${compteur.toString().padStart(6, '0')}`;
+          
+          // Le prochain numéro est identique au numéro complet
+          this.nextNumber = this.numComplet;
+  
+          console.log('Numéro complet : ', this.numComplet);
+          console.log('Prochain numéro : ', this.nextNumber);
+        } else {
+          console.error('Pas de configuration trouvée dans la réponse');
+        }
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des numéros : ', error);
+      }
+    );
   }
 
   updatePrefix() {
@@ -177,7 +244,7 @@ showNumConfig(configId: string) {
       this.prefix = this.customPrefix + datePart;
     }
 
-    this.nextNumber = this.prefix + this.baseNumber +1;
+    // this.nextNumber = this.prefix + this.baseNumber +1;
   }
 
   onSearch() {
@@ -457,31 +524,31 @@ listeClients() {
   }
 
 
+removeLocalStorage(){
+  localStorage.removeItem('tabAcompte');
+}
 
-  createFactureAcompte(){
-    let  factureAcompte =
-      {
-        "titreAccomp": this.acompte,
-        "dateAccompt": this.dateDebut,
-        "dateEcheance": this.dateFin,
-        "montant": this.montantAcompte,
-        "commentaire": this.commentaire
-      }
-      this.docService.createFactureAcompte(factureAcompte).subscribe(
-        (facture)=>{
-          // console.log(facture.message);
-          Report.success('Notiflix Success',facture.message,'Okay',);
-          this.viderchamps();
-        },
-        (err)=>{
-          console.log(err);
-        }
-      )
-    
-  }
+createAcompte(){
+  let  factureAcompte =
+    {
+      "titreAccomp": this.acompte,
+      "dateAccompt": this.dateDebut,
+      "dateEcheance": this.dateFin,
+      "montant": this.montantAcompte,
+      "commentaire":this.commentaire,
+      "num_facture" :this.nextNumber,
+    }
 
+    this.tabAcompte.push(factureAcompte)
+    localStorage.setItem("tabAcompte", JSON.stringify(this.tabAcompte));
+  
+}
+
+  naturefacture:string="";
   noteFacture:string="";
   createFacture(){
+    this.naturefacture=this.typePaiement;
+    console.log(this.naturefacture);
     let facture = 
     {
       "client_id": this.selectedClient,
@@ -500,19 +567,6 @@ listeClients() {
         prix_total_article: number,
         prix_total_tva_article: number
       }>,
-      "echeances":[] as Array<{
-        date_pay_echeance: string,
-        montant_echeance: number,
-      }>,
-      "facture_accompts": [
-        {
-          titreAccomp: this.acompte,
-          dateAccompt: this.dateDebut,
-          dateEcheance: this.dateFin,
-          montant: this.montantAcompte,
-          commentaire: this.commentaire
-        }
-      ]
     },
 
     factureEcheance = 
@@ -557,20 +611,14 @@ listeClients() {
         prix_total_article: number,
         prix_total_tva_article: number
       }>,
-          // titreAccomp: this.acompte,
-          // dateAccompt: this.dateDebut,
-          // dateEcheance: this.dateFin,
-          // montant: this.montantAcompte,
-          // commentaire: this.commentaire
-      // "facture_accompts": [
-      //   {
-      //     titreAccomp: this.acompte,
-      //     dateAccompt: this.dateDebut,
-      //     dateEcheance: this.dateFin,
-      //     montant: this.montantAcompte,
-      //     commentaire: this.commentaire
-      //   }
-      // ]
+      "facture_accompts": [] as Array<{
+        titreAccomp: string;
+        dateAccompt: string;
+        dateEcheance: string;
+        montant: number,
+        commentaire: string;
+        num_facture: string;
+      }>,
     }
     
     for (let i = 0; i < this.rows.length; i++) {
@@ -623,35 +671,53 @@ listeClients() {
       });
     }
 
+    // Ajouter les acomptes à la facture
+    for (let i = 0; i < this.tabAcompte.length; i++) {
+      const item = this.tabAcompte[i];
+        console.warn(item.num_facture)
+      factureAcompte.facture_accompts.push({
+           titreAccomp: item.titreAccomp,
+            dateAccompt: item.dateAccompt,
+            dateEcheance: item.dateEcheance,
+            montant: item.montant,
+            commentaire: item.commentaire,
+            num_facture: item.num_facture
+      });
+      console.log(factureAcompte.facture_accompts);
+    }
+
     // Envoyer la facture au service de facturation
     if(this.typePaiement=='immediat'){
+      alert('immediat')
       this.docService.createFacture(facture).subscribe(
         (facture)=>{
           console.log(facture.message);
           Report.success('Notiflix Success',facture.message,'Okay',);
-          this.viderchamps();
         },
         (err)=>{
           console.log(err);
         }
       )
     } else if (this.typePaiement=='echeance'){
+      alert('echeance')
       this.docService.createFacture(factureEcheance).subscribe(
         (facture)=>{
           // console.log(facture.message);
           Report.success('Notiflix Success',facture.message,'Okay',);
-          this.viderchamps();
         },
         (err)=>{
           console.log(err);
         }
       )
     }  if (this.typePaiement=='facture_Accompt'){
+      alert('facture_Accompt')
       this.docService.createFacture(factureAcompte).subscribe(
         (facture)=>{
+          alert(this.nextNumber)
           console.log(facture);
           Report.success('Notiflix Success',facture.message,'Okay',);
-          this.viderchamps();
+          this.listeFacture();
+          alert(2)
         },
         (err)=>{
           console.log(err);
@@ -669,15 +735,6 @@ listeClients() {
         this.tabFactures = factures.factures;
         this.innoviceNumber = factures.factures;
         this.tabFactureFilter = this.tabFactures;
-        console.log(this.innoviceNumber[0].num_fact);
-        // this.nextNumber = this.innoviceNumber[0].num_fact +1;
-        let currentInvoiceNumber = this.innoviceNumber[0].num_fact;
-        let prefix = currentInvoiceNumber.slice(0, -6); // "DS2024"
-        let numericPart = parseInt(currentInvoiceNumber.slice(-6)); // 000001
-
-        let nextInvoiceNumber = numericPart + 1; // 2
-        this.nextNumber = prefix + nextInvoiceNumber.toString().padStart(6, '0');
-        console.log(this.nextNumber);
       },
       (err) => {
         console.log(err);
@@ -738,6 +795,7 @@ currentIdFacture:any
     this.docService.DetailFacture(paramFacture).subscribe(
       (detail) => {
         this.detailFacture = detail.facture_details;
+        console.log(this.detailFacture)
         this.client  =this.detailFacture.client
         this.article  =this.detailFacture.articles
         this.echeance  =this.detailFacture.echeances
@@ -785,6 +843,20 @@ currentIdFacture:any
       (echeances) => {
         this.tabEcheanceFacture = echeances.echeances;
         console.log(this.tabEcheanceFacture);
+      },
+      (err) => {
+        console.log(err);
+      }
+    )
+  }
+
+  // liste acompte par facture
+  tabAcompteFacture:any[]=[]
+  listeAcompteFacture(){
+    this.docService.acompteParFacture(this.currentIdFacture).subscribe(
+      (accomptes) => {
+        this.tabAcompteFacture = accomptes.factures_accomptes;
+        console.log(this.tabAcompteFacture);
       },
       (err) => {
         console.log(err);
