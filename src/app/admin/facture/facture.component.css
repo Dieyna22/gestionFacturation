@@ -97,10 +97,10 @@
   cursor: pointer;
 }
 
-thead tr th {
+/* thead tr th {
   background-color: #f6f6f6;
   color: #222;
-}
+} */
 
 /* .section {
   display: grid;
@@ -308,7 +308,7 @@ textarea {
 }
 
 thead tr th {
-  background-color:#467aea !important;
+  background-color:#467aea ;
   color: white!important;
 }
 /* thead th:first-child {
@@ -688,4 +688,16 @@ textarea {
 .buttons .btn-Annuler{
   background-color: #e74c3c;
   color: white;
+}
+
+.company-info {
+  /* width: 75%; */
+  background-color: #eee;
+  /* padding: 14px; */
+}
+.bg{
+  background-color: #540505;
+  color: #fff;
+  padding: 5px;
+  font-weight: bold;
 }

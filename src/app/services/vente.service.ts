@@ -17,9 +17,20 @@ export class VenteService {
     return this.http.post<any>(`${apiUrl}/configurerNumeros`,numeroFacture);
   }
 
+  // listeNuméroFacture
+  getAllNumeroFacture(): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/InfoConfigurationFacture`,'');
+  }
+
   // crée facture 
   createFacture(facture: any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/creerFacture`, facture);
+  }
+
+
+  // liste facture
+  getAllFacture(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listerFactures`);
   }
 
    // crée facture d'acompte
@@ -27,10 +38,12 @@ export class VenteService {
     return this.http.post<any>(`${apiUrl}/creerFactureAccomp`, facture);
   }
 
+
   // liste facture
-  getAllFacture(): Observable<any> {
-    return this.http.get<any>(`${apiUrl}/listerFactures`);
+  getAcompteBYfacture(numFacture:any): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listerfactureAccomptsParFacture/${numFacture}`);
   }
+
 
   // liste facture d'immediat
   getAllFactureImmediat(): Observable<any> {
@@ -65,6 +78,11 @@ export class VenteService {
   // liste echeance par facture
   echeanceParFacture(factureId:any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/listEcheanceParFacture/${factureId}`, '');
+  }
+
+  // liste acompte par facture
+  acompteParFacture(factureId:any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/listerfactureAccomptsParFacture/${factureId}`, '');
   }
 
   // transformer echeance en payement
