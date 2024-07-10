@@ -82,7 +82,7 @@ export class VenteService {
 
   // liste acompte par facture
   acompteParFacture(factureId:any): Observable<any> {
-    return this.http.post<any>(`${apiUrl}/listerfactureAccomptsParFacture/${factureId}`, '');
+    return this.http.get<any>(`${apiUrl}/listerfactureAccomptsParFacture/${factureId}`);
   }
 
   // transformer echeance en payement

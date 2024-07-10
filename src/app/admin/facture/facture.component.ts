@@ -42,8 +42,8 @@ export class FactureComponent {
 
   selectedPrefix: string = '';
   customPrefix: string = '';
-  nextNumber: string = '00000O';
-  baseNumber: string = '000000';
+  nextNumber: string = '00000';
+  baseNumber: string = '00000';
   prefix: string = '';
   updateNum: string ='';
   numerotation : string ='';
@@ -133,13 +133,13 @@ showNumConfig(configId: string) {
 
     this.tabAcompte = JSON.parse(localStorage.getItem("tabAcompte") || '[]');
 
-
+    
+    this.listeFacture();
     this.listeClients();
     this.listeInfoSup();
     this.listeArticles();
     this.listeCategorie();
     this.listePayement();
-    this.listeFacture();
     this.listeNumber();
   }
 
@@ -244,7 +244,7 @@ showNumConfig(configId: string) {
       this.prefix = this.customPrefix + datePart;
     }
 
-    // this.nextNumber = this.prefix + this.baseNumber +1;
+    this.nextNumber = this.prefix + this.baseNumber +1;
   }
 
   onSearch() {
@@ -548,7 +548,6 @@ createAcompte(){
   noteFacture:string="";
   createFacture(){
     this.naturefacture=this.typePaiement;
-    console.log(this.naturefacture);
     let facture = 
     {
       "client_id": this.selectedClient,
@@ -802,6 +801,7 @@ currentIdFacture:any
         this.acompteFacture  =this.detailFacture.factures_accomptes
       this.listeEcheanceFacture();
       this.listePaiementFacture();
+      this.listeFacture();
       },
       (err) => {
         console.log(err);
@@ -850,19 +850,7 @@ currentIdFacture:any
     )
   }
 
-  // liste acompte par facture
-  tabAcompteFacture:any[]=[]
-  listeAcompteFacture(){
-    this.docService.acompteParFacture(this.currentIdFacture).subscribe(
-      (accomptes) => {
-        this.tabAcompteFacture = accomptes.factures_accomptes;
-        console.log(this.tabAcompteFacture);
-      },
-      (err) => {
-        console.log(err);
-      }
-    )
-  }
+
 
 
   datePrevu: string = '';
@@ -870,29 +858,30 @@ currentIdFacture:any
   montantEcheance: string = '';
   moyen: string = '';
   noteEcheance: string = '';
-  currentEcheance:any;
+  currentItem:any;
   chargerInfosEcheance(paramEcheance:any){
-    this.currentEcheance = paramEcheance;
+    this.currentItem = paramEcheance;
     this.datePrevu = paramEcheance.date_pay_echeance;
     this.montantEcheance = paramEcheance.montant_echeance;
     this.noteEcheance = paramEcheance.commentaire;
   }
 
   echeanceEnPayementRecu(){
-    let echeance ={
+    let item ={
       date_prevu: this.datePrevu,
-      date_reçu: this.dateRecu,
+      date_recu: this.dateRecu,
       montant: this.montantEcheance,
       commentaire: this.noteEcheance,
       id_paiement: this.moyen,
     }
-    this.docService.payerEcheance(this.currentEcheance.id , echeance).subscribe(
+    this.docService.payerEcheance(this.currentItem.id , item).subscribe(
       (res) => {
         console.log(res);
         Report.success('Notiflix Success',res.message,'Okay',);
         this.viderchampsEcheance();
         this.listeEcheanceFacture();
         this.listePaiementFacture();
+        this.listeFacture();
       },
       (err) => {
         console.log(err);
@@ -946,6 +935,10 @@ currentIdFacture:any
         });
   }
 
+  numeroFacture:any;
+  recupNumeroFacture(paramNumFacture:any){
+    this.numeroFacture = paramNumFacture;
+  }
 
 
   isPreview: boolean = false;

@@ -25,9 +25,21 @@
   <!-- Tableau Facture -->
   <div class="col-md-12 px-4" id="Facture" *ngIf="currentDoc==='Facture'">
     <div class="card mb-4 px-4 py-2 pt-4 rounded-4">
-      <button type="button" class="btn ajouter  col-md-2 mb-3 mt-4" data-bs-toggle="modal" data-bs-target="#facture" (click)="removeLocalStorage()">
-        Ajouter Vente
-     </button>
+      <div  class="dropdown me-5 mt-4 col-2 mb-3">
+        <button type="button" class="btn ajouter" data-bs-toggle="modal" data-bs-target="#facture" (click)="removeLocalStorage()">
+          Ajouter Vente
+       </button>
+        <div class="dropdown col-2 ">
+            <span style="cursor: pointer;" class="dropdown-toggle"></span>
+        <div class="dropdown-content">
+          <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FactureAvoir">Facture Avoir</a>
+          <a class="dropdown-item">Facture recurrente</a>
+        </div>		
+      </div>
+      </div>
+
+    
+      
         <div class="row sectionEspace ligneReseauSearch mb-3">
             <div class="col-md-5">
                 <h3 class="fw-bold">Listes Facture</h3>
@@ -44,7 +56,103 @@
 
         <!-- Le tableau des factures -->
             <!-- tout -->
-        <div class="table-responsive" id="tout"  *ngIf="currentfactureType==='tout'" >
+              <div class="table-responsive" id="tout"  *ngIf="currentfactureType==='tout'" >
+                  <table class="table table-hover mb-4">
+                      <thead class="mb-2">
+                          <tr>
+                              <th scope="col">Numéro </th>
+                              <th scope="col">Date Facture </th>
+                              <th scope="col">Type Facture </th>
+                              <th scope="col">Client </th>
+                              <th scope="col">TotalHT </th>
+                              <th scope="col">TotalTTC </th>
+                              <th scope="col">Statut </th>
+                              <th scope="col">Action </th>
+                          </tr>
+                      </thead>
+                      <tbody *ngFor="let facture of  getItemsPage()">
+                      <tr>
+                          <td>{{facture.num_fact}}</td>
+                          <td>{{facture.date_creation}}</td>
+                          <td>{{facture.type_paiement}}</td>
+                          <td>{{facture.prenom_client}} {{facture.nom_client}}</td>
+                          <td>{{facture.prix_HT}}</td>
+                          <td>{{facture.prix_TTC}}</td>
+                          <td>{{facture.statut_paiement}}</td>
+                          <td>
+                              <i class="bi bi-eye me-2" title="details" data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.id)"></i>
+                              <i class="bi bi-trash3" title="Supprimer" (click)="supprimerFacture(facture.id)" ></i>
+                          </td>
+                      </tr>
+                      </tbody>
+                  </table>
+              </div>
+          <!-- echèance -->
+              <div class="table-responsive" id="echeance"  *ngIf="currentfactureType==='echeance'" >
+                <table class="table table-hover mb-4">
+                    <thead class="mb-2">
+                        <tr>
+                            <th scope="col">Numéro </th>
+                            <th scope="col">Date Facture </th>
+                            <th scope="col">Type Facture </th>
+                            <th scope="col">Client </th>
+                            <th scope="col">TotalHT </th>
+                            <th scope="col">TotalTTC </th>
+                            <th scope="col">Statut </th>
+                            <th scope="col">Action </th>
+                        </tr>
+                    </thead>
+                    <tbody *ngFor="let facture of  getItemsPage()">
+                    <tr>
+                        <td>{{facture.num_fact}}</td>
+                        <td>{{facture.date_creation}}</td>
+                        <td>{{facture.type_paiement}}</td>
+                        <td>{{facture.prenom_client}}</td>
+                        <td>{{facture.prix_HT}}</td>
+                        <td>{{facture.prix_TTC}}</td>
+                        <td>{{facture.statut_paiement}}</td>
+                        <td>
+                          <i class="bi bi-eye me-2" title="details" data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.id)"></i>
+                          <i class="bi bi-trash3" title="Supprimer" (click)="supprimerFacture(facture.id)" ></i>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+          <!-- acompte -->
+            <div class="table-responsive" id="acompte"  *ngIf="currentfactureType==='acompte'" >
+              <table class="table table-hover mb-4">
+                  <thead class="mb-2">
+                      <tr>
+                          <th scope="col">Numéro </th>
+                          <th scope="col">Date Facture </th>
+                          <th scope="col">Type Facture </th>
+                          <th scope="col">Client </th>
+                          <th scope="col">TotalHT </th>
+                          <th scope="col">TotalTTC </th>
+                          <th scope="col">Statut </th>
+                          <th scope="col">Action </th>
+                      </tr>
+                  </thead>
+                  <tbody *ngFor="let facture of  getItemsPage()">
+                  <tr>
+                      <td>{{facture.num_fact}}</td>
+                      <td>{{facture.date_creation}}</td>
+                      <td>{{facture.type_paiement}}</td>
+                      <td>{{facture.prenom_client}}</td>
+                      <td>{{facture.prix_HT}}</td>
+                      <td>{{facture.prix_TTC}}</td>
+                      <td>{{facture.statut_paiement}}</td>
+                      <td>
+                        <i class="bi bi-eye me-2" title="details" data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.id)"></i>
+                        <i class="bi bi-trash3" title="Supprimer" (click)="supprimerFacture(facture.id)" ></i>
+                      </td>
+                  </tr>
+                  </tbody>
+              </table>
+          </div>
+        <!-- immediat -->
+          <div class="table-responsive" id="immediat"  *ngIf="currentfactureType==='immediat'" >
             <table class="table table-hover mb-4">
                 <thead class="mb-2">
                     <tr>
@@ -63,114 +171,18 @@
                     <td>{{facture.num_fact}}</td>
                     <td>{{facture.date_creation}}</td>
                     <td>{{facture.type_paiement}}</td>
-                    <td>{{facture.prenom_client}} {{facture.nom_client}}</td>
+                    <td>{{facture.prenom_client}}</td>
                     <td>{{facture.prix_HT}}</td>
                     <td>{{facture.prix_TTC}}</td>
                     <td>{{facture.statut_paiement}}</td>
                     <td>
-                        <i class="bi bi-eye me-2" title="details" data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.id)"></i>
-                        <i class="bi bi-trash3" title="Supprimer" (click)="supprimerFacture(facture.id)" ></i>
+                      <i class="bi bi-eye me-2" title="details" data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.id)"></i>
+                      <i class="bi bi-trash3" title="Supprimer" (click)="supprimerFacture(facture.id)" ></i>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
-              <!-- echèance -->
-        <div class="table-responsive" id="echeance"  *ngIf="currentfactureType==='echeance'" >
-          <table class="table table-hover mb-4">
-              <thead class="mb-2">
-                  <tr>
-                      <th scope="col">Numéro </th>
-                      <th scope="col">Date Facture </th>
-                      <th scope="col">Type Facture </th>
-                      <th scope="col">Client </th>
-                      <th scope="col">TotalHT </th>
-                      <th scope="col">TotalTTC </th>
-                      <th scope="col">Statut </th>
-                      <th scope="col">Action </th>
-                  </tr>
-              </thead>
-              <tbody *ngFor="let facture of  getItemsPage()">
-              <tr>
-                  <td>{{facture.num_fact}}</td>
-                  <td>{{facture.date_creation}}</td>
-                  <td>{{facture.type_paiement}}</td>
-                  <td>{{facture.prenom_client}}</td>
-                  <td>{{facture.prix_HT}}</td>
-                  <td>{{facture.prix_TTC}}</td>
-                  <td>{{facture.statut_paiement}}</td>
-                  <td>
-                    <i class="bi bi-eye me-2" title="details" data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.id)"></i>
-                    <i class="bi bi-trash3" title="Supprimer" (click)="supprimerFacture(facture.id)" ></i>
-                  </td>
-              </tr>
-              </tbody>
-          </table>
-      </div>
-      <!-- acompte -->
-      <div class="table-responsive" id="acompte"  *ngIf="currentfactureType==='acompte'" >
-        <table class="table table-hover mb-4">
-            <thead class="mb-2">
-                <tr>
-                    <th scope="col">Numéro </th>
-                    <th scope="col">Date Facture </th>
-                    <th scope="col">Type Facture </th>
-                    <th scope="col">Client </th>
-                    <th scope="col">TotalHT </th>
-                    <th scope="col">TotalTTC </th>
-                    <th scope="col">Statut </th>
-                    <th scope="col">Action </th>
-                </tr>
-            </thead>
-            <tbody *ngFor="let facture of  getItemsPage()">
-            <tr>
-                <td>{{facture.num_fact}}</td>
-                <td>{{facture.date_creation}}</td>
-                <td>{{facture.type_paiement}}</td>
-                <td>{{facture.prenom_client}}</td>
-                <td>{{facture.prix_HT}}</td>
-                <td>{{facture.prix_TTC}}</td>
-                <td>{{facture.statut_paiement}}</td>
-                <td>
-                  <i class="bi bi-eye me-2" title="details" data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.id)"></i>
-                  <i class="bi bi-trash3" title="Supprimer" (click)="supprimerFacture(facture.id)" ></i>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-     <!-- immediat -->
-     <div class="table-responsive" id="immediat"  *ngIf="currentfactureType==='immediat'" >
-      <table class="table table-hover mb-4">
-          <thead class="mb-2">
-              <tr>
-                  <th scope="col">Numéro </th>
-                  <th scope="col">Date Facture </th>
-                  <th scope="col">Type Facture </th>
-                  <th scope="col">Client </th>
-                  <th scope="col">TotalHT </th>
-                  <th scope="col">TotalTTC </th>
-                  <th scope="col">Statut </th>
-                  <th scope="col">Action </th>
-              </tr>
-          </thead>
-          <tbody *ngFor="let facture of  getItemsPage()">
-          <tr>
-              <td>{{facture.num_fact}}</td>
-              <td>{{facture.date_creation}}</td>
-              <td>{{facture.type_paiement}}</td>
-              <td>{{facture.prenom_client}}</td>
-              <td>{{facture.prix_HT}}</td>
-              <td>{{facture.prix_TTC}}</td>
-              <td>{{facture.statut_paiement}}</td>
-              <td>
-                <i class="bi bi-eye me-2" title="details" data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.id)"></i>
-                <i class="bi bi-trash3" title="Supprimer" (click)="supprimerFacture(facture.id)" ></i>
-              </td>
-          </tr>
-          </tbody>
-      </table>
-  </div>
 
         <!-- Pagination  -->
         <div *ngIf="getItemsPage().length">
@@ -522,6 +534,130 @@
   </div>
 </div>
 
+<!-- Modal Associer client -->
+<div class="modal fade mt-5" id="client" tabindex="-1" aria-labelledby="clientLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="d-grid gap-2 p-2 d-md-flex justify-content-md-end">
+        <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h3>+ Associer un client</h3>
+        <div class="input-group mb-5">
+          <select class="form-select form-select-lg " id="client-select" [(ngModel)]="selectedClient" (change)="onClientSelected()" (input)="verifClientFonction()">
+            <option *ngFor="let client of tabClient" [value]="client.id">{{client.prenom_client}} {{client.nom_client}}</option>
+          </select>
+          <button type="button" class="btn ajouter" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Ajouter un client
+          </button>
+        </div>
+        <button class="btnAction mx-auto btn mt-3" data-bs-toggle="modal" data-bs-target="#FactureAvoir">Sauvegarder</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal liste facture associer à un client -->
+<div class="modal fade mt-5" id="factureClient" tabindex="-1" aria-labelledby="factureClientLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="d-grid gap-2 p-2 d-md-flex justify-content-md-end">
+        <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <h3>Associer vente à cette note de crédit</h3>
+          <table class="table table-hover mb-4">
+              <thead class="mb-2">
+                  <tr>
+                      <th scope="col">Numéro </th>
+                      <th scope="col">Date Facture </th>
+                      <th scope="col">Client </th>
+                      <th scope="col">TotalTTC </th>
+                  </tr>
+              </thead>
+              <tbody *ngFor="let facture of  getItemsPage()">
+              <tr (click)="recupNumeroFacture(facture.num_fact);details(facture.id)" >
+                  <td>{{facture.num_fact}}</td>
+                  <td>{{facture.date_creation}}</td>
+                  <td>{{facture.prenom_client}} {{facture.nom_client}}</td>
+                  <td>{{facture.prix_TTC}}</td>
+              </tr>
+              </tbody>
+          </table>
+           <!-- Pagination  -->
+        <div *ngIf="getItemsPage().length">
+          <div class="d-flex justify-content-end mb-2">
+              <button class="border border-0 btnColor  mx-2" [disabled]="pageActuelle === 1"
+                  (click)="pageActuelle = pageActuelle - 1">
+                  <i class="bi bi-arrow-left-circle fs-4"></i>
+              </button>
+              <button class=" rounded-circle mx-2 page" *ngFor="let page of pages" (click)="pageActuelle = page">
+                  <span class="pageActuelle fs-5" *ngIf="page===pageActuelle">{{page}}</span>
+                  <span *ngIf="page != pageActuelle">{{page}}</span>
+              </button>
+              <button class="border border-0 btnColor mx-2" [disabled]="pageActuelle === totalPages"
+                  (click)="pageActuelle = pageActuelle + 1">
+                  <i class="bi bi-arrow-right-circle fs-4"></i>
+              </button>
+          </div>
+      </div>
+      </div>
+        <button class="btnAction mx-auto btn mt-3" data-bs-toggle="modal" data-bs-target="#FactureAvoir">Sauvegarder</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal definition solde pour un client -->
+<div class="modal fade mt-5" id="solde" tabindex="-1" aria-labelledby="soldeLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="d-grid gap-2 p-2 d-md-flex justify-content-md-end">
+        <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="solde">
+          <h3>Ajouter solde en faveur</h3>
+          <form>
+              <div class="form-group">
+                  <label for="client">Client :</label>
+                  <div class="client-input">
+                      <div class="client-icon">👤</div>
+                      <input type="text" id="client" value="Aly DIA" readonly>
+                  </div>
+              </div>
+              <p class="info-text">Vous pouvez utiliser ce solde en faveur comme moyen de paiement dans une future vente pour ce client</p>
+              <div class="form-group">
+                  <label for="montant">Montant :</label>
+                  <div class="currency-input">
+                      <input type="text" id="montant" value="0,00">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="date">Reçu le :</label>
+                  <input type="date" id="date" value="2024-07-10">
+              </div>
+              <div class="form-group">
+                  <label for="paiement">Moyen paiement :</label>
+                  <select id="paiement">
+                      <option>Espèces</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                  <label for="commentaire">Commentaire :</label>
+                  <textarea id="commentaire">Solde en faveur créé à partir de la note de crédit du 10/07/2024</textarea>
+              </div>
+              <div class="button-group">
+                  <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#FactureAvoir">Ajouter</button>
+              </div>
+          </form>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal Ajout client -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -854,7 +990,7 @@
           </div>     
           </div>
         </ng-container>
-       <ng-container *ngIf="detailFacture && detailFacture.type_paiement==='echeance'">
+       <ng-container>
         <div  id="Réglements"  *ngIf="currentDetail==='Réglements'">
           <div class="totalRéglements">
             Total: {{detailFacture.prix_TTC}}XOF
@@ -910,62 +1046,7 @@
         </div>
         </div>
        </ng-container>
-       <ng-container *ngIf="detailFacture && detailFacture.type_paiement==='facture_Accompt'">
-        <div  id="Réglements"  *ngIf="currentDetail==='Réglements'">
-          <div class="totalRéglements">
-            Total: {{detailFacture.prix_TTC}}XOF
-        </div>
-        
-        <div class="payment-section">
-            <div class="received-payments ">
-                <h3>Paiements reçus</h3>
-                <table>
-                  <thead>
-                      <tr>
-                          <th>Numéro</th>
-                          <th>Date</th>
-                          <th>Montant</th>
-                          <th>Action</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <tr *ngFor="let paiement of tabPaiementFacture">
-                          <td>{{paiement.num_paiement}}</td>
-                          <td>{{paiement.date_recu}}</td>
-                          <td>{{paiement.montant}}</td>
-                          <td class="text-center"> <i class="bi bi-reply" title="transformer en échèance" (click)="paymentRecuEnecheance(paiement.id)"></i></td>
-                      </tr>
-                  </tbody>
-              </table>
-            </div>
-            
-            <div class="pending-payments">
-                <h3>Acomptes en attente</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Prévu</th>
-                            <th>Montant</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let acompte of tabAcompteFacture">
-                            <td>{{acompte.dateEcheance}}</td>
-                            <td>{{acompte.montant}}</td>
-                            <td class="text-center"> <i class="bi bi-wallet-fill" title="Ajouter payement" (click)="chargerInfosEcheance(acompte)" data-bs-toggle="modal" data-bs-target="#EncheanceEnPayement"></i></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <a href="#" class="add-link">+ Ajouter une échéance</a>
-            </div>
-        </div>
-        
-        <div class="reminders">
-            <span>⚙</span> Relances automatiques (désactivé)
-        </div>
-        </div>
-       </ng-container>
+       
     </div>
       <div class="modal-footer">
         <button type="button" class="btn btnClose" data-bs-dismiss="modal">Fermer</button>
@@ -1238,13 +1319,14 @@
                   <textarea id="commentaire" rows="3" name="noteEcheance" [(ngModel)]="noteEcheance"></textarea>
               </div>
               <button *ngIf="detailFacture && detailFacture.type_paiement==='echeance'" type="submit" class="submit-btn" (click)="echeanceEnPayementRecu()" data-bs-toggle="modal" data-bs-target="#detailFacture">Transformer en paiement reçu</button>
-              <button  *ngIf="detailFacture && detailFacture.type_paiement==='facture_Accompt'" type="submit" class="submit-btn" (click)="echeanceEnPayementRecu()" data-bs-toggle="modal" data-bs-target="#detailFacture">Transformer en paiement reçu</button>
+              <button  *ngIf="detailFacture && detailFacture.type_paiement==='facture_Accompt'" type="submit" class="submit-btn" (click)="echeanceEnPayementRecu()" data-bs-toggle="modal" data-bs-target="#detailFacture">Transformer acompte en paiement reçu</button>
           </form>
       </div>
       </div>
     </div>
   </div>
 </div>
+
 
 
 <!-- Modal creation facture -->
@@ -1459,6 +1541,105 @@
   </div>
 </div>
 </div>
+
+<!-- Modal facture d'avoir -->
+<div class="modal fade mt-5" id="FactureAvoir" tabindex="-1" aria-labelledby="FactureAvoirLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="FactureAvoirLabel">Facture Avoir</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="invoice-form containerFacture">
+          <div class="headerFacture">
+            <div class="date-input">
+                <label for="date">Date:&nbsp;</label>
+                <input type="date" id="date">
+            </div>
+            <div class="numero-input">
+                <label for="numero">Numéro :&nbsp;</label>
+                <input type="text" id="numero" name="nextNumber"[(ngModel)]="nextNumber" readonly>&nbsp;
+                <i class="bi bi-gear" data-bs-toggle="modal" data-bs-target="#setting"></i>
+            </div>
+        </div>
+        
+          <div class="client-section">
+            <button class="associate-client" data-bs-toggle="modal" data-bs-target="#client" *ngIf="!currentClient">+ Associer Client</button>
+
+            <div class="client-info"  *ngFor="let clientSelect of currentClient">
+              <input type="text" value="{{clientSelect?.prenom_client}} {{clientSelect?.nom_client}}" readonly>
+              <div class="client-details">
+                <p class="me-3 ms-3">Adresse : {{clientSelect?.adress_client}}</p>
+                <p class="me-3 ms-3">Téléphone : {{clientSelect?.tel_client}}</p>
+                <p class="me-3 ms-3">Entreprise : {{clientSelect?.nom_entreprise}}</p>
+              </div>
+            </div>
+          </div>
+        
+          <div class="title-section" data-bs-toggle="modal" data-bs-target="#factureClient" *ngIf="!numeroFacture" >
+            <a style="cursor:pointer;">+ Associer une vente de ce client à cette note de crédit</a>
+          </div>
+
+          <div class="factureAssocier mb-5" *ngIf="numeroFacture">
+            <input type="text" class="border border-0 mx-auto p-2 ms-3 mt-2" placeholder="Titre">
+            <hr>
+            <span class="p-2">Note de crédit associée à la Vente/Facture N° {{numeroFacture}}</span>
+          </div>
+        
+          <table class="table table-bordered border-light">
+            <thead class="thead-custom">
+              <tr>
+                <th>Description</th>
+                <th>Quantité</th>
+                <th>PU</th>
+                <th>Réduction</th>
+                <th>TVA</th>
+                <th>Total HT</th>
+                <th>Total TTC</th>
+                <th *ngIf="!isPreview"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let article of article" >
+                <td>{{article.nom_article}}</td>
+                <td>{{article.quantite_article}}</td>
+                <td>{{article.prix_unitaire_article}}</td>
+                <td>Reemise</td>
+                <td>Tva</td>
+                <td>{{article.prix_achat}}</td>
+                <td>{{article.prix_unitaire_article}}</td>
+                <td>{{article.prix_total_tva_article}}</td>
+                <td>{{detailFacture.prix_TTC}}</td>
+                <td>{{article.quantite_article}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <button class="btn " (click)="addRow()" *ngIf="!isPreview"><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne
+          </button>
+        
+          <div class="total-section">
+            <span>Total</span>
+            <span>{{ totalTTC | number:'1.2-2' }} FCfa</span> 
+          </div>
+        
+          <div class="comment-section">
+            <textarea placeholder="Commentaire (affiché dans la facture) :"></textarea>
+            <textarea placeholder="Note interne :"></textarea>
+          </div>
+
+          <a style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#solde"> + Créer un solde en faveur du client correspondant à cette note de crédit</a>
+      
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btnAction">Ajouter</button>
+        <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 <!-- Modal creation Dévis -->

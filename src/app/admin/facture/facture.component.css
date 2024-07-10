@@ -701,3 +701,231 @@ textarea {
   padding: 5px;
   font-weight: bold;
 }
+
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropbtn {
+  color: #222222;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  margin-left: -58px;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {
+  background-color: #FFA500;
+  color: #FFFFFF;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.invoice-form {
+  font-family: Arial, sans-serif;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.date-field, .number-field {
+  display: flex;
+  align-items: center;
+}
+
+input[type="date"], input[type="text"], input[type="number"], textarea {
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.client-section, .title-section {
+  margin-bottom: 20px;
+}
+
+.associate-client {
+  background-color: #f0f0f0;
+  border: 1px dashed #ccc;
+  padding: 10px;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+}
+
+.client-info {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.factureAssocier{
+  width: 100%;
+  border: 1px solid #ccc;
+}
+
+.factureAssocier input{
+  width: 80%;
+}
+
+
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.product-table th, .product-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.add-row, .remove-row {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.total-section {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.comment-section {
+  margin-top: 20px;
+}
+
+.comment-section textarea {
+  width: 48%;
+  height: 100px;
+}
+
+.actions {
+  margin-top: 20px;
+  text-align: right;
+}
+
+.save, .add {
+  padding: 10px 20px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.add {
+  background-color: #007bff;
+  color: white;
+  border: none;
+}
+
+.solde {
+  background-color: white;
+  border-radius: 5px;
+  padding: 20px;
+  /* width: 400px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1); */
+}
+
+.solde  .form-group {
+  margin-bottom: 15px;
+}
+.solde  label {
+  display: block;
+  margin-bottom: 5px;
+  color: #666;
+}
+.solde  input[type="text"], input[type="date"], select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.solde  .client-input {
+  display: flex;
+  align-items: center;
+}
+.solde  .client-icon {
+  background-color: #ddd;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px 0 0 4px;
+}
+.solde  .client-input input {
+  border-left: none;
+  border-radius: 0 4px 4px 0;
+}
+.solde  .info-text {
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+}
+.solde  .currency-input {
+  position: relative;
+}
+.solde  .currency-input::before {
+  content: "$";
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.solde  .currency-input input {
+  padding-left: 25px;
+}
+.solde  textarea {
+  width: 100%;
+  height: 60px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  resize: vertical;
+}
+.solde  .button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+.solde  .btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.solde  .btn-primary {
+  background-color: #0088cc;
+  color: white;
+}
