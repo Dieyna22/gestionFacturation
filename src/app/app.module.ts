@@ -29,6 +29,7 @@ import { ModelComponent } from './admin/model/model.component';
 import { CategorieServiceComponent } from './categorie-service/categorie-service.component';
 import { GrilleTarifaireComponent } from './admin/grille-tarifaire/grille-tarifaire.component';
 import { PayementComponent } from './admin/payement/payement.component';
+import { DepenseComponent } from './admin/depense/depense.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { PayementComponent } from './admin/payement/payement.component';
     ModelComponent,
     CategorieServiceComponent,
     GrilleTarifaireComponent,
-    PayementComponent
+    PayementComponent,
+    DepenseComponent
   ],
   imports: [
     BrowserModule,

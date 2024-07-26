@@ -17,6 +17,7 @@ import { ServicesComponent } from './admin/services/services.component';
 import { ModelComponent } from './admin/model/model.component';
 import { GrilleTarifaireComponent } from './admin/grille-tarifaire/grille-tarifaire.component';
 import { PayementComponent } from './admin/payement/payement.component';
+import { DepenseComponent } from './admin/depense/depense.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'connexion', pathMatch: 'full' },
@@ -37,6 +38,7 @@ const routes: Routes = [
   { path: 'model', component: ModelComponent, title: 'Modéle de document '},
   { path: 'grille', component: GrilleTarifaireComponent, title: 'grille tarifaire'},
   { path: 'payement', component: PayementComponent, title: 'Payement'},
+  { path: 'depense', component: DepenseComponent, title: 'depense'},
 
 
 ];

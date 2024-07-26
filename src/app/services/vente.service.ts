@@ -17,9 +17,24 @@ export class VenteService {
     return this.http.post<any>(`${apiUrl}/configurerNumeros`,numeroFacture);
   }
 
-  // listeNuméroFacture
+  // liste NuméroFacture
   getAllNumeroFacture(): Observable<any> {
-    return this.http.post<any>(`${apiUrl}/InfoConfigurationFacture`,'');
+    return this.http.get<any>(`${apiUrl}/InfoConfigurationFacture`);
+  }
+
+  // liste NuméroDevis
+  getAllNumeroDevis(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/InfoConfigurationDevis`);
+  }
+
+  // liste NuméroBonCommande
+  getAllNumeroBonCommande(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/InfoConfigurationBonCommande`);
+  }
+
+  // liste NuméroBonLivraison
+  getAllNumeroBonLivraison(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/InfoConfigurationLivraison`);
   }
 
   // crée facture 
@@ -28,18 +43,42 @@ export class VenteService {
   }
 
 
-  // liste facture
+  // liste de tous les factures
   getAllFacture(): Observable<any> {
-    return this.http.get<any>(`${apiUrl}/listerFactures`);
+    return this.http.get<any>(`${apiUrl}/listerToutesFacturesSimpleAvoir`);
   }
+
+    // liste facture par  client
+    getAllFactureByClient(clientId:any): Observable<any> {
+      return this.http.get<any>(`${apiUrl}/listeFactureParClient/${clientId}`);
+    }
 
    // crée facture d'acompte
    createFactureAcompte(facture: any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/creerFactureAccomp`, facture);
   }
 
+  // crée facture d'avoir
+  createFactureAvoir(facture: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/creerFactureAvoir`, facture);
+  }
 
-  // liste facture
+  // crée solde
+  createSolde(clientId:any,solde: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/ajouterSolde/${clientId}`, solde);
+  }
+
+  // cree facture recurrente
+  createFactureRecurrente(facture: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/creerFactureRecurrente`, facture);
+  }
+
+  // liste facture recurrente
+  getAllFactureRecurrente(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listerToutesFacturesRecurrentes`);
+  }
+
+  // liste accompte par facture
   getAcompteBYfacture(numFacture:any): Observable<any> {
     return this.http.get<any>(`${apiUrl}/listerfactureAccomptsParFacture/${numFacture}`);
   }
@@ -60,6 +99,12 @@ export class VenteService {
     return this.http.post<any>(`${apiUrl}/listerFacturesAccompt`,'');
   }
 
+  // liste facture d'avoir
+  getAllFactureAvoir(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listerToutesFacturesAvoirs`);
+  }
+  
+
    // valider facture
    validerFacture(facture:any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/validerFacture`, facture);
@@ -67,13 +112,19 @@ export class VenteService {
 
    // supprimer facture
    deleteFacture(factureId: any): Observable<any> {
-    return this.http.delete(`${apiUrl}/supprimeArchiveFacture/${factureId}`);
+    return this.http.delete(`${apiUrl}/supprimerFacture/${factureId}`);
   }
 
+  // supprimer facture d'avoir
+  deleteFactureAvoir(factureId: any): Observable<any> {
+    return this.http.post(`${apiUrl}/supprimerFactureAvoir/${factureId}`,'');
+  }
+  
   // detail des factures
   DetailFacture(factureId:any): Observable<any> {
     return this.http.get<any>(`${apiUrl}/DetailsFacture/${factureId}`);
   }
+
 
   // liste echeance par facture
   echeanceParFacture(factureId:any): Observable<any> {
@@ -100,4 +151,111 @@ export class VenteService {
     return this.http.post<any>(`${apiUrl}/transformerPaiementRecuEnEcheance/${echeanceId}`, '');
   }
 
+
+  // crée devis
+  createDevis(devis: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/creerDevi`, devis);
+  }
+
+  // liste devis
+  getAllDevis(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listerToutesDevi`);
+  }
+
+  // supprimer devis
+  deleteDevis(devisId: any): Observable<any> {
+    return this.http.post(`${apiUrl}/supprimerDevi/${devisId}`,'');
+  }
+
+  // annuler devis
+  annulerDevis(devisId: any): Observable<any> {
+    return this.http.post(`${apiUrl}/annulerDevi/${devisId}`,'');
+  }
+
+  // details devis
+  detailDevis(devisId:any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/DetailsDevis/${devisId}`,'');
+  }
+
+  // transfomer devis en facture
+  transformerDevisEnFacture(devisId:any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/TransformeDeviEnFacture/${devisId}`, '');
+  }
+
+   // transfomer devis en bon de commande
+   transformerDevisEnCommande(devisId:any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/TransformeDeviEnBonCommande/${devisId}`, '');
+  }
+
+
+  // créer bon de commande
+  createBonCommande(bonCommande: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/creerBonCommande`, bonCommande);
+  }
+
+  // liste bon de commande
+  getAllBonCommande(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listerTousBonCommande`);
+  }
+
+  // supprimer bon de commande
+  deleteBonCommande(bonCommandeId: any): Observable<any> {
+    return this.http.post(`${apiUrl}/supprimerBonCommande/${bonCommandeId}`,'');
+  }
+
+  // annuler bon de commande
+  annulerBonCommande(bonCommandeId: any): Observable<any> {
+    return this.http.post(`${apiUrl}/annulerBonCommande/${bonCommandeId}`,'');
+  }
+
+  // details bon de commande
+  detailBonCommande(bonCommandeId:any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/DetailsBonCommande/${bonCommandeId}`,'');
+  }
+
+  // transformer bon de commande en facture
+  transformerCommandEnFacture(bonCommandeId:any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/TransformeBonCommandeEnFacture/${bonCommandeId}`, '');
+  }
+
+
+// créer un bon de livraison
+  createBonLivraison(bonLivraison: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/ajouterLivraison`, bonLivraison);
+  }
+
+  // liste bon de livraison
+  getAllBonLivraison(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listerToutesLivraisons`);
+  }
+
+  // detail bon de livraison
+  detailBonLivraison(bonLivraisonId:any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/DetailsLivraison/${bonLivraisonId}`,'');
+  }
+
+  // supprimer bon de livraison
+  deleteBonLivraison(bonLivraisonId: any): Observable<any> {
+    return this.http.delete(`${apiUrl}/supprimerLivraison/${bonLivraisonId}`);
+  }
+
+  // livraison en preparation
+  livraisonEnPreparation(bonLivraisonId:any): Observable<any> {
+    return this.http.post(`${apiUrl}/LivraisonPreparer/${bonLivraisonId}`,'');
+  }
+
+  // livraison réaliser
+  livraisonRealiser(bonLivraisonId:any): Observable<any> {
+    return this.http.post(`${apiUrl}/RealiserLivraison/${bonLivraisonId}`,'');
+  }
+
+  // livraison planifiée
+  livraisonPlanifier(bonLivraisonId:any): Observable<any> {
+    return this.http.post(`${apiUrl}/PlanifierLivraison/${bonLivraisonId}`,'');
+  }
+
+  // transformer livraison en facture
+  transformerLivraisonEnFacture(bonLivraisonId:any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/transformerLivraisonEnFacture/${bonLivraisonId}`, '');
+  }
 }

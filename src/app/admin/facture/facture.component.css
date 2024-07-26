@@ -929,3 +929,233 @@ input[type="date"], input[type="text"], input[type="number"], textarea {
   background-color: #0088cc;
   color: white;
 }
+
+
+
+.checkmark {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-color: #ddd;
+  border-radius: 5px;
+  position: relative;
+  transition: background-color 0.4s;
+  overflow: hidden;
+  cursor: pointer;
+ }
+ 
+ #check:checked ~ .checkmark {
+  background-color: #08bb68;
+ }
+ 
+ .checkmark::after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 10px;
+  border-right: 3px solid #fff;
+  border-bottom: 3px solid #fff;
+  top: 44%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateZ(40deg) scale(10);
+  opacity: 0;
+  transition: all 0.4s;
+ }
+ 
+ #check:checked ~ .checkmark::after {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotateZ(40deg) scale(1);
+ }
+
+ .vente {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+ }
+
+ .checkbox1{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+ }
+
+ .duree .check1{
+  width: 60px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 0.5px solid #ddd;
+ }
+
+ .duree .check2{
+  width: 110px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 0.5px solid #ddd;
+ }
+
+ .popup-vente{
+  width: 550px;
+  padding: 10px;
+  background-color: #eee;
+  margin: 0 auto;
+ }
+
+ .vente div p{
+  font-size: 18px;
+  font-weight: 400;
+  color: #5c5c5c;
+ }
+
+ .txt-title{
+  position: relative;
+  color: rgb(177, 176, 176);
+  font-size: 19px;
+ }
+
+ .date span{
+  color: rgb(31, 48, 64);
+  font-weight: 500;
+  font-family: 'Times New Roman', Times, serif;
+ }
+
+ /* ------- */
+ /* Hide the default checkbox */
+.containerVente input {
+  display: none;
+}
+
+.containerVente {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  font-size: 20px;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Create a custom checkbox */
+.checkmarks {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-color: #ddd;
+  border-radius: 5px;
+  position: relative;
+  transition: background-color 0.4s;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* When the checkbox is checked, add a blue background */
+.containerVente input:checked ~ .checkmarks {
+  background-color: #08bb68;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmarks::after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 10px;
+  border-right: 3px solid #fff;
+  border-bottom: 3px solid #fff;
+  top: 44%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateZ(40deg) scale(10);
+  opacity: 0;
+  transition: all 0.4s;
+}
+
+/* Show the checkmark when checked */
+.containerVente input:checked ~ .checkmarks:after {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotateZ(40deg) scale(1);
+}
+
+.n1{
+  padding-bottom: 10px;
+}
+
+.vente span {
+  font-size: 18px;
+  font-weight: 300;
+  color: #727272;
+}
+
+.checkbox2{
+  padding-top: 1.5rem;
+}
+
+.date{
+  margin-left: 7.5rem;
+  padding-top: 0.8rem;
+}
+
+.date input{
+  width: 150px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 0.5px solid #ddd;
+}
+
+.actions {
+  margin-top: 10px;
+  float: left;
+}
+
+.actions a {
+  color: #0077be;
+  text-decoration: none;
+  margin-right: 15px;
+}
+
+.stock-info {
+  font-size: 0.9em;
+  color: #888;
+}
+
+
+.containerBonCommande .associate-client {
+  border: 2px dashed #ddd;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+.add-line {
+  border: 2px dashed #ddd;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  margin-top: 15px;
+}
+.comment-box {
+  width: 100%;
+  height: 100px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px;
+}
+.containerBonCommande .button {
+  background-color: #fff;
+  color: #007bff;
+  border: thin solid #007bff;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+.button-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
