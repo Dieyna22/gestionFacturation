@@ -1,0 +1,74 @@
+<app-navbar></app-navbar>
+<app-sidebar></app-sidebar>
+<div class="zoneSearch container mb-4 mt-4">
+  <div class="input-group">
+      <input type="search" class="form-control" aria-label="Recipient's username" placeholder="type, numéro,nom,prenom">
+      <button class="btn btnSearch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+    </div>          
+</div>
+
+ <!-- Contenu dashbord  -->
+ <div class="container mb-5">
+  <div class="header mb-4 d-grid gap-2 d-md-flex justify-content-md-end">
+    <ul class="nav">
+        <li><a [ngClass]="{'currentItemNav': boutonActif === 1}" (click)="showTypeDocument('boutonActif=1;')" (click)="boutonActif = 1" >Fournisseurs</a></li>
+        <li><a [ngClass]="{'currentItemNav': boutonActif === 2}" (click)="showTypeDocument('depense')" (click)="boutonActif = 2" >Dépenses</a></li>
+    </ul>
+  </div>
+
+<div class="contenu">
+  <div class="col-md-12 px-4" id="Devis" *ngIf="currentDoc==='Devis'">
+    <div class="card mb-4 px-4 py-2 pt-4 rounded-4">
+      <button type="button" class="btn ajouter  col-md-2 mb-3 mt-4" data-bs-toggle="modal" data-bs-target="#devis">
+        Ajouter Dévis
+     </button>
+        <div class="row sectionEspace ligneReseauSearch mb-3">
+            <div class="col-md-5">
+                <h3 class="fw-bold">Listes Dévis</h3>
+            </div>
+              <div class="col-md-7">
+              </div>
+        </div>
+
+        <!-- Le tableau des dévis -->
+        <div class="table-responsive">
+            <table class="table table-hover mb-4">
+                <thead class="mb-2">
+                    <tr>
+                        <th scope="col">Numéro </th>
+                        <th scope="col">Date limite </th>
+                        <th scope="col">Client </th>
+                        <th scope="col">TotalHT </th>
+                        <th scope="col">TotalTTC </th>
+                        <th scope="col">Statut </th>
+                        <th scope="col">Action </th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                   
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination 
+        <div *ngIf="getItemsPage().length">
+          <div class="d-flex justify-content-end mb-2">
+              <button class="border border-0 btnColor  mx-2" [disabled]="pageActuelle === 1"
+                  (click)="pageActuelle = pageActuelle - 1">
+                  <i class="bi bi-arrow-left-circle fs-4"></i>
+              </button>
+              <button class=" rounded-circle mx-2 page" *ngFor="let page of pages" (click)="pageActuelle = page">
+                  <span class="pageActuelle fs-5" *ngIf="page===pageActuelle">{{page}}</span>
+                  <span *ngIf="page != pageActuelle">{{page}}</span>
+              </button>
+              <button class="border border-0 btnColor mx-2" [disabled]="pageActuelle === totalPages"
+                  (click)="pageActuelle = pageActuelle + 1">
+                  <i class="bi bi-arrow-right-circle fs-4"></i>
+              </button>
+          </div> -->
+      </div>
+    </div>
+  </div>
+</div>

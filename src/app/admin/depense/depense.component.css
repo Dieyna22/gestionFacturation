@@ -1,0 +1,19 @@
+.currentItemNav{
+    color: #F97316!important;
+  }
+  .nav {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .nav li {
+    display: inline;
+    margin-right: 20px;
+  }
+  
+  .nav li a {
+    color: #222;
+    text-decoration: none;
+    cursor: pointer;
+  }
