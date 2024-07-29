@@ -37,6 +37,11 @@ export class VenteService {
     return this.http.get<any>(`${apiUrl}/InfoConfigurationLivraison`);
   }
 
+  // liste NuméroFournisseur
+  getAllNumeroFournisseur(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/InfoConfigurationFournisseur`);
+  }
+
   // crée facture 
   createFacture(facture: any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/creerFacture`, facture);
@@ -258,4 +263,26 @@ export class VenteService {
   transformerLivraisonEnFacture(bonLivraisonId:any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/transformerLivraisonEnFacture/${bonLivraisonId}`, '');
   }
+
+  // ajouter fournisseur
+  createFournisseur(fournisseur: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/ajouterFournisseur`, fournisseur);
+  }
+
+  // liste fournisseur
+  getAllFournisseur(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listerTousFournisseurs`);
+  }
+
+  // supprimer fournisseur
+  deleteFournisseur(fournisseurId: any): Observable<any> {
+    return this.http.delete(`${apiUrl}/supprimerFournisseur/${fournisseurId}`);
+  }
+
+  // modifier fournisseur
+  updateFournisseur(fournisseurId:any, fournisseur: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/modifierFournisseur/${fournisseurId}`, fournisseur);
+  }
+
+  
 }
