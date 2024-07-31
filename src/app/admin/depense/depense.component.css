@@ -222,5 +222,139 @@ h3 {
 
 .Échéance{
   background-color: #eee;
-  margin-bottom: 10px;
 }
+
+.payment-info{
+  border: thin solid #eee;
+}
+
+
+.checkbox1{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+ }
+
+ .vente div p{
+  font-size: 18px;
+  font-weight: 400;
+  color: #5c5c5c;
+ }
+
+ .txt-title{
+  position: relative;
+  color: rgb(177, 176, 176);
+  font-size: 19px;
+ }
+
+ .date span{
+  color: rgb(31, 48, 64);
+  font-weight: 500;
+  width: 50px;
+  margin-right: 10px;
+  font-family: 'Times New Roman', Times, serif;
+ }
+
+ /* ------- */
+ /* Hide the default checkbox */
+.containerVente input {
+  display: none;
+}
+
+.containerVente {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  font-size: 20px;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Create a custom checkbox */
+.checkmarks {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-color: #ddd;
+  border-radius: 5px;
+  position: relative;
+  transition: background-color 0.4s;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* When the checkbox is checked, add a blue background */
+.containerVente input:checked ~ .checkmarks {
+  background-color: #08bb68;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmarks::after {
+  content: "";
+  position: absolute;
+  width: 5px;
+  height: 10px;
+  border-right: 3px solid #fff;
+  border-bottom: 3px solid #fff;
+  top: 44%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotateZ(40deg) scale(10);
+  opacity: 0;
+  transition: all 0.4s;
+}
+
+/* Show the checkmark when checked */
+.containerVente input:checked ~ .checkmarks:after {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotateZ(40deg) scale(1);
+}
+
+.n1{
+  padding-bottom: 10px;
+}
+
+.vente span {
+  font-size: 18px;
+  font-weight: 300;
+  color: #727272;
+}
+
+.checkbox2{
+  padding-top: 1.5rem;
+}
+
+.date{
+  margin-left: 7.5rem;
+  padding-top: 0.8rem;
+}
+
+.date input{
+  width: 150px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 0.5px solid #ddd;
+}
+
+.duree .check1{
+  width: 60px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 0.5px solid #ddd;
+ }
+
+ .duree .check2{
+  width: 110px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 0.5px solid #ddd;
+ }
+
+ a{
+  cursor: pointer;
+ }
+ .btnArret{
+  background-color: #fff;
+  border: thin solid #467aea;
+  color: #467aea;
+  text-align: center;
+ }

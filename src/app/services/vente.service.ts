@@ -42,6 +42,11 @@ export class VenteService {
     return this.http.get<any>(`${apiUrl}/InfoConfigurationFournisseur`);
   }
 
+  // liste NuméroDépense
+  getAllNumeroDepense(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/InfoConfigurationDepense`);
+  }
+
   // crée facture 
   createFacture(facture: any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/creerFacture`, facture);
@@ -109,7 +114,6 @@ export class VenteService {
     return this.http.get<any>(`${apiUrl}/listerToutesFacturesAvoirs`);
   }
   
-
    // valider facture
    validerFacture(facture:any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/validerFacture`, facture);
@@ -155,7 +159,6 @@ export class VenteService {
   PaiementEnEcheance(echeanceId:any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/transformerPaiementRecuEnEcheance/${echeanceId}`, '');
   }
-
 
   // crée devis
   createDevis(devis: any): Observable<any> {
@@ -284,5 +287,34 @@ export class VenteService {
     return this.http.post<any>(`${apiUrl}/modifierFournisseur/${fournisseurId}`, fournisseur);
   }
 
-  
+  // ajout categorie depense
+  createCategorieDepense(categorieDepense: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/ajouterCategorieDepense`, categorieDepense);
+  }
+
+  // liste categorie depense
+  getAllCategorieDepense(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listerCategorieDepense`);
+  } 
+
+  // creer depense
+  createDepense(depense: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/creerDepense`, depense);
+  }
+
+  // liste depense
+  getAllDepense(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listerDepenses`);
+  }
+
+  // supprimer depense
+  deleteDepense(depenseId: any): Observable<any> {
+    return this.http.delete(`${apiUrl}/supprimerDepense/${depenseId}`);
+  }
+
+  // modifier depense
+  updateDepense(depenseId:any, depense: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/modifierDepense/${depenseId}`, depense);
+  }
+
 }
