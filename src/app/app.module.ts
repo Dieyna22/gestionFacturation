@@ -30,6 +30,7 @@ import { CategorieServiceComponent } from './categorie-service/categorie-service
 import { GrilleTarifaireComponent } from './admin/grille-tarifaire/grille-tarifaire.component';
 import { PayementComponent } from './admin/payement/payement.component';
 import { DepenseComponent } from './admin/depense/depense.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { DepenseComponent } from './admin/depense/depense.component';
       useClass: AuthInterceptor,
       multi: true,
     },
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })

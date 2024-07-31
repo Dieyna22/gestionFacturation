@@ -2072,7 +2072,7 @@ tabDevis:any[] = [];
           (response)=>{
             Notify.success(response.message);
             this.transformerLivraisonEnVente();
-            this.ouvrirModalLivraison();
+            this.ouvrirModalFacture();
             Loading.remove()
           }
         )

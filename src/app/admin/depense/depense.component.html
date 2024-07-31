@@ -11,15 +11,15 @@
  <div class="container mb-5">
   <div class="header mb-4 d-grid gap-2 d-md-flex justify-content-md-end">
     <ul class="nav">
-        <li><a [ngClass]="{'currentItemNav': boutonActif === 1}" (click)="showTypeDocument('fournisseur')" (click)="boutonActif = 1" >Fournisseurs</a></li>
-        <li><a [ngClass]="{'currentItemNav': boutonActif === 2}" (click)="showTypeDocument('depense')" (click)="boutonActif = 2" >Dépenses</a></li>
+        <li><a [ngClass]="{'currentItemNav': boutonActif === 1}" (click)="showTypeDocument('fournisseur')" (click)="boutonActif = 1" (click)="listeFournisseur()" >Fournisseurs</a></li>
+        <li><a [ngClass]="{'currentItemNav': boutonActif === 2}" (click)="showTypeDocument('depense')" (click)="boutonActif = 2" (click)="listeDepense()" >Dépenses</a></li>
     </ul>
   </div>
 
 <div class="contenu">
   <div class="col-md-12 px-4" id="fournisseur" *ngIf="currentDoc==='fournisseur'">
     <div class="card mb-4 px-4 py-2 pt-4 rounded-4">
-      <button type="button" class="btn ajouter  col-md-2 mb-3 mt-4" data-bs-toggle="modal" data-bs-target="#addfournisseur">
+      <button type="button" class="btn ajouter  col-md-2 mb-3 mt-4" data-bs-toggle="modal" data-bs-target="#addfournisseur" (click)="vider()">
         Ajouter Fournisseur
      </button>
         <div class="row sectionEspace ligneReseauSearch mb-3">
@@ -37,7 +37,7 @@
                     <tr>
                         <th scope="col">Numéro </th>
                         <th scope="col">Type Fournisseur>
-                        <th scope="col">Nom Complet</th>
+                        <th scope="col">Nom</th>
                         <th scope="col">Adresse </th>
                         <th scope="col">Email </th>
                         <th scope="col">Téléphone </th>
@@ -48,7 +48,7 @@
                 <tr>
                    <td>{{fournisseur.num_fournisseur}}</td>
                    <td>{{fournisseur.type_fournisseur}}</td>
-                   <td>{{fournisseur.prenom_fournisseur}} {{fournisseur.nom_fournisseur}}</td>
+                   <td>{{fournisseur.prenom_fournisseur}} {{fournisseur.nom_fournisseur}} {{fournisseur.nom_entreprise}} </td>
                    <td>{{fournisseur.adress_fournisseur}}</td>
                    <td>{{fournisseur.email_fournisseur}}</td>
                    <td>{{fournisseur.tel_fournisseur}}</td>
@@ -82,7 +82,7 @@
   </div>
   <div class="col-md-12 px-4" id="depense" *ngIf="currentDoc==='depense'">
     <div class="card mb-4 px-4 py-2 pt-4 rounded-4">
-      <button type="button" class="btn ajouter  col-md-2 mb-3 mt-4" data-bs-toggle="modal" data-bs-target="#adddepence">
+      <button type="button" class="btn ajouter  col-md-2 mb-3 mt-4" data-bs-toggle="modal" data-bs-target="#adddepence" (click)="vider()">
         Ajouter Dépense
      </button>
         <div class="row sectionEspace ligneReseauSearch mb-3">
@@ -99,25 +99,25 @@
                 <thead class="mb-2">
                     <tr>
                         <th scope="col">Numéro </th>
-                        <th scope="col">Type Fournisseur>
-                        <th scope="col">Nom Complet</th>
-                        <th scope="col">Adresse </th>
-                        <th scope="col">Email </th>
-                        <th scope="col">Téléphone </th>
+                        <th scope="col">Date </th>
+                        <th scope="col">Catégorie</th>
+                        <th scope="col">Fournisseur </th>
+                        <th scope="col">Total Ht </th>
+                        <th scope="col">Total Ttc </th>
                         <th scope="col">Action </th>
                     </tr>
                 </thead>
-                <tbody *ngFor="let fournisseur of getItemsPage()" >
+                <tbody *ngFor="let depense of getItemsPage()" >
                 <tr>
-                   <td>{{fournisseur.num_fournisseur}}</td>
-                   <td>{{fournisseur.type_fournisseur}}</td>
-                   <td>{{fournisseur.prenom_fournisseur}} {{fournisseur.nom_fournisseur}}</td>
-                   <td>{{fournisseur.adress_fournisseur}}</td>
-                   <td>{{fournisseur.email_fournisseur}}</td>
-                   <td>{{fournisseur.tel_fournisseur}}</td>
+                   <td>{{depense.num_depense}}</td>
+                   <td>{{depense.date_paiement}}</td>
+                   <td>{{depense.nom_categorie_depense}}</td>
+                   <td>{{depense.prenom_depense}} {{depense.nom_depense}}</td>
+                   <td>{{depense.montant_depense_ht}}</td>
+                   <td>{{depense.montant_depense_ttc}}</td>
                    <td>
-                    <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfoFournisseur(fournisseur)" data-bs-toggle="modal" data-bs-target="#updateFournisseur"></i>
-                    <i class="bi bi-trash3" title="Supprimer" (click)="supprimerFournisseur(fournisseur.id)"></i>
+                    <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfoDepense(depense)" data-bs-toggle="modal" data-bs-target="#updateDepense"></i>
+                    <i class="bi bi-trash3" title="Supprimer" (click)="supprimerDepense(depense.id)"></i>
                    </td>
                 </tr>
                 </tbody>
@@ -213,7 +213,82 @@
           </div>
           
           
-          <button class="save-btn" data-bs-toggle="modal" data-bs-target="#fournisseur" (click)="configurationNumero()">Sauvegarder</button>
+          <button class="save-btn" data-bs-toggle="modal" data-bs-target="#addfournisseur" (click)="configurationNumero()">Sauvegarder</button>
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal configuration numéro Depense -->
+<div class="modal fade mt-5" id="settingDepense" tabindex="-1" aria-labelledby="settingLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="d-grid gap-2 p-2 d-md-flex justify-content-md-end">
+        <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="config">
+          <h1>Configurer numérotation automatique de ventes</h1>
+          
+          <div class="option">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate" checked>
+              <label class="form-check-label" for="flexCheckIndeterminate">
+                Champ numéro modifiable
+              </label>
+            </div>
+          </div>
+          
+
+          <div class="form-check ">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" value="par_defaut" [(ngModel)]="numerotation"  id="flexRadioDefault1" (click)="showNumConfig('sansPrefixes')" checked>
+            <label class="form-check-label" for="flexRadioDefault1">
+              Numérotation par défaut (incrémentée de façon alphanumérique)
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" value="avec_prefixe" [(ngModel)]="numerotation" id="flexRadioDefault2" (click)="showNumConfig('avecPrefixes')" >
+            <label class="form-check-label" for="flexRadioDefault2">
+              Numérotation avec préfixe
+            </label>
+          </div>
+          
+          <div class="option"  id="avecPrefixes" *ngIf="currentNumConfig==='avecPrefixes'">
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="custom" (change)="updatePrefix()">
+                Préfixe personnalisé : 
+                <input type="text" [disabled]="selectedPrefix !== 'custom'" [(ngModel)]="customPrefix" (ngModelChange)="updatePrefix()">
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="annee" (change)="updatePrefix()">
+                Préfixe avec l'année en cours
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="annee_mois" (change)="updatePrefix()">
+                Préfixe avec l'année et le mois en cours
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="annee_mois_jour" (change)="updatePrefix()">
+                Préfixe avec l'année, le mois et le jour en cours
+              </label>
+            </div>
+            <div class="next-number">
+              <label>Prochain numéro :</label>
+              <input type="text" name="nextNumberDepense" [(ngModel)]="nextNumberDepense" readonly>
+            </div>
+          </div>
+
+          <div  id="sansPrefixes" *ngIf="currentNumConfig==='sansPrefixes'">
+            <div class="next-number">
+              <label>Prochain numéro :</label>
+              <input type="text"  [(ngModel)]="nextNumberDepense" readonly>
+            </div>
+          </div>
+          
+          
+          <button class="save-btn" data-bs-toggle="modal" data-bs-target="#adddepence" (click)="configurationNumeroDepense()">Sauvegarder</button>
       </div>
       </div>
     </div>
@@ -356,10 +431,10 @@
       <div class="modal-body">
         <h3>+ Ajouter catégorie dépense</h3>
         <div class="form-floating mb-3">
-          <input type="text" class="form-control" id="text" name="categorie">
+          <input type="text" class="form-control" id="text" name="categorie" [(ngModel)]="categorie">
           <label for="text">Nom Catégorie</label>
       </div>
-        <button class="btnAction mx-auto btn mt-3" data-bs-toggle="modal" data-bs-target="#adddepence">Sauvegarder</button>
+        <button class="btnAction mx-auto btn mt-3"  (click)="addCategorieDepense()" data-bs-toggle="modal" data-bs-target="#adddepence">Sauvegarder</button>
       </div>
     </div>
   </div>
@@ -368,7 +443,7 @@
 
 <!-- Modal ajouter depense -->
 <div class="modal fade mt-5" id="adddepence" tabindex="-1" aria-labelledby="adddepenceLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered ">
+  <div class="modal-dialog modal-dialog-centered modal-lg ">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="adddepenceLabel">Modal title</h1>
@@ -377,144 +452,350 @@
       <div class="modal-body">
         <div class="form-container">
           <div class="row">
-            <div class="status-bar col-4">
-              <div class="toggle">
-                <div class="toggle-slider"></div>
-              </div>
-              <span class="status-text">Active</span>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="active" (click)="setTypeActive(true)">
+              <label class="form-check-label" for="flexSwitchCheckDefault">Active</label>
             </div>
   
             <div class="header col-8">
               <label for="numero">Numéro :&nbsp;</label>
-              <input class="w-50" type="text" id="numero" name="nextNumber"[(ngModel)]="nextNumber" readonly>&nbsp;
-              <i class="bi bi-gear" data-bs-toggle="modal" data-bs-target="#setting"></i>
+              <input class="w-50" type="text" id="numero" name="nextNumberDepense"[(ngModel)]="nextNumberDepense" readonly>&nbsp;
+              <i class="bi bi-gear" data-bs-toggle="modal" data-bs-target="#settingDepense"></i>
             </div>
           </div>
           
 
           <div class="form-group">
             <label for="category">Catégorie :</label>
-            <select id="category">
+            <select id="category" name="categorie" [(ngModel)]="categorie">
               <option  data-bs-toggle="modal" data-bs-target="#categorie">+ Ajouter une catégorie...</option>
               <option value="" disabled selected>Sélectionnez une catégorie...</option>
+              <option  *ngFor="let categorie of tabCategorie" [value]="categorie.id">{{categorie.nom_categorie_depense}}</option>
             </select>
           </div>
 
           <div class="form-group">
             <label for="comment">Commentaire (facultatif) :</label>
-            <textarea id="comment"></textarea>
+            <textarea id="comment" name="note" [(ngModel)]="note"></textarea>
           </div>
 
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+          <div class="form-check" (click)="showInfosPayement()">
+            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" name="depensePay" (click)="setTypedepensePay(true)">
             <label class="form-check-label" for="defaultCheck1">
               Dépense avec plusieurs paiements
             </label>
           </div>
 
-          <div class="section Échéance text-center mx-auto p-2">
-            <div class="row">
-              <ng-container class="mb-2" *ngFor="let item of input; let i = index">
-                <div class="col-2"><label for="echeance1" class="me-1">Échéance {{i+1}}: </label></div>
-                <div class="col-4"><input type="date"  id="echeance1" class="me-2" value="" [(ngModel)]="item.date" ></div>
+          <div class="Échéance mx-auto p-2" *ngIf="infosPayement">
+            <div class="form-check" (click)="showEcheancePay()">
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" name="Duree" (click)="setTypeDuree(true)">
+              <label class="form-check-label" for="defaultCheck1">
+                Durée indéterminée (nombre de paiements inconnu)
+              </label>
+            </div>
+            <div class="row mb-2 mt-2 text-center" *ngIf="!echeancePay">
+              <ng-container class="mb-2 mt-2" *ngFor="let item of input; let i = index">
+                <div class="col-3"><label for="echeance1" class="me-1">Échéance {{i+1}}: </label></div>
+                <div class="col-3"><input type="date"  id="echeance1" class="me-2" value="" [(ngModel)]="item.date" ></div>
                 <div class="col-4"><input type="number" id="montant1"  class="me-2" value="" [(ngModel)]="item.prix"> </div>
                 <div class="col-2"><i class="bi bi-x-lg" style="color: red; cursor: pointer;" (click)="deleteInput(i)"></i></div>
               </ng-container >
               <span (click)="addInput()" style="cursor: pointer;"><i class="bi bi-plus-circle me-2"></i>ajouter</span>
             </div>
+            <div class="popup-vente mb-5" *ngIf="echeancePay">
+              <span class="txt-title">Ces échéances doivent être programmées :</span>
+              <div class="checkbox1">
+                  <div class="vente">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" checked>
+                      <label class="form-check-label" for="defaultCheck1">
+                        Une échéance tous les :
+                      </label>
+                    </div>
+                  </div>
+                  <div class="duree text-center">
+                      <input class="check1 me-2" type="number" name="periode" [(ngModel)]="periode">
+                      <select name="" id="" name="durePeriode"  class="check2" [(ngModel)]="durePeriode">
+                        <option value="jour">Jour</option>
+                        <option value="semaine">Semaine</option>
+                        <option value="mois">Mois</option>
+                      </select>
+                  </div>
+              </div>
+              <div class="date">
+                  <span>A partir du:</span>
+                  <input type="date" name="datePay" [(ngModel)]="datePay">
+              </div>
+              <div class="date">
+                <span>Montant:&nbsp;</span>
+                <input type="text" name="montantEcheance" [(ngModel)]="montantPay">
+            </div>
           </div>
-        
+        </div>
 
-          <div class="payment-options">
-            <div class="checkbox-group">
-              <input type="checkbox" id="indeterminateDuration">
-              <label for="indeterminateDuration">Durée indéterminée (nombre de paiements inconnu)</label>
-              <span class="info-icon">ℹ️</span>
+        <div class="payment-info mx-auto p-2 mt-3 mb-2" *ngIf="!infosPayement">
+          <h3>Information du paiement</h3>
+          <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Date :</label>
+            <div class="col-sm-10">
+              <input type="date" class="form-control" id="staticEmail" name="datePay" [(ngModel)]="datePay" >
             </div>
+          </div>
+          <div class="form-check" (click)="showInputTva()">
+            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+            <label class="form-check-label" for="defaultCheck1">
+              Tva
+            </label>
+          </div>
+          
+          <div class="mb-3 row" *ngIf="!showTva">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Montant :</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="staticEmail"  name="montantPay" [(ngModel)]="montantPay"  >
+            </div>
+          </div>
 
-            <div class="schedule-options">
-              <p>Ces échéances doivent être programmées :</p>
-              <div class="checkbox-group">
-                <input type="checkbox" id="recurringPayment">
-                <label for="recurringPayment">Une échéance tous les :</label>
-                <input type="number" class="small-input">
-                <select>
-                  <option>Mois</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label>À partir du :</label>
-                <div class="date-input">
-                  <span class="calendar-icon">📅</span>
-                  <input type="text" placeholder="Date">
-                </div>
-              </div>
-
-              <div class="form-group">
-                <label>Montant :</label>
-                <div class="amount-input">
-                  <span class="currency-symbol">$</span>
-                  <input type="text" placeholder="Montant">
-                </div>
+          <ng-container *ngIf="showTva">
+            <div class="mb-3 row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">TVA :</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="staticEmail" name="tva" [(ngModel)]="tva" (ngModelChange)="calculerMontantTtc()">
               </div>
             </div>
-
-            <div class="payment-count">
-              <label>Combien d'échéances ?</label>
-              <input type="number" value="1" class="small-input">
-            </div>
-
-            <div class="payment-info">
-              <h3>Information du paiement</h3>
-              <div class="form-group">
-                <label>Date :</label>
-                <div class="date-input">
-                  <span class="calendar-icon">📅</span>
-                  <input type="text" value="29/07/2024">
-                </div>
-              </div>
-              <div class="form-group">
-                <label>TVA :</label>
-                <select>
-                  <option>Sans TVA</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>Montant :</label>
-                <div class="amount-input">
-                  <span class="currency-symbol">$</span>
-                  <input type="text" placeholder="Montant">
-                </div>
-              </div>
-              <div class="checkbox-group">
-                <input type="checkbox" id="unpaid">
-                <label for="unpaid">Impayé</label>
+            <div class="mb-3 row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Montant Ht :</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="staticEmail" name="montantpay" [(ngModel)]="montantPay" (ngModelChange)="calculerMontantTtc()">
               </div>
             </div>
+            <div class="mb-3 row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Montant Ttc :</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="staticEmail" name="montantPayTtc" [(ngModel)]="montantPayTtc" readonly>
+              </div>
+            </div>
+          </ng-container>
+         
+          <div class="form-check form-switch" *ngIf="impayer=='impayer'">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="payer" (click)="setTypeImpay('payer')">
+            <label class="form-check-label" for="flexSwitchCheckDefault">Impayé</label>
+          </div>
+          <div class="form-check form-switch" *ngIf="impayer=='payer'">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked name="impayer"  (click)="setTypeImpay('impayer')">
+            <label class="form-check-label" for="flexSwitchCheckDefault" >payé</label>
+          </div>
 
-            <div class="billing-info">
-              <h3>Information de facturation</h3>
-              <div class="form-group">
-                <label>Numéro :</label>
-                <input type="text">
-              </div>
-              <div class="form-group">
-                <label>Date :</label>
-                <div class="date-input">
-                  <span class="calendar-icon">📅</span>
-                  <input type="text">
-                </div>
-              </div>
+          <div class="row g-3 align-items-center" *ngIf="impayer=='payer'">
+            <div class="col-auto">
+              <label for="inputPassword6" class="col-form-label">Moyen de paiement</label>
+              <select class="form-select form-select-lg" id="client-select" placeholder="Type de paiement..." [(ngModel)]="moyenPayement">
+                <option *ngFor="let paye of tabPayement" [value]="paye.id">{{paye.nom_payement}}</option>
+              </select>
             </div>
           </div>
 
         </div>
+
+        <a (click)='showInfosFacture()'>+ Saisir information de facturation</a>
+
+        <div class="payment-info mx-auto p-2 mt-3" *ngIf="infosFacture">
+          <h3>Information de facturation</h3>
+          <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Numéro :</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="staticEmail" name="numero" [(ngModel)]="numero" >
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Date :</label>
+            <div class="col-sm-10">
+              <input type="date" class="form-control" id="staticEmail" name="dateFacture" [(ngModel)]="dateFacture" >
+            </div>
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btnAction">Ajouter</button>
+        <button type="button" class="btn btnAction" (click)="createDepense()">Ajouter</button>
       <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
       </div>
     </div>
   </div>
 </div>
+</div>
+
+<!-- Modal modifier depense -->
+<div class="modal fade mt-5" id="updateDepense" tabindex="-1" aria-labelledby="updateDepenseLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg ">
+    <div class="modal-content" *ngIf="currentDepense">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="updateDepenseLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-container">
+          <div class="row">
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="active" (click)="setTypeActive(true)">
+              <label class="form-check-label" for="flexSwitchCheckDefault">Active</label>
+            </div>
+  
+            <div class="header col-8">
+              <span>{{numDepense}}</span>
+            </div>
+          </div>
+          
+
+          <div class="form-group">
+            <label for="category">Catégorie :</label>
+            <select id="category" name="categorie" [(ngModel)]="categorie">
+              <option  data-bs-toggle="modal" data-bs-target="#categorie">+ Ajouter une catégorie...</option>
+              <option value="" disabled selected>Sélectionnez une catégorie...</option>
+              <option  *ngFor="let categorie of tabCategorie" [value]="categorie.id">{{categorie.nom_categorie_depense}}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="comment">Commentaire (facultatif) :</label>
+            <textarea id="comment" name="note" [(ngModel)]="note"></textarea>
+          </div>
+
+
+          <div class="payment-info text-center p-3" *ngIf="currentDepense.nombre_periode !==null && currentDepense.periode_echeance !==null ">
+            <p>Une dépense de ce type est créée automatiquement tous les {{currentDepense.nombre_periode }} {{currentDepense.periode_echeance }} à partir du {{currentDepense.date_paiement }} pour un montant de {{currentDepense.montant_depense_ht}}.</p>
+            <p>Date de la prochaine dépense : {{ calculerProchaineDateDepense(currentDepense.date_paiement, currentDepense.periode_echeance) }}</p>
+            <button class="btn btnArret">Arrêter la création automatique de dépenses de ce type</button>
+          </div>
+
+        <div class="payment-info mx-auto p-2 mt-3 mb-2">
+          <h3>Information du paiement</h3>
+          <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Date :</label>
+            <div class="col-sm-10">
+              <input type="date" class="form-control" id="staticEmail" name="datePay" [(ngModel)]="datePay" >
+            </div>
+          </div>
+        
+          <ng-container *ngIf="currentDepense.tva_depense == null">
+            <div class="form-check" (click)="showInputTva()">
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+              <label class="form-check-label" for="defaultCheck1">
+                Tva
+              </label>
+            </div>
+            
+            <div class="mb-3 row" *ngIf="!showTva">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Montant :</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="staticEmail"  name="montantPay" [(ngModel)]="montantPay"  >
+              </div>
+            </div>
+  
+            <ng-container *ngIf="showTva">
+              <div class="mb-3 row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">TVA :</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" id="staticEmail" name="tva" [(ngModel)]="tva" (ngModelChange)="calculerMontantTtc()">
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Montant Ht :</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" id="staticEmail" name="montantpay" [(ngModel)]="montantPay" (ngModelChange)="calculerMontantTtc()">
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Montant Ttc :</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" id="staticEmail" name="montantPayTtc" [(ngModel)]="montantPayTtc" readonly>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+
+          <ng-container *ngIf="currentDepense.tva_depense !== null">
+            <div class="mb-3 row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">TVA :</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="staticEmail" name="tva" [(ngModel)]="tva" (ngModelChange)="calculerMontantTtc()">
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Montant Ht :</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="staticEmail" name="montantpay" [(ngModel)]="montantPay" (ngModelChange)="calculerMontantTtc()">
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Montant Ttc :</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="staticEmail" name="montantPayTtc" [(ngModel)]="montantPayTtc" readonly>
+              </div>
+            </div>
+          </ng-container>
+         
+          <div class="form-check form-switch" *ngIf="impayer=='impayer'">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="payer" (click)="setTypeImpay('payer')">
+            <label class="form-check-label" for="flexSwitchCheckDefault">Impayé</label>
+          </div>
+          <div class="form-check form-switch" *ngIf="impayer=='payer'">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked name="impayer"  (click)="setTypeImpay('impayer')">
+            <label class="form-check-label" for="flexSwitchCheckDefault" >payé</label>
+          </div>
+
+          <div class="row g-3 align-items-center" *ngIf="impayer=='payer'">
+            <div class="col-auto">
+              <label for="inputPassword6" class="col-form-label">Moyen de paiement</label>
+              <select class="form-select form-select-lg" id="client-select" placeholder="Type de paiement..." [(ngModel)]="moyenPayement">
+                <option *ngFor="let paye of tabPayement" [value]="paye.id">{{paye.nom_payement}}</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+
+        <ng-container *ngIf="currentDepense.num_facture == null && currentDepense.date_facture == null">
+          <a (click)='showInfosFacture()'>+ Saisir information de facturation</a>
+
+          <div class="payment-info mx-auto p-2 mt-3" *ngIf="infosFacture">
+            <h3>Information de facturation</h3>
+            <div class="mb-3 row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Numéro :</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="staticEmail" name="numero" [(ngModel)]="numero" >
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Date :</label>
+              <div class="col-sm-10">
+                <input type="date" class="form-control" id="staticEmail" name="dateFacture" [(ngModel)]="dateFacture" >
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        
+
+        <div class="payment-info mx-auto p-2 mt-3"  *ngIf="currentDepense.num_facture !== null && currentDepense.date_facture !== null">
+          <h3>Information de facturation</h3>
+          <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Numéro :</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" id="staticEmail" name="numero" [(ngModel)]="numero" >
+            </div>
+          </div>
+          <div class="mb-3 row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Date :</label>
+            <div class="col-sm-10">
+              <input type="date" class="form-control" id="staticEmail" name="dateFacture" [(ngModel)]="dateFacture" >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btnAction" (click)="updateDepense()">Modifier</button>
+      <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
