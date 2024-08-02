@@ -30,4 +30,10 @@ export class ClientsService {
     updateClient(clientId: any, client:any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/modifierClient/${clientId}`, client);
   }
+
+  // exporter client
+  exportToExcel() {
+    return this.http.post(`${apiUrl}/exportClients`,'' ,{ responseType: 'blob' });
+  }
+ 
 }

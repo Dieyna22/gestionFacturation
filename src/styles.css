@@ -113,3 +113,9 @@
   width: 35px;
   height: 35px;
 }
+
+.import{
+  text-decoration: underline;
+  color: #101BC7;
+  cursor: pointer;
+}
