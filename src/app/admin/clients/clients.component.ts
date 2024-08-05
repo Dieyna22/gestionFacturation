@@ -427,21 +427,37 @@ uploadFile() {
   
 }
 
+
 exportExcel() {
   this.clientService.exportToExcel().subscribe(
     (data: Blob) => {
-      const blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'export.xlsx';
-      a.click();
-      window.URL.revokeObjectURL(url);
+      data.arrayBuffer().then((buffer) => {
+        const workbook = XLSX.read(buffer, { type: 'array' });
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+        
+        // Augmenter la largeur des colonnes
+        if (worksheet['!ref']) {
+          const range = XLSX.utils.decode_range(worksheet['!ref']);
+          const cols: XLSX.ColInfo[] = [];
+          for (let C = range.s.c; C <= range.e.c; ++C) {
+            cols.push({ wch: 20 }); // Définir la largeur à 15
+          }
+          worksheet['!cols'] = cols;
+        }
+        
+        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'export.xlsx';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      });
     },
-    (err)=> {
+    (err) => {
       console.log(err);
     }
-    
   );
 }
 
