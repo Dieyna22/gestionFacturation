@@ -33,7 +33,7 @@ export class ClientsService {
 
   // exporter client
   exportToExcel() {
-    return this.http.post(`${apiUrl}/exportClients`,'' ,{ responseType: 'blob' });
+    return this.http.get(`${apiUrl}/exportClients`,{ responseType: 'blob' });
   }
  
 }
