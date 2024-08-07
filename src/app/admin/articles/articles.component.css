@@ -55,3 +55,56 @@ thead th:first-child {
     text-decoration: none;
     cursor: pointer;
   }
+
+  h1 {
+    color: #0099cc;
+}
+p {
+    color: #666;
+}
+.etape {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+.etape-numero {
+    font-weight: bold;
+    color: #999;
+}
+
+.titre {
+    color: #0099cc;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+.step{
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 20px;
+    text-align: center;
+}
+.paragraphe {
+    margin: 10px 0;
+}
+.bold {
+    font-weight: bold;
+}
+.download-btn {
+    background-color: #9ACD32;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 15px 0;
+}
+.link {
+    color: #999;
+    text-decoration: none;
+    font-size: 14px;
+    cursor: pointer;
+}

@@ -60,4 +60,9 @@ export class ArticlesService {
     getOtherPriceByArticle(articleId: any): Observable<any> {
       return this.http.get<any>(`${apiUrl}/listerAutrePrixArticle/${articleId}`);
     }
+
+    // exporter article
+  exportToExcel() {
+    return this.http.get(`${apiUrl}/exportArticles`,{ responseType: 'blob' });
+  }
 }

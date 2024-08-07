@@ -7,6 +7,7 @@ import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import { CategorieArticleService } from 'src/app/services/categorie-article.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-articles',
@@ -34,7 +35,7 @@ quantiteAlerte: string = "";
 CategorieArticle:string="";
 note:string="";
 unite:string="";
-tva:string="";
+tva:number=0;
 titrePrix:string="";
 tvaPrix:string="";
 prixVente:string="";
@@ -56,7 +57,7 @@ inputquantiteAlerte: string = "";
 inputtypeArticle: string = "";
 inputpromo: string = "";
 inputCategorieArticle:string="";
-inputtva: string = "";
+inputtva: number = 0;
 inputunite: string = "";
 inputentrepotName: string = "";
 inputLotnom: string = "";
@@ -68,11 +69,14 @@ inputtitrePrix: string = "";
 inputtvaPrix: string = "";
 inputprixVente: string = "";
 
-
+currentStep = 1;
+isFileValid = false;
 
 isSuperAdmin: boolean = false;
 isAdmin: boolean = false;
 isUser: boolean = false;
+
+active:string='non';
 
 
 constructor(private http: HttpClient, private articleService:ArticlesService,private promoService:PromoService,private Categorie: CategorieArticleService) { }
@@ -124,7 +128,7 @@ showMenu(menuId: string): void {
 
 ajouterEntrepot(){
   let entrepot={
-    "nom_entrepot":this.addEntrepot,
+    "nomEntrepot":this.addEntrepot,
   }
   this.articleService.addEntrepot(entrepot).subscribe(
     (entrepot:any)=>{
@@ -133,6 +137,7 @@ ajouterEntrepot(){
       this.listeArticles();
     },
     (err) => {
+      console.log(err);
     }
   )
 }
@@ -141,6 +146,7 @@ listeEntrepot(){
   this.articleService.getAllEntrepot().subscribe(
     (entrepot:any)=>{
       this.tabEntrepot=entrepot;
+      console.log(this.tabEntrepot)
     },
     (err) => {
     }
@@ -149,6 +155,7 @@ listeEntrepot(){
 
 ajouterArticle(){
 let articles={
+  "active_Stock":this.active,
   "nom_article": this.nom,
   "description": this.desc,
   "prix_achat":this.achat,
@@ -203,6 +210,7 @@ listeArticles() {
      this.tabArticleFilter = this.tabArticle.filter((article: any) => article.type_article == 'produit');
    },
    (err) => {
+    console.log(err);
    }
  )
 }
@@ -219,7 +227,7 @@ vider(){
  this.CategorieArticle='';
  this.note='';
  this.unite='';
- this.tva='';
+ this.tva=0;
  this.titrePrix='';
  this.tvaPrix='';
  this.prixVente='';
@@ -239,7 +247,7 @@ vider(){
  this.inputquantite='';
  this.inputquantiteAlerte='';
  this.inputCategorieArticle='';
- this.inputtva='';
+ this.inputtva=0;
  this.inputunite='';
  this.inputentrepotName='';
  this.inputLotnom='';
@@ -306,6 +314,7 @@ chargerInfosArticle(paramArticle:any){
 
 updateArticle() {
   let articles={
+    "active_Stock":this.active,
     "num_article":this.numArticles,
     "nom_article":this.inputnom,
     "description":this.inputdesc,
@@ -532,6 +541,126 @@ afficherChampsLot(){
 variantes:boolean=false;
 afficherChampsVariantes(){
   this.variantes=!this.variantes;
+}
+
+setTypeActive(type: string) {
+  this.active = type;
+}
+
+goToNextStep() {
+  this.currentStep++;
+}
+
+private file: File | null = null;
+onFileChange(event: any) {
+  this.file = event.target.files[0];
+  this.isFileValid = true; 
+}
+
+downloadModel() {
+  // Création du modèle de données
+  const modelData = [
+    {  Libellé: '', Description: '', prix_unitaire: '', quantite: '', Prix_achat: '' , benefice: '', prix_promo: '', prix_tva: '', 
+categorie : '', tva: '', benefice_promo: '', quantite_alerte : '', type_article : '', unite: '', }
+  ];
+
+  // Création de la feuille de calcul
+  const worksheet: XLSX.WorkSheet = XLSX.utils.json_to_sheet(modelData);
+
+  // Définition d'une largeur uniforme pour toutes les colonnes
+  const columnWidth = 20; // Largeur en caractères
+
+ 
+    // Application de la largeur à toutes les colonnes utilisées
+    if (worksheet['!ref']) {
+      const range = XLSX.utils.decode_range(worksheet['!ref']);
+      const columnCount = range.e.c + 1; // Nombre de colonnes
+
+      worksheet['!cols'] = Array(columnCount).fill({ wch: columnWidth });
+    } else {
+      // Fallback si !ref n'est pas défini (ce qui est peu probable dans ce cas)
+      const columnCount = Object.keys(modelData[0]).length;
+      worksheet['!cols'] = Array(columnCount).fill({ wch: columnWidth });
+    }
+
+
+  // Création du classeur
+  const workbook: XLSX.WorkBook = { 
+    Sheets: { 'Clients': worksheet }, 
+    SheetNames: ['Clients'] 
+  };
+
+  // Conversion du classeur en buffer
+  const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+
+  // Sauvegarde du fichier
+  this.saveAsExcelFile(excelBuffer, "modele_ajoutArticles");
+}
+
+private saveAsExcelFile(buffer: any, fileName: string): void {
+  // Création d'un Blob à partir du buffer
+  const data: Blob = new Blob([buffer], {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8'
+  });
+
+  // Création d'un lien de téléchargement
+  const link: HTMLAnchorElement = document.createElement('a');
+  link.href = window.URL.createObjectURL(data);
+  link.download = `${fileName}.xlsx`;
+
+  // Simulation du clic pour déclencher le téléchargement
+  link.click();
+
+  // Nettoyage
+  setTimeout(() => {
+    window.URL.revokeObjectURL(link.href);
+    link.remove();
+  }, 100);
+}
+
+uploadFile() {
+  if (this.file) {
+    const formData = new FormData();
+    formData.append('file', this.file, this.file.name);
+
+    this.http.post('http://127.0.0.1:8000/api/importArticle', formData).subscribe(
+      response => {this.goToNextStep(); this.listeArticles()},
+      error => console.error('Erreur d\'importation', error)
+    );
+  }
+}
+
+exportExcel() {
+  this.articleService.exportToExcel().subscribe(
+    (data: Blob) => {
+      data.arrayBuffer().then((buffer) => {
+        const workbook = XLSX.read(buffer, { type: 'array' });
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+        
+        // Augmenter la largeur des colonnes
+        if (worksheet['!ref']) {
+          const range = XLSX.utils.decode_range(worksheet['!ref']);
+          const cols: XLSX.ColInfo[] = [];
+          for (let C = range.s.c; C <= range.e.c; ++C) {
+            cols.push({ wch: 20 }); // Définir la largeur à 15
+          }
+          worksheet['!cols'] = cols;
+        }
+        
+        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'exportArticle.xlsx';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      });
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
 }
 
 }
