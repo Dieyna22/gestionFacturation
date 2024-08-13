@@ -2,7 +2,17 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
+import { tap, catchError } from 'rxjs/operators';
+import { throwError, Observable, Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
+
+
+// Définir l'interface pour la réponse du login et du rafraîchissement du token
+interface AuthResponse {
+  access_token: string;
+  expires_in: number;
+}
 
 @Component({
   selector: 'app-navbar',
@@ -17,7 +27,7 @@ export class NavbarComponent {
 
   
 
-  constructor(private route: Router) { }
+  constructor(private route: Router,private http: HttpClient) { }
 
   ngOnInit() {
     // Renvoie un tableau de valeurs ou un tableau vide 
@@ -47,5 +57,23 @@ export class NavbarComponent {
       
       });
   }
+
+    // Rafraîchir le token
+    refreshToken(): Observable<AuthResponse> {
+      return this.http
+        .post<AuthResponse>(`http://127.0.0.1:8000/api/refresh-token`, {})
+        .pipe(
+          tap((response) => {
+            // this.handleAuthResponse(response);
+            console.log(response)
+          }),
+          catchError((error) => {
+            this.logout(); // Déconnexion si l'échec de rafraîchissement
+            return throwError(
+              () => new Error('Échec du rafraîchissement du token')
+            );
+          })
+        );
+    }
 
 }
