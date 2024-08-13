@@ -25,4 +25,9 @@ export class AuthService {
   connexionUser(user: any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/login_sousUtilisateur`, user);
   }
+
+  //refresh token
+  refreshToken(): Observable<any> {
+    return this.http.post(`${apiUrl}/refresh`, {});
+  }
 }
