@@ -21,28 +21,28 @@ export class ArticlesService {
     return this.http.get<any>(`${apiUrl}/listerArticles`);
   }
 
-   // supprimer  une article
-   deleteArticle(articleID:any): Observable<any> {
+  // supprimer  une article
+  deleteArticle(articleID: any): Observable<any> {
     return this.http.delete<any>(`${apiUrl}/supprimerArticle/${articleID}`);
   }
 
   //modifier une article
-    updateArticle(articleID: any, article:any): Observable<any> {
+  updateArticle(articleID: any, article: any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/modifierArticle/${articleID}`, article);
   }
 
-   //modifier stock  article
-   updateStockArticle(articleID: any, stock:any): Observable<any> {
+  //modifier stock  article
+  updateStockArticle(articleID: any, stock: any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/articles_modifier_quantite/${articleID}`, stock);
   }
 
   //affecter promo à une article
-  affecterArticle(articleID: any, promo:any): Observable<any> {
+  affecterArticle(articleID: any, promo: any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/affecterPromoArticle/${articleID}`, promo);
   }
 
-   //affecter catégorie à une article
-   affecterCategorieArticle(articleID: any, categorie:any): Observable<any> {
+  //affecter catégorie à une article
+  affecterCategorieArticle(articleID: any, categorie: any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/affecterCategorieArticle/${articleID}`, categorie);
   }
 
@@ -51,18 +51,23 @@ export class ArticlesService {
     return this.http.post<any>(`${apiUrl}/ajouterEntrepot`, entrepot);
   }
 
-    // liste entrepot
-    getAllEntrepot(): Observable<any> {
-      return this.http.get<any>(`${apiUrl}/listerEntrepots`);
-    }
+  // liste entrepot
+  getAllEntrepot(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listerEntrepots`);
+  }
 
-    // liste autre prix par article
-    getOtherPriceByArticle(articleId: any): Observable<any> {
-      return this.http.get<any>(`${apiUrl}/listerAutrePrixArticle/${articleId}`);
-    }
+  // liste autre prix par article
+  getOtherPriceByArticle(articleId: any): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listerAutrePrixArticle/${articleId}`);
+  }
 
-    // exporter article
+  // exporter article
   exportToExcel() {
-    return this.http.get(`${apiUrl}/exportArticles`,{ responseType: 'blob' });
+    return this.http.get(`${apiUrl}/exportArticles`, { responseType: 'blob' });
+  }
+
+  // exporter service
+  exportServiceToExcel() {
+    return this.http.get(`${apiUrl}/exportServices`, { responseType: 'blob' });
   }
 }

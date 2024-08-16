@@ -7,6 +7,7 @@ import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import { CategorieArticleService } from 'src/app/services/categorie-article.service';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-services',
@@ -370,5 +371,38 @@ get totalPages(): number {
  afficherChampsPrix(){
    this.formPrix=!this.formPrix;
  }
+
+ exportExcel() {
+  this.articleService.exportServiceToExcel().subscribe(
+    (data: Blob) => {
+      data.arrayBuffer().then((buffer) => {
+        const workbook = XLSX.read(buffer, { type: 'array' });
+        const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+
+        // Augmenter la largeur des colonnes
+        if (worksheet['!ref']) {
+          const range = XLSX.utils.decode_range(worksheet['!ref']);
+          const cols: XLSX.ColInfo[] = [];
+          for (let C = range.s.c; C <= range.e.c; ++C) {
+            cols.push({ wch: 20 }); // Définir la largeur à 15
+          }
+          worksheet['!cols'] = cols;
+        }
+
+        const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'exportService.xlsx';
+        a.click();
+        window.URL.revokeObjectURL(url);
+      });
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
+}
  
 }
