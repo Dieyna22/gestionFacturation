@@ -38,37 +38,43 @@
     display: block;
 }
 
+img {
+    height: 40px;
+}
 
-nav{
-	background-image:  url(../../../assets/images/bannier.png);
-	box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+nav {
+    background-image: url(../../../assets/images/bannier.png);
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 
 }
-.navbar{
-	z-index: 99995;
+
+.navbar {
+    z-index: 99995;
 }
-.navItems{
-	margin: 0 auto;
-	cursor: pointer;
+
+.navItems {
+    margin: 0 auto;
+    cursor: pointer;
 }
-.navItems li{
+
+.navItems li {
     list-style: none;
-	border-right: thin solid #5e5c5c;
-	padding: 8px;
+    border-right: thin solid #5e5c5c;
+    padding: 8px;
 }
 
 
-.navItems li:hover{
+.navItems li:hover {
     background-color: #ffa60088;
-    color: #FFFFFF!important;
+    color: #FFFFFF !important;
 }
 
-.navItems li a:hover{
+.navItems li a:hover {
     color: #FFFFFF;
     text-decoration: none;
 }
 
-.navbarActive{
-    background-color: #F97316!important;
-    color: #FFFFFF!important;
+.navbarActive {
+    background-color: #F97316 !important;
+    color: #FFFFFF !important;
 }

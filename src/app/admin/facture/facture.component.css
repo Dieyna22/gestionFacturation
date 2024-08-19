@@ -27,7 +27,7 @@
   margin-bottom: 10px;
 }
 .containerFacture  .section-title {
-  background-color: #0088cc;
+  background-color: #5c5a5a;
   color: white;
   padding: 10px;
   margin: -15px -15px 15px -15px;
@@ -47,7 +47,7 @@
   background-color: white;
 }
 .containerFacture  .suivant-btn {
-  color: #0088cc;
+  color: #e74c3c;
   text-decoration: none;
   display: block;
   text-align: right;
@@ -71,13 +71,25 @@
   left: 20px;
 }
 
-/* .header {
-  background-color: #eee;
-  padding: 10px 8px;
-} */
+.header ul  li a{
+  background-color: #f4af7de9;
+  /* color: #fff!important; */
+  border-radius: 30px !important;
+  padding: 10px 15px !important;
+}
+.currentItemNav {
+  background-color: #F97316!important;
+  color: #fff!important;
+  border-radius: 30px !important;
+  padding: 10px 15px !important;
+}
 
-.currentItemNav{
-  color: #F97316!important;
+.section {
+  display: none;
+}
+
+.section.visible {
+  display: block;
 }
 
 .nav {
@@ -166,13 +178,13 @@ padding: 10px;
 .imprimFact{
   position: fixed;
   top: 350px;
-  left: 120px;
+  left: 80px;
   background-color: #fff;
-  color: #004FFC;
+  color: #EA4E33;
   height: 45px;
   width: 45px;
   z-index: 9999;
-  border: thin solid #004FFC;
+  border: thin solid #EA4E33;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -183,13 +195,13 @@ padding: 10px;
 .pdfFact{
   position: fixed;
   top: 400px;
-  left: 120px;
+  left: 80px;
   background-color: #fff;
-  color: #004FFC;
+  color: #EA4E33;
   height: 45px;
   width: 45px;
   z-index: 9999;
-  border: thin solid #004FFC;
+  border: thin solid #EA4E33;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -200,13 +212,13 @@ padding: 10px;
 .seeFact{
   position: fixed;
   top: 350px;
-  left: 120px;
+  left: 80px;
   background-color: #fff;
-  color: #004FFC;
+  color: #EA4E33;
   height: 45px;
   width: 45px;
   z-index: 9999;
-  border: thin solid #004FFC;
+  border: thin solid #EA4E33;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -216,7 +228,7 @@ padding: 10px;
 .colorModéle{
   position: fixed;
   top: 450px;
-  left: 120px;
+  left: 80px;
   height: 45px;
   width: 45px;
   z-index: 9999;
@@ -227,17 +239,17 @@ padding: 10px;
 }
 
 .imprimFact:hover{
-  background-color: #004FFC;
+  background-color: #EA4E33;
   color: #fff;
 }
 
 .pdfFact:hover{
-  background-color: #004FFC;
+  background-color: #EA4E33;
   color: #fff;
 }
 .seeFact:hover{
-  background-color: #004FFC;
-  color: #fff;
+  background-color: #EA4E33;
+  color: #fff!important;
 }
 
 .containerModal {
@@ -308,7 +320,7 @@ textarea {
 }
 
 thead tr th {
-  background-color:#467aea ;
+  background-color:#737171 !important;
   color: white!important;
 }
 /* thead th:first-child {
@@ -494,7 +506,7 @@ input[type="text"], input[type="date"], input[type="number"] {
   cursor: pointer;
 }
 h3 {
-  color: #0066cc;
+  color: #020202;
   margin-bottom: 10px;
 }
 
@@ -700,47 +712,6 @@ textarea {
   color: #fff;
   padding: 5px;
   font-weight: bold;
-}
-
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropbtn {
-  color: #222222;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-  margin-left: -58px;
-}
-
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-}
-
-.dropdown-content a:hover {
-  background-color: #FFA500;
-  color: #FFFFFF;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
 }
 
 .invoice-form {

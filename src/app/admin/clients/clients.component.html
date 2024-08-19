@@ -520,7 +520,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <h1>Importez vos clients</h1>
+        <h2>Importez vos clients</h2>
         <p>Importez vos clients en 4 petites étapes :</p>
 
         <div class="etape">
@@ -559,7 +559,7 @@
       </div>
       <div class="modal-body">
         <ng-container *ngIf="currentStep === 1">
-          <h1 class="titre">Etape 1 : Téléchargez le modèle</h1>
+          <h2 class="titre">Etape 1 : Téléchargez le modèle</h2>
           <div class="step">
             <p class="paragraphe">Je souhaite importer des</p>
             <p class="bold paragraphe">nouveaux clients</p>
@@ -570,19 +570,19 @@
         </ng-container>
 
         <ng-container *ngIf="currentStep === 2">
-          <h1 class="titre">Etape 2 : Remplissez le modèle</h1>
+          <h2 class="titre">Etape 2 : Remplissez le modèle</h2>
           <button class="download-btn" (click)="goToNextStep()">C'est bon, j'ai complété le fichier!</button>
         </ng-container>
 
         <ng-container *ngIf="currentStep === 3">
-          <h1 class="titre">Etape 3 : Téléverser le fichier complété</h1>
+          <h2 class="titre">Etape 3 : Téléverser le fichier complété</h2>
           <p>Veuillez téléverser le fichier complété ici :</p>
           <input type="file" (change)="onFileChange($event)" accept=".xlsx"><br>
           <button class="download-btn" (click)="uploadFile()" [disabled]="!isFileValid">Importer</button>
         </ng-container>
 
         <ng-container *ngIf="currentStep === 4">
-          <h1 class="titre">Etape 4 : Import automatique de clients - Succès !</h1>
+          <h2 class="titre">Etape 4 : Import automatique de clients - Succès !</h2>
           <p>Ça y est ! Vos clients ont été importés avec succès !</p>
         </ng-container>
       </div>

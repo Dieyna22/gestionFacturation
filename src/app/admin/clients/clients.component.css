@@ -27,7 +27,7 @@
 }
 
 thead tr th {
-    background-color:#467aea !important;
+    background-color:#737171 !important;
     color: white!important;
 }
 thead th:first-child {
@@ -37,8 +37,8 @@ thead th:first-child {
    border-top-right-radius: 15px;
   }
 
-  h1 {
-    color: #0099cc;
+  h2 {
+    color: #020202;
 }
 p {
     color: #666;

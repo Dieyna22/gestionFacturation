@@ -43,7 +43,7 @@ main {
                 width: 100%;
 
                 h5 {
-                    color: #467aea;
+                    color: #EA4E33;
                     font-size: 18px;
 
                     span {
@@ -63,10 +63,10 @@ main {
 
 
         .navTabsButton {
-            color: #467aea;
+            color: #EA4E33;
 
             &.active {
-                background-color: #467aea;
+                background-color: #EA4E33;
                 color: white!important;
             }
 

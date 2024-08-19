@@ -1,8 +1,9 @@
-.contenu{
+.contenu {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
-.zoneAjout{
+
+.zoneAjout {
     width: 400px;
     height: 196px;
     border-top-right-radius: 30px;
@@ -10,31 +11,36 @@
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
     padding: 8px;
 }
-.modif{
-    background-color: #000!important;
-    color: #FFFFFF!important;
+
+.modif {
+    background-color: #fff !important;
+    border: thin solid #EA4E33;
+    color: #EA4E33 !important;
 }
-.sup{
-    background-color: #FFFFFF!important;
-    color: #BF0024!important;
-    border: thin solid #BF0024!important;
+
+.sup {
+    background-color: #FFFFFF !important;
+    color: #BF0024 !important;
+    border: thin solid #BF0024 !important;
 }
-.sta{
+
+.sta {
     background-color: #5066EF;
     color: #FFFFFF;
     width: 220px;
     height: 105px;
     border-top-left-radius: 20px;
-    border-bottom-right-radius:20px ;
+    border-bottom-right-radius: 20px;
     padding: 20px;
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
-.droite{
+.droite {
     font-weight: bold;
     font-size: 18px;
 }
-.gauche{
+
+.gauche {
     float: right;
     font-size: 24px;
 }
@@ -56,7 +62,7 @@
 }
 
 
-.containerReseau  {
+.containerReseau {
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 
@@ -66,31 +72,30 @@
 } */
 /* le tableau  */
 thead tr th {
-    background-color:#467aea !important;
-    color: white!important;
+    background-color: #737171 !important;
+    color: white !important;
 }
+
 thead th:first-child {
     border-top-left-radius: 15px;
-  }
-  thead th:last-child {
-   border-top-right-radius: 15px;
-  }
+}
+
+thead th:last-child {
+    border-top-right-radius: 15px;
+}
 
 
 
 
 .titre {
-    color: #5066EF;
+    color: #222;
 }
 
-.require {
-    color: var(--base1);
-}
 
 
 .btnColor {
-    color: #222;
-    border: 1px solid #222;
+    color: #EA4E33;
+    border: 1px solid #EA4E33;
     background-color: white;
 }
 
@@ -113,13 +118,13 @@ thead th:first-child {
 @media(max-width:700px) {
     .contenu {
         display: grid;
-        grid-template-columns: 1fr ;
+        grid-template-columns: 1fr;
     }
 }
 
 @media only screen and (min-width: 700px) and (max-width:1100px) {
-.contenu {
-    display: grid;
-    grid-template-columns: 1fr ;
-}
+    .contenu {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
 }
