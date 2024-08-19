@@ -653,7 +653,7 @@ listeClients() {
    listeGrille( row :any){
     this.grilleservice.getAllGrille(this.selectedClient,row.selectedProduct).subscribe(
       (grille:any)=>{
-        this.tabGrille=grille.grilles_tarifaires[0].montant_tarif;
+        this.tabGrille=grille.grilles_tarifaires.montant_tarif;
         row.grillePrice = this.tabGrille
       },
       (err) => {
@@ -1626,7 +1626,7 @@ tabDevis:any[] = [];
   
   
     // Mettre à jour la vue
-    this.showStep('prix');
+    this.showStep(2);
   }
 
   transfromerEnCommande(){
@@ -1649,7 +1649,7 @@ tabDevis:any[] = [];
    
    
      // Mettre à jour la vue
-     this.showStep('prix');
+     this.showStep(2);
   }
 
 
@@ -1845,7 +1845,7 @@ tabDevis:any[] = [];
   
   
     // Mettre à jour la vue
-    this.showStep('prix');
+    this.showStep(2);
   }
 
   createBonLivraison(){
@@ -2041,7 +2041,7 @@ tabDevis:any[] = [];
   
   
     // Mettre à jour la vue
-    this.showStep('prix');
+    this.showStep(2);
   }
 
   ouvrirModalLivraison() {
@@ -2148,11 +2148,11 @@ verifProduitFonction(row:any) {
 }
 
   // Initialiser le contenu actuel
-  currentStep: string = 'client';
+  currentStep: number = 1;
 
-  // Mettre à jour le contenu actuel
-  showStep(contentId: string): void {
-    this.currentStep = contentId;
+
+  showStep(step: number) {
+    this.currentStep = step;
   }
   
 
@@ -2181,6 +2181,8 @@ verifProduitFonction(row:any) {
     this.totalTTC = 0;
     this.typePaiement = "";
   }
+
+  
 
   // Attribut pour la pagination
 itemsParPage = 3; // Nombre d'articles par page
