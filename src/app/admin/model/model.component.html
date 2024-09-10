@@ -1,7 +1,7 @@
 <app-navbar></app-navbar>
 <app-sidebar></app-sidebar>
-<div class="container">
-  <div class="header">
+<div class="containerModele mt-5">
+  <div class="header mb-3">
     <ul class="nav">
         <li><a [ngClass]="{'currentItemNav': boutonActif === 1}" (click)="showComponant('Facture')" (click)="boutonActif = 1">Ventes</a></li>
         <li><a  [ngClass]="{'currentItemNav': boutonActif === 2}" (click)="showComponant('Devis')" (click)="boutonActif = 2">Devis</a></li>

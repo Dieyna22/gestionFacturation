@@ -8,6 +8,8 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import { CategorieArticleService } from 'src/app/services/categorie-article.service';
 import * as XLSX from 'xlsx';
+import { GrilleTarifaireService } from 'src/app/services/grille-tarifaire.service';
+import { ClientsService } from 'src/app/services/clients.service';
 
 @Component({
   selector: 'app-articles',
@@ -79,8 +81,12 @@ export class ArticlesComponent {
 
   active: string = 'non';
 
+  client:String="";
+  article:string="";
+  montant:string="";
 
-  constructor(private http: HttpClient, private articleService: ArticlesService, private promoService: PromoService, private Categorie: CategorieArticleService) { }
+
+  constructor(private http: HttpClient, private articleService: ArticlesService, private promoService: PromoService, private Categorie: CategorieArticleService,private grilleservice:GrilleTarifaireService,private clientService: ClientsService) { }
 
 
 
@@ -89,6 +95,7 @@ export class ArticlesComponent {
     this.listePromos();
     this.listeCategorie();
     this.listeEntrepot();
+    this.listeClients();
 
     this.dbUsers = JSON.parse(localStorage.getItem("userOnline") || "[]");
     this.role = this.dbUsers.user.role
@@ -106,6 +113,35 @@ export class ArticlesComponent {
       this.isAdmin = false;
       this.isUser = true;
     }
+  }
+
+
+  ajouterGrilles(){
+    let grille={
+     "idClient":this.client,
+     "idArticle":this.article,
+     "montantTarif":this.montant,
+     "tva":this.tva
+    }
+    this.grilleservice.addGrille(grille).subscribe(
+      (user:any)=>{
+        Report.success('Notiflix Success',user.message,'Okay',);
+      },
+      (err) => {
+      }
+    )
+  }
+  
+  tabClient:any;
+  listeClients() {
+    this.clientService.getAllClients().subscribe(
+      (clients: any) => {
+        this.tabClient = clients;
+
+      },
+      (err) => {
+      }
+    )
   }
 
 
@@ -204,19 +240,21 @@ export class ArticlesComponent {
       }
     )
   }
-
+  products:any;
   listeArticles() {
     this.articleService.getAllArticles().subscribe(
       (article: any) => {
         this.tabArticle = article;
         this.tabArticleFilter = this.tabArticle.filter((article: any) => article.type_article == 'produit');
         console.log(this.tabArticleFilter)
+        this.products=this.tabArticle;
       },
       (err) => {
         console.log(err);
       }
     )
   }
+
 
   // méthode pour vider les champs
   vider() {
@@ -552,8 +590,7 @@ export class ArticlesComponent {
     // Création du modèle de données
     const modelData = [
       {
-        Libellé: '', Description: '', prix_unitaire: '', quantite: '', Prix_achat: '', benefice: '', prix_promo: '', prix_tva: '',
-        categorie: '', tva: '', benefice_promo: '', quantite_alerte: '', type_article: '', unite: '',
+        Libellé: '', Description: '', prix_unitaire: '', quantite: '', Prix_achat: '', categorie_article: '', tva: '', unite: '',
       }
     ];
 
@@ -654,6 +691,51 @@ export class ArticlesComponent {
         console.log(err);
       }
     );
+  }
+
+  couleurs: string[] = ['#FFEB3B', '#CDDC39', '#FFC107', '#FF5722', '#E91E63', '#9C27B0', '#3F51B5', '#03A9F4', '#00BCD4', '#8BC34A'];
+  etiquette = { nom: '', couleur: '' };
+  etiquettes: { nom: string, couleur: string }[] = [];
+
+  selectionnerCouleur(couleur: string) {
+    this.etiquette.couleur = couleur;
+  }
+
+  ajouterEtiquette() {
+    if (this.etiquette.nom && this.etiquette.couleur) {
+      this.etiquettes.push({ ...this.etiquette });
+      this.etiquette.nom = '';
+      this.etiquette.couleur = '';
+    }
+  }
+
+  supprimerEtiquette(index: number) {
+    this.etiquettes.splice(index, 1);
+  }
+
+  ouvrirModalArticle() {
+    // Utiliser l'API DOM pour ouvrir le modal
+    const modal = document.getElementById('exampleModal');
+    if (modal) {
+      // @ts-ignore
+      const bootstrapModal = new bootstrap.Modal(modal);
+      bootstrapModal.show();
+    }
+  }
+
+  ouvrirModalUpdateArticle() {
+    // Utiliser l'API DOM pour ouvrir le modal
+    const modal = document.getElementById('ModalModifier');
+    if (modal) {
+      // @ts-ignore
+      const bootstrapModal = new bootstrap.Modal(modal);
+      bootstrapModal.show();
+    }
+  }
+
+  actionsVisible: boolean = false;
+  toggleActions() {
+    this.actionsVisible = !this.actionsVisible;
   }
 
 }

@@ -18,6 +18,10 @@ import { ModelComponent } from './admin/model/model.component';
 import { GrilleTarifaireComponent } from './admin/grille-tarifaire/grille-tarifaire.component';
 import { PayementComponent } from './admin/payement/payement.component';
 import { DepenseComponent } from './admin/depense/depense.component';
+import { CommandeDachatComponent } from './admin/commande-dachat/commande-dachat.component';
+import { ComptableComponent } from './admin/comptable/comptable.component';
+import { RapportComponent } from './admin/rapport/rapport.component';
+import { StockComponent } from './admin/stock/stock.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'connexion', pathMatch: 'full' },
@@ -39,7 +43,10 @@ const routes: Routes = [
   { path: 'grille', component: GrilleTarifaireComponent, title: 'grille tarifaire'},
   { path: 'payement', component: PayementComponent, title: 'Payement'},
   { path: 'depense', component: DepenseComponent, title: 'depense'},
-
+  { path: 'achat', component: CommandeDachatComponent, title: 'commande d"achat'},
+  { path: 'comptable', component: ComptableComponent, title: 'configuration comptable'},
+  { path: 'rapport', component: RapportComponent, title: 'Rapports'},
+  { path: 'stock', component: StockComponent, title: 'stock'},
 
 ];
 

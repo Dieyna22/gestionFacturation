@@ -1,0 +1,155 @@
+.containerFacture {
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+.containerFacture .headerFacture {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.containerFacture .date-input,
+.numero-input {
+    display: flex;
+    align-items: center;
+}
+
+.containerFacture .date-input input,
+.numero-input input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.containerFacture .section {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+thead tr th {
+    background-color: #737171;
+    color: white !important;
+}
+
+.total-section {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+.comment-section {
+    margin-top: 20px;
+}
+
+.comment-section textarea {
+    width: 48%;
+    height: 100px;
+}
+
+.associate-client {
+    background-color: #f0f0f0;
+    border: 1px dashed #ccc;
+    padding: 10px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+select,
+textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.payment-info {
+    border: thin solid #eee;
+}
+
+.config {
+    background-color: white;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 0 auto;
+  }
+  .config  h1 {
+    color: #0088cc;
+    margin-top: 0;
+    font-size: 1.2em;
+  }
+  .config  .option {
+    margin-bottom: 15px;
+  }
+  .config  .checkbox-label {
+    display: flex;
+    align-items: center;
+  }
+  .config  .checkbox-label input[type="checkbox"] {
+    margin-right: 10px;
+  }
+  .config  .radio-group {
+    margin-left: 20px;
+  }
+  .config  .radio-label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  .config  input[type="text"] {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+  }
+  .config  .next-number {
+    margin-top: 20px;
+  }
+  .config  .modify-link {
+    color: #0088cc;
+    text-decoration: none;
+    font-size: 0.9em;
+  }
+  .config  .save-btn {
+    background-color: #0088cc;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 3px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .btnColor {
+    color: #222;
+    border: 1px solid #222;
+    background-color: white;
+  }
+
+  .page {
+    background-color: white;
+    border: none;
+  }

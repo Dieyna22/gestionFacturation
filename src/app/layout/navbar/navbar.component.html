@@ -1,47 +1,362 @@
 <!-- Navbar  -->
-   <nav class="navbar navbar-expand-lg mb-2 sticky-top">
-    <div class="container-fluid">
-      <div class="title"><img src="../../../assets/images/logo.png" alt="Logo" class="logo"></div>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container-fluid">
+    <div class="title" routerLink="/admin" style="cursor: pointer;"><img src="../../../assets/images/logo.png" alt="Logo" class="logo"></div>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-        <ul class="navbar-nav navItems me-auto mb-2 mb-lg-0">
-            <li class="nav-item" routerLinkActive="navbarActive">
-              <a class="nav-link fs-5" routerLink="/client" routerLinkActive="navbarActive"><i class="fas fa-sliders-h me-2"></i>clients</a>
-            </li>
-            <li class="nav-item" routerLinkActive="navbarActive">
-              <a class="nav-link fs-5" routerLink="/article" routerLinkActive="navbarActive"><i class="fas fa-stream me-2"></i>Produits</a>
-            </li>
-            <li class="nav-item" routerLinkActive="navbarActive">
-              <a class="nav-link fs-5" routerLink="/service" routerLinkActive="navbarActive"><i class="bi bi-suitcase-lg me-2"></i>Services</a>
-            </li>
-            <li class="nav-item" routerLinkActive="navbarActive">
-              <a class="nav-link fs-5" routerLink="/facture" routerLinkActive="navbarActive"><i class="bi bi-calculator me-2"></i>Ventes</a>
-            </li>
-            <li class="nav-item" routerLinkActive="navbarActive">
-              <a class="nav-link fs-5" routerLink="/depense" routerLinkActive="navbarActive"><i class="bi bi-cash-coin me-2"></i>Dépense</a>
-            </li>
-            <li class="nav-item" routerLinkActive="navbarActive">
-              <a class="nav-link fs-5"><i class="fas bi-pie-chart-fill me-2"></i>Rapports</a>
-            </li>
-          </ul>
-          <div class="dropdown me-5 mt-4">
-            <ng-container *ngIf="dbUsers">
-                <span style="cursor: pointer;" class="dropdown-toggle">
-                    <b>{{usernom}} {{nom}}</b> <br> <i>{{role}}</i>
-                 </span>
-            </ng-container>
-            <div class="dropdown-content">
-              <a [routerLink]="['/user']">Utilisateur</a>
-              <a [routerLink]="['/model']">Modéles</a>
-              <a [routerLink]="['/grille']">Grille tarifaire</a>
-              <a [routerLink]="['/payement']">Payement</a>
-                <hr class="dropdown-divider">
-                <a (click)=" logout()" style="cursor: pointer;">Déconnexion</a>
-            </div>		
-          </div>
+      <ul class="navbar-nav navItems me-auto mb-lg-0">
+        <li class="nav-item" routerLinkActive="navbarActive">
+          <a class="nav-link fs-5" routerLink="/client" routerLinkActive="activeNavbar">clients</a>
+          <!-- <i class="fas fa-sliders-h me-2"></i> -->
+        </li>
+        <li class="nav-item" routerLinkActive="navbarActive">
+          <a class="nav-link fs-5" routerLink="/article" routerLinkActive="activeNavbar">Produits</a>
+          <!-- <i class="fas fa-stream me-2"></i> -->
+        </li>
+        <li class="nav-item" routerLinkActive="navbarActive">
+          <a class="nav-link fs-5" routerLink="/service" routerLinkActive="activeNavbar">Services</a>
+          <!-- <i class="bi bi-suitcase-lg me-2"></i> -->
+        </li>
+        <li class="nav-item" routerLinkActive="navbarActive">
+          <a class="nav-link fs-5" routerLink="/facture" routerLinkActive="activeNavbar">Ventes</a>
+          <!-- <i class="bi bi-calculator me-2"></i> -->
+        </li>
+        <li class="nav-item" routerLinkActive="navbarActive">
+          <a class="nav-link fs-5" routerLink="/depense" routerLinkActive="activeNavbar">Dépenses</a>
+          <!-- <i class="bi bi-cash-coin me-2"></i> -->
+        </li>
+        <li class="nav-item" routerLinkActive="navbarActive">
+          <a class="nav-link fs-5" routerLink="/rapport" routerLinkActive="activeNavbar">Rapports</a>
+          <!-- <i class="fas bi-pie-chart-fill me-2"></i> -->
+        </li>
+      </ul>
+      <div class="dropdown me-5">
+        <ng-container *ngIf="dbUsers">
+          <span style="cursor: pointer;" class="dropdown-toggle">
+            <b class="text-decoration-underline">{{usernom}} {{nom}}</b> 
+            <!-- <br> <i>{{role}}</i> -->
+          </span>
+        </ng-container>
+        <div class="dropdown-content">
+          <a routerLink="/infos" class="text-end">Mon Entreprise <i class="bi bi-house-door-fill ms-2"></i></a>
+          <a [routerLink]="['/user']"  class="text-end">Utilisateur <i class="bi bi-people-fill ms-2"></i></a>
+          <a routerLink="/userArchive"  class="text-end">Utilisateurs Archiver <i class="bi bi-person-fill-exclamation ms-2"></i></a>
+          <a [routerLink]="['/model']"  class="text-end">Modéles documents <i class="bi bi-file-text ms-2"></i></a>
+          <a style="cursor: pointer;" class="text-end" data-bs-toggle="modal" data-bs-target="#mail">Modéles mail <i class="bi bi-envelope-fill ms-2"></i></a>
+          <a style="cursor: pointer;" class="text-end" data-bs-toggle="modal" data-bs-target="#comptable">Comptabilité <i class="bi bi-currency-exchange ms-2"></i></a>
+          <a style="cursor: pointer;" class="text-end" data-bs-toggle="modal" data-bs-target="#notif">Notifications <i class="bi bi-bell-fill ms-2"></i></a>
+          <a style="cursor: pointer;"  class="text-end"data-bs-toggle="modal" data-bs-target="#relance">Relance automatique <i class="bi  bi-envelope-paper-fill ms-2"></i></a>
+          <a [routerLink]="['/grille']" class="text-end">Grille tarifaire<i class="bi bi-grid-3x3 ms-2"></i></a>
+          <a [routerLink]="['/payement']" class="text-end">Payement<i class="bi bi-wallet2 ms-2"></i></a>
+          <div class="border-top"><a (click)=" logout()" style="cursor: pointer;" class="text-center">Déconnexion<i class="bi bi-box-arrow-right ms-2"></i></a></div>
+        </div>
       </div>
     </div>
+  </div>
 </nav>
+
+<!-- Modal modele mail -->
+<div class="modal fade mt-5" id="mail" tabindex="-1" aria-labelledby="mailLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="d-flex">
+        <div class="p-3 flex-grow-1">
+          <h3>Modèles de Mails</h3>
+        </div>
+        <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="zoneSelect p-3 mb-3">
+          <div class="text-center border p-4">
+            <span>Sélectionnez le modèle de mail à configurer : </span>
+            <div class="form-floating">
+              <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                <option value="0">Facture</option>
+                <option value="1">Résumé de la vente</option>
+                <option value="2">Reçu paiement</option>
+                <option value="3">Relance de paiement AVANT échéance</option>
+                <option value="4">Relance de paiement APRÈS échéance</option>
+                <option value="5">Devis</option>
+                <option value="6">Commande de vente</option>
+                <option value="7">Bon de livraison</option>
+                <option value="8">Commande fournisseur</option>
+              </select>
+              <label for="floatingSelect"> Mail envoi de :</label>
+            </div>
+          </div>
+        </div>
+        <div class="object mb-3">
+          <form class="form-floating">
+            <input type="text" class="form-control" id="floatingInputValue"
+              value="Résumé de la vente {VENTE_NUMERO} du {VENTE_DATE}">
+            <label for="floatingInputValue">Objet :</label>
+          </form>
+        </div>
+        <div class="corps container mb-3">
+          <textarea class="form-control p-3" rows="10">
+            Bonjour {DESTINATAIRE},
+            Veuillez trouver ci-joint le résumé de la Vente  N° {VENTE_NUMERO} du {VENTE_DATE}  pour un montant de {VENTE_PRIX_TOTAL}. 
+            Nous vous remercions de votre confiance. 
+            À bientôt ! 
+            ordialement, 
+            {ENTREPRISE} 
+          </textarea>
+        </div>
+        <div class="attach p-2">
+          <span class="resume">
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink">
+              <rect width="30" height="30" fill="url(#pattern0_299_2085)" />
+              <defs>
+                <pattern id="pattern0_299_2085" patternContentUnits="objectBoundingBox" width="1" height="1">
+                  <use xlink:href="#image0_299_2085" transform="scale(0.0333333)" />
+                </pattern>
+                <image id="image0_299_2085" width="30" height="30"
+                  xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAADI0lEQVR4nO2WXUgUURTHx8xM+qBeCkIy597RssjCCPogiz7woRSCOWc0QaIyKCLqpRDCF4seir6gh4h6rHyMsoJiwzlnNsIoSuglIygMjDBKMCXbuDN3dFySHHcLAg8s7N655/72/M/HHcOYtP/JTIdWSeCbArhbAPVJpFcSqFnuejL7r0GlQ0ck0JBETqV/BPLbYmwvyTpUIB31IQoM3GLWJq3l9Q9mCHQ3CuSkhj8vszunZQ9q0z6J9FNBTdttSH9e1JCYLpGeKbgF3v6sQC2ba4flBT4w5p9zqFrvSWQMVYcJoEGdx2MjT1I56XuLneR8X27gTxlBLfC2SOB+HUVLuC6BTwqkAQt4Q3R/qUMLgjzT5wlDBfLaoFVUBHRhGIp8Qh8+IGy3Iuoj0bO1Mu6EoNLhlRK5VwOuhbJK5MP64B8KMiraapolgF77Pg4fjA21MLlEIPdowC3Dbs0NoO4ev6r9yubdUZ9C2ytQBaXb6YWsasuPBTXreZ4Aeq/lvVPR2JGn1gUSBlH664eiPqpnJfJdrc6HUkwuih2tRLqvq7JdRRGs8fawqgVS0ygHuzVXIrXqSHtKanlxbKgA2hRWpGoLtWbZ3uqwqgXQ6dEeqRwBfF2npNeyaUVsqDJVRHocNvsLRirHH/6BApeNNJPIF3Wk34RNa4yJmgDuCsadW65+W3WuGeYtzHUEekr3dr+JvFmtldmJmQLpsQR6F6ZpXBZKqoa+Dwa3PJCRXqZBj2vpByW4O4bnNNBDrc6bWJeEkkw5FtUk5viAqrb8kV7mRh1RU9jHJrCj9ik1BPJtDe2WSGLcUB1xp3I2wVs3+kZKu3eBhgTQ3khV3wjns3DcpbGgytRY1Hm7ZERMIm2TQI/8/lZy2l5lpKqv6nR8SR+f4zYTeJm+4PvV9z/tF0jndK77TNtdb2RiEvmKlq1LvV38dlNzaooAOq9z/1067lYjUyu0vQI1tfShX1VPq3eoysrE1IV17lwL3Z0S6WnYSgKpxsiWVTR25Engs+FsHuulTl2bxt+wYmwvkUhngvco+qgGgwS651d63Ntn0ox/aL8AA9T8U1vuYFMAAAAASUVORK5CYII=" />
+              </defs>
+            </svg>
+            <span class="info-container">
+              Résumé de la vente
+              <span class="bulleInfos">
+                ceci reprensente le document generer <br> et attacher a votre mail
+              </span>
+            </span>
+          </span>
+          <span>
+            + Ajouter une autre pièce jointe
+          </span>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class=" btn btnAction">Sauvegarder</button>
+        <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal notification -->
+<div class="modal fade mt-5" id="notif" tabindex="-1" aria-labelledby="notifLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="d-flex">
+        <div class="p-3 flex-grow-1">
+          <h3>Notification</h3>
+        </div>
+        <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <h6>Je veux être notifié sur :</h6>
+        <div class="notifActive border p-3 mb-3">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+            <label class="form-check-label" for="defaultCheck1">
+              Les produits en rupture de stock
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+            <label class="form-check-label" for="defaultCheck2">
+              Les dépenses impayées du jour
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
+            <label class="form-check-label" for="defaultCheck3">
+              Les paiements en attente (ventes) prévus du jour
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
+            <label class="form-check-label" for="defaultCheck4">
+              Les devis expirés du jour
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="defaultCheck5">
+            <label class="form-check-label" for="defaultCheck5">
+              Les relances automatiques envoyées par courrier électronique
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="defaultCheck6">
+            <label class="form-check-label" for="defaultCheck6">
+              Le jour d'anniversaire de mes clients
+            </label>
+          </div>
+        </div>
+        <div class="notifItem border p-3 mb-3">
+          <label for="customRange1" class="form-label">Les produits avec moins de :</label>
+          <div class="slider-container">
+            <button (click)="decreaseValue1()">-</button>
+            <input type="range" id="customRange1" min="0" max="99" [(ngModel)]="sliderValue1"
+              (input)="updateSliderValue1($event)" />
+            <button (click)="increaseValue1()">+</button>
+          </div>
+          <span>{{ sliderValue1 }} unités</span>
+        </div>
+
+        <div class="notifItem border p-3 mb-3">
+          <label for="customRange2" class="form-label">Les brouillons non validés après :</label>
+          <div class="slider-container">
+            <button (click)="decreaseValue2()">-</button>
+            <input type="range" id="customRange2" min="0" max="99" [(ngModel)]="sliderValue2"
+              (input)="updateSliderValue2($event)" />
+            <button (click)="increaseValue2()">+</button>
+          </div>
+          <span>{{ sliderValue2 }} jours</span>
+        </div>
+
+        <div class="notifItem border p-3 mb-3">
+          <label for="customRange3" class="form-label">Les dépenses des prochains :</label>
+          <div class="slider-container">
+            <button (click)="decreaseValue3()">-</button>
+            <input type="range" id="customRange3" min="0" max="99" [(ngModel)]="sliderValue3"
+              (input)="updateSliderValue3($event)" />
+            <button (click)="increaseValue3()">+</button>
+          </div>
+          <span>{{ sliderValue3 }} jours</span>
+        </div>
+
+        <div class="notifItem border p-3 mb-3">
+          <label for="customRange4" class="form-label">Les échéances (paiements) prévues des prochains :</label>
+          <div class="slider-container">
+            <button (click)="decreaseValue4()">-</button>
+            <input type="range" id="customRange4" min="0" max="99" [(ngModel)]="sliderValue4"
+              (input)="updateSliderValue4($event)" />
+            <button (click)="increaseValue4()">+</button>
+          </div>
+          <span>{{ sliderValue4 }} jours</span>
+        </div>
+
+        <div class="notifItem border p-3 mb-3">
+          <label for="customRange5" class="form-label">Les devis expirés des prochains :</label>
+          <div class="slider-container">
+            <button (click)="decreaseValue5()">-</button>
+            <input type="range" id="customRange5" min="0" max="99" [(ngModel)]="sliderValue5"
+              (input)="updateSliderValue5($event)" />
+            <button (click)="increaseValue5()">+</button>
+          </div>
+          <span>{{ sliderValue5 }} jours</span>
+        </div>
+        <div class="sendMail p-3">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+            <label class="form-check-label" for="defaultCheck1">
+              Je veux aussi recevoir ces notifications au courrier électronique : <br> <span
+                class="colormail">{{usermail}}</span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class=" btn btnAction">Sauvegarder</button>
+        <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Comptabilité -->
+<div class="modal fade mt-5" id="comptable" tabindex="-1" aria-labelledby="comptableLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="d-flex">
+        <div class="p-3 flex-grow-1">
+          <h3>Comptabilité</h3>
+        </div>
+        <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="modal-body">
+
+        <div class="modal-footer">
+          <button class=" btn btnAction">Sauvegarder</button>
+          <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal relance -->
+<div class="modal fade mt-5" id="relance" tabindex="-1" aria-labelledby="relanceLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="d-flex">
+        <div class="p-3 flex-grow-1">
+          <h3>Relance automatique d'échéances</h3>
+        </div>
+        <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="relance mb-3">
+          <div class="form-check form-switch mb-3">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+              [checked]="isChecked" (change)="toggleCheck()">
+            <label class="form-check-label" for="flexSwitchCheckDefault">
+              {{ isChecked ? "Envoyer rappel AVANT la date prévue de l'échéance (activé)" : "Envoyer rappel AVANT la
+              date prévue de l'échéance (désactivé)" }}
+            </label>
+          </div>
+          <div class="notifItem border p-3 mb-3" [class.disabled]="!isChecked">
+            <label for="customRange2" class="form-label">Combien de jours AVANT ? :</label>
+            <div class="slider-container">
+              <button (click)="decreaseValue()" [disabled]="!isChecked">-</button>
+              <input type="range" id="customRange2" min="0" max="99" [ngModel]="sliderValue"
+                (ngModelChange)="updateSliderValue($event)" [disabled]="!isChecked" />
+              <button (click)="increaseValue()" [disabled]="!isChecked">+</button>
+            </div>
+            <span>{{ sliderValue }} jours</span>
+          </div>
+          <div class="config p-3 mb-3" [class.disabled]="!isChecked">
+            <span class="colormail">Avec cette configuration :</span><br>
+            <span>- <span class="colormail">0</span> clients recevront un rappel cette nuit</span><br>
+            <span>- <span class="colormail">0</span> clients recevront un rappel dans les prochains 7 jours</span>
+          </div>
+          <span class="colormail"><i class="bi bi-eye-fill me-2"></i>Visualiser le contenu du message</span>
+        </div>
+        <div class="relance">
+          <div class="form-check form-switch mb-3">
+            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckAfter"
+              [checked]="isAfterChecked" (change)="toggleAfterCheck()">
+            <label class="form-check-label" for="flexSwitchCheckAfter">
+              {{ isAfterChecked ? "Envoyer rappel APRÈS la date prévue de l'échéance (activé)" : "Envoyer rappel APRÈS
+              la date prévue de l'échéance (désactivé)" }}
+            </label>
+          </div>
+          <div class="notifItem border p-3 mb-3" [class.disabled]="!isAfterChecked">
+            <label for="customRangeAfter" class="form-label">Combien de jours APRÈS ? :</label>
+            <div class="slider-container">
+              <button (click)="decreaseAfterValue()" [disabled]="!isAfterChecked">-</button>
+              <input type="range" id="customRangeAfter" min="0" max="99" [ngModel]="afterSliderValue"
+                (ngModelChange)="updateAfterSliderValue($event)" [disabled]="!isAfterChecked" />
+              <button (click)="increaseAfterValue()" [disabled]="!isAfterChecked">+</button>
+            </div>
+            <span>{{ afterSliderValue }} jours</span>
+          </div>
+          <div class="config p-3 mb-3" [class.disabled]="!isAfterChecked">
+            <span class="colormail">Avec cette configuration :</span><br>
+            <span>- <span class="colormail">0</span> clients recevront un rappel cette nuit</span><br>
+            <span>- <span class="colormail">0</span> clients recevront un rappel dans les prochains 7 jours</span>
+          </div>
+          <span class="colormail"><i class="bi bi-eye-fill me-2"></i>Visualiser le contenu du message</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class=" btn btnAction">Sauvegarder</button>
+        <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

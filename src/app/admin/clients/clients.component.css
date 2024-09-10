@@ -1,7 +1,8 @@
-.details{
+.details {
     display: grid;
     grid-template-columns: 1fr 2fr;
 }
+
 .imageProfilUser img {
     margin-top: -0.2rem !important;
 
@@ -27,22 +28,26 @@
 }
 
 thead tr th {
-    background-color:#737171 !important;
-    color: white!important;
+    background-color: #737171 !important;
+    color: white !important;
 }
+
 thead th:first-child {
     border-top-left-radius: 15px;
-  }
-  thead th:last-child {
-   border-top-right-radius: 15px;
-  }
+}
 
-  h2 {
+thead th:last-child {
+    border-top-right-radius: 15px;
+}
+
+h2 {
     color: #020202;
 }
+
 p {
     color: #666;
 }
+
 .etape {
     background-color: #f9f9f9;
     border: 1px solid #ddd;
@@ -50,6 +55,7 @@ p {
     padding: 15px;
     margin-bottom: 10px;
 }
+
 .etape-numero {
     font-weight: bold;
     color: #999;
@@ -60,21 +66,25 @@ p {
     font-size: 24px;
     margin-bottom: 20px;
 }
-.step{
+
+.step {
     background-color: #fff;
     border: 1px solid #e0e0e0;
     border-radius: 4px;
     padding: 20px;
     text-align: center;
 }
+
 .paragraphe {
     margin: 10px 0;
 }
+
 .bold {
     font-weight: bold;
 }
+
 .download-btn {
-    background-color: #9ACD32;
+    background-color: #F19A33;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -83,9 +93,72 @@ p {
     font-size: 16px;
     margin: 15px 0;
 }
+
 .link {
     color: #999;
     text-decoration: none;
     font-size: 14px;
     cursor: pointer;
 }
+
+.addClient {
+    display: grid;
+    grid-template-columns: 55% 45%;
+    gap: 15px;
+}
+
+.zone {
+    background-color: #F4F7FC;
+    border-radius: 9px;
+    padding: 20px;
+    margin-bottom: 12px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+}
+
+
+
+.currentItemNav {
+    background-color: #F19A33 !important;
+    color: #fff !important;
+    border-radius: 30px !important;
+    padding: 10px 15px !important;
+}
+
+.nav {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav li {
+    display: inline;
+    margin-right: 20px;
+}
+
+.nav li a {
+    color: #222;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+select,
+textarea {
+    background-color: transparent!important;
+}
+
+.grille{
+    position: fixed;
+    top: 350px;
+    left: 260px;
+    background-color: #fff;
+    color: #F19A33;
+    height: 45px;
+    width: 45px;
+    z-index: 9999;
+    border: thin solid #F19A33;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

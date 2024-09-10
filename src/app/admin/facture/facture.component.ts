@@ -13,6 +13,7 @@ import { CategorieService } from 'src/app/services/categorie.service';
 import { PayementService } from 'src/app/services/payement.service';
 import { GrilleTarifaireService } from 'src/app/services/grille-tarifaire.service';
 import { VenteService } from 'src/app/services/vente.service';
+import * as XLSX from 'xlsx';
 
 interface Echeance {
   date: string;
@@ -48,78 +49,78 @@ export class FactureComponent {
   nextNumberBonLivraison: string = '00000';
   baseNumber: string = '00000';
   prefix: string = '';
-  updateNum: string ='';
-  numerotation : string ='';
+  updateNum: string = '';
+  numerotation: string = '';
 
 
-desc: string = "";
-vente: string = "";
-typeArticle: string = "";
-achat: string = "";
-quantite: string = "";
-quantiteAlerte: string = "";
-CategorieArticle:string="";
-note:string="";
-moyenPayement:string="";
-typePaiement:string="";
-tabGrille: any;
-acompte:string="";
-dateDebut:string="";
-dateFin:string="";
-totalAcompte:string="";
-montantAcompte:string="";
-commentaire:string="";
-datedevis:string='';
-datevaliditeDevis:string='';
+  desc: string = "";
+  vente: string = "";
+  typeArticle: string = "";
+  achat: string = "";
+  quantite: string = "";
+  quantiteAlerte: string = "";
+  CategorieArticle: string = "";
+  note: string = "";
+  moyenPayement: string = "";
+  typePaiement: string = "";
+  tabGrille: any;
+  acompte: string = "";
+  dateDebut: string = "";
+  dateFin: string = "";
+  totalAcompte: string = "";
+  montantAcompte: string = "";
+  commentaire: string = "";
+  datedevis: string = '';
+  datevaliditeDevis: string = '';
 
-  constructor(private http: HttpClient, private ServiceCategorie: CategorieService,private articleService:ArticlesService, private clientService:ClientsService, private userService:UtilisateurService,private productService:ArticlesService,private renderer: Renderer2,private payementService:PayementService,private grilleservice:GrilleTarifaireService, private docService:VenteService) { 
+  constructor(private http: HttpClient, private ServiceCategorie: CategorieService, private articleService: ArticlesService, private clientService: ClientsService, private userService: UtilisateurService, private productService: ArticlesService, private renderer: Renderer2, private payementService: PayementService, private grilleservice: GrilleTarifaireService, private docService: VenteService) {
     this.currentDate = this.getCurrentDate();
   }
 
   // Gestion bouton
-boutonActif=1;
+  boutonActif = 1;
 
-sectionFacture=1;
+  sectionFacture = 1;
 
-//model active
-modelActif=1;
+  //model active
+  modelActif = 1;
 
-// Initialiser le contenu actuel
-currentContent: string = ' ';
+  // Initialiser le contenu actuel
+  currentContent: string = ' ';
 
-titre: string = 'Facture';
-// Mettre à jour le contenu actuel
-showComponant(contentId: string): void {
-  this.currentContent = contentId; 
-}
+  titre: string = 'Facture';
+  // Mettre à jour le contenu actuel
+  showComponant(contentId: string): void {
+    this.currentContent = contentId;
+  }
 
-currentDoc : string = 'Facture'
-showTypeDocument(docId:string):void{
- this.currentDoc=docId
- this.titre=docId;
-}
+  currentDoc: string = 'Facture'
+  showTypeDocument(docId: string): void {
+    this.currentDoc = docId
+    this.titre = docId;
+  }
 
-currentModel : string = 'bloc'
+  currentModel: string = 'bloc'
 
-// Mettre à jour le modèle actuel
-showModel(modelId: string): void {
-  this.currentModel = modelId; 
-}
+  // Mettre à jour le modèle actuel
+  showModel(modelId: string): void {
+    this.currentModel = modelId;
+  }
 
-currentfactureType: string = 'tout'
-showfactureType( typeID: string) {
-  this.currentfactureType = typeID
-}
+  currentfactureType: string = 'tout'
+  showfactureType(typeID: string) {
+    this.currentfactureType = typeID
+  }
 
-currentDetail: string = 'Récapitulatif'
-showDetailFacture( detailId: string) {
-  this.currentDetail = detailId
-}
+  currentDetail: string = 'Récapitulatif'
+  showDetailFacture(detailId: string) {
+    this.currentDetail = detailId
+  }
 
-currentNumConfig : string = 'sansPrefixes';
-showNumConfig(configId: string) {
-  this.currentNumConfig = configId
-}
+  currentNumConfig: string = 'sansPrefixes';
+  showNumConfig(configId: string) {
+    this.currentNumConfig = configId
+  }
 
 
   ngAfterViewInit() {
@@ -127,9 +128,9 @@ showNumConfig(configId: string) {
   }
 
 
-  tabAcompte:any[]=[];
-  ngOnInit(){
-    this.dbUsers = JSON.parse(localStorage.getItem("userOnline") || "[]"); 
+  tabAcompte: any[] = [];
+  ngOnInit() {
+    this.dbUsers = JSON.parse(localStorage.getItem("userOnline") || "[]");
     this.updatePrefix();
 
     if (!localStorage.getItem("tabAcompte")) {
@@ -139,7 +140,7 @@ showNumConfig(configId: string) {
     this.tabAcompte = JSON.parse(localStorage.getItem("tabAcompte") || '[]');
 
     this.initializeData();
-    
+
     this.listeFacture();
     this.listeClients();
     this.listeInfoSup();
@@ -150,20 +151,20 @@ showNumConfig(configId: string) {
     this.listeNumberDevis();
     this.listeNumberBonCommande();
     this.listeNumberBonLivraison();
-    
+
 
     // this. listeFactureRecurrente();
   }
-  currentDate: string = new Date().toISOString().split('T')[0]; 
+  currentDate: string = new Date().toISOString().split('T')[0];
 
 
-  configurationNumero(){
+  configurationNumero() {
     let numFacture =
     {
-      type_document:'facture',
-      type_numerotation:this.numerotation,
-      prefixe:this.customPrefix,
-      format:this.selectedPrefix,
+      type_document: 'facture',
+      type_numerotation: this.numerotation,
+      prefixe: this.customPrefix,
+      format: this.selectedPrefix,
     }
 
     this.docService.configNumero(numFacture).subscribe(
@@ -176,13 +177,13 @@ showNumConfig(configId: string) {
     )
   }
 
-  configurationNumeroDevis(){
+  configurationNumeroDevis() {
     let numFacture =
     {
-      type_document:'devis',
-      type_numerotation:this.numerotation,
-      prefixe:this.customPrefix,
-      format:this.selectedPrefix,
+      type_document: 'devis',
+      type_numerotation: this.numerotation,
+      prefixe: this.customPrefix,
+      format: this.selectedPrefix,
     }
 
     this.docService.configNumero(numFacture).subscribe(
@@ -195,13 +196,13 @@ showNumConfig(configId: string) {
     )
   }
 
-  configurationNumeroBonCommande(){
+  configurationNumeroBonCommande() {
     let numFacture =
     {
-      type_document:'commande',
-      type_numerotation:this.numerotation,
-      prefixe:this.customPrefix,
-      format:this.selectedPrefix,
+      type_document: 'commande',
+      type_numerotation: this.numerotation,
+      prefixe: this.customPrefix,
+      format: this.selectedPrefix,
     }
 
     this.docService.configNumero(numFacture).subscribe(
@@ -214,13 +215,13 @@ showNumConfig(configId: string) {
     )
   }
 
-  configurationNumeroBonLivraison(){
+  configurationNumeroBonLivraison() {
     let numFacture =
     {
-      type_document:'livraison',
-      type_numerotation:this.numerotation,
-      prefixe:this.customPrefix,
-      format:this.selectedPrefix,
+      type_document: 'livraison',
+      type_numerotation: this.numerotation,
+      prefixe: this.customPrefix,
+      format: this.selectedPrefix,
     }
 
     this.docService.configNumero(numFacture).subscribe(
@@ -233,9 +234,9 @@ showNumConfig(configId: string) {
     )
   }
 
-  formatFinal:any
-  tabNum:any[]=[];
-  numComplet:any
+  formatFinal: any
+  tabNum: any[] = [];
+  numComplet: any
   listeNumber() {
     const now = new Date();
     this.docService.getAllNumeroFacture().subscribe(
@@ -243,16 +244,16 @@ showNumConfig(configId: string) {
         if (response.configuration && response.configuration.length > 0) {
           this.tabNum = response.configuration;
           console.log('Liste des numéros : ', response);
-  
+
           const config = this.tabNum[0];
           let prefixe = String(config.prefixe).toLowerCase();
           let format = config.format;
           let compteur = parseInt(config.compteur) || 0;
-  
+
           console.log('Prefixe:', prefixe);
           console.log('Format:', format);
           console.log('Compteur:', compteur);
-  
+
           // Génère la partie date du numéro
           let datePart = '';
           switch (format) {
@@ -268,16 +269,16 @@ showNumConfig(configId: string) {
             default:
               datePart = now.getFullYear().toString();
           }
-  
+
           // Incrémente le compteur
-          compteur++;
-  
+          // compteur++;
+
           // Formate le numéro complet
           this.numComplet = `${prefixe}${datePart}${compteur.toString().padStart(6, '0')}`;
-          
+
           // Le prochain numéro est identique au numéro complet
           this.nextNumber = this.numComplet;
-  
+
           console.log('Numéro complet : ', this.numComplet);
           console.log('Prochain numéro : ', this.nextNumber);
         } else {
@@ -313,11 +314,12 @@ showNumConfig(configId: string) {
       this.prefix = this.customPrefix + datePart;
     }
 
-    this.nextNumber = this.prefix + this.baseNumber +1;
-    this.nextNumberDevis = this.prefix + this.baseNumber +1;
-    this.nextNumberBonCommande = this.prefix + this.baseNumber +1;
-    this.nextNumberBonLivraison = this.prefix + this.baseNumber +1;
+    this.nextNumber = this.prefix + this.baseNumber + 1;
+    this.nextNumberDevis = this.prefix + this.baseNumber + 1;
+    this.nextNumberBonCommande = this.prefix + this.baseNumber + 1;
+    this.nextNumberBonLivraison = this.prefix + this.baseNumber + 1;
   }
+
 
   listeNumberDevis() {
     const now = new Date();
@@ -326,16 +328,16 @@ showNumConfig(configId: string) {
         if (response.configuration && response.configuration.length > 0) {
           this.tabNum = response.configuration;
           console.log('Liste des numéros : ', response);
-  
+
           const config = this.tabNum[0];
           let prefixe = String(config.prefixe).toLowerCase();
           let format = config.format;
           let compteur = parseInt(config.compteur) || 0;
-  
+
           console.log('Prefixe:', prefixe);
           console.log('Format:', format);
           console.log('Compteur:', compteur);
-  
+
           // Génère la partie date du numéro
           let datePart = '';
           switch (format) {
@@ -351,16 +353,16 @@ showNumConfig(configId: string) {
             default:
               datePart = now.getFullYear().toString();
           }
-  
+
           // Incrémente le compteur
           compteur++;
-  
+
           // Formate le numéro complet
           this.numComplet = `${prefixe}${datePart}${compteur.toString().padStart(6, '0')}`;
-          
+
           // Le prochain numéro est identique au numéro complet
           this.nextNumberDevis = this.numComplet;
-  
+
           console.log('Numéro complet : ', this.numComplet);
           console.log('Prochain numéro : ', this.nextNumberDevis);
         } else {
@@ -380,16 +382,16 @@ showNumConfig(configId: string) {
         if (response.configuration && response.configuration.length > 0) {
           this.tabNum = response.configuration;
           console.log('Liste des numéros : ', response);
-  
+
           const config = this.tabNum[0];
           let prefixe = String(config.prefixe).toLowerCase();
           let format = config.format;
           let compteur = parseInt(config.compteur) || 0;
-  
+
           console.log('Prefixe:', prefixe);
           console.log('Format:', format);
           console.log('Compteur:', compteur);
-  
+
           // Génère la partie date du numéro
           let datePart = '';
           switch (format) {
@@ -405,16 +407,16 @@ showNumConfig(configId: string) {
             default:
               datePart = now.getFullYear().toString();
           }
-  
+
           // Incrémente le compteur
           compteur++;
-  
+
           // Formate le numéro complet
           this.numComplet = `${prefixe}${datePart}${compteur.toString().padStart(6, '0')}`;
-          
+
           // Le prochain numéro est identique au numéro complet
           this.nextNumberBonCommande = this.numComplet;
-  
+
           console.log('Numéro complet : ', this.numComplet);
           console.log('Prochain numéro : ', this.nextNumberBonCommande);
         } else {
@@ -434,16 +436,16 @@ showNumConfig(configId: string) {
         if (response.configuration && response.configuration.length > 0) {
           this.tabNum = response.configuration;
           console.log('Liste des numéros : ', response);
-  
+
           const config = this.tabNum[0];
           let prefixe = String(config.prefixe).toLowerCase();
           let format = config.format;
           let compteur = parseInt(config.compteur) || 0;
-  
+
           console.log('Prefixe:', prefixe);
           console.log('Format:', format);
           console.log('Compteur:', compteur);
-  
+
           // Génère la partie date du numéro
           let datePart = '';
           switch (format) {
@@ -459,16 +461,16 @@ showNumConfig(configId: string) {
             default:
               datePart = now.getFullYear().toString();
           }
-  
+
           // Incrémente le compteur
           compteur++;
-  
+
           // Formate le numéro complet
           this.numComplet = `${prefixe}${datePart}${compteur.toString().padStart(6, '0')}`;
-          
+
           // Le prochain numéro est identique au numéro complet
           this.nextNumberBonLivraison = this.numComplet;
-  
+
           console.log('Numéro complet : ', this.numComplet);
           console.log('Prochain numéro : ', this.nextNumberBonLivraison);
         } else {
@@ -486,13 +488,13 @@ showNumConfig(configId: string) {
     this.tabFactureFilter = this.tabFactures.filter(
       (elt: any) => (elt?.nom_client.toLowerCase().includes(this.filterValue.toLowerCase()) || elt?.type_paiement.toLowerCase().includes(this.filterValue.toLowerCase()) || elt?.num_fact.toLowerCase().includes(this.filterValue.toLowerCase()) || elt?.prenom_client.toLowerCase().includes(this.filterValue.toLowerCase()))
     );
-   }
+  }
 
-  color: string = '#467aea';
+  color: string = '#737171';
 
   onColorChange() {
     this.updateTableHeaderColor();
- 
+
   }
   private updateTableHeaderColor() {
     const theadCells = document.querySelectorAll('thead tr th');
@@ -503,123 +505,123 @@ showNumConfig(configId: string) {
   }
 
 
-  ajouterUsers(){
-    let clients={
-      "nom_client":this.nom,
-      "prenom_client":this.prenom,
-      "nom_entreprise":this.entreprise,
-      "adress_client":this.adress,
-      "email_client":this.mail,
-      "tel_client":this.telephone,
-      "categorie_id":this.typeClient,
+  ajouterUsers() {
+    let clients = {
+      "nom_client": this.nom,
+      "prenom_client": this.prenom,
+      "nom_entreprise": this.entreprise,
+      "adress_client": this.adress,
+      "email_client": this.mail,
+      "tel_client": this.telephone,
+      "categorie_id": this.typeClient,
     }
     this.clientService.addClient(clients).subscribe(
-      (client:any)=>{
-       Report.success('Notiflix Success',client.message,'Okay',);
+      (client: any) => {
+        Report.success('Notiflix Success', client.message, 'Okay',);
         this.vider();
         this.listeClients();
       },
       (err) => {
       }
     )
-   }
-
-
-   // méthode pour vider les champs
-vider(){
-  this.nom='';
-  this.prenom='';
-  this.mail='';
-  this.typeClient='';
-  this.entreprise='';
-  this.adress='';
-  this.telephone='';
- }
-
-listeClients() {
-  this.clientService.getAllClients().subscribe(
-    (clients: any) => {
-      this.tabClient = clients;
-    },
-    (err) => {
-    }
-  )
- }
-
- listeCategorie() {
-  this.ServiceCategorie.getAllCategorie().subscribe(
-    (categories: any) => {
-      this.tabCategorie = categories.CategorieClient;
-    },
-    (err) => {
-    }
-  )
- }
-
- showChamps: boolean=false;
-
- afficherChamps(){
-  this.showChamps=!this.showChamps;
- }
-
- ajouterArticle(){
-  let articles={
-    "nom_article":this.nom,
-    "description":this.desc,
-    "prix_unitaire":this.vente,
-    "type_article":'produit',
-    "prix_achat":this.achat,
-    "quantite":this.quantite,
-    "quantite_alert":this.quantiteAlerte,
-    "id_categorie_article":this.CategorieArticle,
- 
   }
-  this.articleService.addArticle(articles).subscribe(
-    (article:any)=>{
-      Report.success('Notiflix Success',article.message,'Okay',);
-      this.vider();
-      this.listeArticles();
-    },
-    (err) => {
-    }
-  )
- }
 
 
- ajouterService(){
-  let articles={
-    "nom_article":this.nom,
-    "description":this.desc,
-    "prix_unitaire":this.vente,
-    "type_article":'service',
-    "prix_achat":this.achat,
-    "quantite":this.quantite,
-    "quantite_alert":this.quantiteAlerte,
-    "id_categorie_article":this.CategorieArticle,
- 
+  // méthode pour vider les champs
+  vider() {
+    this.nom = '';
+    this.prenom = '';
+    this.mail = '';
+    this.typeClient = '';
+    this.entreprise = '';
+    this.adress = '';
+    this.telephone = '';
   }
-  this.articleService.addArticle(articles).subscribe(
-    (article:any)=>{
-      Report.success('Notiflix Success',article.message,'Okay',);
-      this.vider();
-      this.listeArticles();
-    },
-    (err) => {
-    }
-  )
- }
 
- selectedClient: any;
- currentClient: any;
- idCurrentClient: any;
+  listeClients() {
+    this.clientService.getAllClients().subscribe(
+      (clients: any) => {
+        this.tabClient = clients;
+      },
+      (err) => {
+      }
+    )
+  }
+
+  listeCategorie() {
+    this.ServiceCategorie.getAllCategorie().subscribe(
+      (categories: any) => {
+        this.tabCategorie = categories.CategorieClient;
+      },
+      (err) => {
+      }
+    )
+  }
+
+  showChamps: boolean = false;
+
+  afficherChamps() {
+    this.showChamps = !this.showChamps;
+  }
+
+  ajouterArticle() {
+    let articles = {
+      "nom_article": this.nom,
+      "description": this.desc,
+      "prix_unitaire": this.vente,
+      "type_article": 'produit',
+      "prix_achat": this.achat,
+      "quantite": this.quantite,
+      "quantite_alert": this.quantiteAlerte,
+      "id_categorie_article": this.CategorieArticle,
+
+    }
+    this.articleService.addArticle(articles).subscribe(
+      (article: any) => {
+        Report.success('Notiflix Success', article.message, 'Okay',);
+        this.vider();
+        this.listeArticles();
+      },
+      (err) => {
+      }
+    )
+  }
+
+
+  ajouterService() {
+    let articles = {
+      "nom_article": this.nom,
+      "description": this.desc,
+      "prix_unitaire": this.vente,
+      "type_article": 'service',
+      "prix_achat": this.achat,
+      "quantite": this.quantite,
+      "quantite_alert": this.quantiteAlerte,
+      "id_categorie_article": this.CategorieArticle,
+
+    }
+    this.articleService.addArticle(articles).subscribe(
+      (article: any) => {
+        Report.success('Notiflix Success', article.message, 'Okay',);
+        this.vider();
+        this.listeArticles();
+      },
+      (err) => {
+      }
+    )
+  }
+
+  selectedClient: any;
+  currentClient: any;
+  idCurrentClient: any;
 
   onClientSelected() {
-    this.currentClient = this.tabClient.filter((client : any) => client.id == this.selectedClient);
-    this.idCurrentClient=this.selectedClient
+    this.currentClient = this.tabClient.filter((client: any) => client.id == this.selectedClient);
+    this.idCurrentClient = this.selectedClient
   }
 
   // currentDate: string;
-  
+
 
   getCurrentDate(): string {
     const currentDate = new Date();
@@ -630,7 +632,7 @@ listeClients() {
   listeInfoSup() {
     this.userService.getAllInfoSup().subscribe(
       (infoSup: any) => {
-        this.InfoSup=infoSup.user;
+        this.InfoSup = infoSup.user;
       },
       (err) => {
       }
@@ -646,14 +648,14 @@ listeClients() {
       (err) => {
       }
     )
-   }
+  }
 
 
 
-   listeGrille( row :any){
-    this.grilleservice.getAllGrille(this.selectedClient,row.selectedProduct).subscribe(
-      (grille:any)=>{
-        this.tabGrille=grille.grilles_tarifaires.montant_tarif;
+  listeGrille(row: any) {
+    this.grilleservice.getAllGrille(this.selectedClient, row.selectedProduct).subscribe(
+      (grille: any) => {
+        this.tabGrille = grille.grilles_tarifaires.montant_tarif;
         row.grillePrice = this.tabGrille
       },
       (err) => {
@@ -662,27 +664,27 @@ listeClients() {
   }
 
 
-  priceByArticle:any;
-  listePriceByArticle(row:any) {
+  priceByArticle: any;
+  listePriceByArticle(row: any) {
     this.productService.getOtherPriceByArticle(row.selectedProduct).subscribe(
       (price: any) => {
         this.priceByArticle = price.autre_prix[0].montant;
-        row.price =this.priceByArticle
+        row.price = this.priceByArticle
       },
       (err) => {
       }
     )
-   }
+  }
 
-   totalHT: number=0;
-   totalTVA: number=0;
+  totalHT: number = 0;
+  totalTVA: number = 0;
 
   rows: any[] = [
-    { selectedProduct: '', quantity: 0,  unitPrice: 0, reductionArticle: 0, tva:0,  total: 0, totalTTC:0 }
+    { selectedProduct: '', quantity: 0, unitPrice: 0, reductionArticle: 0, tva: 0, total: 0, totalTTC: 0 }
   ];
 
   addRow(): void {
-    this.rows.push({ selectedProduct: '', quantity: 0, unitPrice: 0, reductionArticle: 0, tva:0,  total: 0, totalTTC:0 });
+    this.rows.push({ selectedProduct: '', quantity: 0, unitPrice: 0, reductionArticle: 0, tva: 0, total: 0, totalTTC: 0 });
   }
 
   deleteRow(index: number): void {
@@ -693,19 +695,19 @@ listeClients() {
     this.calculateGrandTotalTTC();
   }
 
-  prixHt:any;
+  prixHt: any;
   calculateTotal(row: any): void {
     row.total = row.quantity * (row.promotionalPrice || row.grillePrice || row.price || row.unitPrice) - row.reductionArticle;
-    this.prixHt=row.total ;
+    this.prixHt = row.total;
     this.calculateGrandTotal();
     // this.calculateGrandTotalAvecRemise();
   }
 
-  prixTTC:any;
-  totalTTC:number=0;
+  prixTTC: any;
+  totalTTC: number = 0;
   calculateTotalTva(row: any): void {
-    row.totalTTC = row.quantity  * (1+row.tva/100 ) * (row.promotionalPrice || row.grillePrice || row.price || row.unitPrice) - row.reductionArticle;
-    this.prixTTC=row.totalTTC;
+    row.totalTTC = row.quantity * (1 + row.tva / 100) * (row.promotionalPrice || row.grillePrice || row.price || row.unitPrice) - row.reductionArticle;
+    this.prixTTC = row.totalTTC;
     // this.calculateGrandTotalAvecRemise();
     this.calculateGrandTotalTTC();
     this.calculateTVA();
@@ -719,7 +721,7 @@ listeClients() {
   }
 
   calculateTVA(): void {
-    this.totalTVA = this.rows.reduce((sum, row) => sum + (row.tva/100)*row.quantity*(row.promotionalPrice || row.grillePrice || row.price || row.unitPrice), 0);
+    this.totalTVA = this.rows.reduce((sum, row) => sum + (row.tva / 100) * row.quantity * (row.promotionalPrice || row.grillePrice || row.price || row.unitPrice), 0);
   }
 
   calculateGrandTotalTTC(): void {
@@ -729,14 +731,14 @@ listeClients() {
 
 
   remise: number = 0;
-  totalRemise:any;
+  totalRemise: any;
   calculateGrandTotalAvecRemise(): number {
     this.totalRemise = this.totalTTC - this.remise;
     return this.totalRemise;
     // this.totalRemise = this.rows.reduce((sum, row) => sum + row.totalTTC - this.remise, 0) ;
   }
 
-  products:any;
+  products: any;
   listeArticles() {
     this.productService.getAllArticles().subscribe(
       (article: any) => {
@@ -745,45 +747,46 @@ listeClients() {
       (err) => {
       }
     )
-   }
-   
-   productSelected:any;
-   currentProduct: any;
+  }
+
+  productSelected: any;
+  currentProduct: any;
   onProductSelect(row: any): void {
-    this.currentProduct = this.products.filter((product : any) => product.id == row.selectedProduct);
+    this.currentProduct = this.products.filter((product: any) => product.id == row.selectedProduct);
     console.log(this.currentProduct);
     row.unitPrice = this.currentProduct[0].prix_unitaire;
     row.promotionalPrice = this.currentProduct[0].prix_promo;
-    this.productSelected=this.currentProduct[0].nom_article;
+    this.productSelected = this.currentProduct[0].nom_article;
   }
 
 
-removeLocalStorage(){
-  localStorage.removeItem('tabAcompte');
-}
+  removeLocalStorage() {
+    localStorage.removeItem('tabAcompte');
+  }
 
-createAcompte(){
-  let  factureAcompte =
+  createAcompte() {
+    let factureAcompte =
     {
       "titreAccomp": this.acompte,
       "dateAccompt": this.dateDebut,
       "dateEcheance": this.dateFin,
       "montant": this.montantAcompte,
-      "commentaire":this.commentaire,
-      "num_facture" :this.nextNumber,
+      "commentaire": this.commentaire,
+      "num_facture": this.nextNumber,
     }
 
     this.tabAcompte.push(factureAcompte)
     localStorage.setItem("tabAcompte", JSON.stringify(this.tabAcompte));
-  
-}
 
-  naturefacture:string="";
-  noteFacture:string="";
-  createFacture(){
-    this.naturefacture=this.typePaiement;
-    let facture = 
+  }
+
+  naturefacture: string = "";
+  noteFacture: string = "";
+  createFacture() {
+    this.naturefacture = this.typePaiement;
+    let facture =
     {
+      // "date_creation":this.date,
       "client_id": this.selectedClient,
       "note_fact": this.noteFacture,
       "reduction_facture": this.remise,
@@ -802,62 +805,62 @@ createAcompte(){
       }>,
     },
 
-    factureEcheance = 
-    {
-      "client_id": this.selectedClient,
-      "note_fact": this.noteFacture,
-      "reduction_facture": this.remise,
-      "type_paiement": this.typePaiement,
-      "id_paiement": this.moyenPayement,
-      "prix_HT": this.total,
-      "prix_TTC": this.totalRemise,
-      "articles": [] as Array<{
-        id_article: number;
-        quantite_article: number;
-        prix_unitaire_article: number;
-        TVA_article: number,
-        reduction_article: number;
-        prix_total_article: number,
-        prix_total_tva_article: number
-      }>,
-      "echeances":[] as Array<{
-        date_pay_echeance: string,
-        montant_echeance: number,
-      }>,
-    },
+      factureEcheance =
+      {
+        "client_id": this.selectedClient,
+        "note_fact": this.noteFacture,
+        "reduction_facture": this.remise,
+        "type_paiement": this.typePaiement,
+        "id_paiement": this.moyenPayement,
+        "prix_HT": this.total,
+        "prix_TTC": this.totalRemise,
+        "articles": [] as Array<{
+          id_article: number;
+          quantite_article: number;
+          prix_unitaire_article: number;
+          TVA_article: number,
+          reduction_article: number;
+          prix_total_article: number,
+          prix_total_tva_article: number
+        }>,
+        "echeances": [] as Array<{
+          date_pay_echeance: string,
+          montant_echeance: number,
+        }>,
+      },
 
-    factureAcompte = 
-    {
-      "client_id": this.selectedClient,
-      "note_fact": this.noteFacture,
-      "reduction_facture": this.remise,
-      "type_paiement": this.typePaiement,
-      "id_paiement": this.moyenPayement,
-      "prix_HT": this.total,
-      "prix_TTC": this.totalRemise,
-      "articles": [] as Array<{
-        id_article: number;
-        quantite_article: number;
-        prix_unitaire_article: number;
-        TVA_article: number,
-        reduction_article: number;
-        prix_total_article: number,
-        prix_total_tva_article: number
-      }>,
-      "facture_accompts": [] as Array<{
-        titreAccomp: string;
-        dateAccompt: string;
-        dateEcheance: string;
-        montant: number,
-        commentaire: string;
-        num_facture: string;
-      }>,
-    }
-    
+      factureAcompte =
+      {
+        "client_id": this.selectedClient,
+        "note_fact": this.noteFacture,
+        "reduction_facture": this.remise,
+        "type_paiement": this.typePaiement,
+        "id_paiement": this.moyenPayement,
+        "prix_HT": this.total,
+        "prix_TTC": this.totalRemise,
+        "articles": [] as Array<{
+          id_article: number;
+          quantite_article: number;
+          prix_unitaire_article: number;
+          TVA_article: number,
+          reduction_article: number;
+          prix_total_article: number,
+          prix_total_tva_article: number
+        }>,
+        "facture_accompts": [] as Array<{
+          titreAccomp: string;
+          dateAccompt: string;
+          dateEcheance: string;
+          montant: number,
+          commentaire: string;
+          num_facture: string;
+        }>,
+      }
+
     for (let i = 0; i < this.rows.length; i++) {
       let row = this.rows[i];
       facture.articles.push({
-        "id_article": row.selectedProduct ,
+        "id_article": row.selectedProduct,
         "quantite_article": row.quantity,
         "prix_unitaire_article": row.promotionalPrice ? row.promotionalPrice : (row.tabGrille ? row.tabGrille : row.unitPrice),
         "TVA_article": row.tva,
@@ -870,7 +873,7 @@ createAcompte(){
     for (let i = 0; i < this.rows.length; i++) {
       let row = this.rows[i];
       factureEcheance.articles.push({
-        "id_article": row.selectedProduct ,
+        "id_article": row.selectedProduct,
         "quantite_article": row.quantity,
         "prix_unitaire_article": row.promotionalPrice ? row.promotionalPrice : (row.tabGrille ? row.tabGrille : row.unitPrice),
         "TVA_article": row.tva,
@@ -882,7 +885,7 @@ createAcompte(){
     for (let i = 0; i < this.rows.length; i++) {
       let row = this.rows[i];
       factureAcompte.articles.push({
-        "id_article": row.selectedProduct ,
+        "id_article": row.selectedProduct,
         "quantite_article": row.quantity,
         "prix_unitaire_article": row.promotionalPrice ? row.promotionalPrice : (row.tabGrille ? row.tabGrille : row.unitPrice),
         "TVA_article": row.tva,
@@ -906,63 +909,63 @@ createAcompte(){
     for (let i = 0; i < this.tabAcompte.length; i++) {
       const item = this.tabAcompte[i];
       factureAcompte.facture_accompts.push({
-           titreAccomp: item.titreAccomp,
-            dateAccompt: item.dateAccompt,
-            dateEcheance: item.dateEcheance,
-            montant: item.montant,
-            commentaire: item.commentaire,
-            num_facture: item.num_facture
+        titreAccomp: item.titreAccomp,
+        dateAccompt: item.dateAccompt,
+        dateEcheance: item.dateEcheance,
+        montant: item.montant,
+        commentaire: item.commentaire,
+        num_facture: item.num_facture
       });
       console.log(factureAcompte.facture_accompts);
     }
 
     // Envoyer la facture au service de facturation
-    if(this.typePaiement=='immediat'){
+    if (this.typePaiement == 'immediat') {
       this.docService.createFacture(facture).subscribe(
-        (facture)=>{
+        (facture) => {
           console.log(facture.message);
-          Report.success('Notiflix Success',facture.message,'Okay',);
+          Report.success('Notiflix Success', facture.message, 'Okay',);
         },
-        (err)=>{
+        (err) => {
           console.log(err);
         }
       )
-    } else if (this.typePaiement=='echeance'){
+    } else if (this.typePaiement == 'echeance') {
       this.docService.createFacture(factureEcheance).subscribe(
-        (facture)=>{
+        (facture) => {
           // console.log(facture.message);
-          Report.success('Notiflix Success',facture.message,'Okay',);
+          Report.success('Notiflix Success', facture.message, 'Okay',);
         },
-        (err)=>{
+        (err) => {
           console.log(err);
         }
       )
-    }  if (this.typePaiement=='facture_Accompt'){
+    } if (this.typePaiement == 'facture_Accompt') {
       this.docService.createFacture(factureAcompte).subscribe(
-        (facture)=>{
+        (facture) => {
           alert(this.nextNumber)
           console.log(facture);
-          Report.success('Notiflix Success',facture.message,'Okay',);
+          Report.success('Notiflix Success', facture.message, 'Okay',);
           this.listeFacture();
           alert(2)
         },
-        (err)=>{
+        (err) => {
           console.log(err);
         }
-      )}
-   
+      )
+    }
+
   }
 
-  innoviceNumber:any
-  tabFactures:any[] =[];
-  tabFactureFilter:any[] =[];
-  listeFacture(){ 
+  innoviceNumber: any
+  tabFactures: any[] = [];
+  tabFactureFilter: any[] = [];
+  listeFacture() {
     this.docService.getAllFacture().subscribe(
       (factures) => {
         this.tabFactures = factures.factures;
         this.innoviceNumber = factures.factures;
         this.tabFactureFilter = this.tabFactures;
-        console.log(this.tabFactures);
       },
       (err) => {
         console.log(err);
@@ -970,12 +973,12 @@ createAcompte(){
     )
   }
 
-  tabFacturesImmediat:any[]=[];
-  listeFactureImmediat(){ 
+  tabFacturesImmediat: any[] = [];
+  listeFactureImmediat() {
     this.docService.getAllFacture().subscribe(
       (factures) => {
         this.tabFacturesImmediat = factures.factures;
-        this.tabFactureFilter = this.tabFacturesImmediat.filter((facture: any) => facture.type_paiement== 'immediat');
+        this.tabFactureFilter = this.tabFacturesImmediat.filter((facture: any) => facture.type_paiement == 'immediat');
       },
       (err) => {
         console.log(err);
@@ -983,12 +986,12 @@ createAcompte(){
     )
   }
 
-  tabFacturesEcheance:any[]=[]
-  listeFactureEcheance(){
+  tabFacturesEcheance: any[] = []
+  listeFactureEcheance() {
     this.docService.getAllFactureEcheance().subscribe(
       (factures) => {
         this.tabFacturesEcheance = factures.factures_echeance;
-        this.tabFactureFilter =this.tabFacturesEcheance;
+        this.tabFactureFilter = this.tabFacturesEcheance;
       },
       (err) => {
         console.log(err);
@@ -996,8 +999,8 @@ createAcompte(){
     )
   }
 
-  tabFacturesAcompte:any[]=[]
-  listeFactureAcompte(){
+  tabFacturesAcompte: any[] = []
+  listeFactureAcompte() {
     this.docService.getAllFactureAcompte().subscribe(
       (factures) => {
         this.tabFacturesAcompte = factures.factures_accompt;
@@ -1010,8 +1013,8 @@ createAcompte(){
     )
   }
 
-  tabFacturesAvoir:any[]=[]
-  listeFactureAvoir(){
+  tabFacturesAvoir: any[] = []
+  listeFactureAvoir() {
     this.docService.getAllFactureAvoir().subscribe(
       (factures) => {
         this.tabFacturesAvoir = factures.factures;
@@ -1025,8 +1028,8 @@ createAcompte(){
   }
 
   // liste facture par client
-  tabFactureClient:any[]=[]
-  listeFactureClient(){
+  tabFactureClient: any[] = []
+  listeFactureClient() {
     this.docService.getAllFactureByClient(this.idCurrentClient).subscribe(
       (factures) => {
         this.tabFactureClient = factures.factures_Payer;
@@ -1039,38 +1042,38 @@ createAcompte(){
     )
   }
 
-  
-  idFacture:any;
-  numeroFacture:any;
-  recupNumeroFacture(paramNumFacture:any){
+
+  idFacture: any;
+  numeroFacture: any;
+  recupNumeroFacture(paramNumFacture: any) {
     this.numeroFacture = paramNumFacture.num_facture;
     this.idFacture = paramNumFacture.id;
   }
 
 
 
-client:any
-article:any
-echeance:any
-acompteFacture:any
-detailFacture:any;
-currentIdFacture:any
-FactureId:any;
-  details(paramFacture :any){
+  client: any
+  article: any
+  echeance: any
+  acompteFacture: any
+  detailFacture: any;
+  currentIdFacture: any
+  FactureId: any;
+  details(paramFacture: any) {
     this.docService.DetailFacture(paramFacture).subscribe(
       (detail) => {
         this.detailFacture = detail.facture_details;
         console.log(this.detailFacture)
-        this.client  =this.detailFacture.client
-        this.article  =this.detailFacture.articles
-        this.echeance  =this.detailFacture.echeances
-        this.acompteFacture  =this.detailFacture.factures_accomptes
+        this.client = this.detailFacture.client
+        this.article = this.detailFacture.articles
+        this.echeance = this.detailFacture.echeances
+        this.acompteFacture = this.detailFacture.factures_accomptes
         this.currentIdFacture = this.detailFacture.id;
-        console.log(this.currentIdFacture);
+        console.log(this.client.prenom);
 
-      this.listeEcheanceFacture();
-      this.listePaiementFacture();
-      this.listeFacture();
+        this.listeEcheanceFacture();
+        this.listePaiementFacture();
+        this.listeFacture();
       },
       (err) => {
         console.log(err);
@@ -1078,33 +1081,32 @@ FactureId:any;
     )
   }
 
-  supprimerFacture(idFacture :any){
+  supprimerFacture(idFacture: any) {
     console.log(idFacture);
     Confirm.init({
       okButtonBackground: '#FF1700',
       titleColor: '#FF1700'
     });
     Confirm.show('Confirmation',
-    'Voullez-vous supprimer cette facture?',
-    'Oui','Non',() => 
-      {
-        Loading.init({
-          svgColor: '#5C6FFF',
-        });
-        Loading.hourglass();
-        this.docService.deleteFacture(idFacture).subscribe(
-          (response)=>{
-            Notify.success(response.message);
-            this.listeFacture();
-            Loading.remove()
-          }
-        )
+      'Voullez-vous supprimer cette facture?',
+      'Oui', 'Non', () => {
+      Loading.init({
+        svgColor: '#5C6FFF',
       });
+      Loading.hourglass();
+      this.docService.deleteFacture(idFacture).subscribe(
+        (response) => {
+          Notify.success(response.message);
+          this.listeFacture();
+          Loading.remove()
+        }
+      )
+    });
   }
 
-   // liste echeance par facture
-   tabEcheanceFacture:any[]=[]
-   listeEcheanceFacture(){
+  // liste echeance par facture
+  tabEcheanceFacture: any[] = []
+  listeEcheanceFacture() {
     this.docService.echeanceParFacture(this.currentIdFacture).subscribe(
       (echeances) => {
         this.tabEcheanceFacture = echeances.echeances;
@@ -1121,26 +1123,26 @@ FactureId:any;
   montantEcheance: string = '';
   moyen: string = '';
   noteEcheance: string = '';
-  currentItem:any;
-  chargerInfosEcheance(paramEcheance:any){
+  currentItem: any;
+  chargerInfosEcheance(paramEcheance: any) {
     this.currentItem = paramEcheance;
     this.datePrevu = paramEcheance.date_pay_echeance;
     this.montantEcheance = paramEcheance.montant_echeance;
     this.noteEcheance = paramEcheance.commentaire;
   }
 
-  echeanceEnPayementRecu(){
-    let item ={
+  echeanceEnPayementRecu() {
+    let item = {
       date_prevu: this.datePrevu,
       date_recu: this.dateRecu,
       montant: this.montantEcheance,
       commentaire: this.noteEcheance,
       id_paiement: this.moyen,
     }
-    this.docService.payerEcheance(this.currentItem.id , item).subscribe(
+    this.docService.payerEcheance(this.currentItem.id, item).subscribe(
       (res) => {
         console.log(res);
-        Report.success('Notiflix Success',res.message,'Okay',);
+        Report.success('Notiflix Success', res.message, 'Okay',);
         this.viderchampsEcheance();
         this.listeEcheanceFacture();
         this.listePaiementFacture();
@@ -1152,7 +1154,7 @@ FactureId:any;
     )
   }
 
-  viderchampsEcheance(){
+  viderchampsEcheance() {
     this.datePrevu = '';
     this.dateRecu = '';
     this.montantEcheance = '';
@@ -1161,8 +1163,8 @@ FactureId:any;
   }
 
   // liste payment reçu par facture
-  tabPaiementFacture:any[]=[]
-  listePaiementFacture(){
+  tabPaiementFacture: any[] = []
+  listePaiementFacture() {
     this.docService.paymentRecuParFacture(this.currentIdFacture).subscribe(
       (paiements) => {
         this.tabPaiementFacture = paiements.paiements_recus;
@@ -1174,50 +1176,49 @@ FactureId:any;
     )
   }
 
-  paymentRecuEnecheance(paramPayment:any){
-      Confirm.init({
-        okButtonBackground: '#FF1700',
-        titleColor: '#FF1700'
-      });
-      Confirm.show('Confirmation',
+  paymentRecuEnecheance(paramPayment: any) {
+    Confirm.init({
+      okButtonBackground: '#FF1700',
+      titleColor: '#FF1700'
+    });
+    Confirm.show('Confirmation',
       'Voullez-vous transformer ce payment reçu en échèance?',
-      'Oui','Non',() => 
-        {
-          Loading.init({
-            svgColor: '#5C6FFF',
-          });
-          Loading.hourglass();
-          this.docService.PaiementEnEcheance(paramPayment).subscribe(
-            (response)=>{
-              Notify.success(response.message);
-              this.listeEcheanceFacture();
-              this.listePaiementFacture();
-              Loading.remove()
-            }
-          )
-        });
+      'Oui', 'Non', () => {
+      Loading.init({
+        svgColor: '#5C6FFF',
+      });
+      Loading.hourglass();
+      this.docService.PaiementEnEcheance(paramPayment).subscribe(
+        (response) => {
+          Notify.success(response.message);
+          this.listeEcheanceFacture();
+          this.listePaiementFacture();
+          Loading.remove()
+        }
+      )
+    });
   }
 
 
   recalculerPrix(i: number) {
     // Récupérer l'article correspondant à l'index i
     const article = this.article[i];
-  
+
     // Recalculer le prix total HT de l'article
     article.prix_total_ht_article = article.quantite_article * article.prix_unitaire_article;
-  
+
     // Calculer le montant de la remise
     const montantRemise = article.prix_total_ht_article * (article.remise / 100);
-  
+
     // Calculer le montant de la TVA
     const montantTVA = (article.prix_total_ht_article - montantRemise) * (article.TVA / 100);
-  
+
     // Calculer le prix total TTC de l'article
     article.prix_total_tva_article = article.prix_total_ht_article - montantRemise + montantTVA;
-  
+
     // Recalculer le prix total HT de la facture
     this.detailFacture.prix_HT = this.article.reduce((total: number, art: { prix_total_ht_article: number }) => total + art.prix_total_ht_article, 0);
-  
+
     // Recalculer le prix total TTC de la facture
     this.detailFacture.prix_TTC = this.detailFacture.prix_HT + this.detailFacture.montant_tva;
   }
@@ -1227,37 +1228,37 @@ FactureId:any;
     this.commentaireSolde = `Solde en faveur créé à partir de la note de crédit du ${this.currentDate}`;
     this.montantSolde = `${this.detailFacture?.prix_TTC}`;
   }
-  
-  clientSolde:any;
-  montantSolde:any;
-  dateSolde:any;
-  commentaireSolde:any;
-  createSolde(){
-    let solde={
+
+  clientSolde: any;
+  montantSolde: any;
+  dateSolde: any;
+  commentaireSolde: any;
+  createSolde() {
+    let solde = {
       id_client: this.selectedClient,
       id_paiement: this.moyenPayement,
       montant: this.montantSolde,
       date_paiement: this.dateSolde,
       commentaire: this.commentaireSolde
     }
-    this.docService.createSolde(this.selectedClient,solde).subscribe(
-      (res)=>{
+    this.docService.createSolde(this.selectedClient, solde).subscribe(
+      (res) => {
         console.log(res);
         this.clientSolde = '';
         this.montantSolde = '';
         this.dateSolde = '';
         this.commentaireSolde = '';
-        Report.success('Notiflix Success',res.message,'Okay',);
+        Report.success('Notiflix Success', res.message, 'Okay',);
       },
-      (err)=>{
+      (err) => {
         console.log(err);
       }
     )
   }
 
-  date:string='';
-  createFactureAvoir(){
-    let factureAvoir = 
+  date: string = '';
+  createFactureAvoir() {
+    let factureAvoir =
     {
       "client_id": this.selectedClient,
       "facture_id": this.currentIdFacture,
@@ -1267,21 +1268,21 @@ FactureId:any;
       "prix_TTC": this.detailFacture.prix_TTC,
       "date": this.date,
       "articles": [] as Array<{
-        id_article: number;       
+        id_article: number;
         quantite_article: number;
         prix_unitaire_article: number;
         TVA_article: number,
         reduction_article: number;
         prix_total_article: number,
         prix_total_tva_article: number
-        
+
       }>,
     }
 
     for (let i = 0; i < this.article.length; i++) {
       let row = this.article[i];
       factureAvoir.articles.push({
-        "id_article": row.id_article ,
+        "id_article": row.id_article,
         "quantite_article": row.quantite_article,
         "prix_unitaire_article": row.prix_unitaire_article,
         "TVA_article": row.TVA,
@@ -1293,41 +1294,40 @@ FactureId:any;
     this.docService.createFactureAvoir(factureAvoir).subscribe(
       (res) => {
         console.log(res);
-        Report.success('Notiflix Success',res.message,'Okay',);
+        Report.success('Notiflix Success', res.message, 'Okay',);
       }
     )
   }
 
-  supprimerFactureAvoir(idFacture :any){
+  supprimerFactureAvoir(idFacture: any) {
     console.log(idFacture);
     Confirm.init({
       okButtonBackground: '#FF1700',
       titleColor: '#FF1700'
     });
     Confirm.show('Confirmation',
-    'Voullez-vous supprimer cette facture?',
-    'Oui','Non',() => 
-      {
-        Loading.init({
-          svgColor: '#5C6FFF',
-        });
-        Loading.hourglass();
-        this.docService.deleteFactureAvoir(idFacture).subscribe(
-          (response)=>{
-            Notify.success(response.message);
-            this.listeFactureAvoir();
-            Loading.remove()
-          }
-        )
+      'Voullez-vous supprimer cette facture?',
+      'Oui', 'Non', () => {
+      Loading.init({
+        svgColor: '#5C6FFF',
       });
+      Loading.hourglass();
+      this.docService.deleteFactureAvoir(idFacture).subscribe(
+        (response) => {
+          Notify.success(response.message);
+          this.listeFactureAvoir();
+          Loading.remove()
+        }
+      )
+    });
   }
 
 
-  tabFactureRecurrente:any[]=[]
-  periode:string='';
-  durePeriode:string='';
-  brouillon:string='';
-  createFactureRecurrente(){
+  tabFactureRecurrente: any[] = []
+  periode: string = '';
+  durePeriode: string = '';
+  brouillon: string = '';
+  createFactureRecurrente() {
     alert(this.brouillon)
     let factureReccurente =
     {
@@ -1352,7 +1352,7 @@ FactureId:any;
     for (let i = 0; i < this.rows.length; i++) {
       let row = this.rows[i];
       factureReccurente.articles.push({
-        "id_article": row.selectedProduct ,
+        "id_article": row.selectedProduct,
         "quantite_article": row.quantity,
         "prix_unitaire_article": row.promotionalPrice ? row.promotionalPrice : (row.tabGrille ? row.tabGrille : row.unitPrice),
         "TVA_article": row.tva,
@@ -1364,7 +1364,7 @@ FactureId:any;
     this.docService.createFactureRecurrente(factureReccurente).subscribe(
       (res) => {
         console.log(res);
-        Report.success('Notiflix Success',res.message,'Okay',);
+        Report.success('Notiflix Success', res.message, 'Okay',);
       },
       (err) => {
         console.log(err);
@@ -1373,7 +1373,7 @@ FactureId:any;
   }
 
   // liste facture recurrente
-  listeFactureRecurrente(){
+  listeFactureRecurrente() {
     this.docService.getAllFactureRecurrente().subscribe(
       (recurrente) => {
         this.tabFactureRecurrente = recurrente;
@@ -1386,15 +1386,15 @@ FactureId:any;
 
 
 
-tabDevis:any[] = [];
-  createDevis(){
-    let devis = 
+  tabDevis: any[] = [];
+  createDevis() {
+    let devis =
     {
       "client_id": this.selectedClient,
       "note_devi": 'test',
       "reduction_devi": this.remise,
       "date_devi": this.datedevis,
-      "date_limite": this.datevaliditeDevis                                                                                                                                                                                                                                                                                                                                                                                                                                    ,
+      "date_limite": this.datevaliditeDevis,
       "prix_HT": this.total,
       "prix_TTC": this.totalRemise,
       "articles": [] as Array<{
@@ -1406,7 +1406,7 @@ tabDevis:any[] = [];
         prix_total_article: number,
         prix_total_tva_article: number
       }>,
-      "echeances":[] as Array<{
+      "echeances": [] as Array<{
         date_pay_echeance: string,
         montant_echeance: number,
       }>,
@@ -1422,7 +1422,7 @@ tabDevis:any[] = [];
     for (let i = 0; i < this.rows.length; i++) {
       let row = this.rows[i];
       devis.articles.push({
-        "id_article": row.selectedProduct ,
+        "id_article": row.selectedProduct,
         "quantite_article": row.quantity,
         "prix_unitaire_article": row.promotionalPrice ? row.promotionalPrice : (row.tabGrille ? row.tabGrille : row.unitPrice),
         "TVA_article": row.tva,
@@ -1430,7 +1430,7 @@ tabDevis:any[] = [];
         "prix_total_article": row.total,
         "prix_total_tva_article": row.totalTTC,
       });
-    } 
+    }
 
     for (let i = 0; i < this.input.length; i++) {
       const item = this.input[i];
@@ -1439,34 +1439,34 @@ tabDevis:any[] = [];
         montant_echeance: item.prix,
       });
     }
-    
+
     for (let i = 0; i < this.tabAcompte.length; i++) {
       const item = this.tabAcompte[i];
-        console.warn(item.num_facture)
+      console.warn(item.num_facture)
       devis.facture_accompts.push({
-           titreAccomp: item.titreAccomp,
-            dateAccompt: item.dateAccompt,
-            dateEcheance: item.dateEcheance,
-            montant: item.montant,
-            commentaire: item.commentaire,
-            num_facture: item.num_facture
+        titreAccomp: item.titreAccomp,
+        dateAccompt: item.dateAccompt,
+        dateEcheance: item.dateEcheance,
+        montant: item.montant,
+        commentaire: item.commentaire,
+        num_facture: item.num_facture
       });
       console.log(devis.facture_accompts);
     }
-    
+
     this.docService.createDevis(devis).subscribe(
       (res) => {
         console.log(res);
-        Report.success('Notiflix Success',res.message,'Okay',);
+        Report.success('Notiflix Success', res.message, 'Okay',);
       },
       (err) => {
         console.log(err);
       }
     )
-    
+
   }
 
-  listeDevis(){
+  listeDevis() {
     this.docService.getAllDevis().subscribe(
       (devis) => {
         this.tabDevis = devis.devis;
@@ -1479,34 +1479,33 @@ tabDevis:any[] = [];
     )
   }
 
-  deletedevis(idDevis:any){
+  deletedevis(idDevis: any) {
     console.log(idDevis);
     Confirm.init({
       okButtonBackground: '#FF1700',
       titleColor: '#FF1700'
     });
     Confirm.show('Confirmation',
-    'Voullez-vous supprimer cette devis?',
-    'Oui','Non',() => 
-      {
-        Loading.init({
-          svgColor: '#5C6FFF',
-        });
-        Loading.hourglass();
-        this.docService.deleteDevis(idDevis).subscribe(
-          (response)=>{
-            Notify.success(response.message);
-            this.listeFactureAvoir();
-            Loading.remove()
-          }
-        )
+      'Voullez-vous supprimer cette devis?',
+      'Oui', 'Non', () => {
+      Loading.init({
+        svgColor: '#5C6FFF',
       });
+      Loading.hourglass();
+      this.docService.deleteDevis(idDevis).subscribe(
+        (response) => {
+          Notify.success(response.message);
+          this.listeFactureAvoir();
+          Loading.remove()
+        }
+      )
+    });
   }
 
-  annulerDevis(idDevis:any){
+  annulerDevis(idDevis: any) {
     this.docService.annulerDevis(idDevis).subscribe(
       (devis) => {
-       console.log(devis);
+        console.log(devis);
       },
       (err) => {
         console.log(err);
@@ -1514,17 +1513,17 @@ tabDevis:any[] = [];
     )
   }
 
-  detailDevi:any;
-  clientDevi:any;
-  articleDevi:any;
-  numDevi:any;
-  detailDevis(idDevis:any){
+  detailDevi: any;
+  clientDevi: any;
+  articleDevi: any;
+  numDevi: any;
+  detailDevis(idDevis: any) {
     this.docService.detailDevis(idDevis).subscribe(
       (devis) => {
-        this.detailDevi=devis.devi_details
-        this.clientDevi=this.detailDevi.client
-        this.articleDevi=this.detailDevi.articles
-        this.numDevi=this.detailDevi.numero_devi
+        this.detailDevi = devis.devi_details
+        this.clientDevi = this.detailDevi.client
+        this.articleDevi = this.detailDevi.articles
+        this.numDevi = this.detailDevi.numero_devi
         console.log(this.detailDevi)
         console.log(this.articleDevi);
 
@@ -1535,54 +1534,52 @@ tabDevis:any[] = [];
     )
   }
 
-  devisEnVente(idDevis:any){
+  devisEnVente(idDevis: any) {
     console.log(idDevis);
     Confirm.init({
       okButtonBackground: '#FF1700',
       titleColor: '#FF1700'
     });
     Confirm.show('Confirmation',
-    'Voullez-vous transformer cette devis en vente(facture)?',
-    'Oui','Non',() => 
-      {
-        Loading.init({
-          svgColor: '#5C6FFF',
-        });
-        Loading.hourglass();
-        this.docService.transformerDevisEnFacture(idDevis).subscribe(
-          (response)=>{
-            Notify.success(response.message);
-            this.transformerEnFacture();
-            this.ouvrirModalFacture();
-            Loading.remove()
-          }
-        )
+      'Voullez-vous transformer cette devis en vente(facture)?',
+      'Oui', 'Non', () => {
+      Loading.init({
+        svgColor: '#5C6FFF',
       });
+      Loading.hourglass();
+      this.docService.transformerDevisEnFacture(idDevis).subscribe(
+        (response) => {
+          Notify.success(response.message);
+          this.transformerEnFacture();
+          this.ouvrirModalFacture();
+          Loading.remove()
+        }
+      )
+    });
   }
 
-  devisEnCommande(idDevis:any){
+  devisEnCommande(idDevis: any) {
     console.log(idDevis);
     Confirm.init({
       okButtonBackground: '#FF1700',
       titleColor: '#FF1700'
     });
     Confirm.show('Confirmation',
-    'Voullez-vous transformer cette devis en Commande?',
-    'Oui','Non',() => 
-      {
-        Loading.init({
-          svgColor: '#5C6FFF',
-        });
-        Loading.hourglass();
-        this.docService.transformerDevisEnCommande(idDevis).subscribe(
-          (response)=>{
-            Notify.success(response.message);
-            this.transfromerEnCommande();
-            this.ouvrirModalCommande();
-            Loading.remove()
-          }
-        )
+      'Voullez-vous transformer cette devis en Commande?',
+      'Oui', 'Non', () => {
+      Loading.init({
+        svgColor: '#5C6FFF',
       });
+      Loading.hourglass();
+      this.docService.transformerDevisEnCommande(idDevis).subscribe(
+        (response) => {
+          Notify.success(response.message);
+          this.transfromerEnCommande();
+          this.ouvrirModalCommande();
+          Loading.remove()
+        }
+      )
+    });
   }
 
   ouvrirModalFacture() {
@@ -1616,46 +1613,46 @@ tabDevis:any[] = [];
       unitPrice: article.prix_unitaire_article,
       tva: article.tva,
       total: article.prix_total_tva_article,
-      totalTTC:article.prix_total_article
+      totalTTC: article.prix_total_article
       // Ajoutez d'autres propriétés si nécessaire
     }));
     this.total = this.detailDevi.prix_TTC;
     this.totalTTC = this.detailDevi.prix_TTC;
-    this.totalRemise =this.detailDevi.prix_TTC
+    this.totalRemise = this.detailDevi.prix_TTC
     this.noteFacture = `Facture basée sur le devis ${this.detailDevi.numero_devi} du ${this.detailDevi.date_creation}`;
-  
-  
+
+
     // Mettre à jour la vue
     this.showStep(2);
   }
 
-  transfromerEnCommande(){
-     // Préparation des données pour la facture
-     this.titre = `Commande basée sur le devis ${this.detailDevi.numero_devi}`;
-     this.selectedClient = this.clientDevi.id_client;
-     this.rows = this.articleDevi.map((article: any) => ({
-       selectedProduct: article.id_article,
-       quantity: article.quantite_article,
-       unitPrice: article.prix_unitaire_article,
-       tva: article.tva,
-       total: article.prix_total_tva_article,
-       totalTTC:article.prix_total_article
-       // Ajoutez d'autres propriétés si nécessaire
-     }));
-     this.total = this.detailDevi.prix_TTC;
-     this.totalTTC = this.detailDevi.prix_TTC;
-     this.totalRemise =this.detailDevi.prix_TTC
-     this.noteFacture = `Commande basée sur le devis ${this.detailDevi.numero_devi} du ${this.detailDevi.date_creation}`;
-   
-   
-     // Mettre à jour la vue
-     this.showStep(2);
+  transfromerEnCommande() {
+    // Préparation des données pour la facture
+    this.titre = `Commande basée sur le devis ${this.detailDevi.numero_devi}`;
+    this.selectedClient = this.clientDevi.id_client;
+    this.rows = this.articleDevi.map((article: any) => ({
+      selectedProduct: article.id_article,
+      quantity: article.quantite_article,
+      unitPrice: article.prix_unitaire_article,
+      tva: article.tva,
+      total: article.prix_total_tva_article,
+      totalTTC: article.prix_total_article
+      // Ajoutez d'autres propriétés si nécessaire
+    }));
+    this.total = this.detailDevi.prix_TTC;
+    this.totalTTC = this.detailDevi.prix_TTC;
+    this.totalRemise = this.detailDevi.prix_TTC
+    this.noteFacture = `Commande basée sur le devis ${this.detailDevi.numero_devi} du ${this.detailDevi.date_creation}`;
+
+
+    // Mettre à jour la vue
+    this.showStep(2);
   }
 
 
 
-  createBonCommande(){
-    let BonCommande = 
+  createBonCommande() {
+    let BonCommande =
     {
       "client_id": this.selectedClient,
       "note_commande": this.noteFacture,
@@ -1673,7 +1670,7 @@ tabDevis:any[] = [];
         prix_total_article: number,
         prix_total_tva_article: number
       }>,
-      "echeances":[] as Array<{
+      "echeances": [] as Array<{
         date_pay_echeance: string,
         montant_echeance: number,
       }>,
@@ -1681,7 +1678,7 @@ tabDevis:any[] = [];
     for (let i = 0; i < this.rows.length; i++) {
       let row = this.rows[i];
       BonCommande.articles.push({
-        "id_article": row.selectedProduct ,
+        "id_article": row.selectedProduct,
         "quantite_article": row.quantity,
         "prix_unitaire_article": row.promotionalPrice ? row.promotionalPrice : (row.tabGrille ? row.tabGrille : row.unitPrice),
         "TVA_article": row.tva,
@@ -1703,19 +1700,19 @@ tabDevis:any[] = [];
     }
 
     this.docService.createBonCommande(BonCommande).subscribe(
-      (res)=>{
+      (res) => {
         console.log(res.message);
-        Report.success('Notiflix Success',res.message,'Okay',);
+        Report.success('Notiflix Success', res.message, 'Okay',);
       },
-      (err)=>{
+      (err) => {
         console.log(err);
       }
     )
 
   }
 
-  tabBonCommande:any[] = [];
-  listeBonCommande(){
+  tabBonCommande: any[] = [];
+  listeBonCommande() {
     this.docService.getAllBonCommande().subscribe(
       (bonCommande) => {
         this.tabBonCommande = bonCommande.BonCommandes;
@@ -1728,60 +1725,58 @@ tabDevis:any[] = [];
     )
   }
 
-  deleteBonCommande(idCommande:any){
+  deleteBonCommande(idCommande: any) {
     console.log(idCommande);
     Confirm.init({
       okButtonBackground: '#FF1700',
       titleColor: '#FF1700'
     });
     Confirm.show('Confirmation',
-    'Voullez-vous supprimer cette Bon de commande?',
-    'Oui','Non',() => 
-      {
-        Loading.init({
-          svgColor: '#5C6FFF',
-        });
-        Loading.hourglass();
-        this.docService.deleteBonCommande(idCommande).subscribe(
-          (response)=>{
-            Notify.success(response.message);
-            this.listeBonCommande();
-            Loading.remove()
-          }
-        )
+      'Voullez-vous supprimer cette Bon de commande?',
+      'Oui', 'Non', () => {
+      Loading.init({
+        svgColor: '#5C6FFF',
       });
+      Loading.hourglass();
+      this.docService.deleteBonCommande(idCommande).subscribe(
+        (response) => {
+          Notify.success(response.message);
+          this.listeBonCommande();
+          Loading.remove()
+        }
+      )
+    });
   }
 
 
-  annulerBonCommande(idCommande:any){
+  annulerBonCommande(idCommande: any) {
     console.log(idCommande);
     Confirm.init({
       okButtonBackground: '#FF1700',
       titleColor: '#FF1700'
     });
     Confirm.show('Confirmation',
-    'Voullez-vous annuler cette Bon de commande?',
-    'Oui','Non',() => 
-      {
-        Loading.init({
-          svgColor: '#5C6FFF',
-        });
-        Loading.hourglass();
-        this.docService.annulerBonCommande(idCommande).subscribe(
-          (response)=>{
-            Notify.success(response.message);
-            this.listeBonCommande();
-            Loading.remove()
-          }
-        )
+      'Voullez-vous annuler cette Bon de commande?',
+      'Oui', 'Non', () => {
+      Loading.init({
+        svgColor: '#5C6FFF',
       });
+      Loading.hourglass();
+      this.docService.annulerBonCommande(idCommande).subscribe(
+        (response) => {
+          Notify.success(response.message);
+          this.listeBonCommande();
+          Loading.remove()
+        }
+      )
+    });
   }
 
-  bonCommande:any;
-  clientCommande:any;
-  articlesCommande:any;
-  echeancesCommande:any;
-  detailBonCommande(idCommande:any){
+  bonCommande: any;
+  clientCommande: any;
+  articlesCommande: any;
+  echeancesCommande: any;
+  detailBonCommande(idCommande: any) {
     this.docService.detailBonCommande(idCommande).subscribe(
       (detailCommande) => {
         this.bonCommande = detailCommande.bonCommande_details;
@@ -1799,29 +1794,28 @@ tabDevis:any[] = [];
     )
   }
 
-  commandeEnVente(idCommande:any){
+  commandeEnVente(idCommande: any) {
     console.log(idCommande);
     Confirm.init({
       okButtonBackground: '#FF1700',
       titleColor: '#FF1700'
     });
     Confirm.show('Confirmation',
-    'Voullez-vous transformer cette Bon de commande en vente(facture)?',
-    'Oui','Non',() => 
-      {
-        Loading.init({
-          svgColor: '#5C6FFF',
-        });
-        Loading.hourglass();
-        this.docService.transformerCommandEnFacture(idCommande).subscribe(
-          (response)=>{
-            Notify.success(response.message);
-            this.transformerCommandeEnVente();
-            this.ouvrirModalFacture();
-            Loading.remove()
-          }
-        )
+      'Voullez-vous transformer cette Bon de commande en vente(facture)?',
+      'Oui', 'Non', () => {
+      Loading.init({
+        svgColor: '#5C6FFF',
       });
+      Loading.hourglass();
+      this.docService.transformerCommandEnFacture(idCommande).subscribe(
+        (response) => {
+          Notify.success(response.message);
+          this.transformerCommandeEnVente();
+          this.ouvrirModalFacture();
+          Loading.remove()
+        }
+      )
+    });
   }
 
 
@@ -1835,20 +1829,20 @@ tabDevis:any[] = [];
       unitPrice: article.prix_unitaire_article,
       tva: article.tva,
       total: article.prix_total_tva_article,
-      totalTTC:article.prix_total_article
+      totalTTC: article.prix_total_article
       // Ajoutez d'autres propriétés si nécessaire
     }));
     this.total = this.bonCommande.prix_TTC;
     this.totalTTC = this.bonCommande.prix_TTC;
-    this.totalRemise =this.bonCommande.prix_TTC
+    this.totalRemise = this.bonCommande.prix_TTC
     this.noteFacture = `Facture basée sur le bon de commande ${this.bonCommande.numero_bonCommande}`;
-  
-  
+
+
     // Mettre à jour la vue
     this.showStep(2);
   }
 
-  createBonLivraison(){
+  createBonLivraison() {
     let BonLivraison =
     {
       "client_id": this.selectedClient,
@@ -1871,7 +1865,7 @@ tabDevis:any[] = [];
     for (let i = 0; i < this.rows.length; i++) {
       let row = this.rows[i];
       BonLivraison.articles.push({
-        "id_article": row.selectedProduct ,
+        "id_article": row.selectedProduct,
         "quantite_article": row.quantity,
         "prix_unitaire_article": row.promotionalPrice ? row.promotionalPrice : (row.tabGrille ? row.tabGrille : row.unitPrice),
         "TVA_article": row.tva,
@@ -1882,7 +1876,7 @@ tabDevis:any[] = [];
     }
     this.docService.createBonLivraison(BonLivraison).subscribe(
       (response) => {
-        Report.success('Notiflix Success',response.message,'Okay',);
+        Report.success('Notiflix Success', response.message, 'Okay',);
       },
       (err) => {
         console.log(err);
@@ -1891,8 +1885,8 @@ tabDevis:any[] = [];
   }
 
 
-  tabLivraison:any;
-  listeBonLivraison(){
+  tabLivraison: any;
+  listeBonLivraison() {
     this.docService.getAllBonLivraison().subscribe(
       (bonLivraisons) => {
         this.tabLivraison = bonLivraisons.livraisons;
@@ -1905,17 +1899,17 @@ tabDevis:any[] = [];
     )
   }
 
-  detailBonLivraison:any;
-  cientBonLivraison:any;
-  articlesLivraison:any;
-  detailLivraison(idLivraison:any){
+  detailBonLivraison: any;
+  cientBonLivraison: any;
+  articlesLivraison: any;
+  detailLivraison(idLivraison: any) {
     this.docService.detailBonLivraison(idLivraison).subscribe(
       (detailLivraison) => {
         this.detailBonLivraison = detailLivraison.bonCommande_details;
         this.cientBonLivraison = this.detailBonLivraison.client;
         this.articlesLivraison = this.detailBonLivraison.articles;
         console.log(this.detailBonLivraison)
-        console.log( this.cientBonLivraison)
+        console.log(this.cientBonLivraison)
         console.log(this.articlesLivraison)
       },
       (err) => {
@@ -1925,100 +1919,96 @@ tabDevis:any[] = [];
   }
 
 
-  deleteBonLivraison(idLivraison:any){
+  deleteBonLivraison(idLivraison: any) {
     console.log(idLivraison);
     Confirm.init({
       okButtonBackground: '#FF1700',
       titleColor: '#FF1700'
     });
     Confirm.show('Confirmation',
-    'Voullez-vous supprimer cette Bon de livraison?',
-    'Oui','Non',() => 
-      {
-        Loading.init({
-          svgColor: '#5C6FFF',
-        });
-        Loading.hourglass();
-        this.docService.deleteBonLivraison(idLivraison).subscribe(
-          (response)=>{
-            Notify.success(response.message);
-            this.listeBonLivraison();
-            Loading.remove()
-          }
-        )
+      'Voullez-vous supprimer cette Bon de livraison?',
+      'Oui', 'Non', () => {
+      Loading.init({
+        svgColor: '#5C6FFF',
       });
+      Loading.hourglass();
+      this.docService.deleteBonLivraison(idLivraison).subscribe(
+        (response) => {
+          Notify.success(response.message);
+          this.listeBonLivraison();
+          Loading.remove()
+        }
+      )
+    });
   }
 
-  preparerBonLivraison(idLivraison:any){
+  preparerBonLivraison(idLivraison: any) {
     console.log(idLivraison);
     Confirm.init({
       okButtonBackground: '#FF1700',
       titleColor: '#FF1700'
     });
     Confirm.show('Confirmation',
-    'Voullez-vous préparer cette Bon de livraison?',
-    'Oui','Non',() => 
-      {
-        Loading.init({
-          svgColor: '#5C6FFF',
-        });
-        Loading.hourglass();
-        this.docService.livraisonEnPreparation(idLivraison).subscribe(
-          (response)=>{
-            Notify.success(response.message);
-            this.listeBonLivraison();
-            Loading.remove()
-          }
-        )
+      'Voullez-vous préparer cette Bon de livraison?',
+      'Oui', 'Non', () => {
+      Loading.init({
+        svgColor: '#5C6FFF',
       });
+      Loading.hourglass();
+      this.docService.livraisonEnPreparation(idLivraison).subscribe(
+        (response) => {
+          Notify.success(response.message);
+          this.listeBonLivraison();
+          Loading.remove()
+        }
+      )
+    });
   }
 
-  realiserBonLivraison(idLivraison:any){
+  realiserBonLivraison(idLivraison: any) {
     console.log(idLivraison);
     Confirm.init({
       okButtonBackground: '#FF1700',
       titleColor: '#FF1700'
     });
     Confirm.show('Confirmation',
-    'Voullez-vous réaliser cette Bon de livraison?',
-    'Oui','Non',() => 
-      {
-        Loading.init({
-          svgColor: '#5C6FFF',
-        });
-        Loading.hourglass();
-        this.docService.livraisonRealiser(idLivraison).subscribe(
-          (response)=>{
-            Notify.success(response.message);
-            this.listeBonLivraison();
-            Loading.remove()
-          }
-        )
+      'Voullez-vous réaliser cette Bon de livraison?',
+      'Oui', 'Non', () => {
+      Loading.init({
+        svgColor: '#5C6FFF',
       });
+      Loading.hourglass();
+      this.docService.livraisonRealiser(idLivraison).subscribe(
+        (response) => {
+          Notify.success(response.message);
+          this.listeBonLivraison();
+          Loading.remove()
+        }
+      )
+    });
   }
 
-  planifierBonLivraison(idLivraison:any){
+  planifierBonLivraison(idLivraison: any) {
     console.log(idLivraison);
     Confirm.init({
       okButtonBackground: '#FF1700',
       titleColor: '#FF1700'
     });
     Confirm.show('Confirmation',
-    'Voullez-vous planifier cette Bon de livraison?',
-    'Oui','Non',() => 
-      {
-        Loading.init({
-          svgColor: '#5C6FFF',
-        });
-        Loading.hourglass();
-        this.docService.livraisonPlanifier(idLivraison).subscribe(
-          (response)=>{
-            Notify.success(response.message);
-            this.listeBonLivraison();
-            Loading.remove()
-          }
-        )
+      'Voullez-vous planifier cette Bon de livraison?',
+      'Oui', 'Non', () => {
+      Loading.init({
+        svgColor: '#5C6FFF',
       });
+      Loading.hourglass();
+      this.docService.livraisonPlanifier(idLivraison).subscribe(
+        (response) => {
+          Notify.success(response.message);
+          this.listeBonLivraison();
+          Loading.remove()
+        }
+      )
+    });
   }
 
   transformerLivraisonEnVente() {
@@ -2031,15 +2021,15 @@ tabDevis:any[] = [];
       unitPrice: article.prix_unitaire_article,
       tva: article.tva,
       total: article.prix_total_tva_article,
-      totalTTC:article.prix_total_article
+      totalTTC: article.prix_total_article
       // Ajoutez d'autres propriétés si nécessaire
     }));
     this.total = this.detailBonLivraison.prix_TTC;
     this.totalTTC = this.detailBonLivraison.prix_TTC;
-    this.totalRemise =this.detailBonLivraison.prix_TTC
+    this.totalRemise = this.detailBonLivraison.prix_TTC
     this.noteFacture = `Facture basée sur le bon de livraison ${this.detailBonLivraison.numero_livraison}`;
-  
-  
+
+
     // Mettre à jour la vue
     this.showStep(2);
   }
@@ -2054,41 +2044,29 @@ tabDevis:any[] = [];
     }
   }
 
-  livraisonEnVente(idLivraison:any){
+  livraisonEnVente(idLivraison: any) {
     console.log(idLivraison);
     Confirm.init({
       okButtonBackground: '#FF1700',
       titleColor: '#FF1700'
     });
     Confirm.show('Confirmation',
-    'Voullez-vous transformer cette devis en Commande?',
-    'Oui','Non',() => 
-      {
-        Loading.init({
-          svgColor: '#5C6FFF',
-        });
-        Loading.hourglass();
-        this.docService.transformerLivraisonEnFacture(idLivraison).subscribe(
-          (response)=>{
-            Notify.success(response.message);
-            this.transformerLivraisonEnVente();
-            this.ouvrirModalFacture();
-            Loading.remove()
-          }
-        )
+      'Voullez-vous transformer cette devis en Commande?',
+      'Oui', 'Non', () => {
+      Loading.init({
+        svgColor: '#5C6FFF',
       });
+      Loading.hourglass();
+      this.docService.transformerLivraisonEnFacture(idLivraison).subscribe(
+        (response) => {
+          Notify.success(response.message);
+          this.transformerLivraisonEnVente();
+          this.ouvrirModalFacture();
+          Loading.remove()
+        }
+      )
+    });
   }
-
-
-
-
-
-
-
-
-
-
-
 
   isPreview: boolean = false;
 
@@ -2105,12 +2083,12 @@ tabDevis:any[] = [];
       html2canvas(printSection).then(canvas => {
         // Créer un nouveau document PDF
         const pdf = new jsPDF();
-  
+
         // Ajouter l'image du contenu au PDF
         const imgData = canvas.toDataURL('image/png');
         // Avec 8 arguments
         pdf.addImage(imgData, 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), 'myImage', 'FAST');
-        
+
         // Enregistrer le PDF
         pdf.save('facture.pdf');
       });
@@ -2121,31 +2099,31 @@ tabDevis:any[] = [];
   }
 
   // Variables si les champs sont exacts
-exactClient: boolean = false;
-exactData: boolean = false;
+  exactClient: boolean = false;
+  exactData: boolean = false;
 
-// validation des formulaires
-// client
-verifClientFonction() {
-  this.exactClient = false;
-  if (this.selectedClient == "") {
-    
-  }
- else {
-    this.exactClient = true;
-  }
-}
+  // validation des formulaires
+  // client
+  verifClientFonction() {
+    this.exactClient = false;
+    if (this.selectedClient == "") {
 
-// produit
-verifProduitFonction(row:any) {
-  this.exactData = false;
-  if (row.quantity == "" && row.selectedProduct == "" && row.reductionArticle) {
-    
+    }
+    else {
+      this.exactClient = true;
+    }
   }
- else {
-    this.exactData = true;
+
+  // produit
+  verifProduitFonction(row: any) {
+    this.exactData = false;
+    if (row.quantity == "" && row.selectedProduct == "" && row.reductionArticle) {
+
+    }
+    else {
+      this.exactData = true;
+    }
   }
-}
 
   // Initialiser le contenu actuel
   currentStep: number = 1;
@@ -2154,20 +2132,20 @@ verifProduitFonction(row:any) {
   showStep(step: number) {
     this.currentStep = step;
   }
-  
+
 
   input: any[] = [
     { date: '', prix: 0 }
   ];
 
   addInput(): void {
-    this.input.push({ date: '', prix: 0});
+    this.input.push({ date: '', prix: 0 });
   }
 
   deleteInput(index: number): void {
     this.input.splice(index, 1);
   }
-  viderchamps(){
+  viderchamps() {
     this.input = [
       { date: '', prix: 0 }
     ];
@@ -2182,28 +2160,230 @@ verifProduitFonction(row:any) {
     this.typePaiement = "";
   }
 
-  
+
 
   // Attribut pour la pagination
-itemsParPage = 3; // Nombre d'articles par page
-pageActuelle = 1; // Page actuelle
+  itemsParPage = 3; // Nombre d'articles par page
+  pageActuelle = 1; // Page actuelle
 
- // Pagination 
-// Méthode pour déterminer les articles à afficher sur la page actuelle
-getItemsPage(): any[] {
- const indexDebut = (this.pageActuelle - 1) * this.itemsParPage;
- const indexFin = indexDebut + this.itemsParPage;
- return this.tabFactureFilter.slice(indexDebut, indexFin);
-}
+  // Pagination 
+  // Méthode pour déterminer les articles à afficher sur la page actuelle
+  getItemsPage(): any[] {
+    const indexDebut = (this.pageActuelle - 1) * this.itemsParPage;
+    const indexFin = indexDebut + this.itemsParPage;
+    return this.tabFactureFilter.slice(indexDebut, indexFin);
+  }
 
-// Méthode pour générer la liste des pages
-get pages(): number[] {
- const totalPages = Math.ceil(this.tabFactureFilter.length / this.itemsParPage);
- return Array(totalPages).fill(0).map((_, index) => index + 1);
-}
+  // Méthode pour générer la liste des pages
+  get pages(): number[] {
+    const totalPages = Math.ceil(this.tabFactureFilter.length / this.itemsParPage);
+    return Array(totalPages).fill(0).map((_, index) => index + 1);
+  }
 
-// Méthode pour obtenir le nombre total de pages
-get totalPages(): number {
- return Math.ceil(this.tabFactureFilter.length / this.itemsParPage);
-}
+  // Méthode pour obtenir le nombre total de pages
+  get totalPages(): number {
+    return Math.ceil(this.tabFactureFilter.length / this.itemsParPage);
+  }
+
+
+  //exporter vente
+  exportExcel() {
+    this.docService.exportVenteToExcel().subscribe(
+      (data: Blob) => {
+        data.arrayBuffer().then((buffer) => {
+          const workbook = XLSX.read(buffer, { type: 'array' });
+          const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+
+          // Augmenter la largeur des colonnes
+          if (worksheet['!ref']) {
+            const range = XLSX.utils.decode_range(worksheet['!ref']);
+            const cols: XLSX.ColInfo[] = [];
+            for (let C = range.s.c; C <= range.e.c; ++C) {
+              cols.push({ wch: 20 }); // Définir la largeur à 15
+            }
+            worksheet['!cols'] = cols;
+          }
+
+          const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+          const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'exportVentes.xlsx';
+          a.click();
+          window.URL.revokeObjectURL(url);
+        });
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  //exporter devis
+  exportDeviExcel() {
+    this.docService.exportDevisToExcel().subscribe(
+      (data: Blob) => {
+        data.arrayBuffer().then((buffer) => {
+          const workbook = XLSX.read(buffer, { type: 'array' });
+          const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+
+          // Augmenter la largeur des colonnes
+          if (worksheet['!ref']) {
+            const range = XLSX.utils.decode_range(worksheet['!ref']);
+            const cols: XLSX.ColInfo[] = [];
+            for (let C = range.s.c; C <= range.e.c; ++C) {
+              cols.push({ wch: 20 }); // Définir la largeur à 15
+            }
+            worksheet['!cols'] = cols;
+          }
+
+          const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+          const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'exportDevis.xlsx';
+          a.click();
+          window.URL.revokeObjectURL(url);
+        });
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  //exporter  bon de commande
+  exportBonCommandeExcel() {
+    this.docService.exportBonCommandeToExcel().subscribe(
+      (data: Blob) => {
+        data.arrayBuffer().then((buffer) => {
+          const workbook = XLSX.read(buffer, { type: 'array' });
+          const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+
+          // Augmenter la largeur des colonnes
+          if (worksheet['!ref']) {
+            const range = XLSX.utils.decode_range(worksheet['!ref']);
+            const cols: XLSX.ColInfo[] = [];
+            for (let C = range.s.c; C <= range.e.c; ++C) {
+              cols.push({ wch: 20 }); // Définir la largeur à 15
+            }
+            worksheet['!cols'] = cols;
+          }
+
+          const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+          const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'exportBonCommande.xlsx';
+          a.click();
+          window.URL.revokeObjectURL(url);
+        });
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  //exporter  bon de livraison
+  exportBonLivraisonExcel() {
+    this.docService.exportBonLivraisonToExcel().subscribe(
+      (data: Blob) => {
+        data.arrayBuffer().then((buffer) => {
+          const workbook = XLSX.read(buffer, { type: 'array' });
+          const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+
+          // Augmenter la largeur des colonnes
+          if (worksheet['!ref']) {
+            const range = XLSX.utils.decode_range(worksheet['!ref']);
+            const cols: XLSX.ColInfo[] = [];
+            for (let C = range.s.c; C <= range.e.c; ++C) {
+              cols.push({ wch: 20 }); // Définir la largeur à 15
+            }
+            worksheet['!cols'] = cols;
+          }
+
+          const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+          const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'exportBonLivraison.xlsx';
+          a.click();
+          window.URL.revokeObjectURL(url);
+        });
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  //exporter  depense
+  exportDepenseExcel() {
+    this.docService.exportBonLivraisonToExcel().subscribe(
+      (data: Blob) => {
+        data.arrayBuffer().then((buffer) => {
+          const workbook = XLSX.read(buffer, { type: 'array' });
+          const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+
+          // Augmenter la largeur des colonnes
+          if (worksheet['!ref']) {
+            const range = XLSX.utils.decode_range(worksheet['!ref']);
+            const cols: XLSX.ColInfo[] = [];
+            for (let C = range.s.c; C <= range.e.c; ++C) {
+              cols.push({ wch: 20 }); // Définir la largeur à 15
+            }
+            worksheet['!cols'] = cols;
+          }
+
+          const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+          const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'exportDepenses.xlsx';
+          a.click();
+          window.URL.revokeObjectURL(url);
+        });
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+  }
+
+  couleurs: string[] = ['#FFEB3B', '#CDDC39', '#FFC107', '#FF5722', '#E91E63', '#9C27B0', '#3F51B5', '#03A9F4', '#00BCD4', '#8BC34A'];
+  etiquette = { nom: '', couleur: '' };
+  etiquettes: { nom: string, couleur: string }[] = [];
+
+  selectionnerCouleur(couleur: string) {
+    this.etiquette.couleur = couleur;
+  }
+
+  ajouterEtiquette() {
+    if (this.etiquette.nom && this.etiquette.couleur) {
+      this.etiquettes.push({ ...this.etiquette });
+      this.etiquette.nom = '';
+      this.etiquette.couleur = '';
+    }
+  }
+
+  supprimerEtiquette(index: number) {
+    this.etiquettes.splice(index, 1);
+  }
+
+  ouvrirModalArticle() {
+    // Utiliser l'API DOM pour ouvrir le modal
+    const modal = document.getElementById('exampleModal');
+    if (modal) {
+      // @ts-ignore
+      const bootstrapModal = new bootstrap.Modal(modal);
+      bootstrapModal.show();
+    }
+  }
+
 }

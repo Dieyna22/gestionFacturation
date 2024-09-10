@@ -1,149 +1,156 @@
 <app-navbar></app-navbar>
 <app-sidebar></app-sidebar>
-<div class="zoneSearch container mb-4 mt-4">
+<div class="zoneSearch mb-4 mt-4">
   <div class="input-group">
-      <input type="search" class="form-control" aria-label="Recipient's username" placeholder="type, numéro,nom,prenom">
-      <button class="btn btnSearch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
-    </div>          
+    <input type="search" class="form-control" aria-label="Recipient's username" placeholder="type, numéro,nom,prenom">
+    <button class="btn btnSearch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+  </div>
 </div>
 
- <!-- Contenu dashbord  -->
- <div class="container mb-5">
+<!-- Contenu dashbord  -->
+<div class="mb-5">
   <div class="header mb-4 d-grid gap-2 d-md-flex justify-content-md-end">
     <ul class="nav">
-        <li><a [ngClass]="{'currentItemNav': boutonActif === 1}" (click)="showTypeDocument('fournisseur')" (click)="boutonActif = 1" (click)="listeFournisseur()" >Fournisseurs</a></li>
-        <li><a [ngClass]="{'currentItemNav': boutonActif === 2}" (click)="showTypeDocument('depense')" (click)="boutonActif = 2" (click)="listeDepense()" >Dépenses</a></li>
+      <li><a [ngClass]="{'currentItemNav': boutonActif === 1}" (click)="showTypeDocument('fournisseur')"
+          (click)="boutonActif = 1" (click)="listeFournisseur()">Fournisseurs</a></li>
+      <li><a [ngClass]="{'currentItemNav': boutonActif === 2}" (click)="showTypeDocument('depense')"
+          (click)="boutonActif = 2" (click)="listeDepense()">Dépenses</a></li>
     </ul>
   </div>
 
-<div class="contenu">
-  <div class="col-md-12 px-4" id="fournisseur" *ngIf="currentDoc==='fournisseur'">
-    <div class="card mb-4 px-4 py-2 pt-4 rounded-4">
-      <button type="button" class="btn ajouter  col-md-2 mb-3 mt-4" data-bs-toggle="modal" data-bs-target="#addfournisseur" (click)="vider()">
-        Ajouter Fournisseur
-     </button>
+  <div class="contenu">
+    <div class="col-md-12 px-4" id="fournisseur" *ngIf="currentDoc==='fournisseur'">
+      <div class="card mb-4 px-4 py-2 pt-4 rounded-4">
+        <button type="button" class="btn ajouter  col-md-2 mb-3 mt-4" data-bs-toggle="modal"
+          data-bs-target="#addfournisseur" (click)="vider()">
+          Ajouter Fournisseur
+        </button>
         <div class="row sectionEspace ligneReseauSearch mb-3">
-            <div class="col-md-5">
-                <h3 class="fw-bold">Listes Fournisseurs</h3>
-            </div>
-              <div class="col-md-7">
-              </div>
+          <div class="col-md-5">
+            <h3 class="fw-bold">Listes Fournisseurs</h3>
+          </div>
+          <div class="col-md-7">
+          </div>
         </div>
 
         <!-- Le tableau des fournisseurs -->
         <div class="table-responsive">
-            <table class="table table-hover mb-4">
-                <thead class="mb-2">
-                    <tr>
-                        <th scope="col">Numéro </th>
-                        <th scope="col">Type Fournisseur</th>
-                        <th scope="col">Nom</th>
-                        <th scope="col">Adresse </th>
-                        <th scope="col">Email </th>
-                        <th scope="col">Téléphone </th>
-                        <th scope="col">Action </th>
-                    </tr>
-                </thead>
-                <tbody *ngFor="let fournisseur of getItemsPage()" >
-                <tr>
-                   <td>{{fournisseur.num_fournisseur}}</td>
-                   <td>{{fournisseur.type_fournisseur}}</td>
-                   <td>{{fournisseur.prenom_fournisseur}} {{fournisseur.nom_fournisseur}} {{fournisseur.nom_entreprise}} </td>
-                   <td>{{fournisseur.adress_fournisseur}}</td>
-                   <td>{{fournisseur.email_fournisseur}}</td>
-                   <td>{{fournisseur.tel_fournisseur}}</td>
-                   <td>
-                    <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfoFournisseur(fournisseur)" data-bs-toggle="modal" data-bs-target="#updateFournisseur"></i>
-                    <i class="bi bi-trash3" title="Supprimer" (click)="supprimerFournisseur(fournisseur.id)"></i>
-                   </td>
-                </tr>
-                </tbody>
-            </table>
+          <table class="table table-hover mb-4">
+            <thead class="mb-2">
+              <tr>
+                <th scope="col">Numéro </th>
+                <th scope="col">Type Fournisseur</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Adresse </th>
+                <th scope="col">Email </th>
+                <th scope="col">Téléphone </th>
+                <th scope="col">Action </th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let fournisseur of getItemsPage()">
+              <tr>
+                <td>{{fournisseur.num_fournisseur}}</td>
+                <td>{{fournisseur.type_fournisseur}}</td>
+                <td>{{fournisseur.prenom_fournisseur}} {{fournisseur.nom_fournisseur}} {{fournisseur.nom_entreprise}}
+                </td>
+                <td>{{fournisseur.adress_fournisseur}}</td>
+                <td>{{fournisseur.email_fournisseur}}</td>
+                <td>{{fournisseur.tel_fournisseur}}</td>
+                <td>
+                  <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfoFournisseur(fournisseur)"
+                    data-bs-toggle="modal" data-bs-target="#updateFournisseur"></i>
+                  <i class="bi bi-trash3" title="Supprimer" (click)="supprimerFournisseur(fournisseur.id)"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <!-- Pagination -->
         <div *ngIf="getItemsPage().length">
           <div class="d-flex justify-content-end mb-2">
-              <button class="border border-0 btnColor  mx-2" [disabled]="pageActuelle === 1"
-                  (click)="pageActuelle = pageActuelle - 1">
-                  <i class="bi bi-arrow-left-circle fs-4"></i>
-              </button>
-              <button class=" rounded-circle mx-2 page" *ngFor="let page of pages" (click)="pageActuelle = page">
-                  <span class="pageActuelle fs-5" *ngIf="page===pageActuelle">{{page}}</span>
-                  <span *ngIf="page != pageActuelle">{{page}}</span>
-              </button>
-              <button class="border border-0 btnColor mx-2" [disabled]="pageActuelle === totalPages"
-                  (click)="pageActuelle = pageActuelle + 1">
-                  <i class="bi bi-arrow-right-circle fs-4"></i>
-              </button>
-          </div> 
+            <button class="border border-0 btnColor  mx-2" [disabled]="pageActuelle === 1"
+              (click)="pageActuelle = pageActuelle - 1">
+              <i class="bi bi-arrow-left-circle fs-4"></i>
+            </button>
+            <button class=" rounded-circle mx-2 page" *ngFor="let page of pages" (click)="pageActuelle = page">
+              <span class="pageActuelle fs-5" *ngIf="page===pageActuelle">{{page}}</span>
+              <span *ngIf="page != pageActuelle">{{page}}</span>
+            </button>
+            <button class="border border-0 btnColor mx-2" [disabled]="pageActuelle === totalPages"
+              (click)="pageActuelle = pageActuelle + 1">
+              <i class="bi bi-arrow-right-circle fs-4"></i>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="col-md-12 px-4" id="depense" *ngIf="currentDoc==='depense'">
-    <div class="card mb-4 px-4 py-2 pt-4 rounded-4">
-      <button type="button" class="btn ajouter  col-md-2 mb-3 mt-4" data-bs-toggle="modal" data-bs-target="#adddepence" (click)="vider()">
-        Ajouter Dépense
-     </button>
+    <div class="col-md-12 px-4" id="depense" *ngIf="currentDoc==='depense'">
+      <div class="card mb-4 px-4 py-2 pt-4 rounded-4">
+        <button type="button" class="btn ajouter  col-md-2 mb-3 mt-4" data-bs-toggle="modal"
+          data-bs-target="#adddepence" (click)="vider()">
+          Ajouter Dépense
+        </button>
         <div class="row sectionEspace ligneReseauSearch mb-3">
-            <div class="col-md-5">
-                <h3 class="fw-bold">Listes Dépenses</h3>
-            </div>
-              <div class="col-md-7">
-              </div>
+          <div class="col-md-5">
+            <h3 class="fw-bold">Listes Dépenses</h3>
+          </div>
+          <div class="col-md-7">
+          </div>
         </div>
 
         <!-- Le tableau des depenses -->
         <div class="table-responsive">
-            <table class="table table-hover mb-4">
-                <thead class="mb-2">
-                    <tr>
-                        <th scope="col">Numéro </th>
-                        <th scope="col">Date </th>
-                        <th scope="col">Catégorie</th>
-                        <th scope="col">Fournisseur </th>
-                        <th scope="col">Total Ht </th>
-                        <th scope="col">Total Ttc </th>
-                        <th scope="col">Action </th>
-                    </tr>
-                </thead>
-                <tbody *ngFor="let depense of getItemsPage()" >
-                <tr>
-                   <td>{{depense.num_depense}}</td>
-                   <td>{{depense.date_paiement}}</td>
-                   <td>{{depense.nom_categorie_depense}}</td>
-                   <td>{{depense.prenom_depense}} {{depense.nom_depense}}</td>
-                   <td>{{depense.montant_depense_ht}}</td>
-                   <td>{{depense.montant_depense_ttc}}</td>
-                   <td>
-                    <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfoDepense(depense)" data-bs-toggle="modal" data-bs-target="#updateDepense"></i>
-                    <i class="bi bi-trash3" title="Supprimer" (click)="supprimerDepense(depense.id)"></i>
-                   </td>
-                </tr>
-                </tbody>
-            </table>
+          <table class="table table-hover mb-4">
+            <thead class="mb-2">
+              <tr>
+                <th scope="col">Numéro </th>
+                <th scope="col">Date </th>
+                <th scope="col">Catégorie</th>
+                <th scope="col">Fournisseur </th>
+                <th scope="col">Total Ht </th>
+                <th scope="col">Total Ttc </th>
+                <th scope="col">Action </th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let depense of getItemsPage()">
+              <tr>
+                <td>{{depense.num_depense}}</td>
+                <td>{{depense.date_paiement}}</td>
+                <td>{{depense.nom_categorie_depense}}</td>
+                <td>{{depense.prenom_depense}} {{depense.nom_depense}}</td>
+                <td>{{depense.montant_depense_ht}}</td>
+                <td>{{depense.montant_depense_ttc}}</td>
+                <td>
+                  <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfoDepense(depense)"
+                    data-bs-toggle="modal" data-bs-target="#updateDepense"></i>
+                  <i class="bi bi-trash3" title="Supprimer" (click)="supprimerDepense(depense.id)"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
         <!-- Pagination -->
         <div *ngIf="getItemsPage().length">
           <div class="d-flex justify-content-end mb-2">
-              <button class="border border-0 btnColor  mx-2" [disabled]="pageActuelle === 1"
-                  (click)="pageActuelle = pageActuelle - 1">
-                  <i class="bi bi-arrow-left-circle fs-4"></i>
-              </button>
-              <button class=" rounded-circle mx-2 page" *ngFor="let page of pages" (click)="pageActuelle = page">
-                  <span class="pageActuelle fs-5" *ngIf="page===pageActuelle">{{page}}</span>
-                  <span *ngIf="page != pageActuelle">{{page}}</span>
-              </button>
-              <button class="border border-0 btnColor mx-2" [disabled]="pageActuelle === totalPages"
-                  (click)="pageActuelle = pageActuelle + 1">
-                  <i class="bi bi-arrow-right-circle fs-4"></i>
-              </button>
-          </div> 
+            <button class="border border-0 btnColor  mx-2" [disabled]="pageActuelle === 1"
+              (click)="pageActuelle = pageActuelle - 1">
+              <i class="bi bi-arrow-left-circle fs-4"></i>
+            </button>
+            <button class=" rounded-circle mx-2 page" *ngFor="let page of pages" (click)="pageActuelle = page">
+              <span class="pageActuelle fs-5" *ngIf="page===pageActuelle">{{page}}</span>
+              <span *ngIf="page != pageActuelle">{{page}}</span>
+            </button>
+            <button class="border border-0 btnColor mx-2" [disabled]="pageActuelle === totalPages"
+              (click)="pageActuelle = pageActuelle + 1">
+              <i class="bi bi-arrow-right-circle fs-4"></i>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </div>
 
 <!-- Modal configuration numéro -->
@@ -151,12 +158,12 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="d-grid gap-2 p-2 d-md-flex justify-content-md-end">
-        <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="config">
           <h1>Configurer numérotation automatique de ventes</h1>
-          
+
           <div class="option">
             <div class="form-check">
               <input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate" checked>
@@ -165,38 +172,43 @@
               </label>
             </div>
           </div>
-          
+
 
           <div class="form-check ">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" value="par_defaut" [(ngModel)]="numerotation"  id="flexRadioDefault1" (click)="showNumConfig('sansPrefixes')" checked>
+            <input class="form-check-input" type="radio" name="flexRadioDefault" value="par_defaut"
+              [(ngModel)]="numerotation" id="flexRadioDefault1" (click)="showNumConfig('sansPrefixes')" checked>
             <label class="form-check-label" for="flexRadioDefault1">
               Numérotation par défaut (incrémentée de façon alphanumérique)
             </label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" value="avec_prefixe" [(ngModel)]="numerotation" id="flexRadioDefault2" (click)="showNumConfig('avecPrefixes')" >
+            <input class="form-check-input" type="radio" name="flexRadioDefault" value="avec_prefixe"
+              [(ngModel)]="numerotation" id="flexRadioDefault2" (click)="showNumConfig('avecPrefixes')">
             <label class="form-check-label" for="flexRadioDefault2">
               Numérotation avec préfixe
             </label>
           </div>
-          
-          <div class="option"  id="avecPrefixes" *ngIf="currentNumConfig==='avecPrefixes'">
+
+          <div class="option" id="avecPrefixes" *ngIf="currentNumConfig==='avecPrefixes'">
             <div class="radio-group">
               <label class="radio-label">
                 <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="custom" (change)="updatePrefix()">
-                Préfixe personnalisé : 
-                <input type="text" [disabled]="selectedPrefix !== 'custom'" [(ngModel)]="customPrefix" (ngModelChange)="updatePrefix()">
+                Préfixe personnalisé :
+                <input type="text" [disabled]="selectedPrefix !== 'custom'" [(ngModel)]="customPrefix"
+                  (ngModelChange)="updatePrefix()">
               </label>
               <label class="radio-label">
                 <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="annee" (change)="updatePrefix()">
                 Préfixe avec l'année en cours
               </label>
               <label class="radio-label">
-                <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="annee_mois" (change)="updatePrefix()">
+                <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="annee_mois"
+                  (change)="updatePrefix()">
                 Préfixe avec l'année et le mois en cours
               </label>
               <label class="radio-label">
-                <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="annee_mois_jour" (change)="updatePrefix()">
+                <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="annee_mois_jour"
+                  (change)="updatePrefix()">
                 Préfixe avec l'année, le mois et le jour en cours
               </label>
             </div>
@@ -206,16 +218,17 @@
             </div>
           </div>
 
-          <div  id="sansPrefixes" *ngIf="currentNumConfig==='sansPrefixes'">
+          <div id="sansPrefixes" *ngIf="currentNumConfig==='sansPrefixes'">
             <div class="next-number">
               <label>Prochain numéro :</label>
-              <input type="text"  [(ngModel)]="nextNumber" readonly>
+              <input type="text" [(ngModel)]="nextNumber" readonly>
             </div>
           </div>
-          
-          
-          <button class="save-btn" data-bs-toggle="modal" data-bs-target="#addfournisseur" (click)="configurationNumero()">Sauvegarder</button>
-      </div>
+
+
+          <button class="save-btn" data-bs-toggle="modal" data-bs-target="#addfournisseur"
+            (click)="configurationNumero()">Sauvegarder</button>
+        </div>
       </div>
     </div>
   </div>
@@ -226,12 +239,12 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="d-grid gap-2 p-2 d-md-flex justify-content-md-end">
-        <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="config">
           <h1>Configurer numérotation automatique de ventes</h1>
-          
+
           <div class="option">
             <div class="form-check">
               <input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate" checked>
@@ -240,38 +253,43 @@
               </label>
             </div>
           </div>
-          
+
 
           <div class="form-check ">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" value="par_defaut" [(ngModel)]="numerotation"  id="flexRadioDefault1" (click)="showNumConfig('sansPrefixes')" checked>
+            <input class="form-check-input" type="radio" name="flexRadioDefault" value="par_defaut"
+              [(ngModel)]="numerotation" id="flexRadioDefault1" (click)="showNumConfig('sansPrefixes')" checked>
             <label class="form-check-label" for="flexRadioDefault1">
               Numérotation par défaut (incrémentée de façon alphanumérique)
             </label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" value="avec_prefixe" [(ngModel)]="numerotation" id="flexRadioDefault2" (click)="showNumConfig('avecPrefixes')" >
+            <input class="form-check-input" type="radio" name="flexRadioDefault" value="avec_prefixe"
+              [(ngModel)]="numerotation" id="flexRadioDefault2" (click)="showNumConfig('avecPrefixes')">
             <label class="form-check-label" for="flexRadioDefault2">
               Numérotation avec préfixe
             </label>
           </div>
-          
-          <div class="option"  id="avecPrefixes" *ngIf="currentNumConfig==='avecPrefixes'">
+
+          <div class="option" id="avecPrefixes" *ngIf="currentNumConfig==='avecPrefixes'">
             <div class="radio-group">
               <label class="radio-label">
                 <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="custom" (change)="updatePrefix()">
-                Préfixe personnalisé : 
-                <input type="text" [disabled]="selectedPrefix !== 'custom'" [(ngModel)]="customPrefix" (ngModelChange)="updatePrefix()">
+                Préfixe personnalisé :
+                <input type="text" [disabled]="selectedPrefix !== 'custom'" [(ngModel)]="customPrefix"
+                  (ngModelChange)="updatePrefix()">
               </label>
               <label class="radio-label">
                 <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="annee" (change)="updatePrefix()">
                 Préfixe avec l'année en cours
               </label>
               <label class="radio-label">
-                <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="annee_mois" (change)="updatePrefix()">
+                <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="annee_mois"
+                  (change)="updatePrefix()">
                 Préfixe avec l'année et le mois en cours
               </label>
               <label class="radio-label">
-                <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="annee_mois_jour" (change)="updatePrefix()">
+                <input type="radio" name="prefix" [(ngModel)]="selectedPrefix" value="annee_mois_jour"
+                  (change)="updatePrefix()">
                 Préfixe avec l'année, le mois et le jour en cours
               </label>
             </div>
@@ -281,16 +299,17 @@
             </div>
           </div>
 
-          <div  id="sansPrefixes" *ngIf="currentNumConfig==='sansPrefixes'">
+          <div id="sansPrefixes" *ngIf="currentNumConfig==='sansPrefixes'">
             <div class="next-number">
               <label>Prochain numéro :</label>
-              <input type="text"  [(ngModel)]="nextNumberDepense" readonly>
+              <input type="text" [(ngModel)]="nextNumberDepense" readonly>
             </div>
           </div>
-          
-          
-          <button class="save-btn" data-bs-toggle="modal" data-bs-target="#adddepence" (click)="configurationNumeroDepense()">Sauvegarder</button>
-      </div>
+
+
+          <button class="save-btn" data-bs-toggle="modal" data-bs-target="#adddepence"
+            (click)="configurationNumeroDepense()">Sauvegarder</button>
+        </div>
       </div>
     </div>
   </div>
@@ -300,73 +319,107 @@
 <div class="modal fade mt-5" id="addfournisseur" tabindex="-1" aria-labelledby="addfournisseurLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered ">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="addfournisseurLabel">Ajouter Fournisseur</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">Ajout Fournisseur</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        </div>
       </div>
       <div class="modal-body">
         <div class="containerFournisseur">
+          <div class="d-flex mb-2">
+            <div class="p-3 flex-grow-1">
+              <!-- <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Actif</label>
+              </div> -->
+            </div>
+            <ng-container *ngIf="etiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
+              <span *ngFor="let etiq of etiquettes; let i = index" [ngStyle]="{'background-color': etiq.couleur}"
+                class="etiquette me-2">
+                {{ etiq.nom }}
+                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquette(i)"></i>
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-container>
+
+            <ng-template #associerEtiquetteBlock>
+              <span class="me-2" data-bs-toggle="modal" data-bs-target="#etiquette" style="cursor: pointer;">
+                Associer étiquette
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-template>
+          </div>
           <div class="header">
             <label for="numero">Numéro :&nbsp;</label>
-            <input class="w-50" type="text" id="numero" name="nextNumber"[(ngModel)]="nextNumber" readonly>&nbsp;
+            <input class="w-50" type="text" id="numero" name="nextNumber" [(ngModel)]="nextNumber" readonly>&nbsp;
             <i class="bi bi-gear" data-bs-toggle="modal" data-bs-target="#setting"></i>
           </div> <br><br>
           <div class="tabs">
-            <div class="tab" 
-            [ngClass]="{'active': zoneActif === 1}" 
-            (click)="showComponant('particulier'); setTypeFournisseur('particulier'); zoneActif = 1">
-         👤
-       </div>
-       <div class="tab" 
-            [ngClass]="{'active': zoneActif === 2}" 
-            (click)="showComponant('entreprise'); setTypeFournisseur('entreprise'); zoneActif = 2">
-         🏢
-       </div>
+            <div class="tab one" [ngClass]="{'active': zoneActif === 1}"
+              (click)="showComponant('particulier'); setTypeFournisseur('particulier'); zoneActif = 1">
+              <!-- 👤 -->
+              <i class="bi bi-person"></i>
+            </div>
+            <div class="tab two" [ngClass]="{'active': zoneActif === 2}"
+              (click)="showComponant('entreprise'); setTypeFournisseur('entreprise'); zoneActif = 2">
+              <!-- 🏢 -->
+              <i class="bi bi-buildings"></i>
+            </div>
           </div>
           <form id="particulier" *ngIf="currentContent==='particulier'">
-            <input type="text" placeholder="Prénom" name="prenom" [(ngModel)]="prenom">
-            <input type="text" placeholder="Nom" name="nom" [(ngModel)]="nom">
-            <input type="text" placeholder="Adresse électronique" name="email" [(ngModel)]="email"><br><br>
-            <input type="text" placeholder="Adresse" name="adresse" [(ngModel)]="adresse">
-            <div class="row p-2">
-                <input type="text" placeholder="Code Postal" name="codepostal" [(ngModel)]="codepostal">
-                <input type="text" placeholder="Ville" name="ville" [(ngModel)]="ville">
-            </div>
-            <input type="text" placeholder="Pays" name="pays" [(ngModel)]="pays">
-            <input type="text" placeholder="Téléphone 1" name="tel" [(ngModel)]="tel">
-            <textarea placeholder="Commentaire :" name="note" [(ngModel)]="note"></textarea>
-        </form>
-          <form id="entreprise" *ngIf="currentContent==='entreprise'">
-              <input type="text" placeholder="Nom de l'entreprise" name="nomEntreprise" [(ngModel)]="nomEntreprise">
-              <input type="text" placeholder="N° Identification fiscale" name="codeFiscal" [(ngModel)]="codeFiscal">
-              <input type="text" placeholder="Adresse électronique" name="email" [(ngModel)]="email"><br><br>
-              <input type="text" placeholder="Adresse" name="adresse" [(ngModel)]="adresse">
-              <div class="row p-2">
-                  <input type="text" placeholder="Code Postal" name="codepostal" [(ngModel)]="codepostal">
-                  <input type="text" placeholder="Ville" name="ville" [(ngModel)]="ville">
-              </div>
-              <input type="text" placeholder="Pays" name="pays" [(ngModel)]="pays">
-              <input type="text" placeholder="Téléphone 1" name="tel" [(ngModel)]="tel">
-              <textarea placeholder="Commentaire :" name="note" [(ngModel)]="note"></textarea>
-           
+            <input type="text" class="form-control" placeholder="Prénom" name="prenom" [(ngModel)]="prenom">
+            <input type="text" class="form-control" placeholder="Nom" name="nom" [(ngModel)]="nom">
+            <input type="text" class="form-control" placeholder="Adresse électronique" name="email"
+              [(ngModel)]="email"><br><br>
           </form>
-      </div>
+          <form id="entreprise" *ngIf="currentContent==='entreprise'">
+            <input type="text" class="form-control" placeholder="Nom de l'entreprise" name="nomEntreprise"
+              [(ngModel)]="nomEntreprise">
+            <input type="text" class="form-control" placeholder="N° Identification fiscale" name="codeFiscal"
+              [(ngModel)]="codeFiscal">
+            <input type="text" class="form-control" placeholder="Adresse électronique" name="email"
+              [(ngModel)]="email"><br><br>
+          </form>
+          <form>
+            <input type="text" class="form-control" placeholder="Adresse" name="adresse" [(ngModel)]="adresse">
+            <div class="row p-2">
+              <input type="text" class="form-control" placeholder="Code Postal" name="codepostal"
+                [(ngModel)]="codepostal">
+              <input type="text" class="form-control" placeholder="Ville" name="ville" [(ngModel)]="ville">
+            </div>
+            <input type="text" class="form-control" placeholder="Pays" name="pays" [(ngModel)]="pays">
+            <input type="text" class="form-control" placeholder="Téléphone " name="tel" [(ngModel)]="tel"><br><br>
+
+            <input type="text" class="form-control" placeholder="N° Compte" name="compte" [(ngModel)]="compte">
+            <div class="row p-2">
+              <input type="text" class="form-control" placeholder="Code Banque" name="banque" [(ngModel)]="banque">
+              <input type="text" class="form-control" placeholder="Code Guichet" name="guichet" [(ngModel)]="guichet">
+            </div>
+            <input type="text" class="form-control" placeholder="Clé RIB" name="rib" [(ngModel)]="rib">
+            <input type="text" class="form-control" placeholder="IBAN" name="iban" [(ngModel)]="iban"><br><br>
+            <textarea placeholder="Commentaire :" name="note"></textarea>
+          </form>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btnAction" (click)="addFournisseur()">Ajouter</button>
-      <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
-    </div>
+        <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- Modal modifier fournisseur -->
-<div class="modal fade mt-5" id="updateFournisseur" tabindex="-1" aria-labelledby="updateFournisseurLabel" aria-hidden="true">
+<div class="modal fade mt-5" id="updateFournisseur" tabindex="-1" aria-labelledby="updateFournisseurLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered ">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="updateFournisseurLabel">Modifier Fournisseur</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">Modifier Fournisseur</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        </div>
       </div>
       <div class="modal-body">
         <div class="containerFournisseur">
@@ -374,50 +427,56 @@
             <span>{{numFournisseur}}</span>
           </div> <br><br>
           <div class="tabs">
-            <div class="tab" 
-            [ngClass]="{'active': zoneActif === 1}" 
-            (click)="showComponant('particulier'); setTypeFournisseur('particulier'); zoneActif = 1">
-         👤
-       </div>
-       <div class="tab" 
-            [ngClass]="{'active': zoneActif === 2}" 
-            (click)="showComponant('entreprise'); setTypeFournisseur('entreprise'); zoneActif = 2">
-         🏢
-       </div>
+            <div class="tab one" [ngClass]="{'active': zoneActif === 1}"
+              (click)="showComponant('particulier'); setTypeFournisseur('particulier'); zoneActif = 1">
+              <!-- 👤 -->
+              <i class="bi bi-person"></i>
+            </div>
+            <div class="tab two" [ngClass]="{'active': zoneActif === 2}"
+              (click)="showComponant('entreprise'); setTypeFournisseur('entreprise'); zoneActif = 2">
+              <!-- 🏢 -->
+              <i class="bi bi-buildings"></i>
+            </div>
           </div>
           <form id="particulier" *ngIf="currentContent==='particulier'">
-            <input type="text" placeholder="Prénom" name="prenom" [(ngModel)]="prenom">
-            <input type="text" placeholder="Nom" name="nom" [(ngModel)]="nom">
-            <input type="text" placeholder="Adresse électronique" name="email" [(ngModel)]="email"><br><br>
-            <input type="text" placeholder="Adresse" name="adresse" [(ngModel)]="adresse">
-            <div class="row p-2">
-                <input type="text" placeholder="Code Postal" name="codepostal" [(ngModel)]="codepostal">
-                <input type="text" placeholder="Ville" name="ville" [(ngModel)]="ville">
-            </div>
-            <input type="text" placeholder="Pays" name="pays" [(ngModel)]="pays">
-            <input type="text" placeholder="Téléphone 1" name="tel" [(ngModel)]="tel">
-            <textarea placeholder="Commentaire :" name="note" [(ngModel)]="note"></textarea>
-        </form>
-          <form id="entreprise" *ngIf="currentContent==='entreprise'">
-              <input type="text" placeholder="Nom de l'entreprise" name="nomEntreprise" [(ngModel)]="nomEntreprise">
-              <input type="text" placeholder="N° Identification fiscale" name="codeFiscal" [(ngModel)]="codeFiscal">
-              <input type="text" placeholder="Adresse électronique" name="email" [(ngModel)]="email"><br><br>
-              <input type="text" placeholder="Adresse" name="adresse" [(ngModel)]="adresse">
-              <div class="row p-2">
-                  <input type="text" placeholder="Code Postal" name="codepostal" [(ngModel)]="codepostal">
-                  <input type="text" placeholder="Ville" name="ville" [(ngModel)]="ville">
-              </div>
-              <input type="text" placeholder="Pays" name="pays" [(ngModel)]="pays">
-              <input type="text" placeholder="Téléphone 1" name="tel" [(ngModel)]="tel">
-              <textarea placeholder="Commentaire :" name="note" [(ngModel)]="note"></textarea>
-           
+            <input type="text" class="form-control" placeholder="Prénom" name="prenom" [(ngModel)]="prenom">
+            <input type="text" class="form-control" placeholder="Nom" name="nom" [(ngModel)]="nom">
+            <input type="text" class="form-control" placeholder="Adresse électronique" name="email"
+              [(ngModel)]="email"><br><br>
           </form>
-      </div>
+          <form id="entreprise" *ngIf="currentContent==='entreprise'">
+            <input type="text" class="form-control" placeholder="Nom de l'entreprise" name="nomEntreprise"
+              [(ngModel)]="nomEntreprise">
+            <input type="text" class="form-control" placeholder="N° Identification fiscale" name="codeFiscal"
+              [(ngModel)]="codeFiscal">
+            <input type="text" class="form-control" placeholder="Adresse électronique" name="email"
+              [(ngModel)]="email"><br><br>
+          </form>
+          <form>
+            <input type="text" class="form-control" placeholder="Adresse" name="adresse" [(ngModel)]="adresse">
+            <div class="row p-2">
+              <input type="text" class="form-control" placeholder="Code Postal" name="codepostal"
+                [(ngModel)]="codepostal">
+              <input type="text" class="form-control" placeholder="Ville" name="ville" [(ngModel)]="ville">
+            </div>
+            <input type="text" class="form-control" placeholder="Pays" name="pays" [(ngModel)]="pays">
+            <input type="text" class="form-control" placeholder="Téléphone " name="tel" [(ngModel)]="tel"><br><br>
+
+            <input type="text" class="form-control" placeholder="N° Compte" name="compte" [(ngModel)]="compte">
+            <div class="row p-2">
+              <input type="text" class="form-control" placeholder="Code Banque" name="banque" [(ngModel)]="banque">
+              <input type="text" class="form-control" placeholder="Code Guichet" name="guichet" [(ngModel)]="guichet">
+            </div>
+            <input type="text" class="form-control" placeholder="Clé RIB" name="rib" [(ngModel)]="rib">
+            <input type="text" class="form-control" placeholder="IBAN" name="iban" [(ngModel)]="iban"><br><br>
+            <textarea placeholder="Commentaire :" name="note"></textarea>
+          </form>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btnAction" (click)="updateFournisseur()">Modifier</button>
-      <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
-    </div>
+        <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+      </div>
     </div>
   </div>
 </div>
@@ -427,15 +486,16 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="d-grid gap-2 p-2 d-md-flex justify-content-md-end">
-        <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <h3>+ Ajouter catégorie dépense</h3>
         <div class="form-floating mb-3">
           <input type="text" class="form-control" id="text" name="categorie" [(ngModel)]="categorie">
           <label for="text">Nom Catégorie</label>
-      </div>
-        <button class="btnAction mx-auto btn mt-3"  (click)="addCategorieDepense()" data-bs-toggle="modal" data-bs-target="#adddepence">Sauvegarder</button>
+        </div>
+        <button class="btnAction mx-auto btn mt-3" (click)="addCategorieDepense()" data-bs-toggle="modal"
+          data-bs-target="#adddepence">Sauvegarder</button>
       </div>
     </div>
   </div>
@@ -446,32 +506,51 @@
 <div class="modal fade mt-5" id="adddepence" tabindex="-1" aria-labelledby="adddepenceLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg ">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="adddepenceLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">Ajout Depense</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        </div>
       </div>
       <div class="modal-body">
         <div class="form-container">
-          <div class="row">
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="active" (click)="setTypeActive(true)">
-              <label class="form-check-label" for="flexSwitchCheckDefault">Active</label>
+          <div class="d-flex mb-2">
+            <div class="p-3 flex-grow-1">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="active"
+                  (click)="setTypeActive(true)">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Active</label>
+              </div>
             </div>
-  
-            <div class="header col-8">
-              <label for="numero">Numéro :&nbsp;</label>
-              <input class="w-50" type="text" id="numero" name="nextNumberDepense"[(ngModel)]="nextNumberDepense" readonly>&nbsp;
-              <i class="bi bi-gear" data-bs-toggle="modal" data-bs-target="#settingDepense"></i>
-            </div>
-          </div>
-          
+            <ng-container *ngIf="etiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
+              <span *ngFor="let etiq of etiquettes; let i = index" [ngStyle]="{'background-color': etiq.couleur}"
+                class="etiquette me-2">
+                {{ etiq.nom }}
+                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquette(i)"></i>
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-container>
 
+            <ng-template #associerEtiquetteBlock>
+              <span class="me-2" data-bs-toggle="modal" data-bs-target="#etiquette" style="cursor: pointer;">
+                Associer étiquette
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-template>
+          </div>
+          <div class="header">
+            <label for="numero">Numéro :&nbsp;</label>
+            <input class="w-50" type="text" id="numero" name="nextNumberDepense" [(ngModel)]="nextNumberDepense"
+              readonly>&nbsp;
+            <i class="bi bi-gear" data-bs-toggle="modal" data-bs-target="#settingDepense"></i>
+          </div>
           <div class="form-group">
             <label for="category">Catégorie :</label>
             <select id="category" name="categorie" [(ngModel)]="categorie">
-              <option  data-bs-toggle="modal" data-bs-target="#categorie">+ Ajouter une catégorie...</option>
+              <option data-bs-toggle="modal" data-bs-target="#categorie">+ Ajouter une catégorie...</option>
               <option value="" disabled selected>Sélectionnez une catégorie...</option>
-              <option  *ngFor="let categorie of tabCategorie" [value]="categorie.id">{{categorie.nom_categorie_depense}}</option>
+              <option *ngFor="let categorie of tabCategorie" [value]="categorie.id">{{categorie.nom_categorie_depense}}
+              </option>
             </select>
           </div>
 
@@ -481,7 +560,8 @@
           </div>
 
           <div class="form-check" (click)="showInfosPayement()">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" name="depensePay" (click)="setTypedepensePay(true)">
+            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" name="depensePay"
+              (click)="setTypedepensePay(true)">
             <label class="form-check-label" for="defaultCheck1">
               Dépense avec plusieurs paiements
             </label>
@@ -489,7 +569,8 @@
 
           <div class="Échéance mx-auto p-2" *ngIf="infosPayement">
             <div class="form-check" (click)="showEcheancePay()">
-              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" name="Duree" (click)="setTypeDuree(true)">
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" name="Duree"
+                (click)="setTypeDuree(true)">
               <label class="form-check-label" for="defaultCheck1">
                 Durée indéterminée (nombre de paiements inconnu)
               </label>
@@ -497,161 +578,174 @@
             <div class="row mb-2 mt-2 text-center" *ngIf="!echeancePay">
               <ng-container class="mb-2 mt-2" *ngFor="let item of input; let i = index">
                 <div class="col-3"><label for="echeance1" class="me-1">Échéance {{i+1}}: </label></div>
-                <div class="col-3"><input type="date"  id="echeance1" class="me-2" value="" [(ngModel)]="item.date" ></div>
-                <div class="col-4"><input type="number" id="montant1"  class="me-2" value="" [(ngModel)]="item.prix"> </div>
-                <div class="col-2"><i class="bi bi-x-lg" style="color: red; cursor: pointer;" (click)="deleteInput(i)"></i></div>
-              </ng-container >
+                <div class="col-3"><input type="date" id="echeance1" class="me-2" value="" [(ngModel)]="item.date">
+                </div>
+                <div class="col-4"><input type="number" id="montant1" class="me-2" value="" [(ngModel)]="item.prix">
+                </div>
+                <div class="col-2"><i class="bi bi-x-lg" style="color: red; cursor: pointer;"
+                    (click)="deleteInput(i)"></i></div>
+              </ng-container>
               <span (click)="addInput()" style="cursor: pointer;"><i class="bi bi-plus-circle me-2"></i>ajouter</span>
             </div>
             <div class="popup-vente mb-5" *ngIf="echeancePay">
               <span class="txt-title">Ces échéances doivent être programmées :</span>
               <div class="checkbox1">
-                  <div class="vente">
-                    <div class="form-check">
-                      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" checked>
-                      <label class="form-check-label" for="defaultCheck1">
-                        Une échéance tous les :
-                      </label>
-                    </div>
+                <div class="vente">
+                  <div class="form-check">
+                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" checked>
+                    <label class="form-check-label" for="defaultCheck1">
+                      Une échéance tous les :
+                    </label>
                   </div>
-                  <div class="duree text-center">
-                      <input class="check1 me-2" type="number" name="periode" [(ngModel)]="periode">
-                      <select name="" id="" name="durePeriode"  class="check2" [(ngModel)]="durePeriode">
-                        <option value="jour">Jour</option>
-                        <option value="semaine">Semaine</option>
-                        <option value="mois">Mois</option>
-                      </select>
-                  </div>
+                </div>
+                <div class="duree text-center">
+                  <input class="check1 me-2" type="number" name="periode" [(ngModel)]="periode">
+                  <select name="" id="" name="durePeriode" class="check2" [(ngModel)]="durePeriode">
+                    <option value="jour">Jour</option>
+                    <option value="semaine">Semaine</option>
+                    <option value="mois">Mois</option>
+                  </select>
+                </div>
               </div>
               <div class="date">
-                  <span>A partir du:</span>
-                  <input type="date" name="datePay" [(ngModel)]="datePay">
+                <span>A partir du:</span>
+                <input type="date" name="datePay" [(ngModel)]="datePay">
               </div>
               <div class="date">
                 <span>Montant:&nbsp;</span>
                 <input type="text" name="montantEcheance" [(ngModel)]="montantPay">
-            </div>
-          </div>
-        </div>
-
-        <div class="payment-info mx-auto p-2 mt-3 mb-2" *ngIf="!infosPayement">
-          <h3>Information du paiement</h3>
-          <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-2 col-form-label">Date :</label>
-            <div class="col-sm-10">
-              <input type="date" class="form-control" id="staticEmail" name="datePay" [(ngModel)]="datePay" >
-            </div>
-          </div>
-          <div class="form-check" (click)="showInputTva()">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-            <label class="form-check-label" for="defaultCheck1">
-              Tva
-            </label>
-          </div>
-          
-          <div class="mb-3 row" *ngIf="!showTva">
-            <label for="staticEmail" class="col-sm-2 col-form-label">Montant :</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="staticEmail"  name="montantPay" [(ngModel)]="montantPay"  >
+              </div>
             </div>
           </div>
 
-          <ng-container *ngIf="showTva">
+          <div class="payment-info mx-auto p-2 mt-3 mb-2" *ngIf="!infosPayement">
+            <h3>Information du paiement</h3>
             <div class="mb-3 row">
-              <label for="staticEmail" class="col-sm-2 col-form-label">TVA :</label>
+              <label for="staticEmail" class="col-sm-2 col-form-label">Date :</label>
               <div class="col-sm-10">
-                <input type="number" class="form-control" id="staticEmail" name="tva" [(ngModel)]="tva" (ngModelChange)="calculerMontantTtc()">
+                <input type="date" class="form-control" id="staticEmail" name="datePay" [(ngModel)]="datePay">
+              </div>
+            </div>
+            <div class="form-check" (click)="showInputTva()">
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+              <label class="form-check-label" for="defaultCheck1">
+                Tva
+              </label>
+            </div>
+
+            <div class="mb-3 row" *ngIf="!showTva">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Montant :</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="staticEmail" name="montantPay" [(ngModel)]="montantPay">
+              </div>
+            </div>
+
+            <ng-container *ngIf="showTva">
+              <div class="mb-3 row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">TVA :</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" id="staticEmail" name="tva" [(ngModel)]="tva"
+                    (ngModelChange)="calculerMontantTtc()">
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Montant Ht :</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" id="staticEmail" name="montantpay" [(ngModel)]="montantPay"
+                    (ngModelChange)="calculerMontantTtc()">
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Montant Ttc :</label>
+                <div class="col-sm-10">
+                  <input type="number" class="form-control" id="staticEmail" name="montantPayTtc"
+                    [(ngModel)]="montantPayTtc" readonly>
+                </div>
+              </div>
+            </ng-container>
+
+            <div class="form-check form-switch" *ngIf="impayer=='impayer'">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="payer"
+                (click)="setTypeImpay('payer')">
+              <label class="form-check-label" for="flexSwitchCheckDefault">Impayé</label>
+            </div>
+            <div class="form-check form-switch" *ngIf="impayer=='payer'">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked
+                name="impayer" (click)="setTypeImpay('impayer')">
+              <label class="form-check-label" for="flexSwitchCheckDefault">payé</label>
+            </div>
+
+            <div class="row g-3 align-items-center" *ngIf="impayer=='payer'">
+              <div class="col-auto">
+                <label for="inputPassword6" class="col-form-label">Moyen de paiement</label>
+                <select class="form-select form-select-lg" id="client-select" placeholder="Type de paiement..."
+                  [(ngModel)]="moyenPayement">
+                  <option *ngFor="let paye of tabPayement" [value]="paye.id">{{paye.nom_payement}}</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+
+          <a (click)='showInfosFacture()'>+ Saisir information de facturation</a>
+
+          <div class="payment-info mx-auto p-2 mt-3" *ngIf="infosFacture">
+            <h3>Information de facturation</h3>
+            <div class="mb-3 row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Numéro :</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="staticEmail" name="numero" [(ngModel)]="numero">
               </div>
             </div>
             <div class="mb-3 row">
-              <label for="staticEmail" class="col-sm-2 col-form-label">Montant Ht :</label>
+              <label for="staticEmail" class="col-sm-2 col-form-label">Date :</label>
               <div class="col-sm-10">
-                <input type="number" class="form-control" id="staticEmail" name="montantpay" [(ngModel)]="montantPay" (ngModelChange)="calculerMontantTtc()">
+                <input type="date" class="form-control" id="staticEmail" name="dateFacture" [(ngModel)]="dateFacture">
               </div>
-            </div>
-            <div class="mb-3 row">
-              <label for="staticEmail" class="col-sm-2 col-form-label">Montant Ttc :</label>
-              <div class="col-sm-10">
-                <input type="number" class="form-control" id="staticEmail" name="montantPayTtc" [(ngModel)]="montantPayTtc" readonly>
-              </div>
-            </div>
-          </ng-container>
-         
-          <div class="form-check form-switch" *ngIf="impayer=='impayer'">
-            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="payer" (click)="setTypeImpay('payer')">
-            <label class="form-check-label" for="flexSwitchCheckDefault">Impayé</label>
-          </div>
-          <div class="form-check form-switch" *ngIf="impayer=='payer'">
-            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked name="impayer"  (click)="setTypeImpay('impayer')">
-            <label class="form-check-label" for="flexSwitchCheckDefault" >payé</label>
-          </div>
-
-          <div class="row g-3 align-items-center" *ngIf="impayer=='payer'">
-            <div class="col-auto">
-              <label for="inputPassword6" class="col-form-label">Moyen de paiement</label>
-              <select class="form-select form-select-lg" id="client-select" placeholder="Type de paiement..." [(ngModel)]="moyenPayement">
-                <option *ngFor="let paye of tabPayement" [value]="paye.id">{{paye.nom_payement}}</option>
-              </select>
-            </div>
-          </div>
-
-        </div>
-
-        <a (click)='showInfosFacture()'>+ Saisir information de facturation</a>
-
-        <div class="payment-info mx-auto p-2 mt-3" *ngIf="infosFacture">
-          <h3>Information de facturation</h3>
-          <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-2 col-form-label">Numéro :</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="staticEmail" name="numero" [(ngModel)]="numero" >
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-2 col-form-label">Date :</label>
-            <div class="col-sm-10">
-              <input type="date" class="form-control" id="staticEmail" name="dateFacture" [(ngModel)]="dateFacture" >
             </div>
           </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btnAction" (click)="createDepense()">Ajouter</button>
-      <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+        <div class="modal-footer">
+          <button type="button" class="btn btnAction" (click)="createDepense()">Ajouter</button>
+          <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </div>
 
 <!-- Modal modifier depense -->
 <div class="modal fade mt-5" id="updateDepense" tabindex="-1" aria-labelledby="updateDepenseLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg ">
     <div class="modal-content" *ngIf="currentDepense">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="updateDepenseLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">Modifier Depense</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        </div>
       </div>
       <div class="modal-body">
         <div class="form-container">
           <div class="row">
             <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="active" (click)="setTypeActive(true)">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="active"
+                (click)="setTypeActive(true)">
               <label class="form-check-label" for="flexSwitchCheckDefault">Active</label>
             </div>
-  
+
             <div class="header col-8">
               <span>{{numDepense}}</span>
             </div>
           </div>
-          
+
 
           <div class="form-group">
             <label for="category">Catégorie :</label>
             <select id="category" name="categorie" [(ngModel)]="categorie">
-              <option  data-bs-toggle="modal" data-bs-target="#categorie">+ Ajouter une catégorie...</option>
+              <option data-bs-toggle="modal" data-bs-target="#categorie">+ Ajouter une catégorie...</option>
               <option value="" disabled selected>Sélectionnez une catégorie...</option>
-              <option  *ngFor="let categorie of tabCategorie" [value]="categorie.id">{{categorie.nom_categorie_depense}}</option>
+              <option *ngFor="let categorie of tabCategorie" [value]="categorie.id">{{categorie.nom_categorie_depense}}
+              </option>
             </select>
           </div>
 
@@ -661,142 +755,196 @@
           </div>
 
 
-          <div class="payment-info text-center p-3" *ngIf="currentDepense.nombre_periode !==null && currentDepense.periode_echeance !==null ">
-            <p>Une dépense de ce type est créée automatiquement tous les {{currentDepense.nombre_periode }} {{currentDepense.periode_echeance }} à partir du {{currentDepense.date_paiement }} pour un montant de {{currentDepense.montant_depense_ht}}.</p>
-            <p>Date de la prochaine dépense : {{ calculerProchaineDateDepense(currentDepense.date_paiement, currentDepense.periode_echeance) }}</p>
+          <div class="payment-info text-center p-3"
+            *ngIf="currentDepense.nombre_periode !==null && currentDepense.periode_echeance !==null ">
+            <p>Une dépense de ce type est créée automatiquement tous les {{currentDepense.nombre_periode }}
+              {{currentDepense.periode_echeance }} à partir du {{currentDepense.date_paiement }} pour un montant de
+              {{currentDepense.montant_depense_ht}}.</p>
+            <p>Date de la prochaine dépense : {{ calculerProchaineDateDepense(currentDepense.date_paiement,
+              currentDepense.periode_echeance) }}</p>
             <button class="btn btnArret">Arrêter la création automatique de dépenses de ce type</button>
           </div>
 
-        <div class="payment-info mx-auto p-2 mt-3 mb-2">
-          <h3>Information du paiement</h3>
-          <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-2 col-form-label">Date :</label>
-            <div class="col-sm-10">
-              <input type="date" class="form-control" id="staticEmail" name="datePay" [(ngModel)]="datePay" >
-            </div>
-          </div>
-        
-          <ng-container *ngIf="currentDepense.tva_depense == null">
-            <div class="form-check" (click)="showInputTva()">
-              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-              <label class="form-check-label" for="defaultCheck1">
-                Tva
-              </label>
-            </div>
-            
-            <div class="mb-3 row" *ngIf="!showTva">
-              <label for="staticEmail" class="col-sm-2 col-form-label">Montant :</label>
+          <div class="payment-info mx-auto p-2 mt-3 mb-2">
+            <h3>Information du paiement</h3>
+            <div class="mb-3 row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Date :</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="staticEmail"  name="montantPay" [(ngModel)]="montantPay"  >
+                <input type="date" class="form-control" id="staticEmail" name="datePay" [(ngModel)]="datePay">
               </div>
             </div>
-  
-            <ng-container *ngIf="showTva">
+
+            <ng-container *ngIf="currentDepense.tva_depense == null">
+              <div class="form-check" (click)="showInputTva()">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                <label class="form-check-label" for="defaultCheck1">
+                  Tva
+                </label>
+              </div>
+
+              <div class="mb-3 row" *ngIf="!showTva">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Montant :</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="staticEmail" name="montantPay" [(ngModel)]="montantPay">
+                </div>
+              </div>
+
+              <ng-container *ngIf="showTva">
+                <div class="mb-3 row">
+                  <label for="staticEmail" class="col-sm-2 col-form-label">TVA :</label>
+                  <div class="col-sm-10">
+                    <input type="number" class="form-control" id="staticEmail" name="tva" [(ngModel)]="tva"
+                      (ngModelChange)="calculerMontantTtc()">
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="staticEmail" class="col-sm-2 col-form-label">Montant Ht :</label>
+                  <div class="col-sm-10">
+                    <input type="number" class="form-control" id="staticEmail" name="montantpay"
+                      [(ngModel)]="montantPay" (ngModelChange)="calculerMontantTtc()">
+                  </div>
+                </div>
+                <div class="mb-3 row">
+                  <label for="staticEmail" class="col-sm-2 col-form-label">Montant Ttc :</label>
+                  <div class="col-sm-10">
+                    <input type="number" class="form-control" id="staticEmail" name="montantPayTtc"
+                      [(ngModel)]="montantPayTtc" readonly>
+                  </div>
+                </div>
+              </ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="currentDepense.tva_depense !== null">
               <div class="mb-3 row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">TVA :</label>
                 <div class="col-sm-10">
-                  <input type="number" class="form-control" id="staticEmail" name="tva" [(ngModel)]="tva" (ngModelChange)="calculerMontantTtc()">
+                  <input type="number" class="form-control" id="staticEmail" name="tva" [(ngModel)]="tva"
+                    (ngModelChange)="calculerMontantTtc()">
                 </div>
               </div>
               <div class="mb-3 row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Montant Ht :</label>
                 <div class="col-sm-10">
-                  <input type="number" class="form-control" id="staticEmail" name="montantpay" [(ngModel)]="montantPay" (ngModelChange)="calculerMontantTtc()">
+                  <input type="number" class="form-control" id="staticEmail" name="montantpay" [(ngModel)]="montantPay"
+                    (ngModelChange)="calculerMontantTtc()">
                 </div>
               </div>
               <div class="mb-3 row">
                 <label for="staticEmail" class="col-sm-2 col-form-label">Montant Ttc :</label>
                 <div class="col-sm-10">
-                  <input type="number" class="form-control" id="staticEmail" name="montantPayTtc" [(ngModel)]="montantPayTtc" readonly>
+                  <input type="number" class="form-control" id="staticEmail" name="montantPayTtc"
+                    [(ngModel)]="montantPayTtc" readonly>
                 </div>
               </div>
             </ng-container>
+
+            <div class="form-check form-switch" *ngIf="impayer=='impayer'">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="payer"
+                (click)="setTypeImpay('payer')">
+              <label class="form-check-label" for="flexSwitchCheckDefault">Impayé</label>
+            </div>
+            <div class="form-check form-switch" *ngIf="impayer=='payer'">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked
+                name="impayer" (click)="setTypeImpay('impayer')">
+              <label class="form-check-label" for="flexSwitchCheckDefault">payé</label>
+            </div>
+
+            <div class="row g-3 align-items-center" *ngIf="impayer=='payer'">
+              <div class="col-auto">
+                <label for="inputPassword6" class="col-form-label">Moyen de paiement</label>
+                <select class="form-select form-select-lg" id="client-select" placeholder="Type de paiement..."
+                  [(ngModel)]="moyenPayement">
+                  <option *ngFor="let paye of tabPayement" [value]="paye.id">{{paye.nom_payement}}</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+
+          <ng-container *ngIf="currentDepense.num_facture == null && currentDepense.date_facture == null">
+            <a (click)='showInfosFacture()'>+ Saisir information de facturation</a>
+
+            <div class="payment-info mx-auto p-2 mt-3" *ngIf="infosFacture">
+              <h3>Information de facturation</h3>
+              <div class="mb-3 row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Numéro :</label>
+                <div class="col-sm-10">
+                  <input type="text" class="form-control" id="staticEmail" name="numero" [(ngModel)]="numero">
+                </div>
+              </div>
+              <div class="mb-3 row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Date :</label>
+                <div class="col-sm-10">
+                  <input type="date" class="form-control" id="staticEmail" name="dateFacture" [(ngModel)]="dateFacture">
+                </div>
+              </div>
+            </div>
           </ng-container>
 
-          <ng-container *ngIf="currentDepense.tva_depense !== null">
-            <div class="mb-3 row">
-              <label for="staticEmail" class="col-sm-2 col-form-label">TVA :</label>
-              <div class="col-sm-10">
-                <input type="number" class="form-control" id="staticEmail" name="tva" [(ngModel)]="tva" (ngModelChange)="calculerMontantTtc()">
-              </div>
-            </div>
-            <div class="mb-3 row">
-              <label for="staticEmail" class="col-sm-2 col-form-label">Montant Ht :</label>
-              <div class="col-sm-10">
-                <input type="number" class="form-control" id="staticEmail" name="montantpay" [(ngModel)]="montantPay" (ngModelChange)="calculerMontantTtc()">
-              </div>
-            </div>
-            <div class="mb-3 row">
-              <label for="staticEmail" class="col-sm-2 col-form-label">Montant Ttc :</label>
-              <div class="col-sm-10">
-                <input type="number" class="form-control" id="staticEmail" name="montantPayTtc" [(ngModel)]="montantPayTtc" readonly>
-              </div>
-            </div>
-          </ng-container>
-         
-          <div class="form-check form-switch" *ngIf="impayer=='impayer'">
-            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="payer" (click)="setTypeImpay('payer')">
-            <label class="form-check-label" for="flexSwitchCheckDefault">Impayé</label>
-          </div>
-          <div class="form-check form-switch" *ngIf="impayer=='payer'">
-            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked name="impayer"  (click)="setTypeImpay('impayer')">
-            <label class="form-check-label" for="flexSwitchCheckDefault" >payé</label>
-          </div>
 
-          <div class="row g-3 align-items-center" *ngIf="impayer=='payer'">
-            <div class="col-auto">
-              <label for="inputPassword6" class="col-form-label">Moyen de paiement</label>
-              <select class="form-select form-select-lg" id="client-select" placeholder="Type de paiement..." [(ngModel)]="moyenPayement">
-                <option *ngFor="let paye of tabPayement" [value]="paye.id">{{paye.nom_payement}}</option>
-              </select>
-            </div>
-          </div>
-
-        </div>
-
-        <ng-container *ngIf="currentDepense.num_facture == null && currentDepense.date_facture == null">
-          <a (click)='showInfosFacture()'>+ Saisir information de facturation</a>
-
-          <div class="payment-info mx-auto p-2 mt-3" *ngIf="infosFacture">
+          <div class="payment-info mx-auto p-2 mt-3"
+            *ngIf="currentDepense.num_facture !== null && currentDepense.date_facture !== null">
             <h3>Information de facturation</h3>
             <div class="mb-3 row">
               <label for="staticEmail" class="col-sm-2 col-form-label">Numéro :</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="staticEmail" name="numero" [(ngModel)]="numero" >
+                <input type="text" class="form-control" id="staticEmail" name="numero" [(ngModel)]="numero">
               </div>
             </div>
             <div class="mb-3 row">
               <label for="staticEmail" class="col-sm-2 col-form-label">Date :</label>
               <div class="col-sm-10">
-                <input type="date" class="form-control" id="staticEmail" name="dateFacture" [(ngModel)]="dateFacture" >
+                <input type="date" class="form-control" id="staticEmail" name="dateFacture" [(ngModel)]="dateFacture">
               </div>
             </div>
           </div>
-        </ng-container>
-        
-
-        <div class="payment-info mx-auto p-2 mt-3"  *ngIf="currentDepense.num_facture !== null && currentDepense.date_facture !== null">
-          <h3>Information de facturation</h3>
-          <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-2 col-form-label">Numéro :</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control" id="staticEmail" name="numero" [(ngModel)]="numero" >
-            </div>
-          </div>
-          <div class="mb-3 row">
-            <label for="staticEmail" class="col-sm-2 col-form-label">Date :</label>
-            <div class="col-sm-10">
-              <input type="date" class="form-control" id="staticEmail" name="dateFacture" [(ngModel)]="dateFacture" >
-            </div>
-          </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btnAction" (click)="updateDepense()">Modifier</button>
-      <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+        <div class="modal-footer">
+          <button type="button" class="btn btnAction" (click)="updateDepense()">Modifier</button>
+          <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+        </div>
       </div>
     </div>
   </div>
 </div>
-</div>
 
+<!-- Modal associer étiquette  -->
+<div class="modal fade mt-5" id="etiquette" tabindex="-1" aria-labelledby="etiquetteLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="d-flex">
+        <div class="p-3 flex-grow-1">
+          <h3 class="modal-title" id="etiquetteLabel">Associer étiquette</h3>
+        </div>
+        <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="ouvrirModalArticle()"></button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div class="couleurs">
+            <div *ngFor="let couleur of couleurs" [ngStyle]="{'background-color': couleur}"
+              (click)="selectionnerCouleur(couleur)" [class.selected]="couleur === etiquette.couleur" class="couleur">
+              <span *ngIf="couleur === etiquette.couleur" class="checkmark">✔</span>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="nom">Nom de l'étiquette :</label>
+            <input class="form-control" type="text" placeholder="non étiquette" id="nom" [(ngModel)]="etiquette.nom"
+              name="nom">
+          </div>
+
+          <button class=" btn btnAction" (click)="ajouterEtiquette()">Sauvegarder</button>
+
+          <div *ngIf="etiquettes.length > 0" class="etiquettes">
+            <h3>Étiquettes Ajoutées :</h3>
+            <div *ngFor="let etiq of etiquettes" [ngStyle]="{'background-color': etiq.couleur}" class="etiquette">
+              {{ etiq.nom }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

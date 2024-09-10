@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 <app-sidebar></app-sidebar>
-<div class="zoneSearch container mb-4 mt-4">
+<div class="zoneSearch mb-4 mt-4">
   <div class="input-group">
     <input type="search" class="form-control" aria-label="Recipient's username" placeholder="type, numéro,nom,prenom"
       [(ngModel)]="filterValue" (input)="onSearch()">
@@ -10,7 +10,7 @@
 
 
 <!-- Contenu dashbord  -->
-<div class="container mb-5">
+<div class="mb-5">
   <div class="header mb-4 d-grid gap-2 d-md-flex justify-content-md-end">
     <ul class="nav">
       <li><a [ngClass]="{'currentItemNav': boutonActif === 1}" (click)="showTypeDocument('Facture')"
@@ -34,8 +34,8 @@
           <div class="btn-group">
             <button type="button" class="btn ajouter" data-bs-toggle="modal" data-bs-target="#facture"
               (click)="removeLocalStorage()">Ajouter vente</button>
-            <button type="button" class="btn ajouter dropdown-toggle dropdown-toggle-split"
-              data-bs-toggle="dropdown" aria-expanded="false">
+            <button type="button" class="btn ajouter dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
+              aria-expanded="false">
               <span class="visually-hidden">Toggle Dropdown</span>
             </button>
             <ul class="dropdown-menu">
@@ -111,6 +111,22 @@
           </div>
         </div>
       </div>
+      <!-- btn exporter vente -->
+      <div (click)="exportExcel()" class="mt-5">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0,0,256,256"
+          width="30px" height="30px">
+          <g fill-opacity="0.32941" fill="#000000" fill-rule="nonzero" stroke="none" stroke-width="1"
+            stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray=""
+            stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none"
+            style="mix-blend-mode: normal">
+            <g transform="scale(5.12,5.12)">
+              <path
+                d="M28.875,0c-0.01953,0.00781 -0.04297,0.01953 -0.0625,0.03125l-28,5.3125c-0.47656,0.08984 -0.82031,0.51172 -0.8125,1v37.3125c-0.00781,0.48828 0.33594,0.91016 0.8125,1l28,5.3125c0.28906,0.05469 0.58984,-0.01953 0.82031,-0.20703c0.22656,-0.1875 0.36328,-0.46484 0.36719,-0.76172v-5h17c1.09375,0 2,-0.90625 2,-2v-34c0,-1.09375 -0.90625,-2 -2,-2h-17v-5c0.00391,-0.28906 -0.12109,-0.5625 -0.33594,-0.75391c-0.21484,-0.19141 -0.50391,-0.28125 -0.78906,-0.24609zM28,2.1875v4.34375c-0.13281,0.27734 -0.13281,0.59766 0,0.875v35.40625c-0.02734,0.13281 -0.02734,0.27344 0,0.40625v4.59375l-26,-4.96875v-35.6875zM30,8h17v34h-17v-5h4v-2h-4v-6h4v-2h-4v-5h4v-2h-4v-5h4v-2h-4zM36,13v2h8v-2zM6.6875,15.6875l5.46875,9.34375l-5.96875,9.34375h5l3.25,-6.03125c0.22656,-0.58203 0.375,-1.02734 0.4375,-1.3125h0.03125c0.12891,0.60938 0.25391,1.02344 0.375,1.25l3.25,6.09375h4.96875l-5.75,-9.4375l5.59375,-9.25h-4.6875l-2.96875,5.53125c-0.28516,0.72266 -0.48828,1.29297 -0.59375,1.65625h-0.03125c-0.16406,-0.60937 -0.35156,-1.15234 -0.5625,-1.59375l-2.6875,-5.59375zM36,20v2h8v-2zM36,27v2h8v-2zM36,35v2h8v-2z">
+              </path>
+            </g>
+          </g>
+        </svg>
+      </div>
     </div>
     <!-- Tableau Dévis -->
     <div class="col-md-12 px-4" id="Devis" *ngIf="currentDoc==='Devis'">
@@ -176,6 +192,22 @@
             </button>
           </div>
         </div>
+      </div>
+      <!-- btn exporter devis -->
+      <div (click)="exportDeviExcel()" class="mt-5">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0,0,256,256"
+          width="30px" height="30px">
+          <g fill-opacity="0.32941" fill="#000000" fill-rule="nonzero" stroke="none" stroke-width="1"
+            stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray=""
+            stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none"
+            style="mix-blend-mode: normal">
+            <g transform="scale(5.12,5.12)">
+              <path
+                d="M28.875,0c-0.01953,0.00781 -0.04297,0.01953 -0.0625,0.03125l-28,5.3125c-0.47656,0.08984 -0.82031,0.51172 -0.8125,1v37.3125c-0.00781,0.48828 0.33594,0.91016 0.8125,1l28,5.3125c0.28906,0.05469 0.58984,-0.01953 0.82031,-0.20703c0.22656,-0.1875 0.36328,-0.46484 0.36719,-0.76172v-5h17c1.09375,0 2,-0.90625 2,-2v-34c0,-1.09375 -0.90625,-2 -2,-2h-17v-5c0.00391,-0.28906 -0.12109,-0.5625 -0.33594,-0.75391c-0.21484,-0.19141 -0.50391,-0.28125 -0.78906,-0.24609zM28,2.1875v4.34375c-0.13281,0.27734 -0.13281,0.59766 0,0.875v35.40625c-0.02734,0.13281 -0.02734,0.27344 0,0.40625v4.59375l-26,-4.96875v-35.6875zM30,8h17v34h-17v-5h4v-2h-4v-6h4v-2h-4v-5h4v-2h-4v-5h4v-2h-4zM36,13v2h8v-2zM6.6875,15.6875l5.46875,9.34375l-5.96875,9.34375h5l3.25,-6.03125c0.22656,-0.58203 0.375,-1.02734 0.4375,-1.3125h0.03125c0.12891,0.60938 0.25391,1.02344 0.375,1.25l3.25,6.09375h4.96875l-5.75,-9.4375l5.59375,-9.25h-4.6875l-2.96875,5.53125c-0.28516,0.72266 -0.48828,1.29297 -0.59375,1.65625h-0.03125c-0.16406,-0.60937 -0.35156,-1.15234 -0.5625,-1.59375l-2.6875,-5.59375zM36,20v2h8v-2zM36,27v2h8v-2zM36,35v2h8v-2z">
+              </path>
+            </g>
+          </g>
+        </svg>
       </div>
     </div>
     <!-- Tableau Bon Commande -->
@@ -245,6 +277,22 @@
           </div>
         </div>
       </div>
+      <!-- btn exporter bon de commande -->
+      <div (click)="exportBonCommandeExcel()" class="mt-5">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0,0,256,256"
+          width="30px" height="30px">
+          <g fill-opacity="0.32941" fill="#000000" fill-rule="nonzero" stroke="none" stroke-width="1"
+            stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray=""
+            stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none"
+            style="mix-blend-mode: normal">
+            <g transform="scale(5.12,5.12)">
+              <path
+                d="M28.875,0c-0.01953,0.00781 -0.04297,0.01953 -0.0625,0.03125l-28,5.3125c-0.47656,0.08984 -0.82031,0.51172 -0.8125,1v37.3125c-0.00781,0.48828 0.33594,0.91016 0.8125,1l28,5.3125c0.28906,0.05469 0.58984,-0.01953 0.82031,-0.20703c0.22656,-0.1875 0.36328,-0.46484 0.36719,-0.76172v-5h17c1.09375,0 2,-0.90625 2,-2v-34c0,-1.09375 -0.90625,-2 -2,-2h-17v-5c0.00391,-0.28906 -0.12109,-0.5625 -0.33594,-0.75391c-0.21484,-0.19141 -0.50391,-0.28125 -0.78906,-0.24609zM28,2.1875v4.34375c-0.13281,0.27734 -0.13281,0.59766 0,0.875v35.40625c-0.02734,0.13281 -0.02734,0.27344 0,0.40625v4.59375l-26,-4.96875v-35.6875zM30,8h17v34h-17v-5h4v-2h-4v-6h4v-2h-4v-5h4v-2h-4v-5h4v-2h-4zM36,13v2h8v-2zM6.6875,15.6875l5.46875,9.34375l-5.96875,9.34375h5l3.25,-6.03125c0.22656,-0.58203 0.375,-1.02734 0.4375,-1.3125h0.03125c0.12891,0.60938 0.25391,1.02344 0.375,1.25l3.25,6.09375h4.96875l-5.75,-9.4375l5.59375,-9.25h-4.6875l-2.96875,5.53125c-0.28516,0.72266 -0.48828,1.29297 -0.59375,1.65625h-0.03125c-0.16406,-0.60937 -0.35156,-1.15234 -0.5625,-1.59375l-2.6875,-5.59375zM36,20v2h8v-2zM36,27v2h8v-2zM36,35v2h8v-2z">
+              </path>
+            </g>
+          </g>
+        </svg>
+      </div>
     </div>
     <!-- Tableau Bon de livraison -->
     <div class="col-md-12 px-4" id="Bon de Livraison" *ngIf="currentDoc==='Bon de Livraison'">
@@ -311,11 +359,69 @@
           </div>
         </div>
       </div>
+      <!-- btn exporter bon de livraison -->
+      <div (click)="exportBonLivraisonExcel()" class="mt-5">
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0,0,256,256"
+          width="30px" height="30px">
+          <g fill-opacity="0.32941" fill="#000000" fill-rule="nonzero" stroke="none" stroke-width="1"
+            stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray=""
+            stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none"
+            style="mix-blend-mode: normal">
+            <g transform="scale(5.12,5.12)">
+              <path
+                d="M28.875,0c-0.01953,0.00781 -0.04297,0.01953 -0.0625,0.03125l-28,5.3125c-0.47656,0.08984 -0.82031,0.51172 -0.8125,1v37.3125c-0.00781,0.48828 0.33594,0.91016 0.8125,1l28,5.3125c0.28906,0.05469 0.58984,-0.01953 0.82031,-0.20703c0.22656,-0.1875 0.36328,-0.46484 0.36719,-0.76172v-5h17c1.09375,0 2,-0.90625 2,-2v-34c0,-1.09375 -0.90625,-2 -2,-2h-17v-5c0.00391,-0.28906 -0.12109,-0.5625 -0.33594,-0.75391c-0.21484,-0.19141 -0.50391,-0.28125 -0.78906,-0.24609zM28,2.1875v4.34375c-0.13281,0.27734 -0.13281,0.59766 0,0.875v35.40625c-0.02734,0.13281 -0.02734,0.27344 0,0.40625v4.59375l-26,-4.96875v-35.6875zM30,8h17v34h-17v-5h4v-2h-4v-6h4v-2h-4v-5h4v-2h-4v-5h4v-2h-4zM36,13v2h8v-2zM6.6875,15.6875l5.46875,9.34375l-5.96875,9.34375h5l3.25,-6.03125c0.22656,-0.58203 0.375,-1.02734 0.4375,-1.3125h0.03125c0.12891,0.60938 0.25391,1.02344 0.375,1.25l3.25,6.09375h4.96875l-5.75,-9.4375l5.59375,-9.25h-4.6875l-2.96875,5.53125c-0.28516,0.72266 -0.48828,1.29297 -0.59375,1.65625h-0.03125c-0.16406,-0.60937 -0.35156,-1.15234 -0.5625,-1.59375l-2.6875,-5.59375zM36,20v2h8v-2zM36,27v2h8v-2zM36,35v2h8v-2z">
+              </path>
+            </g>
+          </g>
+        </svg>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- les modals -->
+
+<!-- Modal associer étiquette  -->
+<div class="modal fade mt-5" id="etiquette" tabindex="-1" aria-labelledby="etiquetteLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="d-flex">
+        <div class="p-3 flex-grow-1">
+          <h3 class="modal-title" id="etiquetteLabel">Associer étiquette</h3>
+        </div>
+        <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="ouvrirModalArticle()"></button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div class="couleurs">
+            <div *ngFor="let couleur of couleurs" [ngStyle]="{'background-color': couleur}"
+              (click)="selectionnerCouleur(couleur)" [class.selected]="couleur === etiquette.couleur" class="couleur">
+              <span *ngIf="couleur === etiquette.couleur" class="checkmark">✔</span>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="nom">Nom de l'étiquette :</label>
+            <input class="form-control" type="text" placeholder="non étiquette" id="nom" [(ngModel)]="etiquette.nom"
+              name="nom">
+          </div>
+
+          <button class=" btn btnAction" data-bs-toggle="modal" data-bs-target="#exampleModal"
+            (click)="ajouterEtiquette()">Sauvegarder</button>
+
+          <div *ngIf="etiquettes.length > 0" class="etiquettes">
+            <h3>Étiquettes Ajoutées :</h3>
+            <div *ngFor="let etiq of etiquettes" [ngStyle]="{'background-color': etiq.couleur}" class="etiquette">
+              {{ etiq.nom }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modal modélé document -->
 <div class="modal fade mt-5" id="seeModéle" tabindex="-1" aria-labelledby="seeModéleLabel" aria-hidden="true">
@@ -966,6 +1072,7 @@
   </div>
 </div>
 
+
 <!-- Modal definition solde pour un client -->
 <div class="modal fade mt-5" id="solde" tabindex="-1" aria-labelledby="soldeLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -1028,9 +1135,11 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Ajout Client</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">Ajout Client</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        </div>
       </div>
       <div class="modal-body container">
         <form>
@@ -1086,9 +1195,11 @@
 <div class="modal fade" id="produit" tabindex="-1" aria-labelledby="produitLabel" aria-hidden="true">
   <div class="modal-dialog modal-xl modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="produitLabel">Ajout Article</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">Ajout Article</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        </div>
       </div>
       <div class="modal-body container">
         <form>
@@ -1151,9 +1262,11 @@
 <div class="modal fade" id="service" tabindex="-1" aria-labelledby="serviceLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="serviceLabel">Ajout Service</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">Ajout Service</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        </div>
       </div>
       <div class="modal-body container">
         <form>
@@ -1187,9 +1300,11 @@
 <div class="modal fade mt-5" id="detailFacture" tabindex="-1" aria-labelledby="detailFactureLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="detailFactureLabel">Détails</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">Consulter Facture</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        </div>
       </div>
       <div class="modal-body">
         <div class="seeFact" data-bs-toggle="modal" data-bs-target="#pdfModel">
@@ -1202,6 +1317,8 @@
             <li><a [ngClass]="{'currentItemNav': boutonActif === 2}" (click)="showDetailFacture('Réglements')"
                 (click)="boutonActif = 2"
                 *ngIf="detailFacture && detailFacture.type_paiement!='immediat'">Réglements</a></li>
+            <li><a [ngClass]="{'currentItemNav': boutonActif === 3}" (click)="showDetailFacture('Conversations')"
+                (click)="boutonActif = 3">Conversations</a></li>
           </ul>
         </div>
 
@@ -1218,14 +1335,15 @@
               </div>
             </div>
 
-            <div class="section border p-3" *ngIf=" client">
+
+            <div class="section1 border p-3" *ngIf="client">
               <div class="section-title">
                 1. À qui je-vends ? <span class="edit-icon">✎</span>
               </div>
               <span>{{client.prenom}} {{client.nom}}</span>
             </div>
 
-            <div class="section border p-3"
+            <div class="section1 border p-3"
               *ngIf="detailFacture.type_paiement==='immediat' || detailFacture.type_paiement==='echeance' ">
               <div class="section-title">
                 2. Quels produits / services ? <span class="edit-icon">✎</span>
@@ -1237,6 +1355,7 @@
                     <th>Quantité</th>
                     <th>TVA</th>
                     <th>Prix unitaire</th>
+                    <th>Prix HT</th>
                     <th>Prix Total TTC</th>
                     <th>Total</th>
                   </tr>
@@ -1245,8 +1364,9 @@
                   <tr *ngFor="let article of article">
                     <td>{{article.nom_article}}</td>
                     <td>{{article.quantite_article}}</td>
-                    <td>{{article.prix_achat}}</td>
+                    <td>{{article.TVA}}</td>
                     <td>{{article.prix_unitaire_article}}</td>
+                    <td>{{article.prix_total_article}}</td>
                     <td>{{article.prix_total_tva_article}}</td>
                     <td>{{detailFacture.prix_TTC}}</td>
                   </tr>
@@ -1254,7 +1374,7 @@
               </table>
               <p class="total mt-2">Total: {{detailFacture.prix_TTC}} XOF</p>
             </div>
-            <div class="section border p-3"
+            <div class="section1 border p-3"
               *ngIf="detailFacture.type_paiement==='facture_Accompt' || detailFacture.type==='avoir'">
               <div class="section-title">
                 2. Quels produits / services ?
@@ -1268,6 +1388,7 @@
                     <th>Quantité</th>
                     <th>TVA</th>
                     <th>Prix unitaire</th>
+                    <th>Prix HT</th>
                     <th>Prix Total TTC</th>
                     <th>Total</th>
                   </tr>
@@ -1276,8 +1397,9 @@
                   <tr *ngFor="let article of article">
                     <td>{{article.nom_article}}</td>
                     <td>{{article.quantite_article}}</td>
-                    <td>{{article.prix_achat}}</td>
+                    <td>{{article.TVA}}</td>
                     <td>{{article.prix_unitaire_article}}</td>
+                    <td>{{article.prix_total_article}}</td>
                     <td>{{article.prix_total_tva_article}}</td>
                     <td>{{detailFacture.prix_TTC}}</td>
                   </tr>
@@ -1296,7 +1418,7 @@
               </table>
             </div>
 
-            <div class="section border p-3" *ngIf="detailFacture.type_paiement==='immediat' ">
+            <div class="section1 border p-3" *ngIf="detailFacture.type_paiement==='immediat' ">
               <div class="section-title">
                 3. Quand serai-je payé ? <span class="edit-icon">✎</span>
               </div>
@@ -1307,7 +1429,7 @@
                 </p>
               </div>
             </div>
-            <div class="section border p-3" *ngIf="detailFacture.type_paiement==='echeance' ">
+            <div class="section1 border p-3" *ngIf="detailFacture.type_paiement==='echeance' ">
               <div class="section-title">
                 3. Quand serai-je payé ? <span class="edit-icon">✎</span>
               </div>
@@ -1323,7 +1445,7 @@
                 </p>
               </div>
             </div>
-            <div class="section border p-3" *ngIf="detailFacture.type_paiement==='facture_Accompt'">
+            <div class="section1 border p-3" *ngIf="detailFacture.type_paiement==='facture_Accompt'">
               <div class="section-title">
                 3. Quand serai-je payé ?
                 <span class="edit-icon">✎</span>
@@ -1365,7 +1487,7 @@
                 </div>
               </div>
             </div>
-            <div class="section border p-3" *ngIf="detailFacture.type==='avoir'">
+            <div class="section1 border p-3" *ngIf="detailFacture.type==='avoir'">
               <div class="section-title">
                 3. Quand serai-je payé ?
                 <span class="edit-icon">✎</span>
@@ -1481,6 +1603,39 @@
             </div>
           </div>
         </ng-container>
+        <ng-container *ngIf="currentDetail==='Conversations'">
+          <div class="d-grid gap-2  mb-3 d-md-flex justify-content-md-end">
+            <button class="btn btnAction" type="button" data-bs-toggle="modal" data-bs-target="#conversation">Ajouter
+              Conversation</button>
+          </div>
+          <div class="border p-3 mb-3">
+            <div class="d-flex">
+              <span class="me-3">Filtrer par :</span>
+              <div class="form-check me-3">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                <label class="form-check-label" for="flexRadioDefault1">
+                  <i class="bi bi-check-lg text-success" title="Terminer"></i>
+                </label>
+              </div>
+              <div class="form-check me-3">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
+                <label class="form-check-label" for="flexRadioDefault2">
+                  <i class="bi bi-exclamation-octagon text-danger" title="En attente"></i>
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3">
+                <label class="form-check-label" for="flexRadioDefault3">
+                  <i class="bi bi-emoji-neutral text-secondary" title="courrier electronique rebondi"></i>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="contenu text-center">
+            <i class="bi bi-emoji-frown-fill"></i>
+            <h5>- 0 Résultats -</h5>
+          </div>
+        </ng-container>
 
       </div>
       <div class="modal-footer">
@@ -1550,7 +1705,10 @@
                     </tr>
                   </thead>
                   <tbody class="bg-secondary text-dark p-5 bg-opacity-25" *ngIf="client">
-                    <span>{{client.prenom}} {{client.nom}}</span>
+                    <span>{{client.prenom}} {{client.nom}}</span><br>
+                    <span>{{client.nom_entreprise}}</span><br>
+                    <span>{{client.telephone}}</span><br>
+                    <span>{{client.adresse}}</span>
                   </tbody>
                 </table>
               </div>
@@ -1668,9 +1826,11 @@
 <div class="modal fade" id="echeance" tabindex="-1" aria-labelledby="echeanceLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="echeanceLabel">facture d'acompte</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">Facture d'acompte</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        </div>
       </div>
       <div class="modal-body p-2">
         <h2>Ajouter facture d'acompte</h2>
@@ -1888,14 +2048,15 @@
   </div>
 </div>
 
-
 <!-- Modal détail devis -->
 <div class="modal fade mt-5" id="detailDevis" tabindex="-1" aria-labelledby="detailDevisLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="detailDevisLabel">Détails</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">Consulter Devis</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        </div>
       </div>
       <div class="modal-body">
         <div class="seeFact" data-bs-toggle="modal" data-bs-target="#pdfModel">
@@ -1986,9 +2147,11 @@
 <div class="modal fade mt-5" id="detailCommande" tabindex="-1" aria-labelledby="detailCommandeLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="detailCommandeLabel">Détails</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">Consulter Bon de commande</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        </div>
       </div>
       <div class="modal-body">
         <div class="seeFact" data-bs-toggle="modal" data-bs-target="#pdfModel">
@@ -2091,9 +2254,11 @@
 <div class="modal fade mt-5" id="detailBL" tabindex="-1" aria-labelledby="detailBLLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="detailBLLabel">Détails</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">Consulter Bon de livraison</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        </div>
       </div>
       <div class="modal-body">
         <div class="seeFact" data-bs-toggle="modal" data-bs-target="#pdfModel">
@@ -2190,24 +2355,48 @@
   </div>
 </div>
 
-
 <!-- Modal creation facture -->
 <div class="modal fade mt-5" id="facture" tabindex="-1" aria-labelledby="factureLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered  modal-xl modal-dialog-scrollable">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="factureLabel">{{titre}}</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">{{titre}}</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        </div>
       </div>
       <div class="modal-body ">
         <div class="seeFact" data-bs-toggle="modal" data-bs-target="#seeModéle">
           <i class="bi bi-eye"></i>
         </div>
         <div class="containerFacture">
+          <div class="d-flex mb-2">
+            <div class="p-3 flex-grow-1">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Actif</label>
+              </div>
+            </div>
+            <ng-container *ngIf="etiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
+              <span *ngFor="let etiq of etiquettes; let i = index" [ngStyle]="{'background-color': etiq.couleur}"
+                class="etiquette me-2">
+                {{ etiq.nom }}
+                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquette(i)"></i>
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-container>
+
+            <ng-template #associerEtiquetteBlock>
+              <span class="me-2" data-bs-toggle="modal" data-bs-target="#etiquette" style="cursor: pointer;">
+                Associer étiquette
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-template>
+          </div>
           <div class="headerFacture">
             <div class="date-input">
               <label for="date">Date:&nbsp;</label>
-              <input type="date" id="date" value="">
+              <input type="date" id="date" name="date" [(ngModel)]="date">
             </div>
             <div class="numero-input">
               <label for="numero">Numéro :&nbsp;</label>
@@ -2216,7 +2405,7 @@
             </div>
           </div>
 
-          <div class="section"  [class.visible]="currentStep >= 1">
+          <div class="section" [class.visible]="currentStep >= 1">
             <div class="section-title">1. À qui je-vends ?</div>
             <label class="checkbox-label">
               <input type="checkbox">&nbsp; Ne pas associer un client à cette vente
@@ -2352,8 +2541,8 @@
                   </table>
                 </div>
               </div>
-              <button class="suivant-btn btn mt-3" type="button" [disabled]="!exactData"
-                (click)="showStep(3)">Suivant ▼</button>
+              <button class="suivant-btn btn mt-3" type="button" [disabled]="!exactData" (click)="showStep(3)">Suivant
+                ▼</button>
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <button class="btn btnClose me-md-2" type="button" (click)="showStep(1)">Précédent ▲ </button>
               </div>
@@ -2384,8 +2573,7 @@
                     </div>
                   </div>
                 </div>
-                <div class=" Échéance text-center w-75 mx-auto p-2" id="factTwo"
-                  *ngIf="currentContent==='factTwo'">
+                <div class=" Échéance text-center w-75 mx-auto p-2" id="factTwo" *ngIf="currentContent==='factTwo'">
                   <span class="font-weight-bold"> <strong>Total net à payer</strong> {{ totalRemise | number:'1.2-2'
                     }}</span> FCfa <br>
                   <div class="row">
@@ -2442,12 +2630,37 @@
 <div class="modal fade mt-5" id="FactureAvoir" tabindex="-1" aria-labelledby="FactureAvoirLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="FactureAvoirLabel">Facture Avoir</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">Facture d'avoir</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        </div>
       </div>
       <div class="modal-body">
         <div class="invoice-form containerFacture">
+          <div class="d-flex mb-2">
+            <div class="p-3 flex-grow-1">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Actif</label>
+              </div>
+            </div>
+            <ng-container *ngIf="etiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
+              <span *ngFor="let etiq of etiquettes; let i = index" [ngStyle]="{'background-color': etiq.couleur}"
+                class="etiquette me-2">
+                {{ etiq.nom }}
+                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquette(i)"></i>
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-container>
+
+            <ng-template #associerEtiquetteBlock>
+              <span class="me-2" data-bs-toggle="modal" data-bs-target="#etiquette" style="cursor: pointer;">
+                Associer étiquette
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-template>
+          </div>
           <div class="headerFacture">
             <div class="date-input">
               <label for="date">Date:&nbsp;</label>
@@ -2547,13 +2760,37 @@
   aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="FactureRecurrenteLabel">Facture Recurrente</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">Facture Recurrente</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        </div>
       </div>
       <div class="modal-body">
         <div class="containerFacture">
+          <div class="d-flex mb-2">
+            <div class="p-3 flex-grow-1">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Actif</label>
+              </div>
+            </div>
+            <ng-container *ngIf="etiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
+              <span *ngFor="let etiq of etiquettes; let i = index" [ngStyle]="{'background-color': etiq.couleur}"
+                class="etiquette me-2">
+                {{ etiq.nom }}
+                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquette(i)"></i>
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-container>
 
+            <ng-template #associerEtiquetteBlock>
+              <span class="me-2" data-bs-toggle="modal" data-bs-target="#etiquette" style="cursor: pointer;">
+                Associer étiquette
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-template>
+          </div>
           <div class="popup-vente mb-5">
             <span class="txt-title">Ces ventes doivent être crées:</span>
             <div class="checkbox1">
@@ -2620,7 +2857,7 @@
 
           <div class="section">
             <div class="section-title">2. Quels produits / services ?</div>
-            <div class="stepTwo" id="data"[class.visible]="currentStep >= 2">
+            <div class="stepTwo" id="data" [class.visible]="currentStep >= 2">
               <table class="table table-bordered border-light">
                 <thead class="thead-custom">
                   <tr>
@@ -2736,8 +2973,8 @@
                 </div>
                 <p class="stock-info">Ce document peut modifier le stock de vos produits</p>
               </div>
-              <button class="suivant-btn btn mt-3" type="button" [disabled]="!exactData"
-                (click)="showStep(3)">Suivant ▼</button>
+              <button class="suivant-btn btn mt-3" type="button" [disabled]="!exactData" (click)="showStep(3)">Suivant
+                ▼</button>
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <button class="btn btnClose me-md-2" type="button" (click)="showStep(1)">Précédent ▲ </button>
               </div>
@@ -2757,20 +2994,44 @@
   </div>
 </div>
 
-
 <!-- Modal creation Dévis -->
 <div class="modal fade mt-5" id="devis" tabindex="-1" aria-labelledby="devisLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered  modal-xl">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="factureLabel">{{titre}}</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">{{titre}}</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        </div>
       </div>
       <div class="modal-body ">
         <div class="seeFact" data-bs-toggle="modal" data-bs-target="#seeModéle">
           <i class="bi bi-eye"></i>
         </div>
         <div class="containerFacture">
+          <div class="d-flex mb-2">
+            <div class="p-3 flex-grow-1">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Actif</label>
+              </div>
+            </div>
+            <ng-container *ngIf="etiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
+              <span *ngFor="let etiq of etiquettes; let i = index" [ngStyle]="{'background-color': etiq.couleur}"
+                class="etiquette me-2">
+                {{ etiq.nom }}
+                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquette(i)"></i>
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-container>
+
+            <ng-template #associerEtiquetteBlock>
+              <span class="me-2" data-bs-toggle="modal" data-bs-target="#etiquette" style="cursor: pointer;">
+                Associer étiquette
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-template>
+          </div>
           <div class="headerFacture">
             <div class="date-inputs">
               <div class="date-input">
@@ -2807,9 +3068,9 @@
             <button class="suivant-btn btn mt-3" [disabled]="!exactClient" (click)="showStep(2)">Suivant ▼</button>
           </div>
 
-          <div class="section">
+          <div class="section" [class.visible]="currentStep >= 2">
             <div class="section-title">2. Quels produits / services ?</div>
-            <div class="stepTwo" id="data" [class.visible]="currentStep >= 2">
+            <div class="stepTwo" id="data">
               <table class="table table-bordered border-light">
                 <thead class="thead-custom">
                   <tr>
@@ -2919,8 +3180,8 @@
                   </table>
                 </div>
               </div>
-              <button class="suivant-btn btn mt-3" type="button" [disabled]="!exactData"
-                (click)="showStep(3)">Suivant ▼</button>
+              <button class="suivant-btn btn mt-3" type="button" [disabled]="!exactData" (click)="showStep(3)">Suivant
+                ▼</button>
               <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                 <button class="btn btnClose me-md-2" type="button" (click)="showStep(1)">Précédent ▲ </button>
               </div>
@@ -2943,23 +3204,43 @@
   </div>
 </div>
 
-
 <!-- Modal creation Bon de commande -->
 <div class="modal fade mt-5" id="bonCommande" tabindex="-1" aria-labelledby="bonCommandeLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered  modal-xl">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="factureLabel">{{titre}}</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">{{titre}}</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        </div>
       </div>
       <div class="modal-body ">
         <div class="seeFact" data-bs-toggle="modal" data-bs-target="#seeModéle">
           <i class="bi bi-eye"></i>
         </div>
         <div class="containerBonCommande containerFacture">
-          <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
-            <label class="form-check-label" for="flexSwitchCheckChecked">Active</label>
+          <div class="d-flex mb-2">
+            <div class="p-3 flex-grow-1">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Actif</label>
+              </div>
+            </div>
+            <ng-container *ngIf="etiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
+              <span *ngFor="let etiq of etiquettes; let i = index" [ngStyle]="{'background-color': etiq.couleur}"
+                class="etiquette me-2">
+                {{ etiq.nom }}
+                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquette(i)"></i>
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-container>
+
+            <ng-template #associerEtiquetteBlock>
+              <span class="me-2" data-bs-toggle="modal" data-bs-target="#etiquette" style="cursor: pointer;">
+                Associer étiquette
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-template>
           </div>
           <div class="headerFacture">
             <div class="date-inputs">
@@ -3091,18 +3372,39 @@
 <div class="modal fade mt-5" id="livraison" tabindex="-1" aria-labelledby="livraisonLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered  modal-xl">
     <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="factureLabel">{{titre}}</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">{{titre}}</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        </div>
       </div>
       <div class="modal-body ">
         <div class="seeFact" data-bs-toggle="modal" data-bs-target="#seeModéle">
           <i class="bi bi-eye"></i>
         </div>
         <div class="containerBonCommande containerFacture">
-          <div class="form-check form-switch">
-            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
-            <label class="form-check-label" for="flexSwitchCheckChecked">Active</label>
+          <div class="d-flex mb-2">
+            <div class="p-3 flex-grow-1">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Actif</label>
+              </div>
+            </div>
+            <ng-container *ngIf="etiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
+              <span *ngFor="let etiq of etiquettes; let i = index" [ngStyle]="{'background-color': etiq.couleur}"
+                class="etiquette me-2">
+                {{ etiq.nom }}
+                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquette(i)"></i>
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-container>
+
+            <ng-template #associerEtiquetteBlock>
+              <span class="me-2" data-bs-toggle="modal" data-bs-target="#etiquette" style="cursor: pointer;">
+                Associer étiquette
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-template>
           </div>
           <div class="headerFacture">
             <div class="date-inputs">
@@ -3242,6 +3544,64 @@
             <button class="button">Livraison planifiée</button>
             <button class="button">Livraison réalisée</button>
         </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal ajout conversation  -->
+<div class="modal fade mt-5" id="conversation" tabindex="-1" aria-labelledby="conversationLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="d-flex">
+        <div class="p-3 flex-grow-1">
+          <h3 class="modal-title" id="conversationLabel">Ajout Conversation</h3>
+        </div>
+        <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div>
+          <h6>Type : </h6>
+          <div class="btn-group mb-3" role="group" aria-label="Basic example">
+            <button type="button" class="btn btn-secondary" title="Personnellement"><i
+                class="bi bi-people-fill text-ligth"></i></button>
+            <button type="button" class="btn btn-secondary" title="Adresse mail"><i
+                class="bi bi-envelope text-light"></i></button>
+            <button type="button" class="btn btn-secondary" title="Message"><i
+                class="bi bi-chat text-light"></i></button>
+            <button type="button" class="btn btn-secondary" title="Telephone"><i
+                class="bi bi-telephone text-light"></i></button>
+            <button type="button" class="btn btn-secondary" title="Courrier postal"><i
+                class="bi bi-mailbox-flag text-light"></i></button>
+          </div>
+          <form>
+            <div class="form-floating mb-3">
+              <input type="date" class="form-control" id="floatingInput">
+              <label for="floatingInput">Date</label>
+            </div>
+            <div class="form-floating mb-2">
+              <input type="test" class="form-control" id="floatingPassword">
+              <label for="floatingPassword">Interlocuteur</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="test" class="form-control" id="floatingPassword">
+              <label for="floatingPassword">Object</label>
+            </div>
+            <div class="form-floating mb-3">
+              <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                style="height: 100px"></textarea>
+              <label for="floatingTextarea2">Conversation</label>
+            </div>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+              <label class="form-check-label" for="flexSwitchCheckDefault">En attente</label>
+            </div>
+          </form>
+          <div class="d-grid gap-2  mb-3 d-md-flex justify-content-md-end">
+            <button class=" btn btnAction" data-bs-toggle="modal" data-bs-target="#detailClient">Sauvegarder</button>
+          </div>
         </div>
       </div>
     </div>

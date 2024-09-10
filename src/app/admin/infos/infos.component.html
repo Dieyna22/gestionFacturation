@@ -1,8 +1,8 @@
 <app-navbar></app-navbar>
 <app-sidebar></app-sidebar>
- <!-- Contenu dashbord  -->
- <div class="container containerReseau mb-5">
-    <main class="container mb-5 mt-5">
+<!-- Contenu dashbord  -->
+<div class="containerReseau mb-5">
+    <main class=" mb-5 mt-5">
         <div class="mainContainerLeft p-2" *ngIf="InfoSup">
             <div class="mainContainerLeftImage">
                 <div class="image">
@@ -18,7 +18,7 @@
                 </div>
             </div>
         </div>
-    
+
         <div class="mainContainerRight pt-3">
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation">
@@ -32,14 +32,14 @@
                         aria-selected="false" (click)=" chargerInfoSup()">Modifier Information</button>
                 </li>
             </ul>
-    
+
             <!-- Ajout Information -->
             <div class="tab-content w-100 h-100" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="updateInfo" role="tabpanel" aria-labelledby="updateInfo-tab"
                     tabindex="0">
                     <form action="" class="p-3">
                         <div class="form-floating mb-3">
-                            <input type="file" class="form-control" id="file" name="profil" (change)="getFile($event)" [(ngModel)]="profil"  >
+                            <input type="file" class="form-control" id="file" name="profil" (change)="getFile($event)">
                             <label for="file">Logo</label>
                         </div>
                         <div class="form-floating mb-3">
@@ -47,7 +47,8 @@
                             <label for="nom">Nom Entreprise</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" name="desc" [(ngModel)]="desc" ></textarea>
+                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                                style="height: 100px" name="desc" [(ngModel)]="desc"></textarea>
                             <label for="nom" style="color: gray;">Description Entreprise</label>
                         </div>
                         <div class="form-floating mb-3">
@@ -58,16 +59,35 @@
                             <input type="text" class="form-control" id="telephone" name="Tel" [(ngModel)]="tel">
                             <label for="telephone">Téléphone</label>
                         </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+                                [(ngModel)]="selectedCurrency" (change)="onCurrencyChange()">
+                                <option selected>sélectionner une devise ...</option>
+                                <option *ngFor="let currency of currencies" [value]="currency.code">
+                                    {{currency.code}} - {{currency.name}}
+                                </option>
+                            </select>
+                            <label for="floatingSelect">Divise : </label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                                <option *ngFor="let lang of languages" [value]="lang.code">
+                                    {{lang.code  }}
+                                  </option>
+                            </select>
+                            <label for="floatingSelect">Divise : </label>
+                        </div>
                         <button type="submit" class="btn positionbtn" (click)="ajouterInfoSup()">Enregistrer</button>
                     </form>
                 </div>
-    
+
                 <!-- Modification Information -->
                 <div class="tab-pane fade " id="updatePassword" role="tabpanel" aria-labelledby="updatePassword-tab"
                     tabindex="0">
                     <form action="" class="p-3">
                         <div class="form-floating mb-3">
-                            <input type="file" class="form-control" id="file" name="profil" (change)="getFileInputProfil($event)" [(ngModel)]="Inputprofil"  >
+                            <input type="file" class="form-control" id="file" name="profil"
+                                (change)="getFileInputProfil($event)">
                             <label for="file">Logo</label>
                         </div>
                         <div class="form-floating mb-3">
@@ -75,7 +95,8 @@
                             <label for="nom">Nom Entreprise</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" name="desc" [(ngModel)]="Inputdesc" ></textarea>
+                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                                style="height: 100px" name="desc" [(ngModel)]="Inputdesc"></textarea>
                             <label for="nom">Description Entreprise</label>
                         </div>
                         <div class="form-floating mb-3">
@@ -86,6 +107,24 @@
                             <input type="text" class="form-control" id="telephone" name="Tel" [(ngModel)]="Inputtel">
                             <label for="telephone">Téléphone</label>
                         </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+                                [(ngModel)]="selectedCurrency" (change)="onCurrencyChange()">
+                                <option selected>sélectionner une devise ...</option>
+                                <option *ngFor="let currency of currencies" [value]="currency.code">
+                                    {{currency.code}} - {{currency.name}}
+                                </option>
+                            </select>
+                            <label for="floatingSelect">Divise : </label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
+                                <option *ngFor="let lang of languages" [value]="lang.code">
+                                    {{lang.code  }}
+                                  </option>
+                            </select>
+                            <label for="floatingSelect">Divise : </label>
+                        </div>
                         <button type="submit" class="btn positionbtn" (click)="updateInfoSup()">Enregistrer</button>
                     </form>
                 </div>
@@ -93,14 +132,3 @@
         </div>
     </main>
 </div>
-
-
-
-
-  
-
-  
-
-  
-  
-

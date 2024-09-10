@@ -1,8 +1,8 @@
 <app-navbar></app-navbar>
 <app-sidebar></app-sidebar>
   <!-- Contenu dashbord  -->
-  <div class="container containerReseau mb-5">
-    <div class="zoneSearch mt-5 container mb-4">
+  <div class=" containerReseau mb-5">
+    <div class="zoneSearch mt-5  mb-4">
       <div class="input-group">
           <input type="search" class="form-control" aria-label="Recipient's username" placeholder="client, article" [(ngModel)]="filterValue"
           (input)="onSearch()">
@@ -92,9 +92,11 @@
 <div class="modal fade" id="addgrille" tabindex="-1" aria-labelledby="addgrilleLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="addgrilleLabel">Ajouter Grille Tarifaire</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="bgHeader">
+          <div class="d-flex justify-content-between p-2">
+            <h4 class="modal-title" id="exampleModalLabel">Ajouter Grille Tarifaire</h4>
+            <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+          </div>
         </div>
         <div class="modal-body">
             <form>
@@ -127,9 +129,11 @@
 <div class="modal fade" id="ModalModifier" tabindex="-1" aria-labelledby="ModalModifierLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="ModalModifierLabel">Modifier Grille Tarifaire</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="bgHeader">
+          <div class="d-flex justify-content-between p-2">
+            <h4 class="modal-title" id="exampleModalLabel">Modifier Grille Tarifaire</h4>
+            <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+          </div>
         </div>
         <div class="modal-body">
             <form>
