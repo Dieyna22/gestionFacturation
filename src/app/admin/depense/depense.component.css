@@ -1,11 +1,11 @@
 .header ul  li a{
-  background-color: #f4af7de9;
+  background-color: #ffa600a2;
   /* color: #fff!important; */
   border-radius: 30px !important;
   padding: 10px 15px !important;
 }
 .currentItemNav {
-  background-color: #F97316!important;
+  background-color: #F19A33!important;
   color: #fff!important;
   border-radius: 30px !important;
   padding: 10px 15px !important;
@@ -45,8 +45,10 @@ thead tr th {
 }
 
 .active {
-  background-color: #ea4e33b4 !important;
+  background-color: #F19A33 !important;
   cursor: pointer;
+  color: #fff!important;
+  font-weight: bold;
 }
 
 .containerFournisseur .header {
@@ -60,9 +62,17 @@ thead tr th {
 
 .containerFournisseur .tab {
   padding: 10px;
-  margin-right: 5px;
+  /* margin-right: 5px; */
   background-color: #e0e0e0;
-  border-radius: 5px;
+}
+
+.one{
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.two{
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .containerFournisseur input[type="text"],

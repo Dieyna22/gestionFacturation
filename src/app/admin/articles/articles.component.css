@@ -93,7 +93,7 @@ p {
     font-weight: bold;
 }
 .download-btn {
-    background-color: #9ACD32;
+    background-color: #f19a33;
     color: white;
     border: none;
     padding: 10px 20px;
@@ -107,4 +107,48 @@ p {
     text-decoration: none;
     font-size: 14px;
     cursor: pointer;
+}
+
+.action-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.action-container i{
+  cursor: pointer;
+}
+
+.action-menu {
+  position: absolute;
+  right:100%;
+  top: 0;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 4px;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.action-menu i {
+  display: block;
+  cursor: pointer;
+  padding: 5px 0;
+}
+.grille{
+  position: fixed;
+  top: 350px;
+  left: 260px;
+  background-color: #fff;
+  color: #F19A33;
+  height: 45px;
+  width: 45px;
+  z-index: 9999;
+  border: thin solid #F19A33;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

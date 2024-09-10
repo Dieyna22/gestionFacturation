@@ -11,9 +11,10 @@
     padding: 8px;
 }
 
-.modif{
-    background-color: #000!important;
-    color: #FFFFFF!important;
+.modif {
+    background-color: #fff !important;
+    border: thin solid #EA4E33;
+    color: #EA4E33 !important;
 }
 .sup{
     background-color: #FFFFFF!important;

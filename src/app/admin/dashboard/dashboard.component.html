@@ -1,12 +1,12 @@
 <app-navbar></app-navbar>
 <app-sidebar></app-sidebar>
-<div class="container mainContainer mt-5">
-    <div class="mesCartes">
+<div class=" container mainContainer mt-5">
+    <div class="mesCartes mb-3">
         <div class="cartes">
             <h5>Nombres de factures</h5>
             <div class="nbr-img">
                 <div>
-                    <h1>175</h1>
+                    <h1>{{tabFactures.length}}</h1>
                 </div>
                 <div class="img-facture">
                     <img src="../../../assets/images/facture.png" alt="">
@@ -18,7 +18,7 @@
             <h5>Nombres de Dévis</h5>
             <div class="nbr-img">
                 <div>
-                    <h1>220</h1>
+                    <h1>{{tabDevis.length}}</h1>
                 </div>
                 <div class="img-facture devis">
                     <img src="../../../assets/images/devis.png" alt="">
@@ -26,16 +26,11 @@
             </div>
         </div>
 
-
-    </div>
-    <br>
-    <!-- ----------------------- -->
-    <div class="mesCartes">
         <div class="cartes">
             <h5>Nombres de Clients</h5>
             <div class="nbr-img">
                 <div>
-                    <h1>220</h1>
+                    <h1>{{tabClient.length}}</h1>
                 </div>
                 <div class="img-facture group">
                     <img src="../../../assets/images/clients.png" alt="">
@@ -47,7 +42,7 @@
             <h5>Nombres d'utilisateurs</h5>
             <div class="nbr-img">
                 <div>
-                    <h1>220</h1>
+                    <h1>{{tabUserNoArchiver.length + tabUserArchiver.length}}</h1>
                 </div>
                 <div class="img-facture devis">
                     <img src="../../../assets/images/users.png" alt="">
@@ -55,5 +50,49 @@
             </div>
         </div>
     </div>
+    <div class="data ms-4">
+        <div class="banner"></div>
+        <div class="statistique">
+            <div class="sta">
+                <div class="itemSta" style="background-color: #F19A33;">
+                    <span>Nombre de Produits </span><br><br>
+                    <h4 class="text-center">{{tabArticle.length}}</h4>
+                </div>
+                <div class="itemSta" style="background-color: #F19A33;">
+                    <span>Nombre de Services</span><br><br>
+                    <h4 class="text-center">{{tabArticle.length}}</h4>
+                </div>
+            </div>
+            <div class="sta">
+                <div class="itemSta" style="background-color: #33372C;">
+                    <span>Utilisateurs no archiver</span><br>
+                    <h4 class="text-center">{{tabUserNoArchiver.length}}</h4>
+                </div>
+                <div class="itemSta"  style="background-color: #33372C;">
+                    <span>Utilisateurs archiver</span><br><br>
+                    <h4 class="text-center">{{tabUserArchiver.length}}</h4>
+                </div>
+            </div>
+            <div class="sta">
+                <div class="itemSta"  style="background-color: #0d6efd;">
+                    <span>Bon de commande realiser</span> <br>
+                    <h4 class="text-center">{{tabBonCommande.length}}</h4>
+                </div>
+                <div class="itemSta"  style="background-color: #0d6efd;">
+                    <span>Bon de livraison realiser</span><br>
+                    <h4 class="text-center">{{tabLivraison.length}}</h4>
+                </div>
+            </div>
+            <div class="sta">
+                <div class="itemSta" style="background-color: #73717172;">
+                    <span>Facture payer</span><br><br>
+                    <h4 class="text-center">{{facturePayer.length}}</h4>
+                </div>
+                <div class="itemSta" style="background-color: #73717172;">
+                    <span>Facture impayer</span><br><br>
+                    <h4 class="text-center">{{factureImpayer.length}}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-

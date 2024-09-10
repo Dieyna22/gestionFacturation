@@ -404,5 +404,36 @@ get totalPages(): number {
     }
   );
 }
+
+
+couleurs: string[] = ['#FFEB3B', '#CDDC39', '#FFC107', '#FF5722', '#E91E63', '#9C27B0', '#3F51B5', '#03A9F4', '#00BCD4', '#8BC34A'];
+etiquette = { nom: '', couleur: '' };
+etiquettes: { nom: string, couleur: string }[] = [];
+
+selectionnerCouleur(couleur: string) {
+  this.etiquette.couleur = couleur;
+}
+
+ajouterEtiquette() {
+  if (this.etiquette.nom && this.etiquette.couleur) {
+    this.etiquettes.push({ ...this.etiquette });
+    this.etiquette.nom = '';
+    this.etiquette.couleur = '';
+  }
+}
+
+supprimerEtiquette(index: number) {
+  this.etiquettes.splice(index, 1);
+}
+
+ouvrirModalArticle(){
+  // Utiliser l'API DOM pour ouvrir le modal
+  const modal = document.getElementById('exampleModal');
+  if (modal) {
+    // @ts-ignore
+    const bootstrapModal = new bootstrap.Modal(modal);
+    bootstrapModal.show();
+  }
+}
  
 }

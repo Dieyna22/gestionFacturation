@@ -1,188 +1,340 @@
 <app-navbar></app-navbar>
 <app-sidebar></app-sidebar>
-  <!-- Contenu dashbord  -->
-  <div class="container containerReseau mb-5">
-    <div class="zoneSearch mt-5 container mb-4">
-      <div class="input-group">
-          <input type="search" class="form-control" aria-label="Recipient's username" placeholder="Prénom, nom" [(ngModel)]="filterValue"
-          (input)="onSearch()">
-          <button class="btn btnSearch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
-        </div>          
-  </div>
-    <div class="row contenu px-5">
-        <!-- Button modal Ajout Utilisateurs -->
-        <button type="button" class="btn ajouter col-md-2 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Ajout
-        </button>
-        <!-- Liste des Utilisateurs  -->
-        <div class="col-md-12 px-4">
-            <div class="card px-4 py-2 pt-4 rounded-4">
-                <!-- Recherhcer une utilisateur  -->
-                <div class="row sectionEspace ligneReseauSearch mb-3">
-                    <div class="col-md-7">
-                        <h3 class="fw-bold">Listes des Utilisateurs</h3>
-                    </div>
-                    <div class="col-md-5">
-                    </div>
-                </div>
-
-                <!-- Le tableau des réseaux -->
-                <div class="table-responsive ">
-                    <table class="table mb-4">
-                        <thead>
-                            <tr>
-                                <th scope="col">Nom </th>
-                                <th scope="col">Prénom </th>
-                                <th scope="col">Adresse Email </th>
-                                <th scope="col">Role </th>
-                                <th scope="col">Action </th>
-                            </tr>
-                        </thead>
-                        <tbody *ngFor="let user of getItemsPage()">
-                        <tr>
-                            <td>{{user.nom}}</td>
-                            <td>{{user.prenom}}</td>
-                            <td>{{user.email}}</td>
-                            <td>{{user.role}}</td>
-                            <td>
-                                <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfosUser(user)" data-bs-toggle="modal" data-bs-target="#ModalModifier"></i>
-                                <i class="bi bi-archive" title="bloquer" (click)="archiver(user.id)"></i>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Pagination  -->
-                <div *ngIf="getItemsPage().length">
-                  <div class="d-flex justify-content-end mb-2">
-                      <button class="border border-0 btnColor  mx-2" [disabled]="pageActuelle === 1"
-                          (click)="pageActuelle = pageActuelle - 1">
-                          <i class="bi bi-arrow-left-circle fs-4"></i>
-                      </button>
-                      <button class=" rounded-circle mx-2 page" *ngFor="let page of pages" (click)="pageActuelle = page">
-                          <span class="pageActuelle fs-5" *ngIf="page===pageActuelle">{{page}}</span>
-                          <span *ngIf="page != pageActuelle">{{page}}</span>
-                      </button>
-                      <button class="border border-0 btnColor mx-2" [disabled]="pageActuelle === totalPages"
-                          (click)="pageActuelle = pageActuelle + 1">
-                          <i class="bi bi-arrow-right-circle fs-4"></i>
-                      </button>
-                  </div>
-              </div>
-            </div>
-        </div>
+<!-- Contenu dashbord  -->
+<div class=" containerReseau mb-5">
+  <div class="zoneSearch mt-2  mb-4">
+    <div class="input-group">
+      <input type="search" class="form-control" aria-label="Recipient's username" placeholder="Prénom, nom"
+        [(ngModel)]="filterValue" (input)="onSearch()">
+      <button class="btn btnSearch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
     </div>
+  </div>
+  <div class="row contenu px-5">
+    <!-- Button modal Ajout Utilisateurs -->
+    <button type="button" class="btn ajouter col-md-2 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Ajout
+    </button>
+    <!-- Liste des Utilisateurs  -->
+    <div class="col-md-12 px-4">
+      <div class="card px-4 py-2 pt-4 rounded-4">
+        <!-- Recherhcer une utilisateur  -->
+        <div class="row sectionEspace ligneReseauSearch mb-3">
+          <div class="col-md-7">
+            <h3 class="fw-bold">Listes des Utilisateurs</h3>
+          </div>
+          <div class="col-md-5">
+          </div>
+        </div>
+
+        <!-- Le tableau des réseaux -->
+        <div class="table-responsive ">
+          <table class="table mb-4">
+            <thead>
+              <tr>
+                <th scope="col">Nom </th>
+                <th scope="col">Prénom </th>
+                <th scope="col">Adresse Email </th>
+                <th scope="col">Role </th>
+                <th scope="col">Action </th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let user of getItemsPage()">
+              <tr>
+                <td>{{user.nom}}</td>
+                <td>{{user.prenom}}</td>
+                <td>{{user.email}}</td>
+                <td>{{user.role}}</td>
+                <td>
+                  <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfosUser(user)"
+                    data-bs-toggle="modal" data-bs-target="#ModalModifier"></i>
+                  <i class="bi bi-archive" title="bloquer" (click)="archiver(user.id)"></i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination  -->
+        <div *ngIf="getItemsPage().length">
+          <div class="d-flex justify-content-end mb-2">
+            <button class="border border-0 btnColor  mx-2" [disabled]="pageActuelle === 1"
+              (click)="pageActuelle = pageActuelle - 1">
+              <i class="bi bi-arrow-left-circle fs-4"></i>
+            </button>
+            <button class=" rounded-circle mx-2 page" *ngFor="let page of pages" (click)="pageActuelle = page">
+              <span class="pageActuelle fs-5" *ngIf="page===pageActuelle">{{page}}</span>
+              <span *ngIf="page != pageActuelle">{{page}}</span>
+            </button>
+            <button class="border border-0 btnColor mx-2" [disabled]="pageActuelle === totalPages"
+              (click)="pageActuelle = pageActuelle + 1">
+              <i class="bi bi-arrow-right-circle fs-4"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 
 <!-- Modal Ajout users -->
 <div class="modal fade mt-5" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Ajout Utilisateurs</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">Ajout Utilisateur</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
         </div>
-        <div class="modal-body">
-            <form>
-                <div class="mb-3">
-                  <label for="validationServer01" class="form-label">Prénom</label>
-                  <input type="text" class="form-control" id="validationServer01" name="prenom" [(ngModel)]="prenom">
-                </div>
-                <div class="mb-3">
-                 <label for="validationServer02" class="form-label">Nom</label>
-                 <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="nom">
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="mail" [(ngModel)]="mail"> 
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">Mot de passe</label>
-                  <div class="input-group">
-                    <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput" name="password" [(ngModel)]="pass" class="form-control">
-                    <button class="btn btn-outline-secondary" type="button"(click)="togglePasswordVisibility()">
-                        <ng-container *ngIf="showPassword; else hideIcon">
-                            <i class="bi bi-eye"></i>
-                        </ng-container>
-                        <ng-template #hideIcon>
-                            <i class="bi bi-eye-slash"></i>
-                        </ng-template>
-                    </button>
-                </div>
-                </div>
-                <div class="mb-3 ">
-                    <label for="exampleInputPassword1" class="form-label">Role</label>
-                  <select class="form-select" aria-label="Default select example" name="role" [(ngModel)]="role">
-                    <option selected disabled>Choisisez un role</option>
-                    <option value="administrateur">Administrateur</option>
-                    <option value="utilisateur_simple">Utilisateur</option>
-                  </select>
-                </div>
-            </form>
+        <div class="mb-1">
+          <span class="ItemMenu" [ngClass]="{'currentItemMenu': boutonActif === 1}" (click)="showSection('general')"
+            (click)="boutonActif = 1">Général</span>
+          <span class="ItemMenu" [ngClass]="{'currentItemMenu': boutonActif === 2}" (click)="showSection('permission')"
+            (click)="boutonActif = 2">Pérmission</span>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btnAction" (click)="ajouterUsers()">Ajouter</button>
-          <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
-        </div>
+      </div>
+      <div class="modal-body">
+        <form *ngIf="section=='general'">
+          <div class="mb-3">
+            <label for="validationServer01" class="form-label">Prénom</label>
+            <input type="text" class="form-control" id="validationServer01" name="prenom" [(ngModel)]="prenom">
+          </div>
+          <div class="mb-3">
+            <label for="validationServer02" class="form-label">Nom</label>
+            <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="nom">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="mail"
+              [(ngModel)]="mail">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label">Mot de passe</label>
+            <div class="input-group">
+              <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput" name="password" [(ngModel)]="pass"
+                class="form-control">
+              <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()">
+                <ng-container *ngIf="showPassword; else hideIcon">
+                  <i class="bi bi-eye"></i>
+                </ng-container>
+                <ng-template #hideIcon>
+                  <i class="bi bi-eye-slash"></i>
+                </ng-template>
+              </button>
+            </div>
+          </div>
+          <div class="mb-3 ">
+            <label for="exampleInputPassword1" class="form-label">Role</label>
+            <select class="form-select" aria-label="Default select example" name="role" [(ngModel)]="role">
+              <option selected disabled>Choisisez un role</option>
+              <option value="administrateur">Administrateur</option>
+              <option value="utilisateur_simple">Utilisateur</option>
+            </select>
+          </div>
+        </form>
+        <form *ngIf="section=='permission'">
+          <div class="role mb-2">
+            <span class="permission me-5">Visibilité de l'utilisateur : </span>
+            <span class="info-container">
+              <i class="bi bi-info-circle-fill"></i>
+              <span class="bulleInfos">
+                Un utilisateur avec visibilité limitée <br> a uniquement accès aux données ajoutées par lui-même <br> et
+                aux clients, produits et services <br> ajoutés par des utilisateurs globaux.
+              </span>
+            </span>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+              <label class="form-check-label" for="flexSwitchCheckDefault">Utilisateur avec visibilité GLOBALE</label>
+            </div>
+          </div>
+          <div class="role mb-2">
+            <span class="permission me-5">Accès : </span>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+              <label class="form-check-label" for="defaultCheck1">
+                Fonctions d'administration
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+              <label class="form-check-label" for="defaultCheck2">
+                Tableau de bord et Rapports
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
+              <label class="form-check-label" for="defaultCheck3">
+                Gestion du Stock
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
+              <label class="form-check-label" for="defaultCheck4">
+                Commandes d'achat et prix d'achat
+              </label>
+            </div>
+          </div>
+          <div class="role mb-2">
+            <span class="permission me-5">Droits : </span>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+              <label class="form-check-label" for="defaultCheck1">
+                Exporter des données (Excel)
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+              <label class="form-check-label" for="defaultCheck2">
+                Supprimer des données
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btnAction" (click)="ajouterUsers()">Ajouter</button>
+        <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
       </div>
     </div>
   </div>
-  
-<!-- Modal modifier user -->
-<div class="modal fade" id="ModalModifier" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Modifier utilisateur</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form>
-                <div class="mb-3">
-                  <label for="validationServer01" class="form-label">Prénom</label>
-                  <input type="text" class="form-control" id="validationServer01" name="prenom" [(ngModel)]="inputprenom">
-                </div>
-                <div class="mb-3">
-                 <label for="validationServer02" class="form-label">Nom</label>
-                 <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="inputnom">
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">Email</label>
-                  <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="mail" [(ngModel)]="inputmail"> 
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label">Mot de passe</label>
-                  <div class="input-group">
-                    <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput" name="password" [(ngModel)]="inputpass" class="form-control">
-                    <button class="btn btn-outline-secondary" type="button"(click)="togglePasswordVisibility()">
-                        <ng-container *ngIf="showPassword; else hideIcon">
-                            <i class="bi bi-eye"></i>
-                        </ng-container>
-                        <ng-template #hideIcon>
-                            <i class="bi bi-eye-slash"></i>
-                        </ng-template>
-                    </button>
-                </div>
-                </div>
-                <div class="mb-3 ">
-                    <label for="exampleInputPassword1" class="form-label">Role</label>
-                  <select class="form-select" aria-label="Default select example" name="role" [(ngModel)]="inputrole">
-                    <option selected disabled>Choisisez un role</option>
-                    <option value="administrateur">Administrateur</option>
-                    <option value="utilisateur_simple">Utilisateur</option>
-                  </select>
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btnAction" (click)="updateUser()">Modifier</button>
-          <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  
+</div>
 
-  
+<!-- Modal modifier user -->
+<div class="modal fade mt-5" id="ModalModifier" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">Modifier Utilisateur</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        </div>
+        <div class="mb-1">
+          <span class="ItemMenu" [ngClass]="{'currentItemMenu': boutonActif === 1}" (click)="showSection('general')"
+            (click)="boutonActif = 1">Général</span>
+          <span class="ItemMenu" [ngClass]="{'currentItemMenu': boutonActif === 2}" (click)="showSection('permission')"
+            (click)="boutonActif = 2">Pérmission</span>
+        </div>
+      </div>
+      <div class="modal-body">
+        <form *ngIf="section=='general'">
+          <div class="mb-3">
+            <label for="validationServer01" class="form-label">Prénom</label>
+            <input type="text" class="form-control" id="validationServer01" name="prenom" [(ngModel)]="inputprenom">
+          </div>
+          <div class="mb-3">
+            <label for="validationServer02" class="form-label">Nom</label>
+            <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="inputnom">
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Email</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="mail"
+              [(ngModel)]="inputmail">
+          </div>
+          <div class="mb-3 ">
+            <label for="exampleInputPassword1" class="form-label">Role</label>
+            <select class="form-select" aria-label="Default select example" name="role" [(ngModel)]="inputrole">
+              <option selected disabled>Choisisez un role</option>
+              <option value="administrateur">Administrateur</option>
+              <option value="utilisateur_simple">Utilisateur</option>
+            </select>
+          </div>
+          <a class="updatePass" (click)="showUpdatePassword()">(+) Modifier le mot de passe</a>
+          <div *ngIf="password">
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">Mot de passe actuelle</label>
+              <div class="input-group">
+                <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput" name="password"
+                  [(ngModel)]="inputpass" class="form-control">
+                <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()">
+                  <ng-container *ngIf="showPassword; else hideIcon">
+                    <i class="bi bi-eye"></i>
+                  </ng-container>
+                  <ng-template #hideIcon>
+                    <i class="bi bi-eye-slash"></i>
+                  </ng-template>
+                </button>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">Nouveau Mot de passe</label>
+              <div class="input-group">
+                <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput" name="password"
+                  [(ngModel)]="inputpass" class="form-control">
+                <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()">
+                  <ng-container *ngIf="showPassword; else hideIcon">
+                    <i class="bi bi-eye"></i>
+                  </ng-container>
+                  <ng-template #hideIcon>
+                    <i class="bi bi-eye-slash"></i>
+                  </ng-template>
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+        <form *ngIf="section=='permission'">
+          <div class="role mb-2">
+            <span class="permission me-5">Visibilité de l'utilisateur : </span>
+            <span class="info-container">
+              <i class="bi bi-info-circle-fill"></i>
+              <span class="bulleInfos">
+                Un utilisateur avec visibilité limitée <br> a uniquement accès aux données ajoutées par lui-même <br> et
+                aux clients, produits et services <br> ajoutés par des utilisateurs globaux.
+              </span>
+            </span>
+            <div class="form-check form-switch">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+              <label class="form-check-label" for="flexSwitchCheckDefault">Utilisateur avec visibilité GLOBALE</label>
+            </div>
+          </div>
+          <div class="role mb-2">
+            <span class="permission me-5">Accès : </span>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+              <label class="form-check-label" for="defaultCheck1">
+                Fonctions d'administration
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+              <label class="form-check-label" for="defaultCheck2">
+                Tableau de bord et Rapports
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
+              <label class="form-check-label" for="defaultCheck3">
+                Gestion du Stock
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
+              <label class="form-check-label" for="defaultCheck4">
+                Commandes d'achat et prix d'achat
+              </label>
+            </div>
+          </div>
+          <div class="role mb-2">
+            <span class="permission me-5">Droits : </span>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+              <label class="form-check-label" for="defaultCheck1">
+                Exporter des données (Excel)
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+              <label class="form-check-label" for="defaultCheck2">
+                Supprimer des données
+              </label>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btnAction" (click)="updateUser()">Modifier</button>
+        <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,4 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+  font-size: 15px;
+  font-family: Helvetica;
+}
+
+h3 {
+  color: #0099cc !important;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.bi-three-dots {
+  background-color: transparent;
+  border: thin solid #F19A33;
+  color: #F19A33;
+  border-radius: 50%;
+  padding: 4px;
+}
+
 .bi-pencil-square {
   color: #101BC7;
   font-size: 20px;
@@ -36,7 +55,7 @@
 }
 
 .bi-eye {
-  color: #EA4E33;
+  color: #F19A33;
   font-size: 20px;
   cursor: pointer;
 }
@@ -54,18 +73,19 @@ thead tr {
 
 
 .fond-btn {
-  background-color: #EA4E33 !important;
+  background-color: #F19A33 !important;
   color: white !important;
-  border: thin solid #EA4E33;
+  border: thin solid #F19A33;
 }
 
 
 .zoneSearch {
   background-color: #78767616;
-  width: 100%;
+  width: 97%;
   height: 125px;
   padding: 15px;
   border-radius: 10px;
+  margin: 0 auto;
 }
 
 .zoneSearch .input-group {
@@ -75,60 +95,164 @@ thead tr {
 }
 
 .btnSearch {
-  background-color: #5c5a5a !important;
+  background-color: #0d6efd !important;
   color: white !important;
 }
 
 .contenu {
   border: 2px dashed #5c5a5a9f;
   padding: 30px;
+  width: 97%;
+  margin: 0 auto!important;
 }
 
 .active {
-  color: #EA4E33 !important;
+  color: #F19A33 !important;
 }
 
 .modal-header {
-  background-color: #EA4E33;
+  background-color: #0d6efd;
   color: white !important;
 }
 
+.btn-close {
+  color: white !important;
+}
 
 .btnAction {
-  background-color: #EA4E33 !important;
+  background-color: #0d6efd !important;
   color: #fff !important;
 }
 
 .btnClose {
   background-color: #F5F5F5 !important;
-  color: #020202  !important;
+  color: #020202 !important;
 }
 
 .ajouter {
-  background-color: #EA4E33 !important;
+  background-color: #F19A33 !important;
   color: #FFFFFF !important;
   float: right;
 }
 
 /* pagination  */
 .pageActuelle {
-  background-color: #EA4E33 !important;
+  background-color: #F19A33 !important;
   color: #fff;
   font-weight: bold;
   padding: 4px 8px;
   border-radius: 50%;
   width: 35px;
   height: 35px;
+  border: none !important;
 }
 
 .import {
-  text-decoration: underline;
-  color: #EA4E33;
+  /* text-decoration: underline; */
+  color: #fff;
   cursor: pointer;
+  background-color: #F19A33;
+  border-radius: 9px;
+  padding: 8px 12px;
 }
 
-.btnSecond{
-  background-color: #fff!important;
-  color: #EA4E33!important;
-  border: thin solid #EA4E33!important;
+.btnSecond {
+  background-color: #fff !important;
+  color: #F19A33 !important;
+  border: thin solid #F19A33 !important;
+}
+
+.bulleInfos {
+  display: inline-block;
+  background-color: #02020293;
+  color: #fff;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+.info-container {
+  position: relative;
+  display: inline-block;
+}
+
+.bulleInfos {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  padding: 5px;
+  z-index: 10;
+  white-space: nowrap;
+  max-width: 350px;
+}
+
+.info-container:hover .bulleInfos {
+  display: block;
+}
+
+.couleurs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.couleur {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent;
+  position: relative;
+}
+
+.couleur.selected {
+  border: 2px solid #007bff;
+}
+
+.checkmark {
+  color: white;
+  font-size: 18px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+}
+
+.etiquette {
+  padding: 5px 15px;
+  color: white;
+  border-radius: 5px;
+  margin: 5px 0;
+  display: inline-block;
+  height: 32px;
+}
+
+.bgHeader {
+  background-color: #F19A33;
+  color: #fff !important;
+  border: none !important;
+  box-shadow: rgba(0, 0, 0, 0.45) 0px 25px 20px -20px;
+  /* box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px; */
+  border-radius: 0% 0% 46% 53% / 0% 0% 6% 10%;
+}
+
+.ItemMenu {
+  background-color: #cecece;
+  padding: 8px 15px;
+  border-radius: 25px 10px 0 0;
+  font-size: 18px;
+  cursor: pointer;
+  color: #222;
+}
+
+.currentItemMenu {
+  /* border-bottom: 2px solid #007bff!important; */
+  background-color: rgb(68, 142, 221);
+  cursor: pointer;
+  padding: 8px 15px;
+  border-radius: 25px 10px 0 0;
+  font-size: 18px;
+  color: #fff;
 }

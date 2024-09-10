@@ -1,48 +1,54 @@
-
 .cartes {
-    width: 20rem;
-    background: rgb(253, 253, 253);
-background: linear-gradient(0deg, #02016F 0%, rgb(1, 26, 243) 100%);
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  width: 20rem;
+  background: rgb(253, 253, 253);
+  /* background: linear-gradient(0deg, #02016F 0%, rgb(1, 26, 243) 100%); */
+  background-color: #0d6efd;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
 .nbr-img {
-    display: flex;
-    justify-content: center;
-    margin-top: 10px;
-    gap: 4rem;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  gap: 4rem;
 }
 
 .nbr-img img {
-    width: 60px;
+  width: 60px;
 }
 
-h5 {
-    color:white;
+h5,
+span,
+h4 {
+  color: white;
+}
+
+span {
+  font-size: 15px;
 }
 
 h1 {
-    color: #ffb62f;
-    /* background-color: white; */
-    padding: 15px;
-    border-radius: 50px;
+  color: #ffb62f;
+  /* background-color: white; */
+  padding: 15px;
+  border-radius: 50px;
 }
 
 .mesCartes {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 .devis img {
-    width: 80px
+  width: 80px
 }
 
 .group img {
-    width: 90px;
+  width: 90px;
 }
 
 
@@ -52,7 +58,8 @@ h1 {
 }
 
 .sidebar {
-  width: 20%; /* ou une valeur fixe en pixels */
+  width: 20%;
+  /* ou une valeur fixe en pixels */
   transition: width 0.3s ease;
 }
 
@@ -71,4 +78,88 @@ h1 {
 
 .main.full-width {
   width: 100%;
+}
+
+.statistique {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.sta {
+  width: 350px;
+  height: 150px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 10px;
+  border-radius: 10px;
+  gap: 5px;
+}
+
+.itemSta {
+  /* background-color: #63a1fe; */
+  padding: 10px 8px;
+  border-radius: 10px;
+}
+
+.banner {
+  background-image: url('../../../assets/images/home.png');
+  height: 350px;
+  width: 500px;
+  background-repeat: no-repeat;
+}
+
+.data {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+
+/* resposivité */
+@media(max-width:700px) {
+  .data {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  .sta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  .statistique {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+@media only screen and (min-width: 700px) and (max-width:1100px) {
+  .data {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  .sta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+  }
+
+  .statistique {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
 }

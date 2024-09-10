@@ -13,7 +13,7 @@ import { Loading } from 'notiflix/build/notiflix-loading-aio'
 })
 export class InfosComponent {
 
-  profil: any;
+  // profil: any;
   nom: string = '';
   tel: string = '';
   adress: string = '';
@@ -28,12 +28,24 @@ export class InfosComponent {
   InfoSup: any;
   
 
+  profil: File | null = null;
+
+  fileName: string = '';
+
   getFile(event: any) {
-    this.profil = event.target.files[0] as File;
+    const file = event.target.files[0];
+    if (file) {
+      console.log('Fichier sélectionné:', file); // Ajoutez cette ligne pour le débogage
+      this.profil = file;
+      console.log(this.profil)
+    } else {
+      console.log('Aucun fichier sélectionné'); // Ajoutez cette ligne pour le débogage
+    }
   }
 
   getFileInputProfil(event: any) {
     this.Inputprofil = event.target.files[0] as File;
+    console.log(this.Inputprofil.name)
   }
 
   constructor(private http: HttpClient, private userService:UtilisateurService) { }
@@ -44,7 +56,9 @@ export class InfosComponent {
 
   ajouterInfoSup(){
     let formData = new FormData();
-    formData.append("logo", this.profil);
+    if (this.profil) {
+      formData.append('logo', this.profil, this.profil.name);
+    }
     formData.append("nom_entreprise", this.nom);
     formData.append("adress_entreprise", this.adress);
     formData.append("tel_entreprise", this.tel);
@@ -55,6 +69,7 @@ export class InfosComponent {
         Report.success('Notiflix Success',user.message,'Okay',);
         this.vider();
         this.listeInfoSup();
+        console.log(this.profil)
       },
       (err) => {
       }
@@ -106,6 +121,7 @@ export class InfosComponent {
             this.vider();
             Notify.success(reponse.message);
             Loading.remove();
+            console.log(this.Inputprofil)
           }
         );
       });
@@ -114,7 +130,7 @@ export class InfosComponent {
    // méthode pour vider les champs
    vider(){
     this.nom='';
-    this.profil='';
+    this.profil=null;
     this.tel='';
     this.adress='';
     this.desc='';
@@ -125,4 +141,47 @@ export class InfosComponent {
     this.Inputadress='';
     this.Inputdesc='';
   }
+
+  currencies = [
+    { code: 'XOF', name: 'Franc CFA (UEMOA)' },
+    { code: 'USD', name: 'Dollar américain' },
+    { code: 'EUR', name: 'Euro' },
+    { code: 'GBP', name: 'Livre sterling' },
+    { code: 'JPY', name: 'Yen japonais' },
+    { code: 'CAD', name: 'Dollar canadien' },
+    { code: 'AUD', name: 'Dollar australien' },
+    { code: 'CHF', name: 'Franc suisse' },
+    { code: 'CNY', name: 'Yuan chinois' },
+    { code: 'GNF', name: 'Franc guinéen' },
+    { code: 'XAF', name: 'Franc CFA (CEMAC)' },
+    { code: 'MAD', name: 'Dirham marocain' },
+    { code: 'TND', name: 'Dinar tunisien' },
+    { code: 'DZD', name: 'Dinar algérien' },
+    { code: 'ZAR', name: 'Rand sud-africain' },
+    { code: 'NGN', name: 'Naira nigérian' },
+    { code: 'EGP', name: 'Livre égyptienne' },
+    { code: 'KES', name: 'Shilling kényan' },
+    { code: 'GHS', name: 'Cedi ghanéen' },
+    { code: 'ETB', name: 'Birr éthiopien' },
+    { code: 'UGX', name: 'Shilling ougandais' },
+    { code: 'TZS', name: 'Shilling tanzanien' },
+    { code: 'RWF', name: 'Franc rwandais' },
+    { code: 'ZMW', name: 'Kwacha zambien' },
+    { code: 'MUR', name: 'Roupie mauricienne' },
+  ];
+
+  selectedCurrency: string = 'USD';
+
+  onCurrencyChange() {
+    console.log('Devise sélectionnée :', this.selectedCurrency);
+    // Ici, vous pouvez ajouter la logique pour gérer le changement de devise
+  }
+
+  languages = [
+    { code: 'Français', name: 'Français' },
+    { code: 'English', name: 'English' },
+    { code: 'Español', name: 'Español' }
+  ];
+
+
 }

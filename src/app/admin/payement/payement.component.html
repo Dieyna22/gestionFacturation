@@ -1,27 +1,26 @@
-
 <app-navbar></app-navbar>
 <app-sidebar></app-sidebar>
 
-<div class="zoneSearch mt-5 container mb-4">
+<div class="zoneSearch mt-5 mb-4">
     <div class="input-group">
-        <input type="search" class="form-control" aria-label="Recipient's username" placeholder="payement" [(ngModel)]="filterValue"
-        (input)="onSearch()">
+        <input type="search" class="form-control" aria-label="Recipient's username" placeholder="payement"
+            [(ngModel)]="filterValue" (input)="onSearch()">
         <button class="btn btnSearch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
-      </div>          
+    </div>
 </div>
-<div class="row container contenu ms-5  px-5">
-    
-        <div class="zoneAjout mb-3">
-            <h5 class="text-center">Ajout Payement </h5>
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Ajouter</label>
-                <input type="text" name="auteur" class="form-control" id="exampleInputEmail1"
-                    aria-describedby="emailHelp" placeholder="Payement" [(ngModel)]="inputPayement">
-            </div>
-            <button class="btn ajouter" (click)="ajouterPayement()">Ajouter</button>
+<div class="row contenu ">
+
+    <div class="zoneAjout mb-3">
+        <h5 class="text-center">Ajout Payement </h5>
+        <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Ajouter</label>
+            <input type="text" name="auteur" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                placeholder="Payement" [(ngModel)]="inputPayement">
         </div>
-   
-    
+        <button class="btn ajouter" (click)="ajouterPayement()">Ajouter</button>
+    </div>
+
+
     <div class=" containerReseau  rounded-2 p-2 ">
         <!-- Le tableau des réseaux -->
         <div class="table-responsive">
@@ -36,9 +35,8 @@
                     <tr>
                         <td>{{payement.nom_payement}}</td>
                         <td>
-                            <button class="btn modif me-2" data-bs-toggle="modal"
-                                data-bs-target="#modifcategorie" (click)="chargerInfosCategorie(payement)"
-                                >Modifier</button>
+                            <button class="btn modif me-2" data-bs-toggle="modal" data-bs-target="#modifcategorie"
+                                (click)="chargerInfosCategorie(payement)">Modifier</button>
                             <button class="btn sup" (click)="deleteCategorie(payement.id)">Supprimer</button>
                         </td>
                     </tr>
@@ -46,8 +44,8 @@
             </table>
         </div>
 
-         <!-- Pagination  -->
-         <div *ngIf="getItemsPage().length">
+        <!-- Pagination  -->
+        <div *ngIf="getItemsPage().length">
             <div class="d-flex justify-content-end mb-2">
                 <button class="border border-0 btnColor  mx-2" [disabled]="pageActuelle === 1"
                     (click)="pageActuelle = pageActuelle - 1">
@@ -65,16 +63,19 @@
         </div>
     </div>
 
-   
+
 </div>
 
 <!-- Modal -->
 <div class="modal fade" id="modifcategorie" tabindex="-1" aria-labelledby="modifcategorieLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="modifcategorieLabel">Modifier Payement</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="bgHeader">
+                <div class="d-flex justify-content-between p-2">
+                    <h4 class="modal-title" id="exampleModalLabel">Modifier Payement</h4>
+                    <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                </div>
             </div>
             <div class="modal-body">
                 <form>
@@ -85,7 +86,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class=" btn btnAction" data-bs-dismiss="modal" (click)="updateCategorie()">Modifier</button>
+                <button type="button" class=" btn btnAction" data-bs-dismiss="modal"
+                    (click)="updateCategorie()">Modifier</button>
                 <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
             </div>
         </div>

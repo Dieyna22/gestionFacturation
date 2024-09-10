@@ -42,6 +42,17 @@ export class UsersComponent {
      this.showPassword = !this.showPassword;
    }
 
+   boutonActif=1;
+   section:string="general"
+   showSection(type:string){
+    this.section=type;
+   }
+
+   password:boolean=false;
+   showUpdatePassword(){
+    this.password = !this.password
+   }
+
    ngOnInit(): void {
     this.listeRole();
     this.listeUserNoArchiver();

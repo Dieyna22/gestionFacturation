@@ -14,30 +14,14 @@
     <li>
       <a routerLink="/admin" routerLinkActive="active"><i class="fas fa-home me-3"></i>Dashboard</a>
     </li>
-    <ng-container *ngIf="isSuperAdmin">
-      <!-- Information Suplémentaire  -->
-      <li>
-        <a routerLink="/infos" routerLinkActive="active"><i class="fas fa-cog  me-3"></i>Info supplémentaire</a>
-      </li>
-    </ng-container>
-    <ng-container *ngIf="isSuperAdmin">
-      <!-- Utilisateurs  -->
-      <li>
-        <a routerLink="/user" routerLinkActive="active"><i class="bi bi-person-fill  me-3"></i>Utilisateurs</a>
-      </li>
-      <!-- Utilisateurs Archiver  -->
-      <li>
-        <a routerLink="/userArchive" routerLinkActive="active"><i class="bi bi-person-fill-x  me-3"></i>Utilisateurs Archiver</a>
-      </li>
-    </ng-container>
     <!-- Clients  -->
     <li>
       <a routerLink="/client" routerLinkActive="active"><i class="bi bi-people-fill  me-3"></i>Clients</a>
     </li>
     <!-- Promotions  -->
-    <li>
+    <!-- <li>
       <a routerLink="/promo" routerLinkActive="active"><i class="bi bi-tags-fill  me-3"></i>Promotions</a>
-    </li>
+    </li> -->
     <!-- Produit -->
     <li>
       <a routerLink="/article" routerLinkActive="active"><i class="fas fa-stream  me-3"></i>Produits</a>
@@ -54,10 +38,42 @@
     <li>
       <a routerLink="/depense" routerLinkActive="active"><i class="bi bi-cash-coin me-3"></i>Dépense</a>
     </li>
-    <!-- Rapport  -->
+    <!-- Commande d'achat  -->
     <li>
-      <a><i class="bi bi-pie-chart-fill me-3"></i>Rapports</a>
+      <a routerLink="/achat" routerLinkActive="active"><i class="bi bi-box me-3"></i>Commande d'achat</a>
+    </li>
+    <!-- Stocks  -->
+    <li>
+      <a routerLink="/stock" routerLinkActive="active"><i class="bi bi-cart3 me-3"></i>Stocks</a>
+    </li>
+     <!-- Rapport  -->
+     <li>
+      <a routerLink="/rapport" routerLinkActive="active"><i class="bi bi-pie-chart-fill me-3"></i>Rapports</a>
     </li>
   </ul>
   </nav>
+</div>
+
+<div class="notif">
+  <input type="checkbox" id="btnNotif" hidden />
+  <label for="btnNotif" class="menubtn">
+    <i class="fas bi-bell"></i>
+    <i class="fas fa-times"></i>
+  </label>
+  <div id="notification">
+    <div class="titre"><span>Notifications</span></div>
+    <div><span>liste des Notifications</span></div>
+  </div>
+</div>
+
+<div class="activity">
+  <input type="checkbox" id="btnActivity" hidden />
+  <label for="btnActivity" class="menubtn">
+    <i class="fas bi-clock-history"></i>
+    <i class="fas fa-times"></i>
+  </label>
+  <div id="HistoryDay">
+    <div class="titre"><span>Activite de la journee</span></div>
+    <div><span>liste des activite de la journee</span></div>
+  </div>
 </div>

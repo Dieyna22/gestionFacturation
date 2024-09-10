@@ -31,6 +31,11 @@ import { GrilleTarifaireComponent } from './admin/grille-tarifaire/grille-tarifa
 import { PayementComponent } from './admin/payement/payement.component';
 import { DepenseComponent } from './admin/depense/depense.component';
 import { DatePipe } from '@angular/common';
+import { CommandeDachatComponent } from './admin/commande-dachat/commande-dachat.component';
+import { ComptableComponent } from './admin/comptable/comptable.component';
+import { RapportComponent } from './admin/rapport/rapport.component';
+import { StockComponent } from './admin/stock/stock.component';
+
 
 @NgModule({
   declarations: [
@@ -56,7 +61,11 @@ import { DatePipe } from '@angular/common';
     CategorieServiceComponent,
     GrilleTarifaireComponent,
     PayementComponent,
-    DepenseComponent
+    DepenseComponent,
+    CommandeDachatComponent,
+    ComptableComponent,
+    RapportComponent,
+    StockComponent,
   ],
   imports: [
     BrowserModule,
