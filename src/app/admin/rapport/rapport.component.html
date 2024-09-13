@@ -1,19 +1,43 @@
 <app-navbar></app-navbar>
 <app-sidebar></app-sidebar>
-<div class="rapports mt-5 mb-5 ">
-    <div class="row">
-        <div class="col-md-6" *ngFor="let rapport of rapports">
-          <div class="ItemRapport text-center mb-3">
-            <h6>{{ rapport.titre }}</h6>
-            <p (click)="toggleRapport(rapport.id)">Générer rapport</p>
-            <div [id]="rapport.id" *ngIf="rapport.isOpen">
-              <span class="me-1">{{ rapport.label }} entre :</span>
-              <span class="me-2"><input type="date" class="form-controle" name="dateDebut"></span>
-              <span class="me-2">et</span>
-              <span><input type="date" class="form-controle" name="dateFin"></span><br>
-              <button class="btn btnGenere mt-3">Générer</button>
-            </div>
+<div class="rapports mt-5 mb-5">
+  <div class="row">
+    <div class="col-md-6" *ngFor="let rapport of rapports">
+      <div class="ItemRapport text-center mb-3">
+        <h6>{{ rapport.titre }}</h6>
+        <p (click)="toggleRapport(rapport.id)">Générer rapport</p>
+        <div [id]="rapport.id" *ngIf="rapport.isOpen">
+          <div  class="d-flex justify-content-center">
+            <span class="me-1 mt-2">{{ rapport.label }} entre :</span>
+            <span class="me-2"><input type="date" class="form-control" name="dateDebut"></span>
+            <span class="me-2 mt-2">et</span>
+            <span><input type="date" class="form-control" name="dateFin"></span><br>
           </div>
+          <button class="btn btnGenere mt-3" (click)="openModal(rapport)">Générer</button>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal avec contenu flexible -->
+<div class="modal" *ngIf="selectedRapport" (click)="closeModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="bgHeader">
+      <div class="d-flex justify-content-between p-2">
+        <h4 class="modal-title">{{selectedRapport.titre}}</h4>
+        <div><button type="button" class="close" (click)="closeModal()">&times;</button></div>
+      </div>
+    </div>
+    <div class="modal-body">
+      <canvas #chartCanvas *ngIf="selectedRapport.type !== 'none'"></canvas>
+      <div *ngIf="selectedRapport.type === 'none'">
+        <p>Contenu du rapport pour {{selectedRapport.titre}}</p>
+        <!-- Ajoutez ici le contenu spécifique pour les rapports sans graphique -->
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="closeModal()">Fermer</button>
+    </div>
+  </div>
 </div>

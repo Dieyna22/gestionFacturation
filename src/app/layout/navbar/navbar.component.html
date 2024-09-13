@@ -71,41 +71,63 @@
         </div>
       </div>
       <div class="modal-body">
-        <div class="zoneSelect p-3 mb-3">
-          <div class="text-center border p-4">
-            <span>Sélectionnez le modèle de mail à configurer : </span>
-            <div class="form-floating">
-              <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                <option value="0">Facture</option>
-                <option value="1">Résumé de la vente</option>
-                <option value="2">Reçu paiement</option>
-                <option value="3">Relance de paiement AVANT échéance</option>
-                <option value="4">Relance de paiement APRÈS échéance</option>
-                <option value="5">Devis</option>
-                <option value="6">Commande de vente</option>
-                <option value="7">Bon de livraison</option>
-                <option value="8">Commande fournisseur</option>
-              </select>
-              <label for="floatingSelect"> Mail envoi de :</label>
+        <div class="container">
+          <div class="zoneSelect p-3 mb-3">
+            <div class="text-center border p-4">
+              <span>Sélectionnez le modèle de mail à configurer : </span>
+              <div class="form-floating">
+                <select
+                  class="form-select"
+                  id="floatingSelect"
+                  [(ngModel)]="selectedTemplate"
+                >
+                  <option value="0">Facture</option>
+                  <option value="1">Résumé de la vente</option>
+                  <option value="2">Reçu paiement</option>
+                  <option value="3">Relance de paiement AVANT échéance</option>
+                  <option value="4">Relance de paiement APRÈS échéance</option>
+                  <option value="5">Devis</option>
+                  <option value="6">Commande de vente</option>
+                  <option value="7">Bon de livraison</option>
+                  <option value="8">Commande fournisseur</option>
+                </select>
+                <label for="floatingSelect">Mail envoi de :</label>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="object mb-3">
-          <form class="form-floating">
-            <input type="text" class="form-control" id="floatingInputValue"
-              value="Résumé de la vente {VENTE_NUMERO} du {VENTE_DATE}">
-            <label for="floatingInputValue">Objet :</label>
-          </form>
-        </div>
-        <div class="corps container mb-3">
-          <textarea class="form-control p-3" rows="10">
-            Bonjour {DESTINATAIRE},
-            Veuillez trouver ci-joint le résumé de la Vente  N° {VENTE_NUMERO} du {VENTE_DATE}  pour un montant de {VENTE_PRIX_TOTAL}. 
-            Nous vous remercions de votre confiance. 
-            À bientôt ! 
-            ordialement, 
-            {ENTREPRISE} 
-          </textarea>
+          
+          <div class="variables mb-3">
+            <label for="variableSelect">Sélectionnez une variable à insérer :</label>
+            <select id="variableSelect" class="form-select" [(ngModel)]="selectedVariable">
+              <option value="">-- Choisir une variable --</option>
+              <option *ngFor="let variable of currentTemplate.variables" [value]="variable">
+                {{variable}}
+              </option>
+            </select>
+          </div>
+        
+          <div class="object mb-3">
+            <div class="form-floating">
+              <input
+                type="text"
+                class="form-control"
+                id="objectInput"
+                [(ngModel)]="currentTemplate.object"
+              >
+              <label for="objectInput">Objet :</label>
+            </div>
+            <button class="btn btnAction mt-2" (click)="insertVariable('object')">Insérer variable dans l'objet</button>
+          </div>
+        
+          <div class="corps container">
+            <textarea
+              class="form-control p-3"
+              rows="10"
+              id="bodyTextarea"
+              [(ngModel)]="currentTemplate.body"
+            ></textarea>
+          </div>
+          <button class="btn btnAction mt-2 mb-2" (click)="insertVariable('body')">Insérer variable dans le corps</button>
         </div>
         <div class="attach p-2">
           <span class="resume">
@@ -192,60 +214,18 @@
             </label>
           </div>
         </div>
-        <div class="notifItem border p-3 mb-3">
-          <label for="customRange1" class="form-label">Les produits avec moins de :</label>
-          <div class="slider-container">
-            <button (click)="decreaseValue1()">-</button>
-            <input type="range" id="customRange1" min="0" max="99" [(ngModel)]="sliderValue1"
-              (input)="updateSliderValue1($event)" />
-            <button (click)="increaseValue1()">+</button>
-          </div>
-          <span>{{ sliderValue1 }} unités</span>
-        </div>
 
-        <div class="notifItem border p-3 mb-3">
-          <label for="customRange2" class="form-label">Les brouillons non validés après :</label>
+        <div *ngFor="let slider of sliders; let i = index" class="notifItem border p-3 mb-3">
+          <label [for]="'customRange' + i" class="form-label">{{ slider.label }}</label>
           <div class="slider-container">
-            <button (click)="decreaseValue2()">-</button>
-            <input type="range" id="customRange2" min="0" max="99" [(ngModel)]="sliderValue2"
-              (input)="updateSliderValue2($event)" />
-            <button (click)="increaseValue2()">+</button>
+            <button (click)="changeValue(i, -1)">-</button>
+            <input type="range" [id]="'customRange' + i" min="0" max="99" [(ngModel)]="slider.value" />
+            <button (click)="changeValue(i, 1)">+</button>
           </div>
-          <span>{{ sliderValue2 }} jours</span>
+          <span>{{ slider.value }} {{ slider.unit }}</span>
         </div>
+        
 
-        <div class="notifItem border p-3 mb-3">
-          <label for="customRange3" class="form-label">Les dépenses des prochains :</label>
-          <div class="slider-container">
-            <button (click)="decreaseValue3()">-</button>
-            <input type="range" id="customRange3" min="0" max="99" [(ngModel)]="sliderValue3"
-              (input)="updateSliderValue3($event)" />
-            <button (click)="increaseValue3()">+</button>
-          </div>
-          <span>{{ sliderValue3 }} jours</span>
-        </div>
-
-        <div class="notifItem border p-3 mb-3">
-          <label for="customRange4" class="form-label">Les échéances (paiements) prévues des prochains :</label>
-          <div class="slider-container">
-            <button (click)="decreaseValue4()">-</button>
-            <input type="range" id="customRange4" min="0" max="99" [(ngModel)]="sliderValue4"
-              (input)="updateSliderValue4($event)" />
-            <button (click)="increaseValue4()">+</button>
-          </div>
-          <span>{{ sliderValue4 }} jours</span>
-        </div>
-
-        <div class="notifItem border p-3 mb-3">
-          <label for="customRange5" class="form-label">Les devis expirés des prochains :</label>
-          <div class="slider-container">
-            <button (click)="decreaseValue5()">-</button>
-            <input type="range" id="customRange5" min="0" max="99" [(ngModel)]="sliderValue5"
-              (input)="updateSliderValue5($event)" />
-            <button (click)="increaseValue5()">+</button>
-          </div>
-          <span>{{ sliderValue5 }} jours</span>
-        </div>
         <div class="sendMail p-3">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
@@ -277,10 +257,10 @@
       </div>
       <div class="modal-body">
 
-        <div class="modal-footer">
-          <button class=" btn btnAction">Sauvegarder</button>
-          <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button class=" btn btnAction">Sauvegarder</button>
+        <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
       </div>
     </div>
   </div>
@@ -322,7 +302,7 @@
             <span>- <span class="colormail">0</span> clients recevront un rappel cette nuit</span><br>
             <span>- <span class="colormail">0</span> clients recevront un rappel dans les prochains 7 jours</span>
           </div>
-          <span class="colormail"><i class="bi bi-eye-fill me-2"></i>Visualiser le contenu du message</span>
+          <span class="colormail" (click)="BeforeRelance()" data-bs-toggle="modal" data-bs-target="#mail"><i class="bi bi-eye-fill me-2"></i>Visualiser le contenu du message</span>
         </div>
         <div class="relance">
           <div class="form-check form-switch mb-3">
@@ -348,7 +328,7 @@
             <span>- <span class="colormail">0</span> clients recevront un rappel cette nuit</span><br>
             <span>- <span class="colormail">0</span> clients recevront un rappel dans les prochains 7 jours</span>
           </div>
-          <span class="colormail"><i class="bi bi-eye-fill me-2"></i>Visualiser le contenu du message</span>
+          <span class="colormail" (click)="AfterRelance()" data-bs-toggle="modal" data-bs-target="#mail"><i class="bi bi-eye-fill me-2"></i>Visualiser le contenu du message</span>
         </div>
       </div>
       <div class="modal-footer">

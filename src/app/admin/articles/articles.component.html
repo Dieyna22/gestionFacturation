@@ -11,21 +11,28 @@
     <!-- catégorie article -->
     <!-- <app-categorie-article *ngIf="currentContent === 'categorie'"></app-categorie-article> -->
     <!-- produit -->
-    <div class="zoneSearch  mb-4" id="produit">
+    <div class="zoneSearch mb-2" id="produit">
       <div class="input-group">
         <input type="search" class="form-control" aria-label="Recipient's username"
           placeholder="nom_produit, nom_categorie" [(ngModel)]="filterValue" (input)="onSearch()">
         <button class="btn btnSearch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
       </div>
+      <div class="d-flex filtre">
+        <button type="button" class="btn btnOutline">Produits actifs</button>
+        <button type="button" class="btn btnOutline">Produits inactifs</button>
+        <button type="button" class="btn btnOutline">Etiquette</button>
+      </div>
     </div>
     <div class="row contenu px-5">
       <!-- Button modal Ajout Utilisateurs -->
-      <button type="button" class="btn ajouter  col-md-2 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Ajouter Article
-      </button>
+       <div class="d-grid gap-2  mb-4 d-md-flex justify-content-md-end">
+         <button type="button" class="btn ajouter mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+           Ajouter Article
+         </button>
+       </div>
       <!-- Liste des Utilisateurs  -->
-      <div class="col-md-12 px-4">
-        <div class="card px-4 py-2 pt-4 rounded-4">
+      <div class="col-md-12">
+        <div class="card px-2 py-2 pt-4 rounded-4">
           <!-- Recherhcer une utilisateur  -->
           <div class="row sectionEspace ligneReseauSearch mb-3">
             <div class="col-md-9">
@@ -51,7 +58,8 @@
                 </tr>
               </thead>
               <tbody *ngFor="let article of getItemsPage()">
-                <tr>
+                <tr (click)="chargerInfosArticle(article)"
+                data-bs-toggle="modal" data-bs-target="#ModalModifier">
                   <td>{{article.nom_article}}</td>
                   <td>{{article.nom_categorie}}</td>
                   <td>{{article.prix_achat}}</td>
@@ -272,30 +280,35 @@
             <div id="stock" *ngIf="menu ==='stock'">
               <div class="zoneSearch mb-3">
                 <div class="form-check form-switch d-flex justify-content-start mt-5" *ngIf="active=='non'">
-                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="stock" (click)="setTypeActive('oui')">
+                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="stock"
+                    (click)="setTypeActive('oui')">
                   <label class="form-check-label" for="flexSwitchCheckDefault">Gestion de stock (inactive)</label>
                 </div>
                 <div class="form-check form-switch d-flex justify-content-start mt-5" *ngIf="active=='oui'">
-                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked name="stock" (click)="setTypeActive('non')">
+                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked
+                    name="stock" (click)="setTypeActive('non')">
                   <label class="form-check-label" for="flexSwitchCheckDefault">Gestion de stock (active)</label>
                 </div>
               </div>
-            
+
               <div class="row">
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" [disabled]="active == 'non'" (click)="afficherChampsStock('afficherChampsEntrepot')">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
+                    [disabled]="active == 'non'" (click)="afficherChampsStock('afficherChampsEntrepot')">
                   <label class="form-check-label" for="flexRadioDefault1">
                     Ce produit est stocké dans un entrepôt
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" [disabled]="active == 'non'" (click)="afficherChampsStock('afficherChampsLot')"> 
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                    [disabled]="active == 'non'" (click)="afficherChampsStock('afficherChampsLot')">
                   <label class="form-check-label" for="flexRadioDefault2">
                     Ce produit est stocké/vendu par lot
                   </label>
                 </div>
                 <div class="form-check">
-                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" [disabled]="active == 'non'" (click)="afficherChampsStock('afficherChampsVariantes')">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
+                    [disabled]="active == 'non'" (click)="afficherChampsStock('afficherChampsVariantes')">
                   <label class="form-check-label" for="flexRadioDefault2">
                     Ce produit est stocké/vendu par couleur, taille, etc.
                   </label>
@@ -306,36 +319,44 @@
                   <div class="col-md-6">
                     <label for="validationDefault02" class="form-label">Nom Entrepôt</label>
                     <div class="input-group" (click)="listeEntrepot()">
-                      <select class="form-control" name="entrepotName" [(ngModel)]="entrepotName" [disabled]="active == 'non'">
+                      <select class="form-control" name="entrepotName" [(ngModel)]="entrepotName"
+                        [disabled]="active == 'non'">
                         <option disabled>Sélectionnez une Entrepôt</option>
-                        <option *ngFor="let entrepot of tabEntrepot" [value]="entrepot.id">{{entrepot.nomEntrepot}}</option>
+                        <option *ngFor="let entrepot of tabEntrepot" [value]="entrepot.id">{{entrepot.nomEntrepot}}
+                        </option>
                       </select>
-                      <button class="btn ajouter" data-bs-toggle="modal" data-bs-target="#entrepot" [disabled]="active == 'non'">Ajouter</button>
+                      <button class="btn ajouter" data-bs-toggle="modal" data-bs-target="#entrepot"
+                        [disabled]="active == 'non'">Ajouter</button>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <label for="validationDefault02" class="form-label">Quantité stocker dans l'entreprot</label>
-                    <input type="number" class="form-control" id="validationDefault02" name="quantiteInEntrepot" [(ngModel)]="quantiteInEntrepot" [disabled]="active == 'non'">
+                    <input type="number" class="form-control" id="validationDefault02" name="quantiteInEntrepot"
+                      [(ngModel)]="quantiteInEntrepot" [disabled]="active == 'non'">
                   </div>
                 </form>
                 <form class="row" *ngIf="stock=='afficherChampsLot'">
                   <div class="col-md-6">
                     <label for="validationDefault01" class="form-label">Nom lot</label>
-                    <input type="text" class="form-control" id="validationDefault01" name="nomLot" [(ngModel)]="Lotnom" [disabled]="active == 'non'">
+                    <input type="text" class="form-control" id="validationDefault01" name="nomLot" [(ngModel)]="Lotnom"
+                      [disabled]="active == 'non'">
                   </div>
                   <div class="col-md-6">
                     <label for="validationDefault02" class="form-label">Quantité stocker dans lot</label>
-                    <input type="number" class="form-control" id="validationDefault02" name="quantiteLot" [(ngModel)]="Lotquantite" [disabled]="active == 'non'">
+                    <input type="number" class="form-control" id="validationDefault02" name="quantiteLot"
+                      [(ngModel)]="Lotquantite" [disabled]="active == 'non'">
                   </div>
                 </form>
                 <form class="row" *ngIf="stock=='afficherChampsVariantes'">
                   <div class="col-md-6">
                     <label for="validationDefault01" class="form-label">Nom variantes</label>
-                    <input type="text" class="form-control" id="validationDefault01" name="nomVariantes" [(ngModel)]="nomVariantes" [disabled]="active == 'non'">
+                    <input type="text" class="form-control" id="validationDefault01" name="nomVariantes"
+                      [(ngModel)]="nomVariantes" [disabled]="active == 'non'">
                   </div>
                   <div class="col-md-6">
                     <label for="validationDefault02" class="form-label">Quantité stocker dans variantes</label>
-                    <input type="number" class="form-control" id="validationDefault02" name="quantiteVariantes" [(ngModel)]="quantiteVariantes" [disabled]="active == 'non'">
+                    <input type="number" class="form-control" id="validationDefault02" name="quantiteVariantes"
+                      [(ngModel)]="quantiteVariantes" [disabled]="active == 'non'">
                   </div>
                 </form>
               </div>
@@ -462,7 +483,7 @@
                     [(ngModel)]="codeBarres">
                 </div>
               </div>
-                  <!-- <div class="row">
+              <!-- <div class="row">
                 <div class="form-check form-check-inline" (click)="afficherChamps()">
                   <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
                   <label class="form-check-label" for="inlineCheckbox1">Ajouter Catégorie</label>
@@ -538,8 +559,8 @@
               <div *ngIf="currentArticle">
                 <div class="zoneSearch mb-3">
                   <div class="form-check form-switch d-flex justify-content-start mt-5" *ngIf="active=='non'">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="stock"
-                      (click)="setTypeActive('oui')">
+                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
+                      name="stock" (click)="setTypeActive('oui')">
                     <label class="form-check-label" for="flexSwitchCheckDefault">Gestion de stock (inactive) </label>
                   </div>
                   <div class="form-check form-switch d-flex justify-content-start mt-5" *ngIf="active=='oui'">
@@ -914,37 +935,38 @@
   </div>
 
   <!-- Modal ajouter grille -->
-<div class="modal fade" id="addgrille" tabindex="-1" aria-labelledby="addgrilleLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="bgHeader">
-        <div class="d-flex justify-content-between p-2">
-          <h4 class="modal-title" id="exampleModalLabel">Ajouter Grille Tarifaire</h4>
-          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+  <div class="modal fade" id="addgrille" tabindex="-1" aria-labelledby="addgrilleLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="bgHeader">
+          <div class="d-flex justify-content-between p-2">
+            <h4 class="modal-title" id="exampleModalLabel">Ajouter Grille Tarifaire</h4>
+            <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+          </div>
         </div>
-      </div>
-      <div class="modal-body">
+        <div class="modal-body">
           <form>
-              <label for="validationCustom01" class="form-label">Client</label>
-              <select class="form-select mb-3" aria-label="Default select example" name="client" [(ngModel)]="client">
-                  <option selected>Open this select menu</option>
-                  <option *ngFor="let client of tabClient" [value]="client.id">{{client.prenom_client}} {{client.nom_client}}</option>
-                </select>
-                <label for="validationCustom01" class="form-label">Article</label>
-                <select class="form-select mb-3" aria-label="Default select example" name="article" [(ngModel)]="article">
-                  <option selected>Open this select menu</option>
-                  <option *ngFor="let product of products" [value]="product.id">{{ product.nom_article }}</option>
-                </select>
-                <label for="validationCustom01" class="form-label">Montant</label>
-                <input type="number" class="form-control" id="validationCustom01" name="montant" [(ngModel)]="montant">
-                <label for="validationCustom01" class="form-label mb-3">TVA</label>
-                <input type="number" class="form-control" id="validationCustom01" name="tva" [(ngModel)]="tva">
+            <label for="validationCustom01" class="form-label">Client</label>
+            <select class="form-select mb-3" aria-label="Default select example" name="client" [(ngModel)]="client">
+              <option selected>Open this select menu</option>
+              <option *ngFor="let client of tabClient" [value]="client.id">{{client.prenom_client}}
+                {{client.nom_client}}</option>
+            </select>
+            <label for="validationCustom01" class="form-label">Article</label>
+            <select class="form-select mb-3" aria-label="Default select example" name="article" [(ngModel)]="article">
+              <option selected>Open this select menu</option>
+              <option *ngFor="let product of products" [value]="product.id">{{ product.nom_article }}</option>
+            </select>
+            <label for="validationCustom01" class="form-label">Montant</label>
+            <input type="number" class="form-control" id="validationCustom01" name="montant" [(ngModel)]="montant">
+            <label for="validationCustom01" class="form-label mb-3">TVA</label>
+            <input type="number" class="form-control" id="validationCustom01" name="tva" [(ngModel)]="tva">
           </form>
-      </div>
-      <div class="modal-footer">
+        </div>
+        <div class="modal-footer">
           <button type="button" class="btn btnAction" (click)="ajouterGrilles()">Ajouter</button>
           <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+        </div>
       </div>
     </div>
   </div>
-</div>

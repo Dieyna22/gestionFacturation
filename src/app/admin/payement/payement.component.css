@@ -1,9 +1,10 @@
 .contenu{
     display: grid;
     grid-template-columns: 1fr 1fr;
+    gap: 5px;
 }
 .zoneAjout{
-    width: 400px;
+    width: 550px;
     height: 196px;
     border-top-right-radius: 30px;
     border-bottom-left-radius: 30px;
@@ -46,6 +47,8 @@
 
 .containerReseau  {
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+    height: 346px;
+
 }
 
 

@@ -3,81 +3,65 @@
 <div class="containerModele mt-5">
   <div class="header mb-3">
     <ul class="nav">
-        <li><a [ngClass]="{'currentItemNav': boutonActif === 1}" (click)="showComponant('Facture')" (click)="boutonActif = 1">Ventes</a></li>
-        <li><a  [ngClass]="{'currentItemNav': boutonActif === 2}" (click)="showComponant('Devis')" (click)="boutonActif = 2">Devis</a></li>
-        <li><a  [ngClass]="{'currentItemNav': boutonActif === 3}" (click)="showComponant('Bon de commande')" (click)="boutonActif = 3">Bon de commande</a></li>
-        <li><a  [ngClass]="{'currentItemNav': boutonActif === 4}" (click)="showComponant('Bon de Livraison')" (click)="boutonActif = 4">Bon de Livraison</a></li>
-        <li><a  [ngClass]="{'currentItemNav': boutonActif === 5}" (click)="showComponant('Bon d&#x2019;achat')" (click)="boutonActif = 5">Bon d'achat</a></li>
+      <li><a [ngClass]="{'currentItemNav': boutonActif === 1}" (click)="showComponant('Facture')"
+          (click)="boutonActif = 1">Ventes</a></li>
+      <li><a [ngClass]="{'currentItemNav': boutonActif === 2}" (click)="showComponant('Devis')"
+          (click)="boutonActif = 2">Devis</a></li>
+      <li><a [ngClass]="{'currentItemNav': boutonActif === 3}" (click)="showComponant('Bon de commande')"
+          (click)="boutonActif = 3">Bon de commande</a></li>
+      <li><a [ngClass]="{'currentItemNav': boutonActif === 4}" (click)="showComponant('Bon de Livraison')"
+          (click)="boutonActif = 4">Bon de Livraison</a></li>
+      <!-- <li><a  [ngClass]="{'currentItemNav': boutonActif === 5}" (click)="showComponant('Bon d&#x2019;achat')" (click)="boutonActif = 5">Bon d'achat</a></li> -->
     </ul>
   </div>
   <div class="configuration-section mt-2 mb-2">
     <div class="line">
-        <div class="left">
-            <label for="staticEmail" class="col-sm-2 col-form-label me-2">Titre:</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control-plaintext" id="staticEmail"  [(ngModel)]="titre">
-            </div>
-        </div>
-        <div class="right">
-            <button>Vos modéles</button>
-        </div>
-    </div>
-    <!-- <div class="line mt-5" *ngIf="currentContent=== 'Devis'">
-        <div class="left">
-          <input class="form-check-input me-2" type="checkbox" value="" id="flexCheckChecked" checked>
-          <label class="form-check-label" for="flexCheckChecked">
-            Reprendre le même modèle configuré pour les ventes
-          </label>
-        </div>
-    </div>
-    <div class="line mt-5" *ngIf="currentContent===  'Bon de commande' ">
       <div class="left">
-        <input class="form-check-input me-2" type="checkbox" value="" id="flexCheckChecked" checked>
-        <label class="form-check-label" for="flexCheckChecked">
+        <label for="staticEmail" class="col-sm-2 col-form-label me-2">Titre:</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control-plaintext" id="staticEmail" [(ngModel)]="titre">
+        </div>
+      </div>
+      <div class="right" (click)="onshowConfig()">
+        <button>+ Configurer plusieurs modèles</button>
+      </div>
+    </div>
+    <div class="line mt-5"
+      *ngIf="currentContent=== 'Devis' || currentContent===  'Bon de commande' || currentContent=== 'Bon de Livraison' ">
+      <div class="left">
+        <input class="form-check-input me-2" type="checkbox" id="flexCheckChecked" [(ngModel)]="isChecked">
+        <label class="form-check-label mt-2" for="flexCheckChecked">
           Reprendre le même modèle configuré pour les ventes
         </label>
       </div>
-  </div>
-  <div class="line mt-5" *ngIf="currentContent=== 'Bon de Livraison' ">
-    <div class="left">
-      <input class="form-check-input me-2" type="checkbox" value="" id="flexCheckChecked" checked>
-      <label class="form-check-label" for="flexCheckChecked">
-        Reprendre le même modèle configuré pour les ventes
-      </label>
-    </div>
-</div>
-<div class="line mt-5" *ngIf="currentContent=== 'Bon d&#x2019;achat'">
-  <div class="left">
-    <input class="form-check-input me-2" type="checkbox" value="" id="flexCheckChecked" checked>
-    <label class="form-check-label" for="flexCheckChecked">
-      Reprendre le même modèle configuré pour les ventes
-    </label>
-  </div>
-</div> -->
-</div>
-<div class="document">
-  <div class="savemodel">
-    <i class="bi bi-floppy"></i>
-  </div>
-  <div class="row persoFacture mb-2 ">
-    <div class="col-md-6">
-      <h5>Personnaliser votre document</h5>
-      <input type="color"  class="form-control form-control-color "  [(ngModel)]="color" (input)="onColorChange()">
-    </div>
-    <div class="col-md-6">
-      <img src="../../../assets/images/bloc.png" class="me-3" alt="" (click)="showModel('bloc')"  [ngClass]="{'activemodele': modelActif === 1}" (click)="modelActif = 1" >
-      <img src="../../../assets/images/compact.png" class="me-3"  alt="" (click)="showModel('compact')" [ngClass]="{'activemodele': modelActif === 2}" (click)="modelActif = 2">
-      <img src="../../../assets/images/photo.png" alt="" (click)="showModel('photo')" [ngClass]="{'activemodele': modelActif === 3}" (click)="modelActif = 3">
     </div>
   </div>
-  <div class="modéle">
+  <div class="document" [class.disabled]="isChecked"  *ngIf="!showConfig"> <div class="savemodel">
+      <i class="bi bi-floppy"></i>
+    </div>
+    <div class="row persoFacture mb-2 ">
+      <div class="col-md-6">
+        <h5>Personnaliser votre document</h5>
+        <input type="color" class="form-control form-control-color " [(ngModel)]="color" (input)="onColorChange()"
+          [disabled]="isChecked">
+      </div>
+      <div class="col-md-6">
+        <img src="../../../assets/images/bloc.png" class="me-3" alt="" (click)="showModel('bloc')"
+          [ngClass]="{'activemodele': modelActif === 1}" (click)="modelActif = 1">
+        <img src="../../../assets/images/compact.png" class="me-3" alt="" (click)="showModel('compact')"
+          [ngClass]="{'activemodele': modelActif === 2}" (click)="modelActif = 2">
+        <img src="../../../assets/images/photo.png" alt="" (click)="showModel('photo')"
+          [ngClass]="{'activemodele': modelActif === 3}" (click)="modelActif = 3">
+      </div>
+    </div>
+    <div class="modéle">
       <!-- modéle one -->
       <div class="modelFacture">
         <div class="invoice-container" id="bloc" id="modelOne" *ngIf="currentModel==='bloc'">
           <div class="row mb-4">
             <div class="invoice-header">
               <div class="logo-container">
-                <img src="logo.png" alt="Logo" class="logo">
+                <img src="http://127.0.0.1:8000{{InfoSup.logo}}" alt="Logo" class="logo">
               </div>
               <div class="positionTitre">
                 <div class="invoice-title">{{titre}}</div>
@@ -85,7 +69,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="row">
             <div class="invoice-details">
               <div class="company-info">
@@ -95,7 +79,7 @@
                 <p>Téléphone : 01 98 76 54 32</p>
                 <p>Email : contact.com</p>
               </div>
-        
+
               <div class="client-info">
                 <h3>Informations client</h3>
                 <p>Nom : John Doe</p>
@@ -105,10 +89,10 @@
               </div>
             </div>
           </div>
-      
+
           <div class="invoice-items">
             <table class="table table-bordered border-light">
-              <thead  class="thead-custom">
+              <thead class="thead-custom">
                 <tr>
                   <th>Description</th>
                   <th>Quantité</th>
@@ -119,23 +103,23 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>  
+                  <td>
                     <select class="form-control">
-                    <option value="0">Sélectionnez un produit/service</option>
-                    <option  [value]=""></option>
-                  </select>
-                </td>
+                      <option value="0">Sélectionnez un produit/service</option>
+                      <option [value]=""></option>
+                    </select>
+                  </td>
                   <td><input type="number" class="form-control" placeholder="Quantité"></td>
                   <td>
                     <span></span>
                     <ng-template #regularPrice></ng-template>
                   </td>
                   <td><span class="total text-right"></span></td>
-                  <td ><button class="btn btn-danger  btnDelete btn-sm"><i class="bi bi-trash"></i></button></td>
+                  <td><button class="btn btn-danger  btnDelete btn-sm"><i class="bi bi-trash"></i></button></td>
                 </tr>
               </tbody>
             </table>
-            <button class="btn" ><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne</button>
+            <button class="btn"><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne</button>
             <div class="row">
               <div class="col-4 mt-5">
               </div>
@@ -160,118 +144,106 @@
                     <td class="text-right">montant_restant FCfa</td>
                   </tr>
                 </table>
-              </div>    
-          </div>
+              </div>
+            </div>
           </div>
         </div>
-  </div>
-  
+      </div>
+
       <!-- modélé two -->
-      <div class="invoice" id="compact" id="modelTwo"  *ngIf="currentModel==='compact'">
-        <div class="row">
+      <div class="invoice" id="compact" id="modelTwo" *ngIf="currentModel==='compact'">
+        <div class="row mb-3">
           <div class="col-7">
-            <!-- <img src="http://127.0.0.1:8000/storage/images/{{InfoSup.logo}}" class="logo"> <br> <br> -->
-          
+            <img src="http://127.0.0.1:8000{{InfoSup.logo}}" alt="Logo" class="logo"> <br> <br>
             <div class="company-info">
-                <h3>Informations entreprise</h3>
-                <p>Nom de l'entreprise : Acme Inc.</p>
-                <p>Adresse : 456 Avenue des Champs-Élysées, 75008 Paris</p>
-                <p>Téléphone : 01 98 76 54 32</p>
-                <p>Email : contact.com</p>
+              <h3>Informations entreprise</h3>
+              <p>Nom de l'entreprise : Acme Inc.</p>
+              <p>Adresse : 456 Avenue des Champs-Élysées, 75008 Paris</p>
+              <p>Téléphone : 01 98 76 54 32</p>
+              <p>Email : contact.com</p>
             </div>
-           
+
             <h6>{{ currentDate }}</h6>
-            
+
           </div>
           <div class="col-5">
             <div class="invoice-number">
               <h2>{{titre}}</h2>
               <p>Numéro: <strong>numéro</strong></p>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-7">
-          </div>
-          <div class="col-5">
-              <label for="client-select">Sélectionner un client :</label> <br><br>
-              <select  class="form-select form-select-lg mb-5" id="client-select">
-                <option  [value]=""></option>
-              </select>
-            <div>
+              <div class="mt-5">
                 <h3>Informations client</h3>
                 <p>Nom : John Doe</p>
                 <p>Adresse : 123 Rue de la Paix, 75000 Paris</p>
                 <p>Téléphone : 01 23 45 67 89</p>
                 <p>Email : john.doe.com</p>
+              </div>
+            </div>
           </div>
         </div>
-        <br>
-        <br>
-        <br>
-        <table class="table table-bordered border-light">
-          <thead  class="thead-custom">
-            <tr>
-              <th>Description</th>
-              <th>Quantité</th>
-              <th>PU</th>
-              <th>Total</th>
-              <th ></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>  
-                <select class="form-control">
-                <option value="0">Sélectionnez un produit/service</option>
-                <option [value]=""></option>
-              </select>
-            </td>
-              <td><input type="number" class="form-control"  placeholder="Quantité"></td>
-              <td>
-                <span></span>
-                <ng-template #regularPrice></ng-template>
-              </td>
-              <td><span class="total text-right"></span></td>
-              <td ><button class="btn btn-danger  btnDelete btn-sm"><i class="bi bi-trash"></i></button></td>
-            </tr>
-          </tbody>
-        </table>
-        <button class="btn" ><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne</button>
         <div class="row">
-          <div class="col-6 mt-5">
+          <table class="table table-bordered border-light">
+            <thead class="thead-custom">
+              <tr>
+                <th>Description</th>
+                <th>Quantité</th>
+                <th>PU</th>
+                <th>Total</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <select class="form-control">
+                    <option value="0">Sélectionnez un produit/service</option>
+                    <option [value]=""></option>
+                  </select>
+                </td>
+                <td><input type="number" class="form-control" placeholder="Quantité"></td>
+                <td>
+                  <span></span>
+                  <ng-template #regularPrice></ng-template>
+                </td>
+                <td><span class="total text-right"></span></td>
+                <td><button class="btn btn-danger  btnDelete btn-sm"><i class="bi bi-trash"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+          <button class="btn"><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne</button>
+          <div class="row">
+            <div class="col-6 mt-5">
+            </div>
+            <div class="col-6">
+              <br>
+              <br>
+              <table class="table table-sm text-right">
+                <tr>
+                  <td><strong>Total à payer</strong></td>
+                  <td class="text-right"> <span class="font-weight-bold"></span> FCfa</td>
+                </tr>
+                <tr>
+                  <td><strong>Montant verser</strong></td>
+                  <td class="text-right">montantVerser FCfa</td>
+                </tr>
+                <tr>
+                  <td><strong>Montant Total Payée</strong></td>
+                  <td class="text-right">montant_payement FCfa</td>
+                </tr>
+                <tr>
+                  <td><strong>Montant Restante</strong></td>
+                  <td class="text-right">montant_restant FCfa</td>
+                </tr>
+              </table>
+            </div>
           </div>
-          <div class="col-6">
-            <br>
-            <br>
-            <table class="table table-sm text-right">
-              <tr>
-                <td><strong>Total à payer</strong></td>
-                <td class="text-right"> <span class="font-weight-bold"></span> FCfa</td>
-              </tr>
-              <tr>
-                <td><strong>Montant verser</strong></td>
-                <td class="text-right">montantVerser FCfa</td>
-              </tr>
-              <tr>
-                <td><strong>Montant Total Payée</strong></td>
-                <td class="text-right">montant_payement FCfa</td>
-              </tr>
-              <tr>
-                <td><strong>Montant Restante</strong></td>
-                <td class="text-right">montant_restant FCfa</td>
-              </tr>
-            </table>
-          </div>    
+        </div>
       </div>
-          </div>
-      </div>
-  
+
       <!-- modélé three -->
-      <div class="new-container" id="photo"  id="modelThree"  *ngIf="currentModel==='photo'" >
+      <div class="new-container" id="photo" id="modelThree" *ngIf="currentModel==='photo'">
         <header>
-            <h1>{{titre}}</h1>
-            <div class="new-logo">Logo</div>
+          <h1>{{titre}}</h1>
+          <div class="new-logo"><img src="http://127.0.0.1:8000{{InfoSup.logo}}" alt="Logo" class="logo1"></div>
         </header>
         <div class="row mt-5">
           <div class="invoice-details">
@@ -282,7 +254,7 @@
               <p>Téléphone : 01 98 76 54 32</p>
               <p>Email : contact.com</p>
             </div>
-      
+
             <div class="client-info">
               <h3>Informations client</h3>
               <p>Nom : John Doe</p>
@@ -293,67 +265,79 @@
           </div>
         </div>
         <main>
-            <table class="table table-bordered border-light">
-                <thead  class="thead-custom">
-                  <tr>
-                    <th>Description</th>
-                    <th>Quantité</th>
-                    <th>PU</th>
-                    <th>Total</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>  
-                      <select class="form-control">
-                      <option value="0">Sélectionnez un produit/service</option>
-                      <option  [value]=""></option>
-                    </select>
-                  </td>
-                    <td><input type="number" class="form-control" placeholder="Quantité"></td>
-                    <td>
-                      <span></span>
-                      <ng-template #regularPrice></ng-template>
-                    </td>
-                    <td><span class="total text-right"></span></td>
-                    <td ><button class="btn btn-danger  btnDelete btn-sm"><i class="bi bi-trash"></i></button></td>
-                  </tr>
-                </tbody>
-              </table>
-              <button class="btn" ><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne</button>
-              <div class="row">
-                <div class="col-4 mt-5">
-                </div>
-                <div class="col-8">
-                  <br>
-                  <br>
-                  <table class="table table-sm text-right">
-                    <tr>
-                      <td><strong>Total à payer</strong></td>
-                      <td class="text-right"> <span class="font-weight-bold"></span> FCfa</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Montant verser</strong></td>
-                      <td class="text-right">montantVerser FCfa</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Montant Total Payée</strong></td>
-                      <td class="text-right">montant_payement FCfa</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Montant Restante</strong></td>
-                      <td class="text-right">montant_restant FCfa</td>
-                    </tr>
-                  </table>
-                </div>    
+          <table class="table table-bordered border-light">
+            <thead class="thead-custom">
+              <tr>
+                <th>Description</th>
+                <th>Quantité</th>
+                <th>PU</th>
+                <th>Total</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <select class="form-control">
+                    <option value="0">Sélectionnez un produit/service</option>
+                    <option [value]=""></option>
+                  </select>
+                </td>
+                <td><input type="number" class="form-control" placeholder="Quantité"></td>
+                <td>
+                  <span></span>
+                  <ng-template #regularPrice></ng-template>
+                </td>
+                <td><span class="total text-right"></span></td>
+                <td><button class="btn btn-danger  btnDelete btn-sm"><i class="bi bi-trash"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+          <button class="btn"><i class="bi bi-plus-circle me-1"></i> Ajouter une ligne</button>
+          <div class="row">
+            <div class="col-4 mt-5">
             </div>
+            <div class="col-8">
+              <br>
+              <br>
+              <table class="table table-sm text-right">
+                <tr>
+                  <td><strong>Total à payer</strong></td>
+                  <td class="text-right"> <span class="font-weight-bold"></span> FCfa</td>
+                </tr>
+                <tr>
+                  <td><strong>Montant verser</strong></td>
+                  <td class="text-right">montantVerser FCfa</td>
+                </tr>
+                <tr>
+                  <td><strong>Montant Total Payée</strong></td>
+                  <td class="text-right">montant_payement FCfa</td>
+                </tr>
+                <tr>
+                  <td><strong>Montant Restante</strong></td>
+                  <td class="text-right">montant_restant FCfa</td>
+                </tr>
+              </table>
+            </div>
+          </div>
         </main>
         <!-- <footer>
             <p >Taktyl est une marque commerciale de ALYMIA SAS au Capital de 1.000.000 FCFA</p>
             <p>NINEA 008540892 RCCM SN-DKR-2021 B 14645</p>
         </footer> -->
+      </div>
     </div>
+  </div>
+
+  <div class="configModele"  *ngIf="showConfig">
+    <p>Pensez à bien indiquer toutes les mentions obligatoires propres à votre pays/région/secteur d'activité (ex. N° de TVA intracommunautaire, forme juridique, capital social, mention microentreprise etc.)</p>
+    <div class="configM d-flex justify-content-start  align-items-center ">
+      <div class="itemConfigM me-2">
+
+      </div>
+      <div class="addnewModel">
+        +
+      </div>
     </div>
-</div>
+  </div>
 </div>

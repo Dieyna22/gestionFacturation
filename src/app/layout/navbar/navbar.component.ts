@@ -14,6 +14,12 @@ interface AuthResponse {
   expires_in: number;
 }
 
+interface EmailTemplate {
+  object: string;
+  body: string;
+  variables: string[];
+}
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -28,7 +34,7 @@ export class NavbarComponent {
 
 
 
-  constructor(private route: Router, private http: HttpClient,private cdr: ChangeDetectorRef) { }
+  constructor(private route: Router, private http: HttpClient, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     // Renvoie un tableau de valeurs ou un tableau vide 
@@ -77,91 +83,21 @@ export class NavbarComponent {
       );
   }
 
-  sliderValue1: number = 10;
-  sliderValue2: number = 7;
-  sliderValue3: number = 7;
-  sliderValue4: number = 7;
-  sliderValue5: number = 7;
-
-  updateSliderValue1(event: Event): void {
-    this.sliderValue1 = (event.target as HTMLInputElement).valueAsNumber;
-  }
-
-  updateSliderValue2(event: Event): void {
-    this.sliderValue2 = (event.target as HTMLInputElement).valueAsNumber;
-  }
-
-  updateSliderValue3(event: Event): void {
-    this.sliderValue3 = (event.target as HTMLInputElement).valueAsNumber;
-  }
-
-  updateSliderValue4(event: Event): void {
-    this.sliderValue4 = (event.target as HTMLInputElement).valueAsNumber;
-  }
-
-  updateSliderValue5(event: Event): void {
-    this.sliderValue5 = (event.target as HTMLInputElement).valueAsNumber;
-  }
-
-  increaseValue1(): void {
-    if (this.sliderValue1 < 99) {
-      this.sliderValue1++;
+  sliders = [
+    { label: 'Les produits avec moins de :', value: 10, unit: 'unités' },
+    { label: 'Les brouillons non validés après :', value: 7, unit: 'jours' },
+    { label: 'Les dépenses des prochains :', value: 7, unit: 'jours' },
+    { label: 'Les échéances (paiements) prévues des prochains :', value: 7, unit: 'jours' },
+    { label: 'Les devis expirés des prochains :', value: 7, unit: 'jours' }
+  ];
+  
+  changeValue(index: number, increment: number): void {
+    const newValue = this.sliders[index].value + increment;
+    if (newValue >= 0 && newValue <= 99) {
+      this.sliders[index].value = newValue;
     }
   }
-
-  decreaseValue1(): void {
-    if (this.sliderValue1 > 0) {
-      this.sliderValue1--;
-    }
-  }
-
-  increaseValue2(): void {
-    if (this.sliderValue2 < 99) {
-      this.sliderValue2++;
-    }
-  }
-
-  decreaseValue2(): void {
-    if (this.sliderValue2 > 0) {
-      this.sliderValue2--;
-    }
-  }
-
-  increaseValue3(): void {
-    if (this.sliderValue3 < 99) {
-      this.sliderValue3++;
-    }
-  }
-
-  decreaseValue3(): void {
-    if (this.sliderValue3 > 0) {
-      this.sliderValue3--;
-    }
-  }
-
-  increaseValue4(): void {
-    if (this.sliderValue4 < 99) {
-      this.sliderValue4++;
-    }
-  }
-
-  decreaseValue4(): void {
-    if (this.sliderValue4 > 0) {
-      this.sliderValue4--;
-    }
-  }
-
-  increaseValue5(): void {
-    if (this.sliderValue5 < 99) {
-      this.sliderValue5++;
-    }
-  }
-
-  decreaseValue5(): void {
-    if (this.sliderValue5 > 0) {
-      this.sliderValue5--;
-    }
-  }
+  
 
   isChecked = false;
   sliderValue = 0;
@@ -207,6 +143,161 @@ export class NavbarComponent {
 
   updateAfterSliderValue(event: Event) {
     this.afterSliderValue = parseInt((event.target as HTMLInputElement).value);
+  }
+
+  selectedTemplate = '0';
+  selectedVariable = '';
+
+  emailTemplates: Record<string, EmailTemplate> = {
+    '0': {
+      object: "Facture {FACTURE_NUMERO} du {FACTURE_DATE}",
+      body: `Bonjour {DESTINATAIRE},
+
+Veuillez trouver ci-joint la facture N° {FACTURE_NUMERO} du {FACTURE_DATE} pour un montant de {FACTURE_MONTANT}.
+
+Nous vous remercions pour votre règlement.
+
+Cordialement,
+{ENTREPRISE}`,
+      variables: ['Nom_Entreprise', 'Nom_Destinataire', 'Liste produits/Services', 'VENTE_NUMERO', 'VENTE_DATE', 'VENTE_PRIX_TOTAL']
+    },
+    '1': {
+      object: "Résumé de la vente {VENTE_NUMERO} du {VENTE_DATE}",
+      body: `Bonjour {DESTINATAIRE},
+
+Veuillez trouver ci-joint le résumé de la Vente N° {VENTE_NUMERO} du {VENTE_DATE} pour un montant de {VENTE_PRIX_TOTAL}.
+
+Nous vous remercions de votre confiance.
+
+À bientôt !
+
+Cordialement,
+{ENTREPRISE}`,
+      variables: ['Nom_Entreprise', 'Nom_Destinataire', 'Liste produits/Services', 'VENTE_NUMERO', 'VENTE_DATE', 'VENTE_PRIX_TOTAL']
+    },
+    '2': {
+      object: "Reçu {PAIEMENT_NUMERO} du paiement effectué le {PAIEMENT_DATE}",
+      body: `Bonjour {DESTINATAIRE},
+
+Nous vous confirmons la récéption de votre paiement effectué le {PAIEMENT_DATE} pour un montant de {PAYMENT_MONTANT}.
+
+Ci-joint le Reçu associé N° {PAIEMENT_NUMERO}. 
+
+Merci de votre paiement.
+
+À bientôt !
+
+Cordialement,
+{ENTREPRISE}`,
+      variables: ['Nom_Entreprise', 'Nom_Destinataire', 'Liste produits/Services', 'PAIEMENT_NUMERO', 'PAIEMENT_DATE', 'PAYMENT_MONTANT']
+    },
+    '3': {
+      object: "Rappel d'échéance du {ECHEANCE_DATE} - Facture {VENTE_NUMERO}",
+      body: `Bonjour {DESTINATAIRE},
+
+Nous vous rappelons que le {ECHEANCE_DATE} vous devez effectuer le paiement de {ECHEANCE_MONTANT} concernant la Facture N° {VENTE_NUMERO} (ci-joint).
+
+Si vous avez déjà effectué le paiement en question, s'il vous plaît ignorez ce message.. 
+
+Cordialement,
+{ENTREPRISE}`,
+      variables: ['Nom_Entreprise', 'Nom_Destinataire', 'Liste produits/Services', 'ECHEANCE_DATE', 'ECHEANCE_MONTANT', 'VENTE_NUMERO', 'VENTE_DATE']
+    },
+    '4': {
+      object: "Rappel d'échéance du {ECHEANCE_DATE} - Facture {VENTE_NUMERO}",
+      body: `Bonjour {DESTINATAIRE},
+
+Sauf erreur de notre part, nous constatons qu'à ce jour vous n'avez pas effectué le paiement de {ECHEANCE_MONTANT} prévu pour le {ECHEANCE_DATE} concernant la Facture N° {VENTE_NUMERO} (ci-joint).
+
+Si vous avez déjà effectué le paiement en question, s'il vous plaît ignorez ce message.. 
+
+Cordialement,
+{ENTREPRISE}`,
+      variables: ['Nom_Entreprise', 'Nom_Destinataire', 'Liste produits/Services', 'ECHEANCE_DATE', 'ECHEANCE_MONTANT', 'VENTE_NUMERO', 'VENTE_DATE']
+    },
+    '5': {
+      object: "Devis {DEVIS_NUMERO} réalisé le {DEVIS_DATE}",
+      body: `Bonjour {DESTINATAIRE},
+
+Veuillez trouver ci-joint le Devis N° {DEVIS_NUMERO} réalisé le {DEVIS_DATE}.
+
+Montant total du devis : {DEVIS_PRIX_TOTAL}. 
+
+Si vous avez besoin d'informations supplémentaires, n'hésitez pas à nous contacter.
+
+À bientôt !
+
+Cordialement,
+{ENTREPRISE}`,
+      variables: ['Nom_Entreprise', 'Nom_Destinataire', 'Liste produits/Services', 'DEVIS_NUMERO', 'DEVIS_DATE', 'DEVIS_PRIX_TOTAL']
+    },
+    '6': {
+      object: "Commande {COMMANDE_NUMERO} réalisée le {COMMANDE_DATE}",
+      body: `Bonjour {DESTINATAIRE},
+
+Veuillez trouver ci-joint le Bon de Commande N° {COMMANDE_NUMERO} réalisé le {COMMANDE_DATE} pour un montant de {COMMANDE_PRIX_TOTAL}.
+
+Si vous avez besoin d'informations supplémentaires, n'hésitez pas à nous contacter. 
+
+Cordialement,
+{ENTREPRISE}`,
+      variables: ['Nom_Entreprise', 'Nom_Destinataire', 'Liste produits/Services', 'COMMANDE_NUMERO', 'COMMANDE_VenteDate', 'COMMANDE_VentePrixTotal']
+    },
+    '7': {
+      object: "Livraison {LIVRAISON_NUMERO} prévue le {LIVRAISON_DATE}",
+      body: `Bonjour {DESTINATAIRE},
+
+Veuillez trouver ci-joint le Bon de Livraison N° {LIVRAISON_NUMERO}.
+
+Livraison prévue le : {LIVRAISON_DATE}.
+
+Si vous avez besoin d'informations supplémentaires, n'hésitez pas à nous contacter.
+
+Cordialement,
+{ENTREPRISE}`,
+      variables: ['Nom_Entreprise', 'Nom_Destinataire', 'Liste produits/Services', 'LIVRAISON_NUMERO', 'LIVRAISON_DATE', 'LIVRAISON_PRIX_TOTAL']
+    },
+    '8': {
+      object: "Commande d'achat {ACHAT_NUMERO} réalisée le {ACHAT_DATE}",
+      body: `Bonjour {DESTINATAIRE},
+
+Veuillez trouver ci-joint la Commande d'Achat N° {ACHAT_NUMERO} réalisée le {ACHAT_DATE} pour un montant de {ACHAT_PRIX_TOTAL}
+
+Si vous avez besoin d'informations supplémentaires, n'hésitez pas à nous contacter.
+
+Cordialement,
+{ENTREPRISE}`,
+      variables: ['Nom_Entreprise', 'Nom_Destinataire', 'Liste produits/Services', 'ACHAT_NUMERO', 'ACHAT_DATE', 'ACHAT_PRIX_TOTAL']
+    },
+  };
+
+  get currentTemplate(): EmailTemplate {
+    return this.emailTemplates[this.selectedTemplate];
+  }
+
+  insertVariable(field: 'object' | 'body') {
+    if (this.selectedVariable) {
+      const element = document.getElementById(field === 'object' ? 'objectInput' : 'bodyTextarea') as HTMLInputElement | HTMLTextAreaElement;
+      const cursorPos = element.selectionStart ?? element.value.length; // Utilise la fin du texte si null
+      const textBefore = element.value.substring(0, cursorPos);
+      const textAfter = element.value.substring(cursorPos);
+      const newValue = textBefore + '{' + this.selectedVariable + '}' + textAfter;
+      element.value = newValue;
+      element.focus();
+      const newCursorPos = cursorPos + this.selectedVariable.length + 2;
+      element.setSelectionRange(newCursorPos, newCursorPos);
+
+      // Mettre à jour le modèle
+      this.emailTemplates[this.selectedTemplate][field] = newValue;
+    }
+  }
+
+  BeforeRelance(){
+    this.selectedTemplate = '3';
+  }
+
+  AfterRelance(){
+    this.selectedTemplate = '4';
   }
 
 }

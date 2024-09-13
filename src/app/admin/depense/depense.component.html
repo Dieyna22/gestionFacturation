@@ -1,30 +1,39 @@
 <app-navbar></app-navbar>
 <app-sidebar></app-sidebar>
-<div class="zoneSearch mb-4 mt-4">
+<div class="zoneSearch mb-2 mt-4">
   <div class="input-group">
     <input type="search" class="form-control" aria-label="Recipient's username" placeholder="type, numéro,nom,prenom">
     <button class="btn btnSearch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+  </div>
+  <div class="d-flex filtre">
+    <button type="button" class="btn btnOutline">Impayées</button>
+    <button type="button" class="btn btnOutline">A venir</button>
+    <button type="button" class="btn btnOutline">Payées</button>
+    <button type="button" class="btn btnOutline">Etiquette</button>
   </div>
 </div>
 
 <!-- Contenu dashbord  -->
 <div class="mb-5">
-  <div class="header mb-4 d-grid gap-2 d-md-flex justify-content-md-end">
-    <ul class="nav">
-      <li><a [ngClass]="{'currentItemNav': boutonActif === 1}" (click)="showTypeDocument('fournisseur')"
-          (click)="boutonActif = 1" (click)="listeFournisseur()">Fournisseurs</a></li>
-      <li><a [ngClass]="{'currentItemNav': boutonActif === 2}" (click)="showTypeDocument('depense')"
-          (click)="boutonActif = 2" (click)="listeDepense()">Dépenses</a></li>
-    </ul>
-  </div>
-
   <div class="contenu">
-    <div class="col-md-12 px-4" id="fournisseur" *ngIf="currentDoc==='fournisseur'">
-      <div class="card mb-4 px-4 py-2 pt-4 rounded-4">
-        <button type="button" class="btn ajouter  col-md-2 mb-3 mt-4" data-bs-toggle="modal"
+
+    <div class="header d-grid gap-2 d-md-flex justify-content-md-end">
+      <ul class="nav">
+        <li><a [ngClass]="{'currentItemNav': boutonActif === 1}" (click)="showTypeDocument('fournisseur')"
+            (click)="boutonActif = 1" (click)="listeFournisseur()">Fournisseurs</a></li>
+        <li><a [ngClass]="{'currentItemNav': boutonActif === 2}" (click)="showTypeDocument('depense')"
+            (click)="boutonActif = 2" (click)="listeDepense()">Dépenses</a></li>
+      </ul>
+    </div>
+<!-- Fournisseur -->
+    <div class="col-md-12" id="fournisseur" *ngIf="currentDoc==='fournisseur'">
+      <div class="card mb-4 px-2 py-2 pt-4 rounded-4">
+        <div class=" me-5 mb-2 d-md-flex justify-content-md-end">
+          <button type="button" class="btn ajouter mb-2" data-bs-toggle="modal"
           data-bs-target="#addfournisseur" (click)="vider()">
           Ajouter Fournisseur
         </button>
+        </div>
         <div class="row sectionEspace ligneReseauSearch mb-3">
           <div class="col-md-5">
             <h3 class="fw-bold">Listes Fournisseurs</h3>
@@ -48,7 +57,8 @@
               </tr>
             </thead>
             <tbody *ngFor="let fournisseur of getItemsPage()">
-              <tr>
+              <tr  (click)="chargerInfoFournisseur(fournisseur)"
+              data-bs-toggle="modal" data-bs-target="#updateFournisseur">
                 <td>{{fournisseur.num_fournisseur}}</td>
                 <td>{{fournisseur.type_fournisseur}}</td>
                 <td>{{fournisseur.prenom_fournisseur}} {{fournisseur.nom_fournisseur}} {{fournisseur.nom_entreprise}}
@@ -85,12 +95,16 @@
         </div>
       </div>
     </div>
-    <div class="col-md-12 px-4" id="depense" *ngIf="currentDoc==='depense'">
-      <div class="card mb-4 px-4 py-2 pt-4 rounded-4">
-        <button type="button" class="btn ajouter  col-md-2 mb-3 mt-4" data-bs-toggle="modal"
+<!-- depense -->
+    <div class="col-md-12" id="depense" *ngIf="currentDoc==='depense'">
+      <div class="card mb-4 px-2 py-2 pt-4 rounded-4">
+        <div  class=" me-5 mb-2 d-md-flex justify-content-md-end">
+          <button type="button" class="btn ajouter mb-2" data-bs-toggle="modal"
           data-bs-target="#adddepence" (click)="vider()">
           Ajouter Dépense
         </button>
+        </div>
+       
         <div class="row sectionEspace ligneReseauSearch mb-3">
           <div class="col-md-5">
             <h3 class="fw-bold">Listes Dépenses</h3>
@@ -114,7 +128,8 @@
               </tr>
             </thead>
             <tbody *ngFor="let depense of getItemsPage()">
-              <tr>
+              <tr (click)="chargerInfoDepense(depense)"
+              data-bs-toggle="modal" data-bs-target="#updateDepense">
                 <td>{{depense.num_depense}}</td>
                 <td>{{depense.date_paiement}}</td>
                 <td>{{depense.nom_categorie_depense}}</td>
