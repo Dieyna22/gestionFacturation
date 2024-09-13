@@ -81,9 +81,8 @@ thead tr {
 
 .zoneSearch {
   background-color: #78767616;
-  width: 97%;
-  height: 125px;
-  padding: 15px;
+  width: 92%;
+  padding: 5px;
   border-radius: 10px;
   margin: 0 auto;
 }
@@ -91,7 +90,24 @@ thead tr {
 .zoneSearch .input-group {
   border-radius: 10px;
   width: 80%;
-  margin: 30px auto !important;
+  margin: 20px auto !important;
+}
+
+.zoneSearch .filtre{
+  margin: 10px auto!important;
+  width: 80%;
+}
+
+.btnOutline{
+  background-color: #fff!important;
+  border: thin solid #3c3b3b!important;
+  margin: 0px 4px;
+  border-radius: 30px!important;
+}
+
+.zoneSearch  .btnOutline:hover{
+  background-color:#3c3b3b!important;
+  color: #fff!important;
 }
 
 .btnSearch {
@@ -100,10 +116,15 @@ thead tr {
 }
 
 .contenu {
-  border: 2px dashed #5c5a5a9f;
+  /* border: 2px dashed #5c5a5a9f; */
   padding: 30px;
-  width: 97%;
-  margin: 0 auto!important;
+  width: 100%;
+  margin: 0 auto !important;
+}
+
+.spacetab{
+  width: 100%;
+  border: 2px solid red;
 }
 
 .active {
@@ -132,7 +153,10 @@ thead tr {
 .ajouter {
   background-color: #F19A33 !important;
   color: #FFFFFF !important;
-  float: right;
+  padding: 4px 10px;
+  display: flex;
+  justify-content: end;
+  border-radius: 30px!important;
 }
 
 /* pagination  */
@@ -152,7 +176,7 @@ thead tr {
   color: #fff;
   cursor: pointer;
   background-color: #F19A33;
-  border-radius: 9px;
+  border-radius: 20px;
   padding: 8px 12px;
 }
 
@@ -255,4 +279,8 @@ thead tr {
   border-radius: 25px 10px 0 0;
   font-size: 18px;
   color: #fff;
+}
+
+tr{
+  cursor: pointer;
 }

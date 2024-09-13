@@ -11,24 +11,32 @@
   <!-- catégorie -->
   <!-- <app-categorie id="categorie" *ngIf="currentContent === 'categorie'"></app-categorie> -->
   <!-- client -->
-  <div class="zoneSearch  mb-4" id="client">
+
+   <div class="zoneSearch mb-2" id="client">
     <div class="input-group">
       <input type="search" class="form-control" aria-label="Recipient's username" placeholder="prénom,nom,entreprise"
         [(ngModel)]="filterValue" (input)="onSearch()">
       <button class="btn btnSearch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
     </div>
+    <div class="d-flex filtre">
+      <button type="button" class="btn btnOutline">Prospect</button>
+      <button type="button" class="btn btnOutline">Impayés</button>
+      <button type="button" class="btn btnOutline">Paiements à venir</button>
+      <button type="button" class="btn btnOutline">Tout payé</button>
+      <button type="button" class="btn btnOutline">Etiquette</button>
+    </div>
   </div>
-
+  
   <div class="row contenu px-5" id="client">
-    <!-- Button modal Ajout Utilisateurs -->
-    <button type="button" class="btn ajouter  col-md-2 mb-3 mt-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
-      Ajouter Client
-    </button>
-
+    <div class="d-grid gap-2  mb-4 d-md-flex justify-content-md-end">
+      <!-- Button modal Ajout Utilisateurs -->
+       <button type="button" class="btn ajouter" data-bs-toggle="modal" data-bs-target="#exampleModal">
+         Ajouter Client
+       </button>
+     </div>
     <!-- Liste des Utilisateurs  -->
-    <div class="col-md-12 px-4">
-      <div class="card mb-4 px-4 py-2 pt-4 rounded-4">
-        <!-- Recherhcer une utilisateur  -->
+    <div class="col-md-12">
+      <div class="card mb-4 px-2 py-2 pt-4 rounded-4 spacetab ">
         <div class="row sectionEspace ligneReseauSearch mb-3">
           <div class="col-md-9">
             <h3 class="fw-bold">Listes des Clients</h3>
@@ -54,7 +62,8 @@
               </tr>
             </thead>
             <tbody *ngFor="let client of getItemsPage()">
-              <tr>
+              <tr (click)="chargerInfosClient(client)"
+              data-bs-toggle="modal" data-bs-target="#ModalModifier">
                 <td>{{client.nom_client}}</td>
                 <td>{{client.prenom_client}}</td>
                 <td>{{client.nom_entreprise}}</td>

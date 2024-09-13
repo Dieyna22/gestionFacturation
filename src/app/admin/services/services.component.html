@@ -11,21 +11,27 @@
   <!-- <app-categorie-service *ngIf="currentContent === 'categorie'"></app-categorie-service> -->
   <!-- service -->
   <div>
-    <div class="zoneSearch  mb-4">
+    <div class="zoneSearch mb-2">
       <div class="input-group">
         <input type="search" class="form-control" aria-label="Recipient's username" placeholder="nom service"
           [(ngModel)]="filterValue" (input)="onSearch()">
         <button class="btn btnSearch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
       </div>
+      <div class="d-flex filtre">
+        <button type="button" class="btn btnOutline">Etiquette</button>
+      </div>
     </div>
     <div class="row contenu px-5">
       <!-- Button modal Ajout Utilisateurs -->
-      <button type="button" class="btn ajouter  col-md-2 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Ajouter Service
-      </button>
+       <div class="d-grid gap-2  mb-4 d-md-flex justify-content-md-end">
+        <button type="button" class="btn ajouter mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          Ajouter Service
+        </button>
+       </div>
+     
       <!-- Liste des Utilisateurs  -->
-      <div class="col-md-12 px-4">
-        <div class="card px-4 py-2 pt-4 rounded-4">
+      <div class="col-md-12">
+        <div class="card px-2 py-2 pt-4 rounded-4">
           <!-- Recherhcer une utilisateur  -->
           <div class="row sectionEspace ligneReseauSearch mb-3">
             <div class="col-md-7">
@@ -47,7 +53,8 @@
                 </tr>
               </thead>
               <tbody *ngFor="let article of getItemsPage()">
-                <tr>
+                <tr (click)="chargerInfosArticle(article)"
+                data-bs-toggle="modal" data-bs-target="#ModalModifier">
                   <td>{{article.nom_article}}</td>
                   <td>{{article.prix_unitaire}}</td>
                   <td>{{article.prix_promo}}</td>

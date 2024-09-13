@@ -117,7 +117,7 @@ onSearch() {
   );
  }
 
-itemsParPage = 2; // Nombre d'articles par page
+itemsParPage = 4; // Nombre d'articles par page
 pageActuelle = 1; // Page actuelle
 
 // Pagination 

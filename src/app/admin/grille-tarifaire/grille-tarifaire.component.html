@@ -2,7 +2,7 @@
 <app-sidebar></app-sidebar>
   <!-- Contenu dashbord  -->
   <div class=" containerReseau mb-5">
-    <div class="zoneSearch mt-5  mb-4">
+    <div class="zoneSearch mt-5  mb-2 p-3">
       <div class="input-group">
           <input type="search" class="form-control" aria-label="Recipient's username" placeholder="client, article" [(ngModel)]="filterValue"
           (input)="onSearch()">
@@ -11,9 +11,11 @@
   </div>
     <div class="row contenu px-5">
         <!-- Button modal Ajout Utilisateurs -->
-        <button type="button" class="btn ajouter col-md-2 mb-2" data-bs-toggle="modal" data-bs-target="#addgrille">
-            Ajout
+         <div class=" me-5  mb-2 d-md-flex justify-content-md-end">
+          <button type="button" class="btn ajouter mb-2" data-bs-toggle="modal" data-bs-target="#addgrille">
+            Ajout Grille Tarifaire
         </button>
+         </div>
         <!-- Liste des Utilisateurs  -->
         <div class="col-md-12 px-4">
             <div class="card px-4 py-2 pt-4 rounded-4">

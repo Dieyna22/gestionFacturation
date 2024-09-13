@@ -1,14 +1,15 @@
-.containerModele{
+.containerModele {
   width: 94%;
   margin: 0 auto;
 }
+
 .header {
   background-color: #eee;
   padding: 10px 8px;
 }
 
-.currentItemNav{
-  color: #F97316!important;
+.currentItemNav {
+  color: #F97316 !important;
 }
 
 .nav {
@@ -51,11 +52,11 @@
 }
 
 .right button {
-  background-color: #F97316;
-  color: white;
-  border: none;
+  background-color: #fff;
+  color: #F97316;
+  border: thin solid #F97316;
   padding: 8px 16px;
-  border-radius: 5px;
+  border-radius: 20px;
   cursor: pointer;
 }
 
@@ -64,7 +65,7 @@
   margin-right: 5px;
 }
 
-.persoFacture{
+.persoFacture {
   border: 2px dotted #6b6969;
   justify-content: center;
   align-items: center;
@@ -91,32 +92,33 @@
   border-radius: 4px;
 }
 
-img{
+img {
   width: 110px;
   height: 130px;
 }
 
-.modéle{
+.modéle {
   border: 2px dotted #6b6969;
   padding: 30px;
   margin: 0 auto;
 }
+
 .btnAnnuler {
-  background-color: #5c636a!important;
-  color: white!important;
+  background-color: #5c636a !important;
+  color: white !important;
 }
 
 .btnEnregistrer {
-  background-color: #02016F!important;
-  color: white!important;
+  background-color: #02016F !important;
+  color: white !important;
   border: none;
 }
 
-.btnDelete i{
-color: white!important;
+.btnDelete i {
+  color: white !important;
 }
 
-thead tr th{
+thead tr th {
   background-color: #467aea;
   color: white;
 }
@@ -124,22 +126,22 @@ thead tr th{
 
 
 .color-input {
-width: 45px;
-height: 45px;
-border: none;
-border-radius: 50%;
-padding: 0;
-cursor: pointer;
-background-color: transparent;
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  padding: 0;
+  cursor: pointer;
+  background-color: transparent;
 }
 
 .color-input::-webkit-color-swatch-wrapper {
-padding: 0;
+  padding: 0;
 }
 
 .color-input::-webkit-color-swatch {
-border: none;
-border-radius: 4px;
+  border: none;
+  border-radius: 4px;
 }
 
 .containerModal {
@@ -168,102 +170,109 @@ border-radius: 4px;
   }
 }
 
-.btnPosition{
- display: flex;
- justify-content: flex-end;
+.btnPosition {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .modal {
-z-index: 100000;
+  z-index: 100000;
 }
 
-.modelFacture{
-justify-content: center;
-align-items: center;
-padding: 30px;
-margin: 0 auto;
+.modelFacture {
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  margin: 0 auto;
 }
 
 
-.positionTitre{
-float: right;
+.positionTitre {
+  float: right;
 }
 
 .invoice-title {
-font-size: 24px;
-font-weight: bold;
-color: #2c3e50;
+  font-size: 24px;
+  font-weight: bold;
+  color: #2c3e50;
 }
 
 .invoice-number {
-font-size: 16px;
-color: #777;
+  font-size: 16px;
+  color: #777;
 }
 
 .invoice-details {
-display: grid;
-grid-template-columns: 1fr 1fr;
-grid-gap: 30px;
-margin-bottom: 30px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 30px;
+  margin-bottom: 30px;
 }
 
 .invoice-details h3 {
-font-size: 18px;
-margin-bottom: 10px;
-color: #2c3e50;
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #2c3e50;
 }
 
 .invoice-details p {
-margin: 5px 0;
+  margin: 5px 0;
 }
 
 .invoice-items {
-margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 table {
-width: 100%;
-border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
-th, td {
-padding: 10px;
-text-align: left;
-border-bottom: 1px solid #ddd;
+th,
+td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
 }
 
 th {
-background-color: #f5f5f5;
-color: #2c3e50;
+  background-color: #f5f5f5;
+  color: #2c3e50;
 }
 
 .total-amount {
-text-align: right;
-font-weight: bold;
-color: #2c3e50;
+  text-align: right;
+  font-weight: bold;
+  color: #2c3e50;
 }
 
 .logo-container {
-display: flex;
-justify-content: center;
-text-align: center;
-margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
 .logo {
-width: 150px;
-height: auto;
+  width: 150px;
+  height: 150px;
+}
+
+.logo1 {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
 }
 
 .payment-info {
-margin-top: 30px;
-border-top: 1px solid #ddd;
-padding-top: 20px;
-font-size: 14px;
-color: #777;
+  margin-top: 30px;
+  border-top: 1px solid #ddd;
+  padding-top: 20px;
+  font-size: 14px;
+  color: #777;
 }
 
-.activemodele{
+.activemodele {
   border: 2px solid #F97316;
   border-radius: 4px;
   padding: 5px;
@@ -325,8 +334,6 @@ footer p {
 }
 
 .new-container header .new-logo {
-  background-color: #fbbf24;
-  color: white;
   padding: 10px;
   border-radius: 50%;
   font-size: 16px;
@@ -338,16 +345,16 @@ footer p {
   height: 50px;
 }
 
-.savemodel{
+.savemodel {
   position: fixed;
   top: 550px;
-  left: 38px;
+  left: 0;
   background-color: #fff;
-  color: #004FFC;
+  color: #F19A33;
   height: 45px;
   width: 45px;
   z-index: 9999;
-  border: thin solid #004FFC;
+  border: thin solid #F19A33;
   border-radius: 50%;
   cursor: pointer;
   display: flex;
@@ -355,7 +362,40 @@ footer p {
   justify-content: center;
 }
 
-.savemodel:hover{
-  background-color: #004FFC;
+.savemodel:hover {
+  background-color: #F19A33;
   color: #fff;
+}
+
+.document.disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.itemConfigM {
+  background-color: #0070c0;
+  width: 150px;
+  height: 180px;
+}
+
+.addnewModel {
+  background-color: #F19A33;
+  color: fff!important;
+  font-weight: bold;
+  font-size: 18px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.configModele{
+  border: 2px dotted #6b6969;
+  justify-content: center;
+  align-items: center;
+  padding: 30px;
+  margin: 0 auto;
 }

@@ -5,6 +5,7 @@ import { ClientsService } from 'src/app/services/clients.service';
 import { UtilisateurService } from 'src/app/services/utilisateur.service';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { NgxPrintModule } from 'ngx-print';
 import { Report } from 'notiflix/build/notiflix-report-aio';
 import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
@@ -1090,18 +1091,18 @@ export class FactureComponent {
     Confirm.show('Confirmation',
       'Voullez-vous supprimer cette facture?',
       'Oui', 'Non', () => {
-      Loading.init({
-        svgColor: '#5C6FFF',
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.docService.deleteFacture(idFacture).subscribe(
+          (response) => {
+            Notify.success(response.message);
+            this.listeFacture();
+            Loading.remove()
+          }
+        )
       });
-      Loading.hourglass();
-      this.docService.deleteFacture(idFacture).subscribe(
-        (response) => {
-          Notify.success(response.message);
-          this.listeFacture();
-          Loading.remove()
-        }
-      )
-    });
   }
 
   // liste echeance par facture
@@ -1184,19 +1185,19 @@ export class FactureComponent {
     Confirm.show('Confirmation',
       'Voullez-vous transformer ce payment reçu en échèance?',
       'Oui', 'Non', () => {
-      Loading.init({
-        svgColor: '#5C6FFF',
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.docService.PaiementEnEcheance(paramPayment).subscribe(
+          (response) => {
+            Notify.success(response.message);
+            this.listeEcheanceFacture();
+            this.listePaiementFacture();
+            Loading.remove()
+          }
+        )
       });
-      Loading.hourglass();
-      this.docService.PaiementEnEcheance(paramPayment).subscribe(
-        (response) => {
-          Notify.success(response.message);
-          this.listeEcheanceFacture();
-          this.listePaiementFacture();
-          Loading.remove()
-        }
-      )
-    });
   }
 
 
@@ -1308,18 +1309,18 @@ export class FactureComponent {
     Confirm.show('Confirmation',
       'Voullez-vous supprimer cette facture?',
       'Oui', 'Non', () => {
-      Loading.init({
-        svgColor: '#5C6FFF',
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.docService.deleteFactureAvoir(idFacture).subscribe(
+          (response) => {
+            Notify.success(response.message);
+            this.listeFactureAvoir();
+            Loading.remove()
+          }
+        )
       });
-      Loading.hourglass();
-      this.docService.deleteFactureAvoir(idFacture).subscribe(
-        (response) => {
-          Notify.success(response.message);
-          this.listeFactureAvoir();
-          Loading.remove()
-        }
-      )
-    });
   }
 
 
@@ -1488,18 +1489,18 @@ export class FactureComponent {
     Confirm.show('Confirmation',
       'Voullez-vous supprimer cette devis?',
       'Oui', 'Non', () => {
-      Loading.init({
-        svgColor: '#5C6FFF',
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.docService.deleteDevis(idDevis).subscribe(
+          (response) => {
+            Notify.success(response.message);
+            this.listeFactureAvoir();
+            Loading.remove()
+          }
+        )
       });
-      Loading.hourglass();
-      this.docService.deleteDevis(idDevis).subscribe(
-        (response) => {
-          Notify.success(response.message);
-          this.listeFactureAvoir();
-          Loading.remove()
-        }
-      )
-    });
   }
 
   annulerDevis(idDevis: any) {
@@ -1543,19 +1544,19 @@ export class FactureComponent {
     Confirm.show('Confirmation',
       'Voullez-vous transformer cette devis en vente(facture)?',
       'Oui', 'Non', () => {
-      Loading.init({
-        svgColor: '#5C6FFF',
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.docService.transformerDevisEnFacture(idDevis).subscribe(
+          (response) => {
+            Notify.success(response.message);
+            this.transformerEnFacture();
+            this.ouvrirModalFacture();
+            Loading.remove()
+          }
+        )
       });
-      Loading.hourglass();
-      this.docService.transformerDevisEnFacture(idDevis).subscribe(
-        (response) => {
-          Notify.success(response.message);
-          this.transformerEnFacture();
-          this.ouvrirModalFacture();
-          Loading.remove()
-        }
-      )
-    });
   }
 
   devisEnCommande(idDevis: any) {
@@ -1567,19 +1568,19 @@ export class FactureComponent {
     Confirm.show('Confirmation',
       'Voullez-vous transformer cette devis en Commande?',
       'Oui', 'Non', () => {
-      Loading.init({
-        svgColor: '#5C6FFF',
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.docService.transformerDevisEnCommande(idDevis).subscribe(
+          (response) => {
+            Notify.success(response.message);
+            this.transfromerEnCommande();
+            this.ouvrirModalCommande();
+            Loading.remove()
+          }
+        )
       });
-      Loading.hourglass();
-      this.docService.transformerDevisEnCommande(idDevis).subscribe(
-        (response) => {
-          Notify.success(response.message);
-          this.transfromerEnCommande();
-          this.ouvrirModalCommande();
-          Loading.remove()
-        }
-      )
-    });
   }
 
   ouvrirModalFacture() {
@@ -1734,18 +1735,18 @@ export class FactureComponent {
     Confirm.show('Confirmation',
       'Voullez-vous supprimer cette Bon de commande?',
       'Oui', 'Non', () => {
-      Loading.init({
-        svgColor: '#5C6FFF',
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.docService.deleteBonCommande(idCommande).subscribe(
+          (response) => {
+            Notify.success(response.message);
+            this.listeBonCommande();
+            Loading.remove()
+          }
+        )
       });
-      Loading.hourglass();
-      this.docService.deleteBonCommande(idCommande).subscribe(
-        (response) => {
-          Notify.success(response.message);
-          this.listeBonCommande();
-          Loading.remove()
-        }
-      )
-    });
   }
 
 
@@ -1758,18 +1759,18 @@ export class FactureComponent {
     Confirm.show('Confirmation',
       'Voullez-vous annuler cette Bon de commande?',
       'Oui', 'Non', () => {
-      Loading.init({
-        svgColor: '#5C6FFF',
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.docService.annulerBonCommande(idCommande).subscribe(
+          (response) => {
+            Notify.success(response.message);
+            this.listeBonCommande();
+            Loading.remove()
+          }
+        )
       });
-      Loading.hourglass();
-      this.docService.annulerBonCommande(idCommande).subscribe(
-        (response) => {
-          Notify.success(response.message);
-          this.listeBonCommande();
-          Loading.remove()
-        }
-      )
-    });
   }
 
   bonCommande: any;
@@ -1803,19 +1804,19 @@ export class FactureComponent {
     Confirm.show('Confirmation',
       'Voullez-vous transformer cette Bon de commande en vente(facture)?',
       'Oui', 'Non', () => {
-      Loading.init({
-        svgColor: '#5C6FFF',
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.docService.transformerCommandEnFacture(idCommande).subscribe(
+          (response) => {
+            Notify.success(response.message);
+            this.transformerCommandeEnVente();
+            this.ouvrirModalFacture();
+            Loading.remove()
+          }
+        )
       });
-      Loading.hourglass();
-      this.docService.transformerCommandEnFacture(idCommande).subscribe(
-        (response) => {
-          Notify.success(response.message);
-          this.transformerCommandeEnVente();
-          this.ouvrirModalFacture();
-          Loading.remove()
-        }
-      )
-    });
   }
 
 
@@ -1928,18 +1929,18 @@ export class FactureComponent {
     Confirm.show('Confirmation',
       'Voullez-vous supprimer cette Bon de livraison?',
       'Oui', 'Non', () => {
-      Loading.init({
-        svgColor: '#5C6FFF',
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.docService.deleteBonLivraison(idLivraison).subscribe(
+          (response) => {
+            Notify.success(response.message);
+            this.listeBonLivraison();
+            Loading.remove()
+          }
+        )
       });
-      Loading.hourglass();
-      this.docService.deleteBonLivraison(idLivraison).subscribe(
-        (response) => {
-          Notify.success(response.message);
-          this.listeBonLivraison();
-          Loading.remove()
-        }
-      )
-    });
   }
 
   preparerBonLivraison(idLivraison: any) {
@@ -1951,18 +1952,18 @@ export class FactureComponent {
     Confirm.show('Confirmation',
       'Voullez-vous préparer cette Bon de livraison?',
       'Oui', 'Non', () => {
-      Loading.init({
-        svgColor: '#5C6FFF',
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.docService.livraisonEnPreparation(idLivraison).subscribe(
+          (response) => {
+            Notify.success(response.message);
+            this.listeBonLivraison();
+            Loading.remove()
+          }
+        )
       });
-      Loading.hourglass();
-      this.docService.livraisonEnPreparation(idLivraison).subscribe(
-        (response) => {
-          Notify.success(response.message);
-          this.listeBonLivraison();
-          Loading.remove()
-        }
-      )
-    });
   }
 
   realiserBonLivraison(idLivraison: any) {
@@ -1974,18 +1975,18 @@ export class FactureComponent {
     Confirm.show('Confirmation',
       'Voullez-vous réaliser cette Bon de livraison?',
       'Oui', 'Non', () => {
-      Loading.init({
-        svgColor: '#5C6FFF',
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.docService.livraisonRealiser(idLivraison).subscribe(
+          (response) => {
+            Notify.success(response.message);
+            this.listeBonLivraison();
+            Loading.remove()
+          }
+        )
       });
-      Loading.hourglass();
-      this.docService.livraisonRealiser(idLivraison).subscribe(
-        (response) => {
-          Notify.success(response.message);
-          this.listeBonLivraison();
-          Loading.remove()
-        }
-      )
-    });
   }
 
   planifierBonLivraison(idLivraison: any) {
@@ -1997,18 +1998,18 @@ export class FactureComponent {
     Confirm.show('Confirmation',
       'Voullez-vous planifier cette Bon de livraison?',
       'Oui', 'Non', () => {
-      Loading.init({
-        svgColor: '#5C6FFF',
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.docService.livraisonPlanifier(idLivraison).subscribe(
+          (response) => {
+            Notify.success(response.message);
+            this.listeBonLivraison();
+            Loading.remove()
+          }
+        )
       });
-      Loading.hourglass();
-      this.docService.livraisonPlanifier(idLivraison).subscribe(
-        (response) => {
-          Notify.success(response.message);
-          this.listeBonLivraison();
-          Loading.remove()
-        }
-      )
-    });
   }
 
   transformerLivraisonEnVente() {
@@ -2053,19 +2054,19 @@ export class FactureComponent {
     Confirm.show('Confirmation',
       'Voullez-vous transformer cette devis en Commande?',
       'Oui', 'Non', () => {
-      Loading.init({
-        svgColor: '#5C6FFF',
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.docService.transformerLivraisonEnFacture(idLivraison).subscribe(
+          (response) => {
+            Notify.success(response.message);
+            this.transformerLivraisonEnVente();
+            this.ouvrirModalFacture();
+            Loading.remove()
+          }
+        )
       });
-      Loading.hourglass();
-      this.docService.transformerLivraisonEnFacture(idLivraison).subscribe(
-        (response) => {
-          Notify.success(response.message);
-          this.transformerLivraisonEnVente();
-          this.ouvrirModalFacture();
-          Loading.remove()
-        }
-      )
-    });
   }
 
   isPreview: boolean = false;
@@ -2074,29 +2075,38 @@ export class FactureComponent {
     this.isPreview = !this.isPreview;
   }
 
+ 
+  generatePdf(divId: string) {
+  const printSection = document.getElementById(divId);
 
-  generatePdf() {
-    // Récupérer le contenu du div "print-section"
-    const printSection = document.getElementById('print-section');
-    if (printSection) {
-      // Capturer une image du contenu du div "print-section"
-      html2canvas(printSection).then(canvas => {
-        // Créer un nouveau document PDF
-        const pdf = new jsPDF();
-
-        // Ajouter l'image du contenu au PDF
+  if (printSection) {
+    html2canvas(printSection, {
+      scale: 2,
+      useCORS: true,
+      logging: true,
+      backgroundColor: null
+    }).then(canvas => {
+      if (canvas) {
         const imgData = canvas.toDataURL('image/png');
-        // Avec 8 arguments
-        pdf.addImage(imgData, 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), 'myImage', 'FAST');
+        const pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'px',
+          format: [canvas.width, canvas.height]
+        });
 
-        // Enregistrer le PDF
+        pdf.addImage(imgData, 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), 'myImage', 'FAST');
         pdf.save('facture.pdf');
-      });
-    } else {
-      // Gérer le cas où printSection est null
-      console.error('printSection est null');
-    }
+      } else {
+        console.error('Le canvas est vide.');
+      }
+    }).catch(error => {
+      console.error('Erreur lors de la génération du PDF:', error);
+    });
+  } else {
+    console.error(`${divId} est null`);
   }
+}
+
 
   // Variables si les champs sont exacts
   exactClient: boolean = false;
