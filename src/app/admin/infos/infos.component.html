@@ -77,6 +77,10 @@
                             </select>
                             <label for="floatingSelect">Divise : </label>
                         </div>
+                        <div class="form-floating mb-3">
+                            <input type="file" class="form-control" id="fileSignature" name="Signature" (change)="getFile($event)">
+                            <label for="fileSignature">Signature de l'entreprise</label>
+                        </div>
                         <button type="submit" class="btn positionbtn" (click)="ajouterInfoSup()">Enregistrer</button>
                     </form>
                 </div>
@@ -124,6 +128,10 @@
                                   </option>
                             </select>
                             <label for="floatingSelect">Divise : </label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="file" class="form-control" id="fileSignature" name="Signature" (change)="getFile($event)">
+                            <label for="fileSignature">Signature de l'entreprise</label>
                         </div>
                         <button type="submit" class="btn positionbtn" (click)="updateInfoSup()">Enregistrer</button>
                     </form>
