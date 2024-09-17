@@ -36,7 +36,8 @@
       </div>
     </div>
   </div>
-  <div class="document" [class.disabled]="isChecked"  *ngIf="!showConfig"> <div class="savemodel">
+  <div class="document" [class.disabled]="isChecked" *ngIf="!showConfig">
+    <div class="savemodel">
       <i class="bi bi-floppy"></i>
     </div>
     <div class="row persoFacture mb-2 ">
@@ -147,6 +148,106 @@
               </div>
             </div>
           </div>
+
+          <div class="row">
+            <div class="form-section col-6 me-5">
+              <label>
+                <input type="checkbox" class="form-check-input" [ngModel]="showSignatureExpediteur"
+                  (ngModelChange)="toggleSection('showSignatureExpediteur', $event)" name="showSignatureExpediteur">
+                Signature expéditeur
+              </label>
+              <div *ngIf="showSignatureExpediteur" class="section-content">
+                <span (click)="afficherSignatureExpediteur()" style="cursor: pointer;">+ Ajouter une mention avant la
+                  signature</span>
+                <input type="text" class="form-control" [(ngModel)]="mentionExpediteur" name="mentionExpediteur"
+                  placeholder="Ajouter une mention avant la signature" *ngIf="signatureExpediteur">
+                <div class="signature-box">
+                  <p class="text-start"><i>Signature expéditeur</i></p>
+                  <span (click)="ajouterSignature('expediteur')" class="titre">+ Ajouter signature</span><br>
+                  <small>La taille de l'image ne peut pas dépasser 1 MB. Seuls les formats suivants sont supportés :
+                    PNG,
+                    GIF et JPG.</small>
+                </div>
+              </div>
+            </div>
+            <div class="form-section col-6">
+              <label>
+                <input type="checkbox" class="form-check-input" [ngModel]="showSignatureDestinataire"
+                  (ngModelChange)="toggleSection('showSignatureDestinataire', $event)" name="showSignatureDestinataire">
+                Signature destinataire
+              </label>
+              <div *ngIf="showSignatureDestinataire" class="section-content">
+                <span (click)="afficherSignatureDestinataire()" style="cursor: pointer;">+ Ajouter une mention avant la
+                  signature</span>
+                <input type="text" class="form-control" [(ngModel)]="mentionDestinataire" name="mentionDestinataire"
+                  placeholder="Ajouter une mention avant la signature" *ngIf="signatureDestinataire">
+                <div class="signature-box">
+                  <p class="text-start"><i>Signature destinataire</i></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-section col-12 w-100">
+              <label>
+                <input type="checkbox" class="form-check-input" [ngModel]="showAutresImages"
+                  (ngModelChange)="toggleSection('showAutresImages', $event)" name="showAutresImages">
+                Autres images (labels, logos...)
+              </label>
+              <div *ngIf="showAutresImages" class="section-content text-right">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor"
+                  class="bi bi-plus-circle-dotted ms-4" viewBox="0 0 16 16">
+                  <path
+                    d="M8 0q-.264 0-.523.017l.064.998a7 7 0 0 1 .918 0l.064-.998A8 8 0 0 0 8 0M6.44.152q-.52.104-1.012.27l.321.948q.43-.147.884-.237L6.44.153zm4.132.271a8 8 0 0 0-1.011-.27l-.194.98q.453.09.884.237zm1.873.925a8 8 0 0 0-.906-.524l-.443.896q.413.205.793.459zM4.46.824q-.471.233-.905.524l.556.83a7 7 0 0 1 .793-.458zM2.725 1.985q-.394.346-.74.74l.752.66q.303-.345.648-.648zm11.29.74a8 8 0 0 0-.74-.74l-.66.752q.346.303.648.648zm1.161 1.735a8 8 0 0 0-.524-.905l-.83.556q.254.38.458.793l.896-.443zM1.348 3.555q-.292.433-.524.906l.896.443q.205-.413.459-.793zM.423 5.428a8 8 0 0 0-.27 1.011l.98.194q.09-.453.237-.884zM15.848 6.44a8 8 0 0 0-.27-1.012l-.948.321q.147.43.237.884zM.017 7.477a8 8 0 0 0 0 1.046l.998-.064a7 7 0 0 1 0-.918zM16 8a8 8 0 0 0-.017-.523l-.998.064a7 7 0 0 1 0 .918l.998.064A8 8 0 0 0 16 8M.152 9.56q.104.52.27 1.012l.948-.321a7 7 0 0 1-.237-.884l-.98.194zm15.425 1.012q.168-.493.27-1.011l-.98-.194q-.09.453-.237.884zM.824 11.54a8 8 0 0 0 .524.905l.83-.556a7 7 0 0 1-.458-.793zm13.828.905q.292-.434.524-.906l-.896-.443q-.205.413-.459.793zm-12.667.83q.346.394.74.74l.66-.752a7 7 0 0 1-.648-.648zm11.29.74q.394-.346.74-.74l-.752-.66q-.302.346-.648.648zm-1.735 1.161q.471-.233.905-.524l-.556-.83a7 7 0 0 1-.793.458zm-7.985-.524q.434.292.906.524l.443-.896a7 7 0 0 1-.793-.459zm1.873.925q.493.168 1.011.27l.194-.98a7 7 0 0 1-.884-.237zm4.132.271a8 8 0 0 0 1.012-.27l-.321-.948a7 7 0 0 1-.884.237l.194.98zm-2.083.135a8 8 0 0 0 1.046 0l-.064-.998a7 7 0 0 1-.918 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
+                </svg><br>
+                <span (click)="ajouterImage()">Ajouter image</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-section col-6 me-5">
+              <label>
+                <input type="checkbox" class="form-check-input" [ngModel]="showConditionsPaiement"
+                  (ngModelChange)="toggleSection('showConditionsPaiement', $event)" name="showConditionsPaiement">
+                Conditions de paiement
+              </label>
+              <div *ngIf="showConditionsPaiement" class="section-content">
+                <textarea [(ngModel)]="conditionsPaiement" name="conditionsPaiement"
+                  placeholder="Écrivez ici les conditions de paiement, d'escompte, les pénalités, etc."></textarea>
+              </div>
+            </div>
+            <div class="form-section col-6">
+              <label>
+                <input type="checkbox" class="form-check-input" [ngModel]="showCoordonneesBancaires"
+                  (ngModelChange)="toggleSection('showCoordonneesBancaires', $event)" name="showCoordonneesBancaires">
+                Coordonnées bancaires
+              </label>
+              <div *ngIf="showCoordonneesBancaires" class="section-content">
+                <input class="form-control mb-2" [(ngModel)]="titulaireCompte" name="titulaireCompte"
+                  placeholder="Titulaire Compte">
+                <input class="form-control mb-2" [(ngModel)]="banque" name="banque" placeholder="Banque">
+                <input class="form-control" [(ngModel)]="compte" name="compte" placeholder="Compte">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-section col-12 w-100">
+              <label>
+                <input type="checkbox" class="form-check-input" [ngModel]="showNotePiedPage"
+                  (ngModelChange)="toggleSection('showNotePiedPage', $event)" name="showNotePiedPage">
+                Note pied de page
+              </label>
+              <div *ngIf="showNotePiedPage" class="section-content">
+                <textarea [(ngModel)]="notePiedPage" name="notePiedPage"
+                  placeholder="Écrivez ici ce que vous voudriez ajouter à la fin de ce document (ex. spécifiés juridico-légales, politique de remboursements, mot de remerciement pour l'achat, slogan de votre entreprise, etc)."></textarea>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -236,6 +337,104 @@
               </table>
             </div>
           </div>
+          <div class="row">
+            <div class="form-section col-6 me-5">
+              <label>
+                <input type="checkbox" class="form-check-input" [ngModel]="showSignatureExpediteur"
+                  (ngModelChange)="toggleSection('showSignatureExpediteur', $event)" name="showSignatureExpediteur">
+                Signature expéditeur
+              </label>
+              <div *ngIf="showSignatureExpediteur" class="section-content">
+                <span (click)="afficherSignatureExpediteur()" style="cursor: pointer;">+ Ajouter une mention avant la
+                  signature</span>
+                <input type="text" class="form-control" [(ngModel)]="mentionExpediteur" name="mentionExpediteur"
+                  placeholder="Ajouter une mention avant la signature" *ngIf="signatureExpediteur">
+                <div class="signature-box">
+                  <p class="text-start"><i>Signature expéditeur</i></p>
+                  <span (click)="ajouterSignature('expediteur')" class="titre">+ Ajouter signature</span><br>
+                  <small>La taille de l'image ne peut pas dépasser 1 MB. Seuls les formats suivants sont supportés :
+                    PNG,
+                    GIF et JPG.</small>
+                </div>
+              </div>
+            </div>
+            <div class="form-section col-6">
+              <label>
+                <input type="checkbox" class="form-check-input" [ngModel]="showSignatureDestinataire"
+                  (ngModelChange)="toggleSection('showSignatureDestinataire', $event)" name="showSignatureDestinataire">
+                Signature destinataire
+              </label>
+              <div *ngIf="showSignatureDestinataire" class="section-content">
+                <span (click)="afficherSignatureDestinataire()" style="cursor: pointer;">+ Ajouter une mention avant la
+                  signature</span>
+                <input type="text" class="form-control" [(ngModel)]="mentionDestinataire" name="mentionDestinataire"
+                  placeholder="Ajouter une mention avant la signature" *ngIf="signatureDestinataire">
+                <div class="signature-box">
+                  <p class="text-start"><i>Signature destinataire</i></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-section col-12 w-100">
+              <label>
+                <input type="checkbox" class="form-check-input" [ngModel]="showAutresImages"
+                  (ngModelChange)="toggleSection('showAutresImages', $event)" name="showAutresImages">
+                Autres images (labels, logos...)
+              </label>
+              <div *ngIf="showAutresImages" class="section-content text-right">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor"
+                  class="bi bi-plus-circle-dotted ms-4" viewBox="0 0 16 16">
+                  <path
+                    d="M8 0q-.264 0-.523.017l.064.998a7 7 0 0 1 .918 0l.064-.998A8 8 0 0 0 8 0M6.44.152q-.52.104-1.012.27l.321.948q.43-.147.884-.237L6.44.153zm4.132.271a8 8 0 0 0-1.011-.27l-.194.98q.453.09.884.237zm1.873.925a8 8 0 0 0-.906-.524l-.443.896q.413.205.793.459zM4.46.824q-.471.233-.905.524l.556.83a7 7 0 0 1 .793-.458zM2.725 1.985q-.394.346-.74.74l.752.66q.303-.345.648-.648zm11.29.74a8 8 0 0 0-.74-.74l-.66.752q.346.303.648.648zm1.161 1.735a8 8 0 0 0-.524-.905l-.83.556q.254.38.458.793l.896-.443zM1.348 3.555q-.292.433-.524.906l.896.443q.205-.413.459-.793zM.423 5.428a8 8 0 0 0-.27 1.011l.98.194q.09-.453.237-.884zM15.848 6.44a8 8 0 0 0-.27-1.012l-.948.321q.147.43.237.884zM.017 7.477a8 8 0 0 0 0 1.046l.998-.064a7 7 0 0 1 0-.918zM16 8a8 8 0 0 0-.017-.523l-.998.064a7 7 0 0 1 0 .918l.998.064A8 8 0 0 0 16 8M.152 9.56q.104.52.27 1.012l.948-.321a7 7 0 0 1-.237-.884l-.98.194zm15.425 1.012q.168-.493.27-1.011l-.98-.194q-.09.453-.237.884zM.824 11.54a8 8 0 0 0 .524.905l.83-.556a7 7 0 0 1-.458-.793zm13.828.905q.292-.434.524-.906l-.896-.443q-.205.413-.459.793zm-12.667.83q.346.394.74.74l.66-.752a7 7 0 0 1-.648-.648zm11.29.74q.394-.346.74-.74l-.752-.66q-.302.346-.648.648zm-1.735 1.161q.471-.233.905-.524l-.556-.83a7 7 0 0 1-.793.458zm-7.985-.524q.434.292.906.524l.443-.896a7 7 0 0 1-.793-.459zm1.873.925q.493.168 1.011.27l.194-.98a7 7 0 0 1-.884-.237zm4.132.271a8 8 0 0 0 1.012-.27l-.321-.948a7 7 0 0 1-.884.237l.194.98zm-2.083.135a8 8 0 0 0 1.046 0l-.064-.998a7 7 0 0 1-.918 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
+                </svg><br>
+                <span (click)="ajouterImage()">Ajouter image</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-section col-6 me-5">
+              <label>
+                <input type="checkbox" class="form-check-input" [ngModel]="showConditionsPaiement"
+                  (ngModelChange)="toggleSection('showConditionsPaiement', $event)" name="showConditionsPaiement">
+                Conditions de paiement
+              </label>
+              <div *ngIf="showConditionsPaiement" class="section-content">
+                <textarea [(ngModel)]="conditionsPaiement" name="conditionsPaiement"
+                  placeholder="Écrivez ici les conditions de paiement, d'escompte, les pénalités, etc."></textarea>
+              </div>
+            </div>
+            <div class="form-section col-6">
+              <label>
+                <input type="checkbox" class="form-check-input" [ngModel]="showCoordonneesBancaires"
+                  (ngModelChange)="toggleSection('showCoordonneesBancaires', $event)" name="showCoordonneesBancaires">
+                Coordonnées bancaires
+              </label>
+              <div *ngIf="showCoordonneesBancaires" class="section-content">
+                <input class="form-control mb-2" [(ngModel)]="titulaireCompte" name="titulaireCompte"
+                  placeholder="Titulaire Compte">
+                <input class="form-control mb-2" [(ngModel)]="banque" name="banque" placeholder="Banque">
+                <input class="form-control" [(ngModel)]="compte" name="compte" placeholder="Compte">
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="form-section col-12 w-100">
+              <label>
+                <input type="checkbox" class="form-check-input" [ngModel]="showNotePiedPage"
+                  (ngModelChange)="toggleSection('showNotePiedPage', $event)" name="showNotePiedPage">
+                Note pied de page
+              </label>
+              <div *ngIf="showNotePiedPage" class="section-content">
+                <textarea [(ngModel)]="notePiedPage" name="notePiedPage"
+                  placeholder="Écrivez ici ce que vous voudriez ajouter à la fin de ce document (ex. spécifiés juridico-légales, politique de remboursements, mot de remerciement pour l'achat, slogan de votre entreprise, etc)."></textarea>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -319,6 +518,106 @@
                 </tr>
               </table>
             </div>
+            <div class="row">
+              <div class="form-section col-6 me-5">
+                <label>
+                  <input type="checkbox" class="form-check-input" [ngModel]="showSignatureExpediteur"
+                    (ngModelChange)="toggleSection('showSignatureExpediteur', $event)" name="showSignatureExpediteur">
+                  Signature expéditeur
+                </label>
+                <div *ngIf="showSignatureExpediteur" class="section-content">
+                  <span (click)="afficherSignatureExpediteur()" style="cursor: pointer;">+ Ajouter une mention avant la
+                    signature</span>
+                  <input type="text" class="form-control" [(ngModel)]="mentionExpediteur" name="mentionExpediteur"
+                    placeholder="Ajouter une mention avant la signature" *ngIf="signatureExpediteur">
+                  <div class="signature-box">
+                    <p class="text-start"><i>Signature expéditeur</i></p>
+                    <span (click)="ajouterSignature('expediteur')" class="titre">+ Ajouter signature</span><br>
+                    <small>La taille de l'image ne peut pas dépasser 1 MB. Seuls les formats suivants sont supportés :
+                      PNG,
+                      GIF et JPG.</small>
+                  </div>
+                </div>
+              </div>
+              <div class="form-section col-6">
+                <label>
+                  <input type="checkbox" class="form-check-input" [ngModel]="showSignatureDestinataire"
+                    (ngModelChange)="toggleSection('showSignatureDestinataire', $event)"
+                    name="showSignatureDestinataire">
+                  Signature destinataire
+                </label>
+                <div *ngIf="showSignatureDestinataire" class="section-content">
+                  <span (click)="afficherSignatureDestinataire()" style="cursor: pointer;">+ Ajouter une mention avant
+                    la
+                    signature</span>
+                  <input type="text" class="form-control" [(ngModel)]="mentionDestinataire" name="mentionDestinataire"
+                    placeholder="Ajouter une mention avant la signature" *ngIf="signatureDestinataire">
+                  <div class="signature-box">
+                    <p class="text-start"><i>Signature destinataire</i></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-section col-12 w-100">
+                <label>
+                  <input type="checkbox" class="form-check-input" [ngModel]="showAutresImages"
+                    (ngModelChange)="toggleSection('showAutresImages', $event)" name="showAutresImages">
+                  Autres images (labels, logos...)
+                </label>
+                <div *ngIf="showAutresImages" class="section-content text-right">
+
+                  <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor"
+                    class="bi bi-plus-circle-dotted ms-4" viewBox="0 0 16 16">
+                    <path
+                      d="M8 0q-.264 0-.523.017l.064.998a7 7 0 0 1 .918 0l.064-.998A8 8 0 0 0 8 0M6.44.152q-.52.104-1.012.27l.321.948q.43-.147.884-.237L6.44.153zm4.132.271a8 8 0 0 0-1.011-.27l-.194.98q.453.09.884.237zm1.873.925a8 8 0 0 0-.906-.524l-.443.896q.413.205.793.459zM4.46.824q-.471.233-.905.524l.556.83a7 7 0 0 1 .793-.458zM2.725 1.985q-.394.346-.74.74l.752.66q.303-.345.648-.648zm11.29.74a8 8 0 0 0-.74-.74l-.66.752q.346.303.648.648zm1.161 1.735a8 8 0 0 0-.524-.905l-.83.556q.254.38.458.793l.896-.443zM1.348 3.555q-.292.433-.524.906l.896.443q.205-.413.459-.793zM.423 5.428a8 8 0 0 0-.27 1.011l.98.194q.09-.453.237-.884zM15.848 6.44a8 8 0 0 0-.27-1.012l-.948.321q.147.43.237.884zM.017 7.477a8 8 0 0 0 0 1.046l.998-.064a7 7 0 0 1 0-.918zM16 8a8 8 0 0 0-.017-.523l-.998.064a7 7 0 0 1 0 .918l.998.064A8 8 0 0 0 16 8M.152 9.56q.104.52.27 1.012l.948-.321a7 7 0 0 1-.237-.884l-.98.194zm15.425 1.012q.168-.493.27-1.011l-.98-.194q-.09.453-.237.884zM.824 11.54a8 8 0 0 0 .524.905l.83-.556a7 7 0 0 1-.458-.793zm13.828.905q.292-.434.524-.906l-.896-.443q-.205.413-.459.793zm-12.667.83q.346.394.74.74l.66-.752a7 7 0 0 1-.648-.648zm11.29.74q.394-.346.74-.74l-.752-.66q-.302.346-.648.648zm-1.735 1.161q.471-.233.905-.524l-.556-.83a7 7 0 0 1-.793.458zm-7.985-.524q.434.292.906.524l.443-.896a7 7 0 0 1-.793-.459zm1.873.925q.493.168 1.011.27l.194-.98a7 7 0 0 1-.884-.237zm4.132.271a8 8 0 0 0 1.012-.27l-.321-.948a7 7 0 0 1-.884.237l.194.98zm-2.083.135a8 8 0 0 0 1.046 0l-.064-.998a7 7 0 0 1-.918 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
+                  </svg><br>
+                  <span (click)="ajouterImage()">Ajouter image</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-section col-6 me-5">
+                <label>
+                  <input type="checkbox" class="form-check-input" [ngModel]="showConditionsPaiement"
+                    (ngModelChange)="toggleSection('showConditionsPaiement', $event)" name="showConditionsPaiement">
+                  Conditions de paiement
+                </label>
+                <div *ngIf="showConditionsPaiement" class="section-content">
+                  <textarea [(ngModel)]="conditionsPaiement" name="conditionsPaiement"
+                    placeholder="Écrivez ici les conditions de paiement, d'escompte, les pénalités, etc."></textarea>
+                </div>
+              </div>
+              <div class="form-section col-6">
+                <label>
+                  <input type="checkbox" class="form-check-input" [ngModel]="showCoordonneesBancaires"
+                    (ngModelChange)="toggleSection('showCoordonneesBancaires', $event)" name="showCoordonneesBancaires">
+                  Coordonnées bancaires
+                </label>
+                <div *ngIf="showCoordonneesBancaires" class="section-content">
+                  <input class="form-control mb-2" [(ngModel)]="titulaireCompte" name="titulaireCompte"
+                    placeholder="Titulaire Compte">
+                  <input class="form-control mb-2" [(ngModel)]="banque" name="banque" placeholder="Banque">
+                  <input class="form-control" [(ngModel)]="compte" name="compte" placeholder="Compte">
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="form-section col-12 w-100">
+                <label>
+                  <input type="checkbox" class="form-check-input" [ngModel]="showNotePiedPage"
+                    (ngModelChange)="toggleSection('showNotePiedPage', $event)" name="showNotePiedPage">
+                  Note pied de page
+                </label>
+                <div *ngIf="showNotePiedPage" class="section-content">
+                  <textarea [(ngModel)]="notePiedPage" name="notePiedPage"
+                    placeholder="Écrivez ici ce que vous voudriez ajouter à la fin de ce document (ex. spécifiés juridico-légales, politique de remboursements, mot de remerciement pour l'achat, slogan de votre entreprise, etc)."></textarea>
+                </div>
+              </div>
+            </div>
           </div>
         </main>
         <!-- <footer>
@@ -329,8 +628,9 @@
     </div>
   </div>
 
-  <div class="configModele"  *ngIf="showConfig">
-    <p>Pensez à bien indiquer toutes les mentions obligatoires propres à votre pays/région/secteur d'activité (ex. N° de TVA intracommunautaire, forme juridique, capital social, mention microentreprise etc.)</p>
+  <div class="configModele" *ngIf="showConfig">
+    <p>Pensez à bien indiquer toutes les mentions obligatoires propres à votre pays/région/secteur d'activité (ex. N° de
+      TVA intracommunautaire, forme juridique, capital social, mention microentreprise etc.)</p>
     <div class="configM d-flex justify-content-start  align-items-center ">
       <div class="itemConfigM me-2">
 

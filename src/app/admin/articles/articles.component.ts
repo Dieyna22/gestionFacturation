@@ -81,12 +81,12 @@ export class ArticlesComponent {
 
   active: string = 'non';
 
-  client:String="";
-  article:string="";
-  montant:string="";
+  client: String = "";
+  article: string = "";
+  montant: string = "";
 
 
-  constructor(private http: HttpClient, private articleService: ArticlesService, private promoService: PromoService, private Categorie: CategorieArticleService,private grilleservice:GrilleTarifaireService,private clientService: ClientsService) { }
+  constructor(private http: HttpClient, private articleService: ArticlesService, private promoService: PromoService, private Categorie: CategorieArticleService, private grilleservice: GrilleTarifaireService, private clientService: ClientsService) { }
 
 
 
@@ -116,23 +116,23 @@ export class ArticlesComponent {
   }
 
 
-  ajouterGrilles(){
-    let grille={
-     "idClient":this.client,
-     "idArticle":this.article,
-     "montantTarif":this.montant,
-     "tva":this.tva
+  ajouterGrilles() {
+    let grille = {
+      "idClient": this.client,
+      "idArticle": this.article,
+      "montantTarif": this.montant,
+      "tva": this.tva
     }
     this.grilleservice.addGrille(grille).subscribe(
-      (user:any)=>{
-        Report.success('Notiflix Success',user.message,'Okay',);
+      (user: any) => {
+        Report.success('Notiflix Success', user.message, 'Okay',);
       },
       (err) => {
       }
     )
   }
-  
-  tabClient:any;
+
+  tabClient: any;
   listeClients() {
     this.clientService.getAllClients().subscribe(
       (clients: any) => {
@@ -240,14 +240,14 @@ export class ArticlesComponent {
       }
     )
   }
-  products:any;
+  products: any;
   listeArticles() {
     this.articleService.getAllArticles().subscribe(
       (article: any) => {
         this.tabArticle = article;
         this.tabArticleFilter = this.tabArticle.filter((article: any) => article.type_article == 'produit');
         console.log(this.tabArticleFilter)
-        this.products=this.tabArticle;
+        this.products = this.tabArticle;
       },
       (err) => {
         console.log(err);
@@ -536,6 +536,13 @@ export class ArticlesComponent {
   // Attribut pour la pagination
   itemsParPage = 3; // Nombre d'articles par page
   pageActuelle = 1; // Page actuelle
+
+
+  // chager la valeur du nombre de resulat par page
+  changeValue() {
+    this.itemsParPage = this.itemsParPage;
+  }
+
 
   // Pagination 
   // Méthode pour déterminer les articles à afficher sur la page actuelle

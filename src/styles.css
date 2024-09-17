@@ -93,21 +93,21 @@ thead tr {
   margin: 20px auto !important;
 }
 
-.zoneSearch .filtre{
-  margin: 10px auto!important;
+.zoneSearch .filtre {
+  margin: 10px auto !important;
   width: 80%;
 }
 
-.btnOutline{
-  background-color: #fff!important;
-  border: thin solid #3c3b3b!important;
+.btnOutline {
+  background-color: #fff !important;
+  border: thin solid #3c3b3b !important;
   margin: 0px 4px;
-  border-radius: 30px!important;
+  border-radius: 30px !important;
 }
 
-.zoneSearch  .btnOutline:hover{
-  background-color:#3c3b3b!important;
-  color: #fff!important;
+.zoneSearch .btnOutline:hover {
+  background-color: #3c3b3b !important;
+  color: #fff !important;
 }
 
 .btnSearch {
@@ -122,7 +122,7 @@ thead tr {
   margin: 0 auto !important;
 }
 
-.spacetab{
+.spacetab {
   width: 100%;
   border: 2px solid red;
 }
@@ -153,10 +153,18 @@ thead tr {
 .ajouter {
   background-color: #F19A33 !important;
   color: #FFFFFF !important;
-  padding: 4px 10px;
+  padding: 15px 30px;
   display: flex;
   justify-content: end;
-  border-radius: 30px!important;
+  border-radius: 8px !important;
+}
+
+.ajouterVente {
+  background-color: #F19A33 !important;
+  padding: 2px;
+  color: #FFFFFF !important;
+  border-radius: 8px !important;
+
 }
 
 /* pagination  */
@@ -281,6 +289,19 @@ thead tr {
   color: #fff;
 }
 
-tr{
+tr {
+  cursor: pointer;
+}
+
+.paramPagination i {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  font-weight: bold;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4px;
   cursor: pointer;
 }

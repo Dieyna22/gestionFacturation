@@ -25,11 +25,22 @@
     </div>
     <div class="row contenu px-5">
       <!-- Button modal Ajout Utilisateurs -->
-       <div class="d-grid gap-2  mb-4 d-md-flex justify-content-md-end">
+       <div class="d-grid gap-2  mb-2 d-md-flex justify-content-md-end">
+        <button type="button" class="btn  btnOutline me-2 mb-2" routerLink="/depense" >
+         Fournisseurs
+        </button>
+        <button type="button" class="btn  btnOutline me-2 mb-2" routerLink="/achat">
+         Commande d'Achat
+        </button>
+        <button type="button" class="btn  btnOutline me-2 mb-2" routerLink="/stock">
+          Stock
+        </button>
          <button type="button" class="btn ajouter mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
-           Ajouter Article
+           Ajouter Produit
          </button>
        </div>
+
+       <div class="paramPagination d-flex justify-content-end  mb-2" data-bs-toggle="modal" data-bs-target="#pagination"><i class="bi bi-gear"></i></div>
       <!-- Liste des Utilisateurs  -->
       <div class="col-md-12">
         <div class="card px-2 py-2 pt-4 rounded-4">
@@ -970,3 +981,29 @@
       </div>
     </div>
   </div>
+
+    <!-- Modal configuration pagination -->
+    <div class="modal fade mt-5" id="pagination" tabindex="-1" aria-labelledby="paginationLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content mt-5">
+            <div class="d-flex">
+              <div class="p-3 flex-grow-1">
+                <h3 class="modal-title" id="paginationLabel">Configuration pagination</h3>
+              </div>
+              <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+            </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">Résultats / page : </label>
+              <select [(ngModel)]="itemsParPage">
+                <option value="3"  name="itemsParPage" class="form-control">3</option>
+                <option value="5"  name="itemsParPage" class="form-control">5</option>
+                <option value="7"  name="itemsParPage" class="form-control">7</option>
+              </select>
+            </div>
+            <button class="btn btnAction d-flex justify-content-start" (click)="changeValue()">Sauvegarder</button>
+          </div>
+        </div>
+      </div>
+    </div>

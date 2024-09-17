@@ -380,7 +380,7 @@ footer p {
 
 .addnewModel {
   background-color: #F19A33;
-  color: fff!important;
+  color: fff !important;
   font-weight: bold;
   font-size: 18px;
   width: 40px;
@@ -392,10 +392,44 @@ footer p {
   align-items: center;
 }
 
-.configModele{
+.configModele {
   border: 2px dotted #6b6969;
   justify-content: center;
   align-items: center;
   padding: 30px;
   margin: 0 auto;
+}
+
+.form-section {
+  margin-bottom: 20px;
+  border: 1px dashed #ccc;
+  padding: 10px;
+  width: 48%;
+}
+
+.section-content {
+  margin-top: 10px;
+}
+
+.signature-box {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+textarea {
+  width: 100%;
+  height: 100px;
+}
+
+.addTof{
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  padding: 4px 8px;
+}
+
+.titre{
+  color: #467aea;
 }

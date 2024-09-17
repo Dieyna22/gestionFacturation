@@ -2075,37 +2075,37 @@ export class FactureComponent {
     this.isPreview = !this.isPreview;
   }
 
- 
+
   generatePdf(divId: string) {
-  const printSection = document.getElementById(divId);
+    const printSection = document.getElementById(divId);
 
-  if (printSection) {
-    html2canvas(printSection, {
-      scale: 2,
-      useCORS: true,
-      logging: true,
-      backgroundColor: null
-    }).then(canvas => {
-      if (canvas) {
-        const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF({
-          orientation: 'portrait',
-          unit: 'px',
-          format: [canvas.width, canvas.height]
-        });
+    if (printSection) {
+      html2canvas(printSection, {
+        scale: 2,
+        useCORS: true,
+        logging: true,
+        backgroundColor: null
+      }).then(canvas => {
+        if (canvas) {
+          const imgData = canvas.toDataURL('image/png');
+          const pdf = new jsPDF({
+            orientation: 'portrait',
+            unit: 'px',
+            format: [canvas.width, canvas.height]
+          });
 
-        pdf.addImage(imgData, 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), 'myImage', 'FAST');
-        pdf.save('facture.pdf');
-      } else {
-        console.error('Le canvas est vide.');
-      }
-    }).catch(error => {
-      console.error('Erreur lors de la génération du PDF:', error);
-    });
-  } else {
-    console.error(`${divId} est null`);
+          pdf.addImage(imgData, 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight(), 'myImage', 'FAST');
+          pdf.save('facture.pdf');
+        } else {
+          console.error('Le canvas est vide.');
+        }
+      }).catch(error => {
+        console.error('Erreur lors de la génération du PDF:', error);
+      });
+    } else {
+      console.error(`${divId} est null`);
+    }
   }
-}
 
 
   // Variables si les champs sont exacts
@@ -2175,6 +2175,11 @@ export class FactureComponent {
   // Attribut pour la pagination
   itemsParPage = 3; // Nombre d'articles par page
   pageActuelle = 1; // Page actuelle
+
+  // chager la valeur du nombre de resulat par page
+  changeValue() {
+    this.itemsParPage = this.itemsParPage;
+  }
 
   // Pagination 
   // Méthode pour déterminer les articles à afficher sur la page actuelle

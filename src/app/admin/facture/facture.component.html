@@ -35,12 +35,13 @@
         <!-- <li><a  [ngClass]="{'currentItemNav': boutonActif === 5}" (click)="showTypeDocument('Bon d&#x2019;achat')" (click)="boutonActif = 5">Bon d'achat</a></li> -->
       </ul>
     </div>
+    <div class="paramPagination d-flex justify-content-end  mb-2" data-bs-toggle="modal" data-bs-target="#pagination"><i class="bi bi-gear"></i></div>
     <!-- Tableau Facture -->
     <div class="col-md-12" id="Facture" *ngIf="currentDoc==='Facture'">
       <div class="card mb-4 px-2 py-2 pt-4 rounded-4">
         <div class="me-5 mb-2 d-md-flex justify-content-md-end">
-          <div class="btn-group ajouter">
-            <button type="button" class="btn ajouter" data-bs-toggle="modal" data-bs-target="#facture"
+          <div class="btn-group ajouterVente">
+            <button type="button" class="btn text-light" data-bs-toggle="modal" data-bs-target="#facture"
               (click)="removeLocalStorage()">Ajouter vente</button>
             <button type="button" class="btn ajouter dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
               aria-expanded="false">
@@ -436,6 +437,32 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+ <!-- Modal configuration pagination -->
+ <div class="modal fade mt-5" id="pagination" tabindex="-1" aria-labelledby="paginationLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content mt-5">
+        <div class="d-flex">
+          <div class="p-3 flex-grow-1">
+            <h3 class="modal-title" id="paginationLabel">Configuration pagination</h3>
+          </div>
+          <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label">Résultats / page : </label>
+          <select [(ngModel)]="itemsParPage">
+            <option value="3"  name="itemsParPage" class="form-control">3</option>
+            <option value="5"  name="itemsParPage" class="form-control">5</option>
+            <option value="7"  name="itemsParPage" class="form-control">7</option>
+          </select>
+        </div>
+        <button class="btn btnAction d-flex justify-content-start" (click)="changeValue()">Sauvegarder</button>
       </div>
     </div>
   </div>
