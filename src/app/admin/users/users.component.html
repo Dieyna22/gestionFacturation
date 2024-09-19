@@ -9,8 +9,8 @@
       <button class="btn btnSearch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
     </div>
     <div class="d-flex filtre">
-      <button type="button" class="btn btnOutline">No archiver</button>
-      <button type="button" class="btn btnOutline">Archiver</button>
+      <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 1}"  (click)="listeUserNoArchiver(); actif = 1">No archiver</button>
+      <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 2}"  (click)="listeUserArchiver(); actif = 2 ">Archiver</button>
     </div>
   </div>
   <div class="row contenu px-5">
@@ -32,7 +32,6 @@
           </div>
         </div>
 
-        <!-- Le tableau des réseaux -->
         <div class="table-responsive ">
           <table class="table mb-4">
             <thead>
@@ -45,18 +44,34 @@
               </tr>
             </thead>
             <tbody *ngFor="let user of getItemsPage()">
-              <tr (click)="chargerInfosUser(user)"
-              data-bs-toggle="modal" data-bs-target="#ModalModifier">
+             <ng-container *ngIf="user.archiver=='non'">
+              <tr>
+                <td (click)="chargerInfosUser(user)"
+                data-bs-toggle="modal" data-bs-target="#ModalModifier">{{user.nom}}</td>
+                <td (click)="chargerInfosUser(user)"
+                data-bs-toggle="modal" data-bs-target="#ModalModifier">{{user.prenom}}</td>
+                <td (click)="chargerInfosUser(user)"
+                data-bs-toggle="modal" data-bs-target="#ModalModifier">{{user.email}}</td>
+                <td (click)="chargerInfosUser(user)"
+                data-bs-toggle="modal" data-bs-target="#ModalModifier">{{user.role}}</td>
+                <td (click)="$event.stopPropagation()">
+                  <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfosUser(user) ; $event.stopPropagation()"
+                    data-bs-toggle="modal" data-bs-target="#ModalModifier"></i>
+                  <i class="bi bi-archive" title="bloquer" (click)="archiver(user.id) ; $event.stopPropagation()"></i>
+                </td>
+              </tr>
+             </ng-container>
+             <ng-container *ngIf="user.archiver=='oui'">
+              <tr>
                 <td>{{user.nom}}</td>
                 <td>{{user.prenom}}</td>
                 <td>{{user.email}}</td>
                 <td>{{user.role}}</td>
                 <td>
-                  <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfosUser(user)"
-                    data-bs-toggle="modal" data-bs-target="#ModalModifier"></i>
-                  <i class="bi bi-archive" title="bloquer" (click)="archiver(user.id)"></i>
+                    <i class="bi bi-archive" title="débloquer" (click)="desarchiver(user.id)"></i>
                 </td>
-              </tr>
+            </tr>
+             </ng-container>
             </tbody>
           </table>
         </div>
@@ -80,6 +95,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </div>
 
@@ -139,61 +155,42 @@
             </select>
           </div>
         </form>
-        <form *ngIf="section=='permission'">
+        <form *ngIf="section === 'permission'">
           <div class="role mb-2">
-            <span class="permission me-5">Visibilité de l'utilisateur : </span>
-            <span class="info-container">
-              <i class="bi bi-info-circle-fill"></i>
-              <span class="bulleInfos">
-                Un utilisateur avec visibilité limitée <br> a uniquement accès aux données ajoutées par lui-même <br> et
-                aux clients, produits et services <br> ajoutés par des utilisateurs globaux.
-              </span>
-            </span>
+            <span class="permission me-5">Visibilité de l'utilisateur :</span>
             <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="visibiliteGlobale" [(ngModel)]="visibiliteGlobale">
               <label class="form-check-label" for="flexSwitchCheckDefault">Utilisateur avec visibilité GLOBALE</label>
             </div>
           </div>
           <div class="role mb-2">
-            <span class="permission me-5">Accès : </span>
+            <span class="permission me-5">Accès :</span>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-              <label class="form-check-label" for="defaultCheck1">
-                Fonctions d'administration
-              </label>
+              <input class="form-check-input" type="checkbox" id="defaultCheck1" name="fonctionAdmin" [(ngModel)]="fonctionAdmin">
+              <label class="form-check-label" for="defaultCheck1">Fonctions d'administration</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-              <label class="form-check-label" for="defaultCheck2">
-                Tableau de bord et Rapports
-              </label>
+              <input class="form-check-input" type="checkbox" id="defaultCheck2" name="accesRapport" [(ngModel)]="accesRapport">
+              <label class="form-check-label" for="defaultCheck2">Tableau de bord et Rapports</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
-              <label class="form-check-label" for="defaultCheck3">
-                Gestion du Stock
-              </label>
+              <input class="form-check-input" type="checkbox" id="defaultCheck3" name="gestionStock" [(ngModel)]="gestionStock">
+              <label class="form-check-label" for="defaultCheck3">Gestion du Stock</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
-              <label class="form-check-label" for="defaultCheck4">
-                Commandes d'achat et prix d'achat
-              </label>
+              <input class="form-check-input" type="checkbox" id="defaultCheck4" name="commandeAchat" [(ngModel)]="commandeAchat">
+              <label class="form-check-label" for="defaultCheck4">Commandes d'achat et prix d'achat</label>
             </div>
           </div>
           <div class="role mb-2">
-            <span class="permission me-5">Droits : </span>
+            <span class="permission me-5">Droits :</span>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-              <label class="form-check-label" for="defaultCheck1">
-                Exporter des données (Excel)
-              </label>
+              <input class="form-check-input" type="checkbox" id="defaultCheck5" name="exportExcel" [(ngModel)]="exportExcel">
+              <label class="form-check-label" for="defaultCheck5">Exporter des données (Excel)</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-              <label class="form-check-label" for="defaultCheck2">
-                Supprimer des données
-              </label>
+              <input class="form-check-input" type="checkbox" id="defaultCheck6" name="supprimerDonnees" [(ngModel)]="supprimerDonnees">
+              <label class="form-check-label" for="defaultCheck6">Supprimer des données</label>
             </div>
           </div>
         </form>
@@ -225,16 +222,16 @@
       <div class="modal-body">
         <form *ngIf="section=='general'">
           <div class="mb-3">
-            <label for="validationServer01" class="form-label">Prénom</label>
-            <input type="text" class="form-control" id="validationServer01" name="prenom" [(ngModel)]="inputprenom">
+            <label for="validationServer03" class="form-label">Prénom</label>
+            <input type="text" class="form-control" id="validationServer03" name="prenom" [(ngModel)]="inputprenom">
           </div>
           <div class="mb-3">
-            <label for="validationServer02" class="form-label">Nom</label>
-            <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="inputnom">
+            <label for="validationServer04" class="form-label">Nom</label>
+            <input type="text" class="form-control" id="validationServer04" name="nom" [(ngModel)]="inputnom">
           </div>
           <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Email</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="mail"
+            <label for="exampleInputEmail2" class="form-label">Email</label>
+            <input type="email" class="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" name="mail"
               [(ngModel)]="inputmail">
           </div>
           <div class="mb-3 ">
@@ -248,10 +245,10 @@
           <a class="updatePass" (click)="showUpdatePassword()">(+) Modifier le mot de passe</a>
           <div *ngIf="password">
             <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label">Mot de passe actuelle</label>
+              <label for="passwordInput1" class="form-label">Mot de passe actuelle</label>
               <div class="input-group">
-                <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput" name="password"
-                  [(ngModel)]="inputpass" class="form-control">
+                <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput1" name="password"
+                  [(ngModel)]="inputpassactuel" class="form-control">
                 <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()">
                   <ng-container *ngIf="showPassword; else hideIcon">
                     <i class="bi bi-eye"></i>
@@ -263,10 +260,10 @@
               </div>
             </div>
             <div class="mb-3">
-              <label for="exampleInputPassword1" class="form-label">Nouveau Mot de passe</label>
+              <label for="passwordInput2" class="form-label">Nouveau Mot de passe</label>
               <div class="input-group">
-                <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput" name="password"
-                  [(ngModel)]="inputpass" class="form-control">
+                <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput2" name="password"
+                  [(ngModel)]="inputpassnew" class="form-control">
                 <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()">
                   <ng-container *ngIf="showPassword; else hideIcon">
                     <i class="bi bi-eye"></i>
@@ -277,63 +274,45 @@
                 </button>
               </div>
             </div>
+            <button class="btn btnAction" (click)="updatePassword()">modifier</button>
           </div>
         </form>
-        <form *ngIf="section=='permission'">
+        <form *ngIf="section === 'permission'">
           <div class="role mb-2">
-            <span class="permission me-5">Visibilité de l'utilisateur : </span>
-            <span class="info-container">
-              <i class="bi bi-info-circle-fill"></i>
-              <span class="bulleInfos">
-                Un utilisateur avec visibilité limitée <br> a uniquement accès aux données ajoutées par lui-même <br> et
-                aux clients, produits et services <br> ajoutés par des utilisateurs globaux.
-              </span>
-            </span>
+            <span class="permission me-5">Visibilité de l'utilisateur :</span>
             <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+              <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="visibiliteGlobale" [(ngModel)]="visibiliteGlobale">
               <label class="form-check-label" for="flexSwitchCheckDefault">Utilisateur avec visibilité GLOBALE</label>
             </div>
           </div>
           <div class="role mb-2">
-            <span class="permission me-5">Accès : </span>
+            <span class="permission me-5">Accès :</span>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-              <label class="form-check-label" for="defaultCheck1">
-                Fonctions d'administration
-              </label>
+              <input class="form-check-input" type="checkbox" id="defaultCheck1" name="fonctionAdmin" [(ngModel)]="fonctionAdmin">
+              <label class="form-check-label" for="defaultCheck1">Fonctions d'administration</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-              <label class="form-check-label" for="defaultCheck2">
-                Tableau de bord et Rapports
-              </label>
+              <input class="form-check-input" type="checkbox" id="defaultCheck2" name="accesRapport" [(ngModel)]="accesRapport">
+              <label class="form-check-label" for="defaultCheck2">Tableau de bord et Rapports</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
-              <label class="form-check-label" for="defaultCheck3">
-                Gestion du Stock
-              </label>
+              <input class="form-check-input" type="checkbox" id="defaultCheck3" name="gestionStock" [(ngModel)]="gestionStock">
+              <label class="form-check-label" for="defaultCheck3">Gestion du Stock</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
-              <label class="form-check-label" for="defaultCheck4">
-                Commandes d'achat et prix d'achat
-              </label>
+              <input class="form-check-input" type="checkbox" id="defaultCheck4" name="commandeAchat" [(ngModel)]="commandeAchat">
+              <label class="form-check-label" for="defaultCheck4">Commandes d'achat et prix d'achat</label>
             </div>
           </div>
           <div class="role mb-2">
-            <span class="permission me-5">Droits : </span>
+            <span class="permission me-5">Droits :</span>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-              <label class="form-check-label" for="defaultCheck1">
-                Exporter des données (Excel)
-              </label>
+              <input class="form-check-input" type="checkbox" id="defaultCheck5" name="exportExcel" [(ngModel)]="exportExcel">
+              <label class="form-check-label" for="defaultCheck5">Exporter des données (Excel)</label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
-              <label class="form-check-label" for="defaultCheck2">
-                Supprimer des données
-              </label>
+              <input class="form-check-input" type="checkbox" id="defaultCheck6" name="supprimerDonnees" [(ngModel)]="supprimerDonnees">
+              <label class="form-check-label" for="defaultCheck6">Supprimer des données</label>
             </div>
           </div>
         </form>

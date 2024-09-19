@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ArticlesService } from 'src/app/services/articles.service';
 import { PromoService } from 'src/app/services/promo.service';
 import { Report } from 'notiflix/build/notiflix-report-aio';
@@ -10,13 +10,15 @@ import { CategorieArticleService } from 'src/app/services/categorie-article.serv
 import * as XLSX from 'xlsx';
 import { GrilleTarifaireService } from 'src/app/services/grille-tarifaire.service';
 import { ClientsService } from 'src/app/services/clients.service';
+import { PermissionsService } from 'src/app/services/permissions.service';
+import { EtiquetteService } from 'src/app/services/etiquette.service';
 
 @Component({
   selector: 'app-articles',
   templateUrl: './articles.component.html',
   styleUrls: ['./articles.component.css']
 })
-export class ArticlesComponent {
+export class ArticlesComponent implements OnInit {
   // Déclaration des variables 
   tabArticle: any[] = [];
   tabArticleFilter: any[] = [];
@@ -86,7 +88,7 @@ export class ArticlesComponent {
   montant: string = "";
 
 
-  constructor(private http: HttpClient, private articleService: ArticlesService, private promoService: PromoService, private Categorie: CategorieArticleService, private grilleservice: GrilleTarifaireService, private clientService: ClientsService) { }
+  constructor(private http: HttpClient, private articleService: ArticlesService, private promoService: PromoService, private Categorie: CategorieArticleService, private grilleservice: GrilleTarifaireService, private clientService: ClientsService, public permissionsService: PermissionsService, private etiquetteService: EtiquetteService) { }
 
 
 
@@ -96,6 +98,10 @@ export class ArticlesComponent {
     this.listeCategorie();
     this.listeEntrepot();
     this.listeClients();
+    this.listeEtiquette();
+    // Abonne-toi aux changements de permissions
+    this.permissionsService.permissions$.subscribe(() => {
+    });
 
     this.dbUsers = JSON.parse(localStorage.getItem("userOnline") || "[]");
     this.role = this.dbUsers.user.role
@@ -709,11 +715,37 @@ export class ArticlesComponent {
   }
 
   ajouterEtiquette() {
-    if (this.etiquette.nom && this.etiquette.couleur) {
-      this.etiquettes.push({ ...this.etiquette });
-      this.etiquette.nom = '';
-      this.etiquette.couleur = '';
+    // if (this.etiquette.nom && this.etiquette.couleur) {
+    //   this.etiquettes.push({ ...this.etiquette });
+    // }
+    let etiquette = {
+      nomEtiquette: this.etiquette.nom,
+      codeEtiquette: this.etiquette.couleur
     }
+
+    this.etiquetteService.addEtiquette(etiquette).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        console.log(error)
+      }
+    )
+
+
+  }
+
+  tabEtiquette: any;
+  listeEtiquette() {
+    this.etiquetteService.getAllEtiquette().subscribe(
+      (reponse) => {
+        this.tabEtiquette = reponse.etiquette;
+        console.log(this.tabEtiquette);
+      },
+      (error) => {
+        console.log(error)
+      }
+    )
   }
 
   supprimerEtiquette(index: number) {
