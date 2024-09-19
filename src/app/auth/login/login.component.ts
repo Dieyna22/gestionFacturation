@@ -3,7 +3,7 @@ import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
-import { PermissionsService } from 'src/app/services/permissions.service';
+import { PermissionsService } from '../../services/permissions.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
