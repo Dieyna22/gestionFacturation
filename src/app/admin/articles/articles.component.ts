@@ -6,12 +6,12 @@ import { Report } from 'notiflix/build/notiflix-report-aio';
 import { Confirm } from 'notiflix/build/notiflix-confirm-aio';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
-import { CategorieArticleService } from 'src/app/services/categorie-article.service';
+import { CategorieArticleService } from '../../services/categorie-article.service';
 import * as XLSX from 'xlsx';
-import { GrilleTarifaireService } from 'src/app/services/grille-tarifaire.service';
-import { ClientsService } from 'src/app/services/clients.service';
-import { PermissionsService } from 'src/app/services/permissions.service';
-import { EtiquetteService } from 'src/app/services/etiquette.service';
+import { GrilleTarifaireService } from '../../services/grille-tarifaire.service';
+import { ClientsService } from '../../services/clients.service';
+import { PermissionsService } from '../../services/permissions.service';
+import { EtiquetteService } from '../../services/etiquette.service';
 
 @Component({
   selector: 'app-articles',
