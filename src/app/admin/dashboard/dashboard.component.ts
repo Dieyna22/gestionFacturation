@@ -18,7 +18,6 @@ export class DashboardComponent {
     this.listeArticles();
     this.listeBonCommande();
     this.listeBonLivraison();
-    this.listeBonLivraison();
     this.listeClients();
     this.listeUserArchiver();
     this.listeUserNoArchiver();

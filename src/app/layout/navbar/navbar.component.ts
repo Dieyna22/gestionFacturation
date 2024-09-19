@@ -30,8 +30,9 @@ export class NavbarComponent {
   nom: string = '';
   role: string = '';
   usernom: string = '';
+  userprenom: string = '';
   usermail: string = '';
-
+  entreprise:string = '';
 
 
   constructor(private route: Router, private http: HttpClient, private cdr: ChangeDetectorRef) { }
@@ -41,8 +42,10 @@ export class NavbarComponent {
     this.dbUsers = JSON.parse(localStorage.getItem("userOnline") || "[]");
     this.nom = this.dbUsers.user.name;
     this.role = this.dbUsers.user.role;
-    this.usernom = this.dbUsers.user.prenom;
+    this.entreprise = this.dbUsers.user.nom_entreprise;
     this.usermail = this.dbUsers.user.email;
+    this.usernom = this.dbUsers.user.nom;
+    this.userprenom = this.dbUsers.user.prenom;
 
   }
 

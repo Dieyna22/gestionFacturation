@@ -60,7 +60,7 @@
                             <label for="telephone">Téléphone</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example" name="devise"
                                 [(ngModel)]="selectedCurrency" (change)="onCurrencyChange()">
                                 <option selected>sélectionner une devise ...</option>
                                 <option *ngFor="let currency of currencies" [value]="currency.code">
@@ -70,15 +70,15 @@
                             <label for="floatingSelect">Divise : </label>
                         </div>
                         <div class="form-floating mb-3">
-                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                <option *ngFor="let lang of languages" [value]="lang.code">
-                                    {{lang.code  }}
-                                  </option>
+                            <select class="form-select" id="selectLangue" aria-label="Floating label select example" name="langue" [(ngModel)]="selectedLangue" (change)="onLangueChange()">
+                              <option *ngFor="let lang of languages" [value]="lang.name">
+                                {{lang.name}}
+                              </option>
                             </select>
-                            <label for="floatingSelect">Divise : </label>
-                        </div>
+                            <label for="floatingSelect">Langue : </label>
+                          </div>
                         <div class="form-floating mb-3">
-                            <input type="file" class="form-control" id="fileSignature" name="Signature" (change)="getFile($event)">
+                            <input type="file" class="form-control" id="fileSignature" name="Signature" (change)="getFileSignature($event)">
                             <label for="fileSignature">Signature de l'entreprise</label>
                         </div>
                         <button type="submit" class="btn positionbtn" (click)="ajouterInfoSup()">Enregistrer</button>
@@ -90,7 +90,7 @@
                     tabindex="0">
                     <form action="" class="p-3">
                         <div class="form-floating mb-3">
-                            <input type="file" class="form-control" id="file" name="profil"
+                            <input type="file" class="form-control" id="file" name="Inputprofil"
                                 (change)="getFileInputProfil($event)">
                             <label for="file">Logo</label>
                         </div>
@@ -112,7 +112,7 @@
                             <label for="telephone">Téléphone</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example"
+                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example" name="devise"
                                 [(ngModel)]="selectedCurrency" (change)="onCurrencyChange()">
                                 <option selected>sélectionner une devise ...</option>
                                 <option *ngFor="let currency of currencies" [value]="currency.code">
@@ -122,15 +122,15 @@
                             <label for="floatingSelect">Divise : </label>
                         </div>
                         <div class="form-floating mb-3">
-                            <select class="form-select" id="floatingSelect" aria-label="Floating label select example">
-                                <option *ngFor="let lang of languages" [value]="lang.code">
-                                    {{lang.code  }}
-                                  </option>
+                            <select class="form-select" id="selectLangue" aria-label="Floating label select example" name="langue" [(ngModel)]="selectedLangue" (change)="onLangueChange()">
+                              <option *ngFor="let lang of languages" [value]="lang.code">
+                                {{lang.name}}
+                              </option>
                             </select>
-                            <label for="floatingSelect">Divise : </label>
-                        </div>
+                            <label for="floatingSelect">Langue : </label>
+                          </div>
                         <div class="form-floating mb-3">
-                            <input type="file" class="form-control" id="fileSignature" name="Signature" (change)="getFile($event)">
+                            <input type="file" class="form-control" id="fileSignature" name="Signature" (change)="getFileSignature($event)">
                             <label for="fileSignature">Signature de l'entreprise</label>
                         </div>
                         <button type="submit" class="btn positionbtn" (click)="updateInfoSup()">Enregistrer</button>

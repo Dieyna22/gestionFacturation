@@ -35,7 +35,7 @@
         <button type="button" class="btn  btnOutline me-2 mb-2" routerLink="/stock">
           Stock
         </button>
-         <button type="button" class="btn ajouter mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+         <button  *ngIf="permissionsService.isAdmin || permissionsService.canFonctionAdmin || !permissionsService.canVisibiliteGlobale" type="button" class="btn ajouter mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
            Ajouter Produit
          </button>
        </div>
@@ -50,7 +50,7 @@
               <h3 class="fw-bold">Listes des Articles</h3>
             </div>
             <div class="col-md-3">
-              <span class="import" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">importer article</span>
+              <span   *ngIf="permissionsService.isAdmin || permissionsService.canFonctionAdmin || !permissionsService.canVisibiliteGlobale || permissionsService.canExportExcel" class="import" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">importer article</span>
             </div>
           </div>
 
@@ -916,6 +916,7 @@
           </div>
         </div>
         <div class="modal-body">
+           <!-- ajout etiquette -->
           <div>
             <div class="couleurs">
               <div *ngFor="let couleur of couleurs" [ngStyle]="{'background-color': couleur}"
@@ -926,17 +927,17 @@
 
             <div class="mb-3">
               <label for="nom">Nom de l'étiquette :</label>
-              <input class="form-control" type="text" placeholder="non étiquette" id="nom" [(ngModel)]="etiquette.nom"
-                name="nom">
+              <input class="form-control" type="text" placeholder="non étiquette" id="nom" name="nom" [(ngModel)]="etiquette.nom">
             </div>
 
             <button class=" btn btnAction" data-bs-toggle="modal" data-bs-target="#exampleModal"
               (click)="ajouterEtiquette()">Sauvegarder</button>
-
+          </div>
+          <!-- liste etiquette -->
+          <div>
             <div *ngIf="etiquettes.length > 0" class="etiquettes">
-              <h3>Étiquettes Ajoutées :</h3>
-              <div *ngFor="let etiq of etiquettes" [ngStyle]="{'background-color': etiq.couleur}" class="etiquette">
-                {{ etiq.nom }}
+              <div *ngFor="let etiq of etiquettes" [ngStyle]="{'background-color': etiq.couleur}" class="etiquetteListe d-flex justify-content-between mt-2">
+                {{ etiq.nom }} <i class="bi bi-pencil"></i>
               </div>
             </div>
           </div>

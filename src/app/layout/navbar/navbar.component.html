@@ -37,14 +37,14 @@
       <div class="dropdown me-5">
         <ng-container *ngIf="dbUsers">
           <span style="cursor: pointer;" class="dropdown-toggle">
-            <b class="text-decoration-underline">{{usernom}} {{nom}}</b> 
-            <!-- <br> <i>{{role}}</i> -->
+             <span class="text-dark">{{entreprise}}</span><br>
+             <b class="text-decoration-underline">{{nom}}  {{userprenom}} {{usernom}}</b>
           </span>
         </ng-container>
         <div class="dropdown-content">
           <a routerLink="/infos" class="text-end">Mon Entreprise <i class="bi bi-house-door-fill ms-2"></i></a>
-          <a [routerLink]="['/user']"  class="text-end">Utilisateur <i class="bi bi-people-fill ms-2"></i></a>
-          <a routerLink="/userArchive"  class="text-end">Utilisateurs Archiver <i class="bi bi-person-fill-exclamation ms-2"></i></a>
+          <a  *ngIf="role=='super_admin'" [routerLink]="['/user']"  class="text-end">Utilisateur <i class="bi bi-people-fill ms-2"></i></a>
+          <a  *ngIf="role=='super_admin'" routerLink="/userArchive"  class="text-end">Utilisateurs Archiver <i class="bi bi-person-fill-exclamation ms-2"></i></a>
           <a [routerLink]="['/model']"  class="text-end">Modéles documents <i class="bi bi-file-text ms-2"></i></a>
           <a style="cursor: pointer;" class="text-end" data-bs-toggle="modal" data-bs-target="#mail">Modéles mail <i class="bi bi-envelope-fill ms-2"></i></a>
           <a style="cursor: pointer;" class="text-end" data-bs-toggle="modal" data-bs-target="#comptable">Comptabilité <i class="bi bi-currency-exchange ms-2"></i></a>

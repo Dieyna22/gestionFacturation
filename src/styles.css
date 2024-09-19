@@ -105,6 +105,11 @@ thead tr {
   border-radius: 30px !important;
 }
 
+.btnOutlineActive{
+  background-color: #3c3b3b !important;
+  color: #fff !important;
+}
+
 .zoneSearch .btnOutline:hover {
   background-color: #3c3b3b !important;
   color: #fff !important;
@@ -259,6 +264,17 @@ thead tr {
   margin: 5px 0;
   display: inline-block;
   height: 32px;
+}
+
+.etiquetteListe{
+  padding: 13px 35px 5px 35px;
+  color: white;
+  border-radius: 25px;
+  margin: 5px 0;
+  display: inline-block;
+  height: 52px;
+  width: 365px;
+  font-weight: bold;
 }
 
 .bgHeader {

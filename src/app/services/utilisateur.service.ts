@@ -56,4 +56,9 @@ export class UtilisateurService {
       return this.http.post<any>(`${apiUrl}/modifierInfoEntreprise/`, user);
   }
 
+  // modifier mot de passe
+  password(password:any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/modifierMotDePasse/`, password);
+}
+
 }

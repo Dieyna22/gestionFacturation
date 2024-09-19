@@ -18,6 +18,8 @@ export class InfosComponent {
   tel: string = '';
   adress: string = '';
   desc: string = '';
+  selectedLangue:string = '';
+  
 
   Inputprofil: any;
   Inputnom: string = '';
@@ -29,17 +31,28 @@ export class InfosComponent {
   
 
   profil: File | null = null;
-
+  Signature: File | null = null;
   fileName: string = '';
 
   getFile(event: any) {
     const file = event.target.files[0];
     if (file) {
-      console.log('Fichier sélectionné:', file); // Ajoutez cette ligne pour le débogage
+      console.log('Fichier sélectionné:', file); 
       this.profil = file;
       console.log(this.profil)
     } else {
-      console.log('Aucun fichier sélectionné'); // Ajoutez cette ligne pour le débogage
+      console.log('Aucun fichier sélectionné'); 
+    }
+  }
+
+  getFileSignature(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      console.log('Fichier sélectionné:', file); 
+      this.Signature = file;
+      console.log(this.Signature)
+    } else {
+      console.log('Aucun fichier sélectionné'); 
     }
   }
 
@@ -55,6 +68,7 @@ export class InfosComponent {
   }
 
   ajouterInfoSup(){
+    console.log(this.selectedLangue)
     let formData = new FormData();
     if (this.profil) {
       formData.append('logo', this.profil, this.profil.name);
@@ -63,6 +77,12 @@ export class InfosComponent {
     formData.append("adress_entreprise", this.adress);
     formData.append("tel_entreprise", this.tel);
     formData.append("description_entreprise", this.desc);
+    formData.append("devise", this.selectedCurrency);
+    formData.append("langue", this.selectedLangue);
+    if (this.Signature) {
+      formData.append('signature', this.Signature, this.Signature.name);
+    }
+
 
     this.userService.addInfoSup(formData).subscribe(
       (user:any)=>{
@@ -94,6 +114,9 @@ export class InfosComponent {
     this.Inputtel = this.InfoSup.tel_entreprise;
     this.Inputdesc = this.InfoSup.description_entreprise;
     this.Inputadress = this.InfoSup.adresse_entreprise;
+    this.selectedCurrency = this.InfoSup.devise;
+    this.selectedLangue = this.InfoSup.langue;
+    this.Signature = this.InfoSup.signature;
   }
 
   updateInfoSup(){
@@ -103,6 +126,11 @@ export class InfosComponent {
     formData.append("adress_entreprise", this.Inputadress);
     formData.append("tel_entreprise", this.Inputtel);
     formData.append("description_entreprise", this.Inputdesc);
+    formData.append("devise", this.selectedCurrency);
+    formData.append("langue", this.selectedLangue);
+    if (this.Signature) {
+      formData.append('signature', this.Signature, this.Signature.name);
+    }
     Confirm.init({
       okButtonBackground: '#5C6FFF',
       titleColor: '#5C6FFF'
@@ -140,6 +168,10 @@ export class InfosComponent {
     this.Inputtel='';
     this.Inputadress='';
     this.Inputdesc='';
+
+    this.selectedCurrency = '';
+    this.selectedLangue = '';
+    this.Signature=null;
   }
 
   currencies = [
@@ -170,7 +202,7 @@ export class InfosComponent {
     { code: 'MUR', name: 'Roupie mauricienne' },
   ];
 
-  selectedCurrency: string = 'USD';
+  selectedCurrency: string = '';
 
   onCurrencyChange() {
     console.log('Devise sélectionnée :', this.selectedCurrency);
@@ -182,6 +214,11 @@ export class InfosComponent {
     { code: 'English', name: 'English' },
     { code: 'Español', name: 'Español' }
   ];
+
+  onLangueChange() {
+    console.log('Langue sélectionnée :', this.selectedLangue);
+    // Ici, vous pouvez ajouter la logique pour gérer le changement de devise
+  }
 
 
 }
