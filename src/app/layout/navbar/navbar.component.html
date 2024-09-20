@@ -1,7 +1,8 @@
 <!-- Navbar  -->
 <nav class="navbar navbar-expand-lg sticky-top">
   <div class="container-fluid">
-    <div class="title" routerLink="/admin" style="cursor: pointer;"><img src="../../../assets/images/logo.png" alt="Logo" class="logo"></div>
+    <div class="title" routerLink="/admin" style="cursor: pointer;"><img src="../../../assets/images/logo.png"
+        alt="Logo" class="logo"></div>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -37,22 +38,31 @@
       <div class="dropdown me-5">
         <ng-container *ngIf="dbUsers">
           <span style="cursor: pointer;" class="dropdown-toggle">
-             <span class="text-dark">{{entreprise}}</span><br>
-             <b class="text-decoration-underline">{{nom}}  {{userprenom}} {{usernom}}</b>
+            <span class="text-dark">{{entreprise}}</span><br>
+            <b class="text-decoration-underline">{{nom}} {{userprenom}} {{usernom}}</b>
           </span>
         </ng-container>
         <div class="dropdown-content">
           <a routerLink="/infos" class="text-end">Mon Entreprise <i class="bi bi-house-door-fill ms-2"></i></a>
-          <a  *ngIf="role=='super_admin'" [routerLink]="['/user']"  class="text-end">Utilisateur <i class="bi bi-people-fill ms-2"></i></a>
-          <a  *ngIf="role=='super_admin'" routerLink="/userArchive"  class="text-end">Utilisateurs Archiver <i class="bi bi-person-fill-exclamation ms-2"></i></a>
-          <a [routerLink]="['/model']"  class="text-end">Modéles documents <i class="bi bi-file-text ms-2"></i></a>
-          <a style="cursor: pointer;" class="text-end" data-bs-toggle="modal" data-bs-target="#mail">Modéles mail <i class="bi bi-envelope-fill ms-2"></i></a>
-          <a style="cursor: pointer;" class="text-end" data-bs-toggle="modal" data-bs-target="#comptable">Comptabilité <i class="bi bi-currency-exchange ms-2"></i></a>
-          <a style="cursor: pointer;" class="text-end" data-bs-toggle="modal" data-bs-target="#notif">Notifications <i class="bi bi-bell-fill ms-2"></i></a>
-          <a style="cursor: pointer;"  class="text-end"data-bs-toggle="modal" data-bs-target="#relance">Relance automatique <i class="bi  bi-envelope-paper-fill ms-2"></i></a>
+          <a style="cursor: pointer;" class="text-end" data-bs-toggle="modal" data-bs-target="#profil">Profil<i
+              class="bi bi-person-circle ms-2"></i></a>
+          <a *ngIf="role=='super_admin'" [routerLink]="['/user']" class="text-end">Utilisateur <i
+              class="bi bi-people-fill ms-2"></i></a>
+          <a *ngIf="role=='super_admin'" routerLink="/userArchive" class="text-end">Utilisateurs Archiver <i
+              class="bi bi-person-fill-exclamation ms-2"></i></a>
+          <a [routerLink]="['/model']" class="text-end">Modéles documents <i class="bi bi-file-text ms-2"></i></a>
+          <a style="cursor: pointer;" class="text-end" data-bs-toggle="modal" data-bs-target="#mail">Modéles mail <i
+              class="bi bi-envelope-fill ms-2"></i></a>
+          <a style="cursor: pointer;" class="text-end" data-bs-toggle="modal" data-bs-target="#comptable">Comptabilité
+            <i class="bi bi-currency-exchange ms-2"></i></a>
+          <a style="cursor: pointer;" class="text-end" data-bs-toggle="modal" data-bs-target="#notif">Notifications <i
+              class="bi bi-bell-fill ms-2"></i></a>
+          <a style="cursor: pointer;" class="text-end" data-bs-toggle="modal" data-bs-target="#relance">Relance
+            automatique <i class="bi  bi-envelope-paper-fill ms-2"></i></a>
           <a [routerLink]="['/grille']" class="text-end">Grille tarifaire<i class="bi bi-grid-3x3 ms-2"></i></a>
           <a [routerLink]="['/payement']" class="text-end">Payement<i class="bi bi-wallet2 ms-2"></i></a>
-          <div class="border-top"><a (click)=" logout()" style="cursor: pointer;" class="text-center">Déconnexion<i class="bi bi-box-arrow-right ms-2"></i></a></div>
+          <div class="border-top"><a (click)=" logout()" style="cursor: pointer;" class="text-center">Déconnexion<i
+                class="bi bi-box-arrow-right ms-2"></i></a></div>
         </div>
       </div>
     </div>
@@ -76,11 +86,7 @@
             <div class="text-center border p-4">
               <span>Sélectionnez le modèle de mail à configurer : </span>
               <div class="form-floating">
-                <select
-                  class="form-select"
-                  id="floatingSelect"
-                  [(ngModel)]="selectedTemplate"
-                >
+                <select class="form-select" id="floatingSelect" [(ngModel)]="selectedTemplate">
                   <option value="0">Facture</option>
                   <option value="1">Résumé de la vente</option>
                   <option value="2">Reçu paiement</option>
@@ -95,7 +101,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="variables mb-3">
             <label for="variableSelect">Sélectionnez une variable à insérer :</label>
             <select id="variableSelect" class="form-select" [(ngModel)]="selectedVariable">
@@ -105,29 +111,21 @@
               </option>
             </select>
           </div>
-        
+
           <div class="object mb-3">
             <div class="form-floating">
-              <input
-                type="text"
-                class="form-control"
-                id="objectInput"
-                [(ngModel)]="currentTemplate.object"
-              >
+              <input type="text" class="form-control" id="objectInput" [(ngModel)]="currentTemplate.object">
               <label for="objectInput">Objet :</label>
             </div>
             <button class="btn btnAction mt-2" (click)="insertVariable('object')">Insérer variable dans l'objet</button>
           </div>
-        
+
           <div class="corps container">
-            <textarea
-              class="form-control p-3"
-              rows="10"
-              id="bodyTextarea"
-              [(ngModel)]="currentTemplate.body"
-            ></textarea>
+            <textarea class="form-control p-3" rows="10" id="bodyTextarea"
+              [(ngModel)]="currentTemplate.body"></textarea>
           </div>
-          <button class="btn btnAction mt-2 mb-2" (click)="insertVariable('body')">Insérer variable dans le corps</button>
+          <button class="btn btnAction mt-2 mb-2" (click)="insertVariable('body')">Insérer variable dans le
+            corps</button>
         </div>
         <div class="attach p-2">
           <span class="resume">
@@ -224,7 +222,7 @@
           </div>
           <span>{{ slider.value }} {{ slider.unit }}</span>
         </div>
-        
+
 
         <div class="sendMail p-3">
           <div class="form-check">
@@ -302,7 +300,8 @@
             <span>- <span class="colormail">0</span> clients recevront un rappel cette nuit</span><br>
             <span>- <span class="colormail">0</span> clients recevront un rappel dans les prochains 7 jours</span>
           </div>
-          <span class="colormail" (click)="BeforeRelance()" data-bs-toggle="modal" data-bs-target="#mail"><i class="bi bi-eye-fill me-2"></i>Visualiser le contenu du message</span>
+          <span class="colormail" (click)="BeforeRelance()" data-bs-toggle="modal" data-bs-target="#mail"><i
+              class="bi bi-eye-fill me-2"></i>Visualiser le contenu du message</span>
         </div>
         <div class="relance">
           <div class="form-check form-switch mb-3">
@@ -328,7 +327,8 @@
             <span>- <span class="colormail">0</span> clients recevront un rappel cette nuit</span><br>
             <span>- <span class="colormail">0</span> clients recevront un rappel dans les prochains 7 jours</span>
           </div>
-          <span class="colormail" (click)="AfterRelance()" data-bs-toggle="modal" data-bs-target="#mail"><i class="bi bi-eye-fill me-2"></i>Visualiser le contenu du message</span>
+          <span class="colormail" (click)="AfterRelance()" data-bs-toggle="modal" data-bs-target="#mail"><i
+              class="bi bi-eye-fill me-2"></i>Visualiser le contenu du message</span>
         </div>
       </div>
       <div class="modal-footer">
@@ -339,4 +339,68 @@
   </div>
 </div>
 
-
+<!-- Modal modele profil -->
+<div class="modal fade mt-5" id="profil" tabindex="-1" aria-labelledby="profilLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="d-flex">
+        <div class="p-3 flex-grow-1">
+          <h3>Profil</h3>
+        </div>
+        <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="validationServer03" class="form-label">Prénom</label>
+          <input type="text" class="form-control" id="validationServer03" name="prenom" [(ngModel)]="inputprenom">
+        </div>
+        <div class="mb-3">
+          <label for="validationServer04" class="form-label">Nom</label>
+          <input type="text" class="form-control" id="validationServer04" name="nom" [(ngModel)]="inputnom">
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputEmail2" class="form-label">Email</label>
+          <input type="email" class="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" name="mail"
+            [(ngModel)]="inputmail">
+        </div>
+        <a class="updatePass" (click)="showUpdatePassword()">(+) Modifier le mot de passe</a>
+        <div *ngIf="password">
+          <div class="mb-3">
+            <label for="passwordInput1" class="form-label">Mot de passe actuelle</label>
+            <div class="input-group">
+              <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput1" name="password"
+                [(ngModel)]="inputpassactuel" class="form-control">
+              <button class="btn btn-outline-secondary  bg-secondary-subtle" type="button" (click)="togglePasswordVisibility()">
+                <ng-container *ngIf="showPassword; else hideIcon">
+                  <i class="bi bi-eye"></i>
+                </ng-container>
+                <ng-template #hideIcon>
+                  <i class="bi bi-eye-slash"></i>
+                </ng-template>
+              </button>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="passwordInput2" class="form-label">Nouveau Mot de passe</label>
+            <div class="input-group">
+              <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput2" name="password"
+                [(ngModel)]="inputpassnew" class="form-control">
+              <button class="btn btn-outline-secondary bg-secondary-subtle" type="button" (click)="togglePasswordVisibility()">
+                <ng-container *ngIf="showPassword; else hideIcon">
+                  <i class="bi bi-eye"></i>
+                </ng-container>
+                <ng-template #hideIcon>
+                  <i class="bi bi-eye-slash"></i>
+                </ng-template>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end">
+          <button class="btn btnAction p-2" (click)="updatePassword()">Sauvegarder</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

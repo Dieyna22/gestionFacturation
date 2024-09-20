@@ -5,6 +5,9 @@ import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import { tap, catchError } from 'rxjs/operators';
 import { throwError, Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { UtilisateurService } from 'src/app/services/utilisateur.service';
+import { Report } from 'notiflix/build/notiflix-report-aio';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 
 
@@ -35,7 +38,7 @@ export class NavbarComponent {
   entreprise:string = '';
 
 
-  constructor(private route: Router, private http: HttpClient, private cdr: ChangeDetectorRef) { }
+  constructor(private route: Router, private http: HttpClient, private cdr: ChangeDetectorRef, private userService: UtilisateurService) { }
 
   ngOnInit() {
     // Renvoie un tableau de valeurs ou un tableau vide 
@@ -303,4 +306,45 @@ Cordialement,
     this.selectedTemplate = '4';
   }
 
+  inputprenom: string = "";
+  inputnom: string = "";
+  inputmail: string = "";
+  inputpassactuel : string = "";
+  inputpassnew : string = "";
+
+  showPassword: boolean = false;
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
+  password: boolean = false;
+  showUpdatePassword() {
+    this.password = !this.password
+  }
+
+  updatePassword() {
+    let pass={
+      mot_de_passe_actuel: this.inputpassactuel,
+      nouveau_mot_de_passe: this.inputpassnew
+    }
+    Confirm.init({
+      okButtonBackground: '#FF1700',
+      titleColor: '#FF1700'
+    });
+    Confirm.show('Confirmation ',
+      'Voullez-vous vous modifier Votre mot de passe?',
+      'Oui', 'Non', () => {
+      Loading.init({
+        svgColor: '#5C6FFF',
+      });
+      Loading.hourglass();
+      this.userService.password(pass).subscribe(
+        (response) => {
+          Notify.success(response.message);
+          Loading.remove();
+        }
+      )
+    });
+  }
 }
