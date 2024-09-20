@@ -162,3 +162,9 @@ label{
   .dropdown-toggle{
     color: #F19A33;
   }
+
+  .updatePass{
+    text-decoration: solid;
+    color: #0d6efd;
+    cursor: pointer;
+}
