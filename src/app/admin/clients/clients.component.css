@@ -142,11 +142,12 @@ p {
 }
 
 select,
-textarea {
-    background-color: transparent!important;
+textarea,
+input[type="text"]{
+    background-color: transparent !important;
 }
 
-.grille{
+.grille {
     position: fixed;
     top: 350px;
     left: 260px;
@@ -161,4 +162,191 @@ textarea {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.containerSolde {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 400px;
+    margin: 0 auto;
+}
+
+h2 {
+    color: #333;
+    margin-top: 0;
+}
+
+.info {
+    background-color: #f8f8f8;
+    border-left: 4px solid #4a90e2;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #666;
+}
+
+.containerSolde input[type="text"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+textarea {
+    height: 80px;
+    resize: vertical;
+}
+
+.button {
+    color: #4a90e2 ;
+    background-color: white;
+    border: thin solid #4a90e2 ;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 0 auto;
+}
+
+.button:hover {
+    background-color: #357ae8;
+    color: white;
+}
+
+.info {
+    background-color: #f8f8f8;
+    border-left: 4px solid #2196F3;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+    color: #666;
+}
+input[type="text"],
+input[type="date"],
+select,
+textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    background-color: #f8f8f8;
+}
+textarea {
+    height: 60px;
+    resize: none;
+}
+.currency {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.currency input {
+    flex-grow: 1;
+    padding-right: 40px;
+}
+/* .currency::before {
+    content: "$";
+    position: absolute;
+    left: 10px;
+    color: #666;
+}
+.currency::after {
+    content: "XAF";
+    position: absolute;
+    right: 10px;
+    color: #666;
+} */
+.date-input {
+    position: relative;
+}
+/* .date-input::before {
+    content: "📅";
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+} */
+/* .date-input input {
+    padding-left: 30px;
+} */
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+.print-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+}
+.action-btns {
+    display: flex;
+    gap: 10px;
+}
+.modify-btn {
+    background-color: #2196F3;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.cancel-btn {
+    background-color: white;
+    color: #F44336;
+    border: 1px solid #F44336;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.message-cell {
+    max-width: 300px;
+    position: relative;
+  }
+  .message-content {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .message-content.expanded {
+    white-space: normal;
+  }
+  .toggle-btn {
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .typeConversation{
+    background-color: #eee;
+  }
+
+  .activetypeConversation{
+    background-color: #F19A33;
+    color: #fff;
   }

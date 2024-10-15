@@ -28,7 +28,7 @@ export class EtiquetteService {
   }
 
   //modifier une etiquette
-    updatePromo(etiquetteID: any, etiquette:any): Observable<any> {
+  updateEtiquette(etiquetteID: any, etiquette:any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/modifierEtiquette/${etiquetteID}`, etiquette);
   }
 }

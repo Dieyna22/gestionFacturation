@@ -105,7 +105,7 @@ thead tr {
   border-radius: 30px !important;
 }
 
-.btnOutlineActive{
+.btnOutlineActive {
   background-color: #3c3b3b !important;
   color: #fff !important;
 }
@@ -266,7 +266,12 @@ thead tr {
   height: 32px;
 }
 
-.etiquetteListe{
+.etiquettes {
+  overflow-y: scroll;
+  height: 250px;
+}
+
+.etiquetteListe {
   padding: 13px 35px 5px 35px;
   color: white;
   border-radius: 25px;
@@ -320,4 +325,9 @@ tr {
   align-items: center;
   padding: 4px;
   cursor: pointer;
+}
+
+.form-check .form-check-input:checked {
+  background-color: #0d6efd !important;
+  border-color: #0d6efd !important;
 }

@@ -1,3 +1,4 @@
+export const invoiceTemplateCss = `
 .containerModele {
   width: 94%;
   margin: 0 auto;
@@ -527,8 +528,6 @@ textarea {
     cursor: pointer;
   }
 
-
-
   @media (max-width: 768px) {
     .form-sections-container {
       flex-direction: column;
@@ -536,10 +535,6 @@ textarea {
   }
 }
 
-
-.bgColor{
-  background-color: #467aea;
-}
 
 :root {
   --header-color: #467aea;
@@ -567,3 +562,4 @@ th, td {
   border: 1px solid #ddd;
   text-align: left;
 }
+`;

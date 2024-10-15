@@ -44,8 +44,8 @@
         </ng-container>
         <div class="dropdown-content">
           <a routerLink="/infos" class="text-end">Mon Entreprise <i class="bi bi-house-door-fill ms-2"></i></a>
-          <a style="cursor: pointer;" class="text-end" data-bs-toggle="modal" data-bs-target="#profil">Profil<i
-              class="bi bi-person-circle ms-2"></i></a>
+          <a style="cursor: pointer;" class="text-end" data-bs-toggle="modal" data-bs-target="#profil"
+            (click)="getInfoAdmin()">Profil<i class="bi bi-person-circle ms-2"></i></a>
           <a *ngIf="role=='super_admin'" [routerLink]="['/user']" class="text-end">Utilisateur <i
               class="bi bi-people-fill ms-2"></i></a>
           <a *ngIf="role=='super_admin'" routerLink="/userArchive" class="text-end">Utilisateurs Archiver <i
@@ -69,6 +69,76 @@
   </div>
 </nav>
 
+
+
+<!-- Modal modele profil -->
+<div class="modal fade mt-5" id="profil" tabindex="-1" aria-labelledby="profilLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="d-flex">
+        <div class="p-3 flex-grow-1">
+          <h3>Profil</h3>
+        </div>
+        <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <!-- <div class="mb-3">
+          <label for="validationServer03" class="form-label">Prénom</label>
+          <input type="text" class="form-control" id="validationServer03" name="inputprenom" [(ngModel)]="inputprenom">
+        </div> -->
+        <div class="mb-3">
+          <label for="validationServer04" class="form-label">Nom Complet</label>
+          <input type="text" class="form-control" id="validationServer04" name="inputnom" [(ngModel)]="inputnom">
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputEmail2" class="form-label">Email</label>
+          <input type="email" class="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" name="inputmail"
+            [(ngModel)]="inputmail">
+        </div>
+        <a class="updatePass" (click)="showUpdatePassword()">(+) Modifier le mot de passe</a>
+        <div *ngIf="password">
+          <div class="mb-3">
+            <label for="passwordInput1" class="form-label">Mot de passe actuelle</label>
+            <div class="input-group">
+              <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput1" name="password"
+                [(ngModel)]="inputpassactuel" class="form-control">
+              <button class="btn btn-outline-secondary  bg-secondary-subtle" type="button"
+                (click)="togglePasswordVisibility()">
+                <ng-container *ngIf="showPassword; else hideIcon">
+                  <i class="bi bi-eye"></i>
+                </ng-container>
+                <ng-template #hideIcon>
+                  <i class="bi bi-eye-slash"></i>
+                </ng-template>
+              </button>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="passwordInput2" class="form-label">Nouveau Mot de passe</label>
+            <div class="input-group">
+              <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput2" name="password"
+                [(ngModel)]="inputpassnew" class="form-control">
+              <button class="btn btn-outline-secondary bg-secondary-subtle" type="button"
+                (click)="togglePasswordVisibility()">
+                <ng-container *ngIf="showPassword; else hideIcon">
+                  <i class="bi bi-eye"></i>
+                </ng-container>
+                <ng-template #hideIcon>
+                  <i class="bi bi-eye-slash"></i>
+                </ng-template>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex justify-content-end">
+          <button class="btn btnAction p-2" (click)="updatePassword()">Sauvegarder</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal modele mail -->
 <div class="modal fade mt-5" id="mail" tabindex="-1" aria-labelledby="mailLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
@@ -87,15 +157,15 @@
               <span>Sélectionnez le modèle de mail à configurer : </span>
               <div class="form-floating">
                 <select class="form-select" id="floatingSelect" [(ngModel)]="selectedTemplate">
-                  <option value="0">Facture</option>
-                  <option value="1">Résumé de la vente</option>
-                  <option value="2">Reçu paiement</option>
-                  <option value="3">Relance de paiement AVANT échéance</option>
-                  <option value="4">Relance de paiement APRÈS échéance</option>
-                  <option value="5">Devis</option>
-                  <option value="6">Commande de vente</option>
-                  <option value="7">Bon de livraison</option>
-                  <option value="8">Commande fournisseur</option>
+                  <option value="facture">Facture</option>
+                  <option value="resumer_vente">Résumé de la vente</option>
+                  <option value="recu_paiement">Reçu paiement</option>
+                  <option value="relanceAvant_echeance">Relance de paiement AVANT échéance</option>
+                  <option value="relanceApres_echeance">Relance de paiement APRÈS échéance</option>
+                  <option value="devi">Devis</option>
+                  <option value="commande_vente">Commande de vente</option>
+                  <option value="livraison">Bon de livraison</option>
+                  <option value="fournisseur">Commande fournisseur</option>
                 </select>
                 <label for="floatingSelect">Mail envoi de :</label>
               </div>
@@ -154,7 +224,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button class=" btn btnAction">Sauvegarder</button>
+        <button class=" btn btnAction" (click)="saveModelMail()">Sauvegarder</button>
         <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
       </div>
     </div>
@@ -176,39 +246,37 @@
         <h6>Je veux être notifié sur :</h6>
         <div class="notifActive border p-3 mb-3">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+            <input class="form-check-input" type="checkbox" id="defaultCheck1" [(ngModel)]="notif_rupture">
             <label class="form-check-label" for="defaultCheck1">
               Les produits en rupture de stock
             </label>
           </div>
+
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck2">
+            <input class="form-check-input" type="checkbox" id="defaultCheck2" [(ngModel)]="notif_depense">
             <label class="form-check-label" for="defaultCheck2">
               Les dépenses impayées du jour
             </label>
           </div>
+
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck3">
+            <input class="form-check-input" type="checkbox" id="defaultCheck3" [(ngModel)]="notif_paiement">
             <label class="form-check-label" for="defaultCheck3">
               Les paiements en attente (ventes) prévus du jour
             </label>
           </div>
+
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck4">
+            <input class="form-check-input" type="checkbox" id="defaultCheck4" [(ngModel)]="notif_devis">
             <label class="form-check-label" for="defaultCheck4">
               Les devis expirés du jour
             </label>
           </div>
+
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck5">
+            <input class="form-check-input" type="checkbox" id="defaultCheck5" [(ngModel)]="notif_relance">
             <label class="form-check-label" for="defaultCheck5">
               Les relances automatiques envoyées par courrier électronique
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck6">
-            <label class="form-check-label" for="defaultCheck6">
-              Le jour d'anniversaire de mes clients
             </label>
           </div>
         </div>
@@ -217,7 +285,8 @@
           <label [for]="'customRange' + i" class="form-label">{{ slider.label }}</label>
           <div class="slider-container">
             <button (click)="changeValue(i, -1)">-</button>
-            <input type="range" [id]="'customRange' + i" min="0" max="99" [(ngModel)]="slider.value" />
+            <input type="range" [id]="'customRange' + i" min="0" max="99" [(ngModel)]="slider.value"
+              (ngModelChange)="onSliderChange()" />
             <button (click)="changeValue(i, 1)">+</button>
           </div>
           <span>{{ slider.value }} {{ slider.unit }}</span>
@@ -226,16 +295,16 @@
 
         <div class="sendMail p-3">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-            <label class="form-check-label" for="defaultCheck1">
-              Je veux aussi recevoir ces notifications au courrier électronique : <br> <span
-                class="colormail">{{usermail}}</span>
+            <input class="form-check-input" type="checkbox" id="defaultCheck7" [(ngModel)]="notif_email">
+            <label class="form-check-label" for="defaultCheck7">
+              Je veux aussi recevoir ces notifications au courrier électronique : <br>
+              <span class="colormail">{{usermail}}</span>
             </label>
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button class=" btn btnAction">Sauvegarder</button>
+        <button class=" btn btnAction" (click)="notification()">Sauvegarder</button>
         <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
       </div>
     </div>
@@ -279,7 +348,7 @@
         <div class="relance mb-3">
           <div class="form-check form-switch mb-3">
             <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault"
-              [checked]="isChecked" (change)="toggleCheck()">
+              [checked]="isChecked" (change)="toggleCheck()"  [(ngModel)]="rappel_avant">
             <label class="form-check-label" for="flexSwitchCheckDefault">
               {{ isChecked ? "Envoyer rappel AVANT la date prévue de l'échéance (activé)" : "Envoyer rappel AVANT la
               date prévue de l'échéance (désactivé)" }}
@@ -306,7 +375,7 @@
         <div class="relance">
           <div class="form-check form-switch mb-3">
             <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckAfter"
-              [checked]="isAfterChecked" (change)="toggleAfterCheck()">
+              [checked]="isAfterChecked" (change)="toggleAfterCheck()" [(ngModel)]="rappel_apres">
             <label class="form-check-label" for="flexSwitchCheckAfter">
               {{ isAfterChecked ? "Envoyer rappel APRÈS la date prévue de l'échéance (activé)" : "Envoyer rappel APRÈS
               la date prévue de l'échéance (désactivé)" }}
@@ -332,74 +401,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button class=" btn btnAction">Sauvegarder</button>
+        <button class=" btn btnAction" (click)="relanceAutomatique()">Sauvegarder</button>
         <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal modele profil -->
-<div class="modal fade mt-5" id="profil" tabindex="-1" aria-labelledby="profilLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="d-flex">
-        <div class="p-3 flex-grow-1">
-          <h3>Profil</h3>
-        </div>
-        <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-      </div>
-      <div class="modal-body">
-        <div class="mb-3">
-          <label for="validationServer03" class="form-label">Prénom</label>
-          <input type="text" class="form-control" id="validationServer03" name="prenom" [(ngModel)]="inputprenom">
-        </div>
-        <div class="mb-3">
-          <label for="validationServer04" class="form-label">Nom</label>
-          <input type="text" class="form-control" id="validationServer04" name="nom" [(ngModel)]="inputnom">
-        </div>
-        <div class="mb-3">
-          <label for="exampleInputEmail2" class="form-label">Email</label>
-          <input type="email" class="form-control" id="exampleInputEmail2" aria-describedby="emailHelp" name="mail"
-            [(ngModel)]="inputmail">
-        </div>
-        <a class="updatePass" (click)="showUpdatePassword()">(+) Modifier le mot de passe</a>
-        <div *ngIf="password">
-          <div class="mb-3">
-            <label for="passwordInput1" class="form-label">Mot de passe actuelle</label>
-            <div class="input-group">
-              <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput1" name="password"
-                [(ngModel)]="inputpassactuel" class="form-control">
-              <button class="btn btn-outline-secondary  bg-secondary-subtle" type="button" (click)="togglePasswordVisibility()">
-                <ng-container *ngIf="showPassword; else hideIcon">
-                  <i class="bi bi-eye"></i>
-                </ng-container>
-                <ng-template #hideIcon>
-                  <i class="bi bi-eye-slash"></i>
-                </ng-template>
-              </button>
-            </div>
-          </div>
-          <div class="mb-3">
-            <label for="passwordInput2" class="form-label">Nouveau Mot de passe</label>
-            <div class="input-group">
-              <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput2" name="password"
-                [(ngModel)]="inputpassnew" class="form-control">
-              <button class="btn btn-outline-secondary bg-secondary-subtle" type="button" (click)="togglePasswordVisibility()">
-                <ng-container *ngIf="showPassword; else hideIcon">
-                  <i class="bi bi-eye"></i>
-                </ng-container>
-                <ng-template #hideIcon>
-                  <i class="bi bi-eye-slash"></i>
-                </ng-template>
-              </button>
-            </div>
-          </div>
-        </div>
-        <div class="d-flex justify-content-end">
-          <button class="btn btnAction p-2" (click)="updatePassword()">Sauvegarder</button>
-        </div>
       </div>
     </div>
   </div>

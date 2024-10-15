@@ -25,14 +25,14 @@
             (click)="boutonActif = 2" (click)="listeDepense()">Dépenses</a></li>
       </ul>
     </div>
-<!-- Fournisseur -->
+    <!-- Fournisseur -->
     <div class="col-md-12" id="fournisseur" *ngIf="currentDoc==='fournisseur'">
       <div class="card mb-4 px-2 py-2 pt-4 rounded-4">
         <div class=" me-5 mb-2 d-md-flex justify-content-md-end">
-          <button type="button" class="btn ajouter mb-2" data-bs-toggle="modal"
-          data-bs-target="#addfournisseur" (click)="vider()">
-          Ajouter Fournisseur
-        </button>
+          <button type="button" class="btn ajouter mb-2" data-bs-toggle="modal" data-bs-target="#addfournisseur"
+            (click)="vider();changeValueModal('ajoutFournisseur')">
+            Ajouter Fournisseur
+          </button>
         </div>
         <div class="row sectionEspace ligneReseauSearch mb-3">
           <div class="col-md-5">
@@ -57,18 +57,31 @@
               </tr>
             </thead>
             <tbody *ngFor="let fournisseur of getItemsPage()">
-              <tr  (click)="chargerInfoFournisseur(fournisseur)"
-              data-bs-toggle="modal" data-bs-target="#updateFournisseur">
-                <td>{{fournisseur.num_fournisseur}}</td>
-                <td>{{fournisseur.type_fournisseur}}</td>
-                <td>{{fournisseur.prenom_fournisseur}} {{fournisseur.nom_fournisseur}} {{fournisseur.nom_entreprise}}
+              <tr>
+                <td (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')" data-bs-toggle="modal"
+                data-bs-target="#updateFournisseur">{{fournisseur.num_fournisseur}}</td>
+                <td (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')" data-bs-toggle="modal"
+                data-bs-target="#updateFournisseur">{{fournisseur.type_fournisseur}}</td>
+                <td (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')" data-bs-toggle="modal"
+                data-bs-target="#updateFournisseur">
+                  <span  *ngIf="fournisseur.type_fournisseur=='particulier'" title="particulier" class="me-2"> <i class="bi bi-person"></i></span>
+                  <span  *ngIf="fournisseur.type_fournisseur=='entreprise'" title="entreprise" class="me-2"> <i class="bi bi-buildings"></i></span>
+                  {{fournisseur.prenom_fournisseur}} {{fournisseur.nom_fournisseur}} {{fournisseur.nom_entreprise}}
+                  <span *ngIf="fournisseur.etiquettes && fournisseur.etiquettes.length > 0" class="etiquettes">
+                    <span *ngFor="let etiq of fournisseur.etiquettes; let i = index" [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2" >
+                      {{ etiq.nom_etiquette }}<span *ngIf="i < fournisseur.etiquettes.length - 1">, </span>
+                    </span>
+                  </span>
                 </td>
-                <td>{{fournisseur.adress_fournisseur}}</td>
-                <td>{{fournisseur.email_fournisseur}}</td>
-                <td>{{fournisseur.tel_fournisseur}}</td>
+                <td (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')" data-bs-toggle="modal"
+                data-bs-target="#updateFournisseur">{{fournisseur.adress_fournisseur}}</td>
+                <td (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')" data-bs-toggle="modal"
+                data-bs-target="#updateFournisseur">{{fournisseur.email_fournisseur}}</td>
+                <td (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')" data-bs-toggle="modal"
+                data-bs-target="#updateFournisseur">{{fournisseur.tel_fournisseur}}</td>
                 <td>
-                  <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfoFournisseur(fournisseur)"
-                    data-bs-toggle="modal" data-bs-target="#updateFournisseur"></i>
+                  <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')" data-bs-toggle="modal"
+                  data-bs-target="#updateFournisseur"></i>
                   <i class="bi bi-trash3" title="Supprimer" (click)="supprimerFournisseur(fournisseur.id)"></i>
                 </td>
               </tr>
@@ -95,16 +108,16 @@
         </div>
       </div>
     </div>
-<!-- depense -->
+    <!-- depense -->
     <div class="col-md-12" id="depense" *ngIf="currentDoc==='depense'">
       <div class="card mb-4 px-2 py-2 pt-4 rounded-4">
-        <div  class=" me-5 mb-2 d-md-flex justify-content-md-end">
-          <button type="button" class="btn ajouter mb-2" data-bs-toggle="modal"
-          data-bs-target="#adddepence" (click)="vider()">
-          Ajouter Dépense
-        </button>
+        <div class=" me-5 mb-2 d-md-flex justify-content-md-end">
+          <button type="button" class="btn ajouter mb-2" data-bs-toggle="modal" data-bs-target="#adddepence"
+            (click)="vider();changeValueModal('ajoutDepense')">
+            Ajouter Dépense
+          </button>
         </div>
-       
+
         <div class="row sectionEspace ligneReseauSearch mb-3">
           <div class="col-md-5">
             <h3 class="fw-bold">Listes Dépenses</h3>
@@ -128,16 +141,22 @@
               </tr>
             </thead>
             <tbody *ngFor="let depense of getItemsPage()">
-              <tr (click)="chargerInfoDepense(depense)"
-              data-bs-toggle="modal" data-bs-target="#updateDepense">
-                <td>{{depense.num_depense}}</td>
-                <td>{{depense.date_paiement}}</td>
-                <td>{{depense.nom_categorie_depense}}</td>
-                <td>{{depense.prenom_depense}} {{depense.nom_depense}}</td>
-                <td>{{depense.montant_depense_ht}}</td>
-                <td>{{depense.montant_depense_ttc}}</td>
+              <tr>
+                <td (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')" data-bs-toggle="modal" data-bs-target="#updateDepense">{{depense.num_depense}}</td>
+                <td (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')" data-bs-toggle="modal" data-bs-target="#updateDepense">{{depense.date_paiement}}</td>
+                <td (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')" data-bs-toggle="modal" data-bs-target="#updateDepense">
+                  {{depense.nom_categorie_depense}}
+                  <span *ngIf="depense.etiquettes && depense.etiquettes.length > 0" class="etiquettes">
+                    <span *ngFor="let etiq of depense.etiquettes; let i = index" [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2" >
+                      {{ etiq.nom_etiquette }}<span *ngIf="i < depense.etiquettes.length - 1">, </span>
+                    </span>
+                  </span>
+                </td>
+                <td (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')" data-bs-toggle="modal" data-bs-target="#updateDepense">{{depense.prenom_depense}} {{depense.nom_depense}}</td>
+                <td (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')" data-bs-toggle="modal" data-bs-target="#updateDepense">{{depense.montant_depense_ht}}</td>
+                <td (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')" data-bs-toggle="modal" data-bs-target="#updateDepense">{{depense.montant_depense_ttc}}</td>
                 <td>
-                  <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfoDepense(depense)"
+                  <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')"
                     data-bs-toggle="modal" data-bs-target="#updateDepense"></i>
                   <i class="bi bi-trash3" title="Supprimer" (click)="supprimerDepense(depense.id)"></i>
                 </td>
@@ -179,25 +198,26 @@
         <div class="config">
           <h1>Configurer numérotation automatique de ventes</h1>
 
-          <div class="option">
+          <!-- <div class="option">
             <div class="form-check">
               <input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate" checked>
               <label class="form-check-label" for="flexCheckIndeterminate">
                 Champ numéro modifiable
               </label>
             </div>
-          </div>
+          </div> -->
 
 
           <div class="form-check ">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" value="par_defaut"
-              [(ngModel)]="numerotation" id="flexRadioDefault1" (click)="showNumConfig('sansPrefixes')" checked>
+            <input class="form-check-input" type="radio" name="flexRadioDefault1" value="par_defaut"
+              [(ngModel)]="numerotation" id="flexRadioDefault1" (click)="showNumConfig('sansPrefixes')" checked
+              (change)="updatePrefix()">
             <label class="form-check-label" for="flexRadioDefault1">
               Numérotation par défaut (incrémentée de façon alphanumérique)
             </label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" value="avec_prefixe"
+            <input class="form-check-input" type="radio" name="flexRadioDefault2" value="avec_prefixe"
               [(ngModel)]="numerotation" id="flexRadioDefault2" (click)="showNumConfig('avecPrefixes')">
             <label class="form-check-label" for="flexRadioDefault2">
               Numérotation avec préfixe
@@ -349,11 +369,11 @@
                 <label class="form-check-label" for="flexSwitchCheckDefault">Actif</label>
               </div> -->
             </div>
-            <ng-container *ngIf="etiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
-              <span *ngFor="let etiq of etiquettes; let i = index" [ngStyle]="{'background-color': etiq.couleur}"
-                class="etiquette me-2">
-                {{ etiq.nom }}
-                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquette(i)"></i>
+            <ng-container *ngIf="selectedEtiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
+              <span *ngFor="let etiq of selectedEtiquettes; let i = index"
+                [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2 text-danger">
+                {{ etiq.nom_etiquette }}
+                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquettechosi(i)"></i>
               </span>
               <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
             </ng-container>
@@ -372,23 +392,23 @@
           </div> <br><br>
           <div class="tabs">
             <div class="tab one" [ngClass]="{'active': zoneActif === 1}"
-              (click)="showComponant('particulier'); setTypeFournisseur('particulier'); zoneActif = 1">
+              (click)="showComponant('zoneParticulier'); setTypeFournisseur('particulier'); zoneActif = 1">
               <!-- 👤 -->
               <i class="bi bi-person"></i>
             </div>
             <div class="tab two" [ngClass]="{'active': zoneActif === 2}"
-              (click)="showComponant('entreprise'); setTypeFournisseur('entreprise'); zoneActif = 2">
+              (click)="showComponant('zoneEntreprise'); setTypeFournisseur('entreprise'); zoneActif = 2">
               <!-- 🏢 -->
               <i class="bi bi-buildings"></i>
             </div>
           </div>
-          <form id="particulier" *ngIf="currentContent==='particulier'">
+          <form id="particulier" *ngIf="currentContent==='zoneParticulier'">
             <input type="text" class="form-control" placeholder="Prénom" name="prenom" [(ngModel)]="prenom">
             <input type="text" class="form-control" placeholder="Nom" name="nom" [(ngModel)]="nom">
             <input type="text" class="form-control" placeholder="Adresse électronique" name="email"
               [(ngModel)]="email"><br><br>
           </form>
-          <form id="entreprise" *ngIf="currentContent==='entreprise'">
+          <form id="entreprise" *ngIf="currentContent==='zoneEntreprise'">
             <input type="text" class="form-control" placeholder="Nom de l'entreprise" name="nomEntreprise"
               [(ngModel)]="nomEntreprise">
             <input type="text" class="form-control" placeholder="N° Identification fiscale" name="codeFiscal"
@@ -438,6 +458,29 @@
       </div>
       <div class="modal-body">
         <div class="containerFournisseur">
+          <div class="d-flex mb-2">
+            <div class="p-3 flex-grow-1">
+              <!-- <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Actif</label>
+              </div> -->
+            </div>
+            <ng-container *ngIf="selectedEtiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
+              <span *ngFor="let etiq of selectedEtiquettes; let i = index"
+                [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2 text-danger">
+                {{ etiq.nom_etiquette }}
+                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquettechosi(i)"></i>
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-container>
+
+            <ng-template #associerEtiquetteBlock>
+              <span class="me-2" data-bs-toggle="modal" data-bs-target="#etiquette" style="cursor: pointer;">
+                Associer étiquette
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-template>
+          </div>
           <div class="header">
             <span>{{numFournisseur}}</span>
           </div> <br><br>
@@ -537,11 +580,11 @@
                 <label class="form-check-label" for="flexSwitchCheckDefault">Active</label>
               </div>
             </div>
-            <ng-container *ngIf="etiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
-              <span *ngFor="let etiq of etiquettes; let i = index" [ngStyle]="{'background-color': etiq.couleur}"
-                class="etiquette me-2">
-                {{ etiq.nom }}
-                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquette(i)"></i>
+            <ng-container *ngIf="selectedEtiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
+              <span *ngFor="let etiq of selectedEtiquettes; let i = index"
+                [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2 text-danger">
+                {{ etiq.nom_etiquette }}
+                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquettechosi(i)"></i>
               </span>
               <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
             </ng-container>
@@ -679,18 +722,18 @@
               </div>
             </ng-container>
 
-            <div class="form-check form-switch" *ngIf="impayer=='impayer'">
+            <div class="form-check form-switch" *ngIf="statutPay=='impayer'">
               <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="payer"
                 (click)="setTypeImpay('payer')">
               <label class="form-check-label" for="flexSwitchCheckDefault">Impayé</label>
             </div>
-            <div class="form-check form-switch" *ngIf="impayer=='payer'">
+            <div class="form-check form-switch" *ngIf="statutPay=='payer'">
               <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked
                 name="impayer" (click)="setTypeImpay('impayer')">
               <label class="form-check-label" for="flexSwitchCheckDefault">payé</label>
             </div>
 
-            <div class="row g-3 align-items-center" *ngIf="impayer=='payer'">
+            <div class="row g-3 align-items-center" *ngIf="statutPay=='payer'">
               <div class="col-auto">
                 <label for="inputPassword6" class="col-form-label">Moyen de paiement</label>
                 <select class="form-select form-select-lg" id="client-select" placeholder="Type de paiement..."
@@ -707,15 +750,21 @@
           <div class="payment-info mx-auto p-2 mt-3" *ngIf="infosFacture">
             <h3>Information de facturation</h3>
             <div class="mb-3 row">
-              <label for="staticEmail" class="col-sm-2 col-form-label">Numéro :</label>
+              <label for="numero" class="col-sm-2 col-form-label">Numéro :</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="staticEmail" name="numero" [(ngModel)]="numero">
+                <input type="text" class="form-control" id="numero" name="numero" [(ngModel)]="numero">
               </div>
             </div>
             <div class="mb-3 row">
-              <label for="staticEmail" class="col-sm-2 col-form-label">Date :</label>
+              <label for="dateFacture" class="col-sm-2 col-form-label">Date :</label>
               <div class="col-sm-10">
-                <input type="date" class="form-control" id="staticEmail" name="dateFacture" [(ngModel)]="dateFacture">
+                <input type="date" class="form-control" id="dateFacture" name="dateFacture" [(ngModel)]="dateFacture">
+              </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="imageFacture" class="col-sm-2 col-form-label">Image Facture :</label>
+              <div class="col-sm-10">
+                <input type="file" class="form-control" id="imageFacture" name="imageFacture" (change)="getFile($event)">
               </div>
             </div>
           </div>
@@ -741,6 +790,29 @@
       </div>
       <div class="modal-body">
         <div class="form-container">
+          <div class="d-flex mb-2">
+            <div class="p-3 flex-grow-1">
+              <!-- <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Actif</label>
+              </div> -->
+            </div>
+            <ng-container *ngIf="selectedEtiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
+              <span *ngFor="let etiq of selectedEtiquettes; let i = index"
+                [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2 text-danger">
+                {{ etiq.nom_etiquette }}
+                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquettechosi(i)"></i>
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-container>
+
+            <ng-template #associerEtiquetteBlock>
+              <span class="me-2" data-bs-toggle="modal" data-bs-target="#etiquette" style="cursor: pointer;">
+                Associer étiquette
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-template>
+          </div>
           <div class="row">
             <div class="form-check form-switch">
               <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="active"
@@ -853,18 +925,18 @@
               </div>
             </ng-container>
 
-            <div class="form-check form-switch" *ngIf="impayer=='impayer'">
+            <div class="form-check form-switch" *ngIf="statutPay=='impayer'">
               <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="payer"
                 (click)="setTypeImpay('payer')">
               <label class="form-check-label" for="flexSwitchCheckDefault">Impayé</label>
             </div>
-            <div class="form-check form-switch" *ngIf="impayer=='payer'">
+            <div class="form-check form-switch" *ngIf="statutPay=='payer'">
               <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked
                 name="impayer" (click)="setTypeImpay('impayer')">
               <label class="form-check-label" for="flexSwitchCheckDefault">payé</label>
             </div>
 
-            <div class="row g-3 align-items-center" *ngIf="impayer=='payer'">
+            <div class="row g-3 align-items-center" *ngIf="statutPay=='payer'">
               <div class="col-auto">
                 <label for="inputPassword6" class="col-form-label">Moyen de paiement</label>
                 <select class="form-select form-select-lg" id="client-select" placeholder="Type de paiement..."
@@ -932,31 +1004,71 @@
           <h3 class="modal-title" id="etiquetteLabel">Associer étiquette</h3>
         </div>
         <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-            (click)="ouvrirModalArticle()"></button>
+            (click)="ouvrirModal()"></button>
         </div>
       </div>
       <div class="modal-body">
-        <div>
-          <div class="couleurs">
-            <div *ngFor="let couleur of couleurs" [ngStyle]="{'background-color': couleur}"
-              (click)="selectionnerCouleur(couleur)" [class.selected]="couleur === etiquette.couleur" class="couleur">
-              <span *ngIf="couleur === etiquette.couleur" class="checkmark">✔</span>
+        <div class="etiquette-management">
+          <!-- Liste des étiquettes et bouton Nouvelle étiquette -->
+          <div *ngIf="tabEtiquette.length > 0 && !modeEdition && !addNewEtiquette">
+            <div class="etiquettes ms-5">
+              <div *ngFor="let etiq of tabEtiquette" [ngStyle]="{'background-color': etiq.code_etiquette}"
+                class="etiquetteListe d-flex justify-content-between align-items-center mt-2"
+                (click)="choisirEtiquette(etiq)">
+                {{ etiq.nom_etiquette }}
+                <div>
+                  <!-- (click)="ouvrirModalArticle()" -->
+                  <i class="bi bi-pencil me-2" (click)="editerEtiquette(etiq)"></i>
+                  <i class="bi bi-trash2 me-2" (click)="supprimerEtiquette(etiq.id)"></i>
+                </div>
+              </div>
             </div>
+            <a class="mt-3" (click)="newEtiquette()">+ Nouvelle étiquette</a>
           </div>
 
-          <div class="mb-3">
-            <label for="nom">Nom de l'étiquette :</label>
-            <input class="form-control" type="text" placeholder="non étiquette" id="nom" [(ngModel)]="etiquette.nom"
-              name="nom">
+          <!-- Formulaire d'ajout -->
+          <div *ngIf="(tabEtiquette.length === 0 && !modeEdition) || addNewEtiquette">
+            <div class="couleurs">
+              <div *ngFor="let couleur of couleurs" [ngStyle]="{'background-color': couleur}"
+                (click)="selectionnerCouleur(couleur)" [class.selected]="couleur === etiquette.code_etiquette"
+                class="couleur">
+                <span *ngIf="couleur === etiquette.code_etiquette" class="checkmark">✔</span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="nom">Nom de l'étiquette :</label>
+              <input class="form-control" type="text" placeholder="Nom étiquette" id="nom" name="nom"
+                [(ngModel)]="etiquette.nom_etiquette">
+            </div>
+
+            <button class="btn btnAction me-2" (click)="ajouterEtiquette();ouvrirModal()">
+              Sauvegarder
+            </button>
+            <button *ngIf="addNewEtiquette" class="btn btn-secondary"
+              (click)="annulerAjout();ouvrirModal()">Annuler</button>
           </div>
 
-          <button class=" btn btnAction" (click)="ajouterEtiquette()">Sauvegarder</button>
-
-          <div *ngIf="etiquettes.length > 0" class="etiquettes">
-            <h3>Étiquettes Ajoutées :</h3>
-            <div *ngFor="let etiq of etiquettes" [ngStyle]="{'background-color': etiq.couleur}" class="etiquette">
-              {{ etiq.nom }}
+          <!-- Formulaire de modification -->
+          <div *ngIf="modeEdition">
+            <div class="couleurs">
+              <div *ngFor="let couleur of couleurs" [ngStyle]="{'background-color': couleur}"
+                (click)="selectionnerCouleur(couleur)" [class.selected]="couleur === etiquette.code_etiquette"
+                class="couleur">
+                <span *ngIf="couleur === etiquette.code_etiquette" class="checkmark">✔</span>
+              </div>
             </div>
+
+            <div class="mb-3">
+              <label for="nom">Nom de l'étiquette :</label>
+              <input class="form-control" type="text" placeholder="Nom étiquette" id="nom" name="nom"
+                [(ngModel)]="etiquette.nom_etiquette">
+            </div>
+
+            <button class="btn btnAction me-2" (click)="modifierEtiquette()">
+              Modifier
+            </button>
+            <button class="btn btn-secondary" (click)="annulerModification()">Annuler</button>
           </div>
         </div>
       </div>

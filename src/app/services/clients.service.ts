@@ -35,5 +35,30 @@ export class ClientsService {
   exportToExcel() {
     return this.http.get(`${apiUrl}/exportClients`,{ responseType: 'blob' });
   }
- 
+
+  // ajout Convertion
+  addConversation(conversation: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/ajouterConversation`, conversation);
+  }
+
+  // liste conversation
+  getAllConversation() : Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listerConversations`);
+  }
+
+   // liste conversation par client
+   getAllConversationByClient(clientId: any) : Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listerConversationsParClient/${clientId}`);
+  }
+
+
+   // supprimer  une conversation
+   deleteConveration(clientId:any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/supprimerConversation/${clientId}`,'');
+  }
+
+  //modifier une conversation
+    updateConversation(clientId: any, conversation:any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/modifierConversation/${clientId}`, conversation);
+  }
 }

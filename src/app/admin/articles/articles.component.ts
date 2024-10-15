@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { ArticlesService } from 'src/app/services/articles.service';
 import { PromoService } from 'src/app/services/promo.service';
 import { Report } from 'notiflix/build/notiflix-report-aio';
@@ -13,12 +13,20 @@ import { ClientsService } from '../../services/clients.service';
 import { PermissionsService } from '../../services/permissions.service';
 import { EtiquetteService } from '../../services/etiquette.service';
 
+
+interface Etiquette {
+  id?: number;
+  nom_etiquette: string;
+  code_etiquette: string;
+}
+
 @Component({
   selector: 'app-articles',
   templateUrl: './articles.component.html',
   styleUrls: ['./articles.component.css']
 })
 export class ArticlesComponent implements OnInit {
+  @Output() etiquetteSelectionnee = new EventEmitter<Etiquette>();
   // Déclaration des variables 
   tabArticle: any[] = [];
   tabArticleFilter: any[] = [];
@@ -73,6 +81,7 @@ export class ArticlesComponent implements OnInit {
   inputtitrePrix: string = "";
   inputtvaPrix: string = "";
   inputprixVente: string = "";
+  inputcodeBarres: string = ""
 
   currentStep = 1;
   isFileValid = false;
@@ -87,8 +96,14 @@ export class ArticlesComponent implements OnInit {
   article: string = "";
   montant: string = "";
 
+  prixList: { titrePrix: string, tva: string, montant: string }[] = [];
 
-  constructor(private http: HttpClient, private articleService: ArticlesService, private promoService: PromoService, private Categorie: CategorieArticleService, private grilleservice: GrilleTarifaireService, private clientService: ClientsService, public permissionsService: PermissionsService, private etiquetteService: EtiquetteService) { }
+  // Variables pour les cases à cocher
+  actifArticle: boolean = false;
+  stockType: string = '';
+
+
+  constructor(private http: HttpClient, private articleService: ArticlesService, private promoService: PromoService, private Categorie: CategorieArticleService, private grilleservice: GrilleTarifaireService, private clientService: ClientsService, public permissionsService: PermissionsService, private etiquetteService: EtiquetteService, private cdr: ChangeDetectorRef) { }
 
 
 
@@ -196,7 +211,19 @@ export class ArticlesComponent implements OnInit {
     )
   }
 
+
+  // Ajouter un autre prix
+  addPrix() {
+    this.prixList.push({ titrePrix: '', tva: '', montant: '' });
+  }
+
+  // Supprimer un prix
+  removePrix(index: number) {
+    this.prixList.splice(index, 1);
+  }
+
   ajouterArticle() {
+    console.log(this.codeBarres);
     let articles = {
       "active_Stock": this.active,
       "nom_article": this.nom,
@@ -210,13 +237,11 @@ export class ArticlesComponent implements OnInit {
       "quantite_alert": this.quantiteAlerte,
       "id_categorie_article": this.CategorieArticle,
       "code_barre": this.codeBarres,
-      "autres_prix": [
-        {
-          "titrePrix": this.titrePrix,
-          "montant": this.prixVente,
-          "tva": this.tvaPrix
-        }
-      ],
+      "autres_prix": [] as Array<{
+        titrePrix: string,
+        montant: string,
+        tva: string
+      }>,
       "variantes": [
         {
           "nomVariante": this.nomVariantes,
@@ -234,8 +259,33 @@ export class ArticlesComponent implements OnInit {
           "entrepot_id": this.entrepotName,
           "quantiteArt_entrepot": this.quantiteInEntrepot
         }
-      ]
+      ],
+      "etiquettes": [] as Array<{
+        id_etiquette: number,
+      }>
     }
+
+    // Ajouter des autreprix
+    for (let i = 0; i < this.prixList.length; i++) {
+      const item = this.prixList[i];
+      console.log(item)
+      articles.autres_prix.push({
+        titrePrix: item.titrePrix,
+        montant: item.montant,
+        tva: item.tva,
+
+      });
+    }
+
+    // Ajouter des etiquette
+    for (let i = 0; i < this.selectedIds.length; i++) {
+      const item = this.selectedIds[i];
+      console.log(item)
+      articles.etiquettes.push({
+        id_etiquette: item,
+      });
+    }
+
     this.articleService.addArticle(articles).subscribe(
       (article: any) => {
         Report.success('Notiflix Success', article.message, 'Okay',);
@@ -246,6 +296,7 @@ export class ArticlesComponent implements OnInit {
       }
     )
   }
+  
   products: any;
   listeArticles() {
     this.articleService.getAllArticles().subscribe(
@@ -276,8 +327,8 @@ export class ArticlesComponent implements OnInit {
     this.unite = '';
     this.tva = 0;
     this.titrePrix = '';
-    this.tvaPrix = '';
-    this.prixVente = '';
+    // this.tva = '';
+    this.montant = '';
     this.entrepotName = '';
     this.addEntrepot = '';
     this.Lotnom = '';
@@ -305,7 +356,11 @@ export class ArticlesComponent implements OnInit {
     this.inputquantiteInEntrepot = '';
     this.inputtitrePrix = '';
     this.inputtvaPrix = '';
-    this.inputprixVente = '';
+    // this.inputmontant = '';
+    this.inputcodeBarres = '';
+
+    this.prixList.push({ titrePrix: '', tva: '', montant: '' });
+    this.selectedEtiquettes.push();
   }
 
   deleteAricle(paramArticle: any) {
@@ -333,6 +388,8 @@ export class ArticlesComponent implements OnInit {
 
   currentArticle: any;
   numArticles: any;
+  etiquetteListe: any[] = [];
+  otherPrix: any;
   // Methode pour charger les infos de l'article  à modifier
   chargerInfosArticle(paramArticle: any) {
     console.log(paramArticle);
@@ -353,10 +410,16 @@ export class ArticlesComponent implements OnInit {
     this.inputnomVariantes = paramArticle.variante[0].nomVariante;
     this.inputquantiteVariantes = paramArticle.variante[0].quantiteVariante;
     this.inputquantiteInEntrepot = paramArticle.entrepot_art[0].quantiteArt_entrepot;
-    this.inputtitrePrix = paramArticle.autre_prix[0].titrePrix;
-    this.inputtvaPrix = paramArticle.autre_prix[0].tva;
-    this.inputprixVente = paramArticle.autre_prix[0].montant;
+    // this.inputtitrePrix = paramArticle.autre_prix[0].titrePrix;
+    // this.inputtvaPrix = paramArticle.autre_prix[0].tva;
+    // this.inputprixVente = paramArticle.autre_prix[0].montant;
     this.numArticles = paramArticle.num_article;
+    // this.etiquetteListe = paramArticle.etiquettes;
+    // this.otherPrix = paramArticle.autre_prix;
+    this.inputcodeBarres = paramArticle.code_barre;
+    this.prixList = paramArticle.autre_prix;
+    this.selectedEtiquettes = paramArticle.etiquettes;
+    this.active = paramArticle.active_Stock;
   }
 
   updateArticle() {
@@ -373,13 +436,12 @@ export class ArticlesComponent implements OnInit {
       "id_categorie_article": this.inputCategorieArticle,
       "unité": this.inputunite,
       "tva": this.inputtva,
-      "autres_prix": [
-        {
-          "titrePrix": this.inputtitrePrix,
-          "montant": this.inputprixVente,
-          "tva": this.inputtvaPrix
-        }
-      ],
+      "code_barre": this.inputcodeBarres,
+      "autres_prix": [] as Array<{
+        titrePrix: string,
+        montant: string,
+        tva: string
+      }>,
       "variantes": [
         {
           "nomVariante": this.inputnomVariantes,
@@ -397,9 +459,34 @@ export class ArticlesComponent implements OnInit {
           "entrepot_id": this.inputentrepotName,
           "quantiteArt_entrepot": this.inputquantiteInEntrepot
         }
-      ]
+      ],
+      "etiquettes": [] as Array<{
+        id_etiquette: number,
+      }>
 
     }
+
+    // Ajouter des autreprix
+    for (let i = 0; i < this.prixList.length; i++) {
+      const item = this.prixList[i];
+      console.log(item)
+      articles.autres_prix.push({
+        titrePrix: item.titrePrix,
+        montant: item.montant,
+        tva: item.tva,
+
+      });
+    }
+
+    // Ajouter des etiquette
+    for (let i = 0; i < this.selectedIds.length; i++) {
+      const item = this.selectedIds[i];
+      console.log(item)
+      articles.etiquettes.push({
+        id_etiquette: item,
+      });
+    }
+
     Confirm.init({
       okButtonBackground: '#5C6FFF',
       titleColor: '#5C6FFF'
@@ -539,6 +626,7 @@ export class ArticlesComponent implements OnInit {
       (elt: any) => (elt?.nom_article.toLowerCase().includes(this.filterValue.toLowerCase()) || elt?.nom_categorie.toLowerCase().includes(this.filterValue.toLowerCase()))
     );
   }
+
   // Attribut pour la pagination
   itemsParPage = 3; // Nombre d'articles par page
   pageActuelle = 1; // Page actuelle
@@ -570,14 +658,20 @@ export class ArticlesComponent implements OnInit {
   }
 
   showChamps: boolean = false;
-
+  isAddCategoryChecked: boolean = false;
   afficherChamps() {
-    this.showChamps = !this.showChamps;
+    this.showChamps = this.isAddCategoryChecked;
+    this.cdr.detectChanges();
   }
 
   formPrix: boolean = false;
+  isAddPrixChecked: boolean = false;
   afficherChampsPrix() {
-    this.formPrix = !this.formPrix;
+    this.formPrix = this.isAddPrixChecked;
+    this.cdr.detectChanges();
+    if (this.isAddPrixChecked && this.prixList.length === 0) {
+      this.addPrix();
+    }
   }
 
   stock: string = '';
@@ -587,6 +681,11 @@ export class ArticlesComponent implements OnInit {
 
   setTypeActive(type: string) {
     this.active = type;
+  }
+
+  onStockManagementChange(event: Event): void {
+    const isChecked = (event.target as HTMLInputElement).checked;
+    this.setTypeActive(isChecked ? 'oui' : 'non');
   }
 
   goToNextStep() {
@@ -706,51 +805,126 @@ export class ArticlesComponent implements OnInit {
     );
   }
 
+
   couleurs: string[] = ['#FFEB3B', '#CDDC39', '#FFC107', '#FF5722', '#E91E63', '#9C27B0', '#3F51B5', '#03A9F4', '#00BCD4', '#8BC34A'];
-  etiquette = { nom: '', couleur: '' };
-  etiquettes: { nom: string, couleur: string }[] = [];
+  etiquette: Etiquette = { nom_etiquette: '', code_etiquette: '' };
+  tabEtiquette: Etiquette[] = [];
+  selectedEtiquettes: Etiquette[] = [];
+  modeEdition = false;
+  addNewEtiquette: boolean = false;
+
+
+  choisirEtiquette(etiq: Etiquette) {
+    const index = this.selectedEtiquettes.indexOf(etiq);
+    console.error(this.selectedEtiquettes)
+    if (index === -1) {
+      this.selectedEtiquettes.push(etiq);  // Ajouter si non sélectionnée
+    } else {
+      this.selectedEtiquettes.splice(index, 1);  // Retirer si déjà sélectionnée
+    }
+    this.updateSelectedEtiquetteIds();
+  }
+
+  supprimerEtiquettechosi(index: number) {
+    this.selectedEtiquettes.splice(index, 1);
+    this.updateSelectedEtiquetteIds();
+  }
+
+  selectedIds: any[] = []
+  updateSelectedEtiquetteIds() {
+    this.selectedIds = this.selectedEtiquettes.map(etiq => etiq.id);
+    console.log('IDs des étiquettes sélectionnées:', this.selectedIds);
+  }
+
+  reinitialiserFormulaire() {
+    this.etiquette = { nom_etiquette: '', code_etiquette: '' };
+    this.modeEdition = false;
+  }
+
+  newEtiquette() {
+    this.addNewEtiquette = true;
+    this.etiquette = { nom_etiquette: '', code_etiquette: '' };
+  }
+
+  annulerAjout() {
+    this.addNewEtiquette = false;
+    this.etiquette = { nom_etiquette: '', code_etiquette: '' };
+  }
+
+  annulerModification() {
+    this.modeEdition = false;
+    this.etiquette = { nom_etiquette: '', code_etiquette: '' };
+  }
 
   selectionnerCouleur(couleur: string) {
-    this.etiquette.couleur = couleur;
+    this.etiquette.code_etiquette = couleur;
   }
 
   ajouterEtiquette() {
-    // if (this.etiquette.nom && this.etiquette.couleur) {
-    //   this.etiquettes.push({ ...this.etiquette });
-    // }
-    let etiquette = {
-      nomEtiquette: this.etiquette.nom,
-      codeEtiquette: this.etiquette.couleur
+    if (this.etiquette.nom_etiquette && this.etiquette.code_etiquette) {
+      this.etiquetteService.addEtiquette(this.etiquette).subscribe(
+        (response) => {
+          console.log('Étiquette ajoutée:', response);
+          this.listeEtiquette();
+          this.addNewEtiquette = false;
+          this.etiquette = { nom_etiquette: '', code_etiquette: '' };
+        },
+        (error) => {
+          console.error('Erreur lors de l\'ajout de l\'étiquette:', error);
+        }
+      );
     }
-
-    this.etiquetteService.addEtiquette(etiquette).subscribe(
-      (response) => {
-        console.log(response);
-      },
-      (error) => {
-        console.log(error)
-      }
-    )
-
-
   }
 
-  tabEtiquette: any;
+  editerEtiquette(etiq: Etiquette) {
+    this.modeEdition = true;
+    this.etiquette = { ...etiq };
+  }
+
+  modifierEtiquette() {
+    if (this.etiquette.id && this.etiquette.nom_etiquette && this.etiquette.code_etiquette) {
+      this.etiquetteService.updateEtiquette(this.etiquette.id, this.etiquette).subscribe(
+        (response) => {
+          console.log('Étiquette modifiée:', response);
+          this.listeEtiquette();
+          this.modeEdition = false;
+          this.etiquette = { nom_etiquette: '', code_etiquette: '' };
+        },
+        (error) => {
+          console.error('Erreur lors de la modification de l\'étiquette:', error);
+        }
+      );
+    }
+  }
+
   listeEtiquette() {
     this.etiquetteService.getAllEtiquette().subscribe(
       (reponse) => {
         this.tabEtiquette = reponse.etiquette;
-        console.log(this.tabEtiquette);
+        console.log('Liste des étiquettes:', this.tabEtiquette);
       },
       (error) => {
-        console.log(error)
+        console.error('Erreur lors de la récupération des étiquettes:', error);
       }
-    )
+    );
   }
 
-  supprimerEtiquette(index: number) {
-    this.etiquettes.splice(index, 1);
+
+
+  supprimerEtiquette(id: any) {
+    console.log(id)
+    this.etiquetteService.deleteEtiquette(id).subscribe(
+      (response) => {
+        console.log('Étiquette supprimée:', response);
+        this.listeEtiquette();
+      },
+      (error) => {
+        console.error('Erreur lors de la suppression de l\'étiquette:', error);
+      }
+    );
   }
+
+
 
   ouvrirModalArticle() {
     // Utiliser l'API DOM pour ouvrir le modal
@@ -773,8 +947,39 @@ export class ArticlesComponent implements OnInit {
   }
 
   actionsVisible: boolean = false;
-  toggleActions() {
-    this.actionsVisible = !this.actionsVisible;
+  toggleActions(article: any) {
+    article.actionsVisible = !article.actionsVisible;
+    // Fermez les menus des autres articles
+    this.tabArticle.forEach(a => {
+      if (a !== article) {
+        a.actionsVisible = false;
+      }
+    });
   }
+
+  modalName = 'ajout'
+
+  changeValueModal(value: string) {
+    this.modalName = value;
+  }
+
+  ouvrirModal() {
+    if (this.modalName == 'ajout') {
+      const modal = document.getElementById('exampleModal');
+      if (modal) {
+        // @ts-ignore
+        const bootstrapModal = new bootstrap.Modal(modal);
+        bootstrapModal.show();
+      }
+    } else if (this.modalName == 'modif') {
+      const modal = document.getElementById('ModalModifier');
+      if (modal) {
+        // @ts-ignore
+        const bootstrapModal = new bootstrap.Modal(modal);
+        bootstrapModal.show();
+      }
+    }
+  }
+
 
 }

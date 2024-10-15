@@ -58,11 +58,6 @@ export class VenteService {
     return this.http.get<any>(`${apiUrl}/listerToutesFacturesSimpleAvoir`);
   }
 
-  // liste facture par  client
-  getAllFactureByClient(clientId: any): Observable<any> {
-    return this.http.get<any>(`${apiUrl}/listeFactureParClient/${clientId}`);
-  }
-
   // crée facture d'acompte
   createFactureAcompte(facture: any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/creerFactureAccomp`, facture);
@@ -341,4 +336,30 @@ export class VenteService {
   exportDepenseToExcel() {
     return this.http.get(`${apiUrl}/exporterDepenses`, { responseType: 'blob' });
   }
+
+  // liste facture par  client
+  getAllFactureByClient(clientId: any): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listeFactureParClient/${clientId}`);
+  }
+
+  // liste devis par client
+  getAllDevisByClient(clientId: any): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listeDeviParClient/${clientId}`);
+  }
+
+  // liste bon de commande par client
+  getAllBonCommandeByClient(clientId: any): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listeBonCommandeParClient/${clientId}`);
+  }
+
+   // liste bon de livraison par client
+   getAllBonLivraisonByClient(clientId: any): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listerToutesLivraisonsParClient/${clientId}`);
+  }
+
+   // liste des soldes par client
+   getAllSoldeByClient(clientId: any): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listeSoldeParClient/${clientId}`);
+  }
+
 }

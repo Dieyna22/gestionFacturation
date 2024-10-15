@@ -39,53 +39,59 @@
                     <table class="table table-hover mb-4">
                         <thead class="mb-2">
                             <tr>
+                                <th></th>
                                 <th scope="col">Date</th>
                                 <th scope="col">Code</th>
                                 <th scope="col">Libellé</th>
                                 <th scope="col">Disponible avant</th>
                                 <th scope="col">Modif.</th>
                                 <th scope="col">Disponible après</th>
-                                <th scope="col">Action </th>
+                                <!-- <th scope="col">Action </th> -->
                             </tr>
                         </thead>
-                        <tbody *ngFor="let client of">
-                            <!-- getItemsPage() -->
+                        <tbody *ngFor="let stock of getItemsPage()">
                             <tr>
-                                <!-- <td>{{client.nom_client}}</td>
-                  <td>{{client.prenom_client}}</td>
-                  <td>{{client.nom_entreprise}}</td>
-                  <td>{{client.adress_client}}</td>
-                  <td>{{client.email_client}}</td>
-                  <td>{{client.tel_client}}</td>
-                  <td>{{client.nom_categorie}}</td> -->
-                                <td>
-                                    <!-- <i class="bi bi-eye me-2" title="detail" data-bs-toggle="modal" data-bs-target="#detailClient"></i>
+                                <td *ngIf="stock.type_stock=='sortie'">
+                                    <i class="bi bi-arrow-return-left" title="sortie"></i>
+                                </td>
+                                <td *ngIf="stock.type_stock=='entree'">
+                                    <i class="bi bi-arrow-return-right" title="entree"></i>
+                                </td>
+                                <td>{{stock.date_stock}}</td>
+                                <td>{{stock.num_stock}}</td>
+                                <td>{{stock.libelle}}</td>
+                                <td>{{stock.disponible_avant}}</td>
+                                <td>{{stock.modif}}</td>
+                                <td>{{stock.disponible_apres}}</td>
+                                <!-- <td>
+                                    <i class="bi bi-eye me-2" title="detail" data-bs-toggle="modal" data-bs-target="#detailClient"></i>
                     <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfosClient(client)"
                       data-bs-toggle="modal" data-bs-target="#ModalModifier"></i>
-                    <i class="bi bi-trash3" title="Supprimer" (click)="deleteClient(client.id)"></i> -->
-                                </td>
+                    <i class="bi bi-trash3" title="Supprimer" (click)="deleteClient(client.id)"></i>
+                                </td> -->
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
                 <!-- Pagination  -->
-                <!-- <div *ngIf="getItemsPage().length">
-            <div class="d-flex justify-content-end mb-2">
-              <button class="border border-0 btnColor  mx-2" [disabled]="pageActuelle === 1"
-                (click)="pageActuelle = pageActuelle - 1">
-                <i class="bi bi-arrow-left-circle fs-4"></i>
-              </button>
-              <button class=" rounded-circle mx-2 page" *ngFor="let page of pages" (click)="pageActuelle = page">
-                <span class="pageActuelle fs-5" *ngIf="page===pageActuelle">{{page}}</span>
-                <span *ngIf="page != pageActuelle">{{page}}</span>
-              </button>
-              <button class="border border-0 btnColor mx-2" [disabled]="pageActuelle === totalPages"
-                (click)="pageActuelle = pageActuelle + 1">
-                <i class="bi bi-arrow-right-circle fs-4"></i>
-              </button>
-            </div>
-          </div> -->
+                <div *ngIf="getItemsPage().length">
+                    <div class="d-flex justify-content-end mb-2">
+                        <button class="border border-0 btnColor  mx-2" [disabled]="pageActuelle === 1"
+                            (click)="pageActuelle = pageActuelle - 1">
+                            <i class="bi bi-arrow-left-circle fs-4"></i>
+                        </button>
+                        <button class=" rounded-circle mx-2 page" *ngFor="let page of pages"
+                            (click)="pageActuelle = page">
+                            <span class="pageActuelle fs-5" *ngIf="page===pageActuelle">{{page}}</span>
+                            <span *ngIf="page != pageActuelle">{{page}}</span>
+                        </button>
+                        <button class="border border-0 btnColor mx-2" [disabled]="pageActuelle === totalPages"
+                            (click)="pageActuelle = pageActuelle + 1">
+                            <i class="bi bi-arrow-right-circle fs-4"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- btn exporter client -->
@@ -142,19 +148,21 @@
                         </thead>
                         <tbody>
                             <!-- getItemsPage() -->
-                            <tr *ngFor="let item of items; let i = index">
-                                <td>{{ i + 1 }}</td>
-                                <td>{{ item.name }}</td>
-                                <td>{{ item.dispo }}</td>
+                            <tr *ngFor="let item of tabStockUpdate; let i = index">
+                                <td>{{item.Code }}</td>
+                                <td>{{item.libelle }}</td>
+                                <td *ngIf="item.disponible_actuel !== 0 && item.disponible_actuel !== '0'">
+                                    {{item.disponible_actuel}}</td>
+                                <td *ngIf="item.disponible_actuel === 0 || item.disponible_actuel === '0'">-</td>
                                 <td>
                                     <div class="d-flex justify-content-center align-items-center">
                                         <span (click)="decrement(i)" class="incrementation">-</span>
-                                        <input type="text" [(ngModel)]="item.quantity"
+                                        <input type="text" [(ngModel)]="item.quantite_ajoutee"
                                             class="form-control text-center mx-2" style="width: 60px;" readonly>
                                         <span (click)="increment(i)" class="incrementation">+</span>
                                     </div>
                                 </td>
-                                <td>{{ item.sum }}</td>
+                                <td>{{calculateDisponibleNouveau(item)}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -168,7 +176,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btnAction">Enregistrer modification</button>
+                <button type="button" class="btn btnAction" (click)=" updateStock()">Enregistrer modification</button>
                 <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
             </div>
         </div>

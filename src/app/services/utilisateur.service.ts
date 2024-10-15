@@ -11,6 +11,11 @@ export class UtilisateurService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
+  // liste infos admin
+  getAdmi(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listerUser`);
+  }
+  
   // ajout user
   addUser(role: any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/ajouterUtilisateur`, role);

@@ -274,3 +274,63 @@
 #btnActivity:checked~#HistoryDay {
   left: 0;
 }
+
+.occurrence{
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  border: thin solid #444;
+  padding: 7px 10px;
+}
+
+.containerHistory{
+  border-bottom: thin solid #eee;
+  padding: 14px 10px;
+
+}
+
+.icon-badge-container {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.badge {
+  position: absolute;
+  top: 0px;
+  right: -20px;
+  background-color: #888;
+  color: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+}
+
+.badgeNotif {
+  position: absolute;
+  top: 0px;
+  right: -20px;
+  background-color: #ee0f0f;
+  color: white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, sans-serif;
+  font-weight: bold;
+}
+
+.zoneAffichage{
+  overflow-y: scroll;
+  height: 90px;
+}

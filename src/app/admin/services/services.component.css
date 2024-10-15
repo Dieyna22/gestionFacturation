@@ -78,3 +78,20 @@ thead th:first-child {
     text-decoration: none;
     cursor: pointer;
   }
+
+  .grille{
+    position: fixed;
+    top: 350px;
+    left: 260px;
+    background-color: #fff;
+    color: #F19A33;
+    height: 45px;
+    width: 45px;
+    z-index: 9999;
+    border: thin solid #F19A33;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
