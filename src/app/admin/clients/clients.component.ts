@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CategorieService } from 'src/app/services/categorie.service';
 import { ClientsService } from 'src/app/services/clients.service';
 import { Report } from 'notiflix/build/notiflix-report-aio';
@@ -10,6 +10,14 @@ import * as XLSX from 'xlsx';
 import { GrilleTarifaireService } from 'src/app/services/grille-tarifaire.service';
 import { ArticlesService } from 'src/app/services/articles.service';
 import { PayementService } from 'src/app/services/payement.service';
+import { EtiquetteService } from 'src/app/services/etiquette.service';
+import { VenteService } from 'src/app/services/vente.service';
+
+interface Etiquette {
+  id?: number;
+  nom_etiquette: string;
+  code_etiquette: string;
+}
 
 @Component({
   selector: 'app-clients',
@@ -42,8 +50,9 @@ export class ClientsComponent {
   entreprise: string = "";
   adress: string = "";
   telephone: string = "";
-  statut: string = "";
-  type: string = "";
+  status: string = "prospect";
+  isClient: boolean = false;
+  type: string = "particulier";
   paysClient: string = "";
   villeClient: string = "";
   fiscal: string = "";
@@ -78,15 +87,28 @@ export class ClientsComponent {
   inputinfos: string = "";
   inputnotes: string = "";
 
-  client:String="";
-  article:string="";
-  montant:string="";
-  tva:string="";
+  client: String = "";
+  article: string = "";
+  montant: string = "";
+  tva: string = "";
   moyenPayement: string = "";
 
-  constructor(private http: HttpClient, private ServiceCategorie: CategorieService,private payementService: PayementService, private clientService: ClientsService,private articleService:ArticlesService,private grilleservice:GrilleTarifaireService) { }
+  typeConversation: string = "personnelle";
+  dateConversation: string = "";
+  interlocuteur: string = "";
+  objectConversation: string = "";
+  conversations: string = "";
+  statutConversation: string = "en_attente";
 
-  
+  inputdateConversation: string = "";
+  inputinterlocuteur: string = "";
+  inputobjectConversation: string = "";
+  inputconversations: string = "";
+
+
+  constructor(private http: HttpClient, private ServiceCategorie: CategorieService, private payementService: PayementService, private clientService: ClientsService, private articleService: ArticlesService, private grilleservice: GrilleTarifaireService, private etiquetteService: EtiquetteService, private cdr: ChangeDetectorRef, private docService: VenteService) { }
+
+
   showPassword: boolean = false;
 
   togglePasswordVisibility() {
@@ -98,6 +120,7 @@ export class ClientsComponent {
     this.listeClients();
     this.listeArticles()
     this.listePayement();
+    this.listeEtiquette();
   }
 
   tabPayement: any[] = [];
@@ -111,23 +134,23 @@ export class ClientsComponent {
     )
   }
 
-  ajouterGrilles(){
-    let grille={
-     "idClient":this.client,
-     "idArticle":this.article,
-     "montantTarif":this.montant,
-     "tva":this.tva
+  ajouterGrilles() {
+    let grille = {
+      "idClient": this.client,
+      "idArticle": this.article,
+      "montantTarif": this.montant,
+      "tva": this.tva
     }
     this.grilleservice.addGrille(grille).subscribe(
-      (user:any)=>{
-        Report.success('Notiflix Success',user.message,'Okay',);
+      (user: any) => {
+        Report.success('Notiflix Success', user.message, 'Okay',);
       },
       (err) => {
       }
     )
   }
 
-  products:any;
+  products: any;
   listeArticles() {
     this.articleService.getAllArticles().subscribe(
       (article: any) => {
@@ -136,7 +159,7 @@ export class ClientsComponent {
       (err) => {
       }
     )
-   }
+  }
 
   listeCategorie() {
     this.ServiceCategorie.getAllCategorie().subscribe(
@@ -149,6 +172,30 @@ export class ClientsComponent {
   }
 
 
+  zoneActif = 1;
+  setTypeFournisseur(typeClient: string) {
+    this.type = typeClient;
+  }
+
+  setTypeActive(stautChange: string) {
+    this.status = stautChange;
+  }
+
+  setEtatConversation(etatvalue: string) {
+    this.statutConversation = etatvalue;
+  }
+
+  changeStatut() {
+    this.status = this.isClient ? 'client' : 'prospect';
+  }
+
+  zoneConversation = 1;
+  setTypeConversation(value: string) {
+    this.typeConversation = value;
+  }
+
+
+
   ajouterUsers() {
     let clients = {
       "nom_client": this.nom,
@@ -158,7 +205,7 @@ export class ClientsComponent {
       "email_client": this.mail,
       "tel_client": this.telephone,
       "categorie_id": this.typeClient,
-      "statut_client": this.statut,
+      "statut_client": this.status,
       "type_client": this.type,
       "pays_client": this.paysClient,
       "ville_client": this.villeClient,
@@ -171,8 +218,19 @@ export class ClientsComponent {
       "email_destinataire": this.emailDestinataire,
       "infoSupplemnt": this.infos,
       "noteInterne_client": this.notes,
-
+      "etiquettes": [] as Array<{
+        id_etiquette: number,
+      }>
     }
+    // Ajouter des etiquette
+    for (let i = 0; i < this.selectedIds.length; i++) {
+      const item = this.selectedIds[i];
+      console.log(item)
+      clients.etiquettes.push({
+        id_etiquette: item,
+      });
+    }
+
     this.clientService.addClient(clients).subscribe(
       (client: any) => {
         Report.success('Notiflix Success', client.message, 'Okay',);
@@ -189,6 +247,7 @@ export class ClientsComponent {
       (clients: any) => {
         this.tabClient = clients;
         this.tabClientFilter = this.tabClient;
+        console.log(this.tabClientFilter);
       },
       (err) => {
       }
@@ -204,7 +263,7 @@ export class ClientsComponent {
     this.entreprise = '';
     this.adress = '';
     this.telephone = '';
-    this.statut = '';
+    this.status = '';
     this.type = '';
     this.paysClient = '';
     this.villeClient = '';
@@ -249,18 +308,18 @@ export class ClientsComponent {
     Confirm.show('Confirmer Suppression ',
       'Voullez-vous supprimer?',
       'Oui', 'Non', () => {
-      Loading.init({
-        svgColor: '#5C6FFF',
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.clientService.deleteClient(paramClient).subscribe(
+          (response) => {
+            Notify.success(response.message);
+            this.listeClients();
+            Loading.remove();
+          }
+        )
       });
-      Loading.hourglass();
-      this.clientService.deleteClient(paramClient).subscribe(
-        (response) => {
-          Notify.success(response.message);
-          this.listeClients();
-          Loading.remove();
-        }
-      )
-    });
   }
 
   currentClient: any;
@@ -275,8 +334,13 @@ export class ClientsComponent {
     this.inputEntreprise = paramClient.nom_entreprise;
     this.inputTelephone = paramClient.tel_client;
     this.inputAdress = paramClient.adress_client;
-    this.inputstatut = paramClient.statut_client;
+    this.status = paramClient.statut_client;
     this.inputtype = paramClient.type_client;
+    if(this.inputtype=='particulier'){
+      this.zoneActif=1;
+    }else if(this.inputtype=='entreprise'){
+      this.zoneActif=2;
+    }
     this.inputpaysClient = paramClient.pays_client;
     this.inputvilleClient = paramClient.ville_client;
     this.inputfiscal = paramClient.num_id_fiscal;
@@ -288,7 +352,14 @@ export class ClientsComponent {
     this.inputemailDestinataire = paramClient.email_destinataire;
     this.inputinfos = paramClient.infoSupplemnt;
     this.inputnotes = paramClient.noteInterne_client;
+    this.selectedEtiquettes = paramClient.etiquettes;
+    this.getInterlocuteurNom();
 
+  }
+
+  getInterlocuteurNom(): string {
+    if (!this.currentClient) return '';
+    return this.interlocuteur = `${this.currentClient.prenom_client || ''} ${this.currentClient.nom_client || ''}`.trim();
   }
 
   updateUser() {
@@ -300,7 +371,7 @@ export class ClientsComponent {
       "email_client": this.inputmail,
       "tel_client": this.inputTelephone,
       "categorie_id": this.inputClient,
-      "statut_client": this.inputstatut,
+      "statut_client": this.status,
       "type_client": this.inputtype,
       "pays_client": this.inputpaysClient,
       "ville_client": this.inputvilleClient,
@@ -313,7 +384,19 @@ export class ClientsComponent {
       "email_destinataire": this.inputemailDestinataire,
       "infoSupplemnt": this.inputinfos,
       "noteInterne_client": this.inputnotes,
+      "etiquettes": [] as Array<{
+        id_etiquette: number,
+      }>
     }
+    // Ajouter des etiquette
+    for (let i = 0; i < this.selectedIds.length; i++) {
+      const item = this.selectedIds[i];
+      console.log(item)
+      clients.etiquettes.push({
+        id_etiquette: item,
+      });
+    }
+
     Confirm.init({
       okButtonBackground: '#5C6FFF',
       titleColor: '#5C6FFF'
@@ -321,19 +404,19 @@ export class ClientsComponent {
     Confirm.show('Confirmer modification ',
       'Voullez-vous modifier?',
       'Oui', 'Non', () => {
-      Loading.init({
-        svgColor: '#5C6FFF',
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.clientService.updateClient(this.currentClient.id, clients).subscribe(
+          (reponse) => {
+            Notify.success(reponse.message);
+            this.listeClients();
+            this.vider();
+            Loading.remove();
+          }
+        )
       });
-      Loading.hourglass();
-      this.clientService.updateClient(this.currentClient.id, clients).subscribe(
-        (reponse) => {
-          Notify.success(reponse.message);
-          this.listeClients();
-          this.vider();
-          Loading.remove();
-        }
-      )
-    });
   }
 
   // Methode de recherche automatique pour un utilisateur
@@ -391,7 +474,7 @@ export class ClientsComponent {
     // Création du modèle de données
     const modelData = [
       {
-        prenom: '', nom: '', Nom_entreprise: '', type_client: '', Statut_client: '', email_client: '', adress_client: '', 
+        prenom: '', nom: '', Nom_entreprise: '', type_client: '', Statut_client: '', email_client: '', adress_client: '',
         Adresse_Code_postal: '', ville_client: '', pays_client: '', tel_client: '', noteInterne_client: '', nom_destinataire: '', pays_livraison: '',
         ville_livraison: '', code_postal_livraison: '', tel_destinataire: '', email_destinataire: '', infoSupplemnt: '',
       }
@@ -506,23 +589,121 @@ export class ClientsComponent {
   }
 
   couleurs: string[] = ['#FFEB3B', '#CDDC39', '#FFC107', '#FF5722', '#E91E63', '#9C27B0', '#3F51B5', '#03A9F4', '#00BCD4', '#8BC34A'];
-  etiquette = { nom: '', couleur: '' };
-  etiquettes: { nom: string, couleur: string }[] = [];
+  etiquette: Etiquette = { nom_etiquette: '', code_etiquette: '' };
+  tabEtiquette: Etiquette[] = [];
+  selectedEtiquettes: Etiquette[] = [];
+  modeEdition = false;
+  addNewEtiquette: boolean = false;
+
+
+  choisirEtiquette(etiq: Etiquette) {
+    const index = this.selectedEtiquettes.indexOf(etiq);
+    console.error(this.selectedEtiquettes)
+    if (index === -1) {
+      this.selectedEtiquettes.push(etiq);  // Ajouter si non sélectionnée
+    } else {
+      this.selectedEtiquettes.splice(index, 1);  // Retirer si déjà sélectionnée
+    }
+    this.updateSelectedEtiquetteIds();
+  }
+
+  supprimerEtiquettechosi(index: number) {
+    this.selectedEtiquettes.splice(index, 1);
+    this.updateSelectedEtiquetteIds();
+  }
+
+  selectedIds: any[] = []
+  updateSelectedEtiquetteIds() {
+    this.selectedIds = this.selectedEtiquettes.map(etiq => etiq.id);
+    console.log('IDs des étiquettes sélectionnées:', this.selectedIds);
+  }
+
+  reinitialiserFormulaire() {
+    this.etiquette = { nom_etiquette: '', code_etiquette: '' };
+    this.modeEdition = false;
+  }
+
+  newEtiquette() {
+    this.addNewEtiquette = true;
+    this.etiquette = { nom_etiquette: '', code_etiquette: '' };
+  }
+
+  annulerAjout() {
+    this.addNewEtiquette = false;
+    this.etiquette = { nom_etiquette: '', code_etiquette: '' };
+  }
+
+  annulerModification() {
+    this.modeEdition = false;
+    this.etiquette = { nom_etiquette: '', code_etiquette: '' };
+  }
 
   selectionnerCouleur(couleur: string) {
-    this.etiquette.couleur = couleur;
+    this.etiquette.code_etiquette = couleur;
   }
 
   ajouterEtiquette() {
-    if (this.etiquette.nom && this.etiquette.couleur) {
-      this.etiquettes.push({ ...this.etiquette });
-      this.etiquette.nom = '';
-      this.etiquette.couleur = '';
+    if (this.etiquette.nom_etiquette && this.etiquette.code_etiquette) {
+      this.etiquetteService.addEtiquette(this.etiquette).subscribe(
+        (response) => {
+          console.log('Étiquette ajoutée:', response);
+          this.listeEtiquette();
+          this.addNewEtiquette = false;
+          this.etiquette = { nom_etiquette: '', code_etiquette: '' };
+        },
+        (error) => {
+          console.error('Erreur lors de l\'ajout de l\'étiquette:', error);
+        }
+      );
     }
   }
 
-  supprimerEtiquette(index: number) {
-    this.etiquettes.splice(index, 1);
+  editerEtiquette(etiq: Etiquette) {
+    this.modeEdition = true;
+    this.etiquette = { ...etiq };
+  }
+
+  modifierEtiquette() {
+    if (this.etiquette.id && this.etiquette.nom_etiquette && this.etiquette.code_etiquette) {
+      this.etiquetteService.updateEtiquette(this.etiquette.id, this.etiquette).subscribe(
+        (response) => {
+          console.log('Étiquette modifiée:', response);
+          this.listeEtiquette();
+          this.modeEdition = false;
+          this.etiquette = { nom_etiquette: '', code_etiquette: '' };
+        },
+        (error) => {
+          console.error('Erreur lors de la modification de l\'étiquette:', error);
+        }
+      );
+    }
+  }
+
+  listeEtiquette() {
+    this.etiquetteService.getAllEtiquette().subscribe(
+      (reponse) => {
+        this.tabEtiquette = reponse.etiquette;
+        console.log('Liste des étiquettes:', this.tabEtiquette);
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des étiquettes:', error);
+      }
+    );
+  }
+
+
+
+  supprimerEtiquette(id: any) {
+    console.log(id)
+    this.etiquetteService.deleteEtiquette(id).subscribe(
+      (response) => {
+        console.log('Étiquette supprimée:', response);
+        this.listeEtiquette();
+      },
+      (error) => {
+        console.error('Erreur lors de la suppression de l\'étiquette:', error);
+      }
+    );
   }
 
   ouvrirModalClient() {
@@ -546,6 +727,32 @@ export class ClientsComponent {
   }
 
 
+
+  modalName = 'ajout'
+
+  changeValueModal(value: string) {
+    this.modalName = value;
+  }
+
+  ouvrirModal() {
+    if (this.modalName == 'ajout') {
+      const modal = document.getElementById('exampleModal');
+      if (modal) {
+        // @ts-ignore
+        const bootstrapModal = new bootstrap.Modal(modal);
+        bootstrapModal.show();
+      }
+    } else if (this.modalName == 'modif') {
+      const modal = document.getElementById('ModalModifier');
+      if (modal) {
+        // @ts-ignore
+        const bootstrapModal = new bootstrap.Modal(modal);
+        bootstrapModal.show();
+      }
+    }
+  }
+
+
   section: string = "general"
   showSection(type: string) {
     this.section = type;
@@ -558,17 +765,225 @@ export class ClientsComponent {
     this.currentDoc = docId
   }
 
-  configDate:boolean=false
-  showconfigDate(){
+  configDate: boolean = false
+  showconfigDate() {
     this.configDate = !this.configDate;
   }
 
-  choiceDate:boolean=false
-  showchoiceDate(){
+  choiceDate: boolean = false
+  showchoiceDate() {
     this.choiceDate = !this.choiceDate;
   }
 
-  changeValue(){
-    this.configDate=false;
+  changeValue() {
+    this.configDate = false;
   }
+
+  tabFactures: any[] = [];
+  tabFactureFilter: any[] = [];
+  listeFacture() {
+    this.docService.getAllFactureByClient(this.currentClient.id).subscribe(
+      (factures) => {
+        this.tabFactures = factures.factures;
+        this.tabFactureFilter = this.tabFactures;
+      },
+      (err) => {
+        console.log(err);
+      }
+    )
+  }
+
+  tabDevis: any[] = [];
+  listeDevis() {
+    this.docService.getAllDevisByClient(this.currentClient.id).subscribe(
+      (devis) => {
+        this.tabDevis = devis.devis;
+        this.tabFactureFilter = this.tabDevis;
+        console.log(this.tabDevis);
+      },
+      (err) => {
+        console.log(err);
+      }
+    )
+  }
+
+  tabBonCommande: any[] = [];
+  listeBonCommande() {
+    this.docService.getAllBonCommandeByClient(this.currentClient.id).subscribe(
+      (bonCommande) => {
+        this.tabBonCommande = bonCommande.BonCommandes;
+        this.tabFactureFilter = this.tabBonCommande;
+        console.log(this.tabBonCommande);
+      },
+      (err) => {
+        console.log(err);
+      }
+    )
+  }
+
+  tabLivraison: any;
+  listeBonLivraison() {
+    this.docService.getAllBonLivraisonByClient(this.currentClient.id).subscribe(
+      (bonLivraisons) => {
+        this.tabLivraison = bonLivraisons.livraisons;
+        console.log(this.tabLivraison)
+        this.tabFactureFilter = this.tabLivraison
+      },
+      (err) => {
+        console.log(err);
+      }
+    )
+  }
+
+  tabSolde: any[] = [];
+  listeSolde() {
+    this.docService.getAllSoldeByClient(this.currentClient.id).subscribe(
+      (solde) => {
+        this.tabSolde = solde.soldes;
+        console.log(this.tabSolde)
+        this.tabFactureFilter = this.tabSolde
+      },
+      (err) => {
+        console.log(err);
+      }
+    )
+  }
+
+  // Pagination 
+  // Méthode pour déterminer les articles à afficher sur la page actuelle
+  getItemsPageDocs(): any[] {
+    const indexDebut = (this.pageActuelle - 1) * this.itemsParPage;
+    const indexFin = indexDebut + this.itemsParPage;
+    return this.tabFactureFilter.slice(indexDebut, indexFin);
+  }
+
+  // Méthode pour générer la liste des pages
+  get pagesDocs(): number[] {
+    const totalPages = Math.ceil(this.tabFactureFilter.length / this.itemsParPage);
+    return Array(totalPages).fill(0).map((_, index) => index + 1);
+  }
+
+  // Méthode pour obtenir le nombre total de pages
+  get totalPagesDocs(): number {
+    return Math.ceil(this.tabFactureFilter.length / this.itemsParPage);
+  }
+
+  ajouterConversation() {
+    let conversation = {
+      "type": this.typeConversation,
+      "date_conversation": this.dateConversation,
+      "interlocuteur": this.interlocuteur,
+      "objet": this.objectConversation,
+      "message_conversation": this.conversations,
+      "statut": this.statutConversation,
+      "client_id": this.currentClient.id
+    }
+    this.clientService.addConversation(conversation).subscribe(
+      (chat: any) => {
+        Report.success('Notiflix Success', chat.message, 'Okay',);
+      },
+      (err) => {
+      }
+    )
+
+  }
+
+  conversationByClient: any[] = [];
+  listeConversationByClient() {
+    this.clientService.getAllConversationByClient(this.currentClient.id).subscribe(
+      (response) => {
+        this.conversationByClient = response;
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+  }
+
+  currentConversation: any;
+  chargerInfosConversation(paramConversation: any) {
+    this.currentConversation = paramConversation;
+    console.log(paramConversation)
+    this.typeConversation = paramConversation.type
+    if(this.typeConversation=='personnelle'){
+      this.zoneConversation=1;
+    }else if(this.typeConversation=='email'){
+      this.zoneConversation=2;
+    }else if(this.typeConversation=='message'){
+      this.zoneConversation=3;
+    }else if(this.typeConversation=='telephone'){
+      this.zoneConversation=4;
+    }else if(this.typeConversation=='courier_postal'){
+      this.zoneConversation=5;
+    }
+    this.inputdateConversation = paramConversation.date_conversation;
+    this.inputinterlocuteur = paramConversation.interlocuteur;
+    this.inputobjectConversation = paramConversation.objet;
+    this.inputconversations = paramConversation.message_conversation;
+    this.statutConversation = paramConversation.statut;
+  }
+
+  modifierConversation(){
+    let conversation = {
+      "type": this.typeConversation,
+      "date_conversation": this.inputdateConversation,
+      "interlocuteur": this.inputinterlocuteur,
+      "objet": this.inputobjectConversation,
+      "message_conversation": this.inputconversations,
+      "statut": this.statutConversation,
+      "client_id": this.currentClient.id
+    }
+    Confirm.init({
+      okButtonBackground: '#5C6FFF',
+      titleColor: '#5C6FFF'
+    });
+    Confirm.show('Confirmer modification ',
+      'Voullez-vous modifier?',
+      'Oui', 'Non', () => {
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.clientService.updateConversation(this.currentClient.id,conversation).subscribe(
+          (reponse) => {
+            Notify.success(reponse.message);
+            this.vider();
+            this.listeConversationByClient();
+            Loading.remove();
+          }
+        )
+      });
+  }
+
+  deleteConversation(paramClient: any) {
+    Confirm.init({
+      okButtonBackground: '#FF1700',
+      titleColor: '#FF1700'
+    });
+    Confirm.show('Confirmer Suppression ',
+      'Voullez-vous supprimer?',
+      'Oui', 'Non', () => {
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.clientService.deleteConveration(paramClient).subscribe(
+          (response) => {
+            Notify.success(response.message);
+            this.listeConversationByClient();
+            Loading.remove();
+          }
+        )
+      });
+  }
+
+
+
+
+
+
+
+
+
+
 }

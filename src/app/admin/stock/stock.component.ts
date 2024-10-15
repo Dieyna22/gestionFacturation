@@ -1,35 +1,130 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ArticlesService } from 'src/app/services/articles.service';
 
 @Component({
   selector: 'app-stock',
   templateUrl: './stock.component.html',
   styleUrls: ['./stock.component.css']
 })
-export class StockComponent {
-  // Tableau d'objets avec chaque ligne contenant une quantité
-  items = [
-    { name: 'Produit 1', quantity: 0 , dispo:20 ,sum: 0},
-    { name: 'Produit 2', quantity: 0 , dispo:20 ,sum: 0},
-    { name: 'Produit 3', quantity: 0 , dispo:20 ,sum: 0},
-    // Ajoutez plus de lignes selon vos besoins
-  ];
+export class StockComponent implements OnInit {
 
-  // Incrémente la quantité et met à jour la somme
-  increment(index: number) {
-    this.items[index].quantity++;
-    this.updateSum(index);
+  constructor(private articleService: ArticlesService) { }
+
+  ngOnInit(): void {
+    this.listeStock();
+    this.listeStockUpdate();
   }
 
-  // Décrémente la quantité et met à jour la somme
-  decrement(index: number) {
-    if (this.items[index].quantity > 0) {
-      this.items[index].quantity--;
+
+  tabStock: any[] = [];
+  tabStockFilter: any[] = [];
+  listeStock() {
+    this.articleService.getAllStock().subscribe(
+      (response)=>{
+        this.tabStock = response.stocks;
+        this.tabStockFilter = this.tabStock;
+        console.log(this.tabStock);
+      },
+      (error)=>{
+        console.log(error)
+      }
+    )
+  }
+
+
+  tabStockUpdate: any[] = [];
+  listeStockUpdate(){
+    this.articleService.getAllStockUpdate().subscribe(
+      (response)=>{
+        this.tabStockUpdate = response.stocks;
+        // this.tabStockFilter = this.tabStockUpdate;
+        console.log(this.tabStockUpdate);
+      },
+      (error)=>{
+        console.log(error)
+      }
+    )
+  }
+
+
+  calculateDisponibleNouveau(item: any): number {
+    return item.disponible_actuel + item.quantite_ajoutee;
+  }
+  
+  updateDisponibleNouveau(index: number): void {
+    this.tabStockUpdate[index].disponible_nouveau = this.calculateDisponibleNouveau(this.tabStockUpdate[index]);
+  }
+
+  modifiedItems: Set<number> = new Set();
+
+  markAsModified(index: number): void {
+    this.modifiedItems.add(index);
+  }
+
+  increment(index: number): void {
+    this.tabStockUpdate[index].quantite_ajoutee++;
+    this.updateDisponibleNouveau(index);
+    this.markAsModified(index);
+  }
+
+  decrement(index: number): void {
+    if (this.tabStockUpdate[index].quantite_ajoutee > 0) {
+      this.tabStockUpdate[index].quantite_ajoutee--;
+      this.updateDisponibleNouveau(index);
+      this.markAsModified(index);
     }
-    this.updateSum(index);
   }
 
-   // Met à jour la somme pour chaque item
-   updateSum(index: number) {
-    this.items[index].sum = this.items[index].dispo + this.items[index].quantity;
+  getModifiedItems(): any[] {
+    return Array.from(this.modifiedItems).map(index => ({
+      id_stock: this.tabStockUpdate[index].id,
+      quantite_ajoutee: this.tabStockUpdate[index].quantite_ajoutee
+    }));
+  }
+
+
+  updateStock(){
+    let stock = {
+      stock_modifier: this.getModifiedItems()
+    };
+    this.articleService.updateStock(stock).subscribe(
+      (response)=>{
+        console.log(response);
+      },
+      (error)=>{
+        console.log(error);
+      }
+    )
+  }
+
+
+  // Attribut pour la pagination
+  itemsParPage = 5; // Nombre d'articles par page
+  pageActuelle = 1; // Page actuelle
+
+
+  // chager la valeur du nombre de resulat par page
+  changeValue() {
+    this.itemsParPage = this.itemsParPage;
+  }
+
+
+  // Pagination 
+  // Méthode pour déterminer les articles à afficher sur la page actuelle
+  getItemsPage(): any[] {
+    const indexDebut = (this.pageActuelle - 1) * this.itemsParPage;
+    const indexFin = indexDebut + this.itemsParPage;
+    return this.tabStockFilter.slice(indexDebut, indexFin);
+  }
+
+  // Méthode pour générer la liste des pages
+  get pages(): number[] {
+    const totalPages = Math.ceil(this.tabStockFilter.length / this.itemsParPage);
+    return Array(totalPages).fill(0).map((_, index) => index + 1);
+  }
+
+  // Méthode pour obtenir le nombre total de pages
+  get totalPages(): number {
+    return Math.ceil(this.tabStockFilter.length / this.itemsParPage);
   }
 }

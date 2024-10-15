@@ -8,7 +8,7 @@ import { LoginComponent } from './auth/login/login.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { DashboardComponent } from './admin/dashboard/dashboard.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from './services/auth.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/interceptor';
@@ -72,7 +72,8 @@ import { StockComponent } from './admin/stock/stock.component';
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
-    NgxPrintModule
+    NgxPrintModule,
+    ReactiveFormsModule
   ],
   providers: [
     AuthService,

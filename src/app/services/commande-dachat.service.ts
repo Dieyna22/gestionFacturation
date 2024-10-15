@@ -11,8 +11,8 @@ export class CommandeDachatService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-   // liste Numéro commande d'achat
-   getAllNumeroCommandeDachat(): Observable<any> {
+  // liste Numéro commande d'achat
+  getAllNumeroCommandeDachat(): Observable<any> {
     return this.http.get<any>(`${apiUrl}/InfoConfigurationCommandeAchat`);
   }
 
@@ -36,8 +36,24 @@ export class CommandeDachatService {
     return this.http.post<any>(`${apiUrl}/modifierCommandeAchat/${CommandeDachatID}`, CommandeDachat);
   }
 
-  //details commande d'achat
-  DetailCommandeDachat(CommandeDachatID: any): Observable<any> {
-    return this.http.get<any>(`${apiUrl}/afficherDetailCommandeAchat/${CommandeDachatID}`);
+  //annuler un commande d'achat
+  annulerCommandeDachat(CommandeDachatID: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/annulerCommandeAchat/${CommandeDachatID}`, '');
   }
+
+  // exporter commande d'achat
+  exportToExcel() {
+    return this.http.get(`${apiUrl}/exporterCommandesAchats`, { responseType: 'blob' });
+  }
+
+  // detail mail commande d'achat
+  DetailEmailCommandeAchat(CommandeDachatID: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/DetailEmailCommandeAchat_genererPDF/${CommandeDachatID}`, '');
+  }
+
+  // envoie mail commande d'achat
+  envoieEmailCommandeAchat(CommandeDachatID: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/envoyerEmailCommandeAchat/${CommandeDachatID}`, '');
+  }
+
 }

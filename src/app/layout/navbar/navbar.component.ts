@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 import { UtilisateurService } from 'src/app/services/utilisateur.service';
 import { Report } from 'notiflix/build/notiflix-report-aio';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { ConfigurationService } from 'src/app/services/configuration.service';
 
 
 
@@ -35,10 +36,10 @@ export class NavbarComponent {
   usernom: string = '';
   userprenom: string = '';
   usermail: string = '';
-  entreprise:string = '';
+  entreprise: string = '';
 
 
-  constructor(private route: Router, private http: HttpClient, private cdr: ChangeDetectorRef, private userService: UtilisateurService) { }
+  constructor(private route: Router, private http: HttpClient, private cdr: ChangeDetectorRef, private userService: UtilisateurService, private configService: ConfigurationService) { }
 
   ngOnInit() {
     // Renvoie un tableau de valeurs ou un tableau vide 
@@ -49,7 +50,9 @@ export class NavbarComponent {
     this.usermail = this.dbUsers.user.email;
     this.usernom = this.dbUsers.user.nom;
     this.userprenom = this.dbUsers.user.prenom;
-
+    this.getInfoAdmin();
+    this.getNotification();
+    this.getRelance();
   }
 
   logout() {
@@ -89,6 +92,14 @@ export class NavbarComponent {
       );
   }
 
+  // Variables pour stocker les valeurs
+  quantite_produit: number = 10;
+  nombre_jourNotif_brouillon: number = 7;
+  nombre_jourNotif_depense: number = 7;
+  nombre_jourNotif_echeance: number = 7;
+  nombre_jourNotif_devi: number = 7;
+
+
   sliders = [
     { label: 'Les produits avec moins de :', value: 10, unit: 'unités' },
     { label: 'Les brouillons non validés après :', value: 7, unit: 'jours' },
@@ -96,24 +107,40 @@ export class NavbarComponent {
     { label: 'Les échéances (paiements) prévues des prochains :', value: 7, unit: 'jours' },
     { label: 'Les devis expirés des prochains :', value: 7, unit: 'jours' }
   ];
-  
+
+  // Mettre à jour les variables quand les sliders changent
+  updateVariables() {
+    this.quantite_produit = this.sliders[0].value;
+    this.nombre_jourNotif_brouillon = this.sliders[1].value;
+    this.nombre_jourNotif_depense = this.sliders[2].value;
+    this.nombre_jourNotif_echeance = this.sliders[3].value;
+    this.nombre_jourNotif_devi = this.sliders[4].value;
+  }
+
   changeValue(index: number, increment: number): void {
     const newValue = this.sliders[index].value + increment;
     if (newValue >= 0 && newValue <= 99) {
       this.sliders[index].value = newValue;
+      this.updateVariables();
     }
   }
-  
+
+  // Pour l'input du slider
+  onSliderChange() {
+    this.updateVariables();
+  }
+
 
   isChecked = false;
-  sliderValue = 0;
+  sliderValue: number = 0;
   isAfterChecked = false;
-  afterSliderValue = 0;
+  afterSliderValue: number = 0;
 
   toggleCheck() {
     this.isChecked = !this.isChecked;
     this.cdr.detectChanges();
   }
+
   decreaseValue() {
     if (this.sliderValue > 0) {
       this.sliderValue--;
@@ -127,8 +154,8 @@ export class NavbarComponent {
   }
 
   updateSliderValue(event: Event) {
-    this.sliderValue = parseInt((event.target as HTMLInputElement).value);
-  }
+    this.sliderValue = Number(event);
+ }
 
   toggleAfterCheck() {
     this.isAfterChecked = !this.isAfterChecked;
@@ -148,14 +175,14 @@ export class NavbarComponent {
   }
 
   updateAfterSliderValue(event: Event) {
-    this.afterSliderValue = parseInt((event.target as HTMLInputElement).value);
+    this.afterSliderValue = Number(event);
   }
 
-  selectedTemplate = '0';
+  selectedTemplate = 'facture';
   selectedVariable = '';
 
   emailTemplates: Record<string, EmailTemplate> = {
-    '0': {
+    'facture': {
       object: "Facture {FACTURE_NUMERO} du {FACTURE_DATE}",
       body: `Bonjour {DESTINATAIRE},
 
@@ -167,7 +194,7 @@ Cordialement,
 {ENTREPRISE}`,
       variables: ['Nom_Entreprise', 'Nom_Destinataire', 'Liste produits/Services', 'VENTE_NUMERO', 'VENTE_DATE', 'VENTE_PRIX_TOTAL']
     },
-    '1': {
+    'resumer_vente': {
       object: "Résumé de la vente {VENTE_NUMERO} du {VENTE_DATE}",
       body: `Bonjour {DESTINATAIRE},
 
@@ -181,7 +208,7 @@ Cordialement,
 {ENTREPRISE}`,
       variables: ['Nom_Entreprise', 'Nom_Destinataire', 'Liste produits/Services', 'VENTE_NUMERO', 'VENTE_DATE', 'VENTE_PRIX_TOTAL']
     },
-    '2': {
+    'recu_paiement': {
       object: "Reçu {PAIEMENT_NUMERO} du paiement effectué le {PAIEMENT_DATE}",
       body: `Bonjour {DESTINATAIRE},
 
@@ -197,7 +224,7 @@ Cordialement,
 {ENTREPRISE}`,
       variables: ['Nom_Entreprise', 'Nom_Destinataire', 'Liste produits/Services', 'PAIEMENT_NUMERO', 'PAIEMENT_DATE', 'PAYMENT_MONTANT']
     },
-    '3': {
+    'relanceAvant_echeance': {
       object: "Rappel d'échéance du {ECHEANCE_DATE} - Facture {VENTE_NUMERO}",
       body: `Bonjour {DESTINATAIRE},
 
@@ -209,7 +236,7 @@ Cordialement,
 {ENTREPRISE}`,
       variables: ['Nom_Entreprise', 'Nom_Destinataire', 'Liste produits/Services', 'ECHEANCE_DATE', 'ECHEANCE_MONTANT', 'VENTE_NUMERO', 'VENTE_DATE']
     },
-    '4': {
+    'relanceApres_echeance': {
       object: "Rappel d'échéance du {ECHEANCE_DATE} - Facture {VENTE_NUMERO}",
       body: `Bonjour {DESTINATAIRE},
 
@@ -221,7 +248,7 @@ Cordialement,
 {ENTREPRISE}`,
       variables: ['Nom_Entreprise', 'Nom_Destinataire', 'Liste produits/Services', 'ECHEANCE_DATE', 'ECHEANCE_MONTANT', 'VENTE_NUMERO', 'VENTE_DATE']
     },
-    '5': {
+    'devi': {
       object: "Devis {DEVIS_NUMERO} réalisé le {DEVIS_DATE}",
       body: `Bonjour {DESTINATAIRE},
 
@@ -237,7 +264,7 @@ Cordialement,
 {ENTREPRISE}`,
       variables: ['Nom_Entreprise', 'Nom_Destinataire', 'Liste produits/Services', 'DEVIS_NUMERO', 'DEVIS_DATE', 'DEVIS_PRIX_TOTAL']
     },
-    '6': {
+    'commande_vente': {
       object: "Commande {COMMANDE_NUMERO} réalisée le {COMMANDE_DATE}",
       body: `Bonjour {DESTINATAIRE},
 
@@ -249,7 +276,7 @@ Cordialement,
 {ENTREPRISE}`,
       variables: ['Nom_Entreprise', 'Nom_Destinataire', 'Liste produits/Services', 'COMMANDE_NUMERO', 'COMMANDE_VenteDate', 'COMMANDE_VentePrixTotal']
     },
-    '7': {
+    'livraison': {
       object: "Livraison {LIVRAISON_NUMERO} prévue le {LIVRAISON_DATE}",
       body: `Bonjour {DESTINATAIRE},
 
@@ -263,7 +290,7 @@ Cordialement,
 {ENTREPRISE}`,
       variables: ['Nom_Entreprise', 'Nom_Destinataire', 'Liste produits/Services', 'LIVRAISON_NUMERO', 'LIVRAISON_DATE', 'LIVRAISON_PRIX_TOTAL']
     },
-    '8': {
+    'fournisseur': {
       object: "Commande d'achat {ACHAT_NUMERO} réalisée le {ACHAT_DATE}",
       body: `Bonjour {DESTINATAIRE},
 
@@ -298,19 +325,19 @@ Cordialement,
     }
   }
 
-  BeforeRelance(){
-    this.selectedTemplate = '3';
+  BeforeRelance() {
+    this.selectedTemplate = 'relanceAvant_echeance';
   }
 
-  AfterRelance(){
-    this.selectedTemplate = '4';
+  AfterRelance() {
+    this.selectedTemplate = 'relanceApres_echeance';
   }
 
   inputprenom: string = "";
   inputnom: string = "";
   inputmail: string = "";
-  inputpassactuel : string = "";
-  inputpassnew : string = "";
+  inputpassactuel: string = "";
+  inputpassnew: string = "";
 
   showPassword: boolean = false;
 
@@ -324,7 +351,7 @@ Cordialement,
   }
 
   updatePassword() {
-    let pass={
+    let pass = {
       mot_de_passe_actuel: this.inputpassactuel,
       nouveau_mot_de_passe: this.inputpassnew
     }
@@ -335,16 +362,189 @@ Cordialement,
     Confirm.show('Confirmation ',
       'Voullez-vous vous modifier Votre mot de passe?',
       'Oui', 'Non', () => {
-      Loading.init({
-        svgColor: '#5C6FFF',
+        Loading.init({
+          svgColor: '#5C6FFF',
+        });
+        Loading.hourglass();
+        this.userService.password(pass).subscribe(
+          (response) => {
+            Notify.success(response.message);
+            Loading.remove();
+          }
+        )
       });
-      Loading.hourglass();
-      this.userService.password(pass).subscribe(
-        (response) => {
-          Notify.success(response.message);
-          Loading.remove();
-        }
-      )
-    });
   }
+
+  adminInfos: any;
+  getInfoAdmin() {
+    this.userService.getAdmi().subscribe(
+      (response) => {
+        this.adminInfos = response.user;
+        this.inputnom = this.adminInfos[0].name;
+        //  this.inputprenom = this.adminInfos.prenom;
+        this.inputmail = this.adminInfos[0].email;
+        console.log(this.adminInfos);
+        console.log(this.inputnom);
+        console.log(this.inputprenom);
+        console.log(this.inputmail);
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+  }
+
+  saveModelMail() {
+    let model = {
+      "type_modele": this.selectedTemplate,
+      "object": this.currentTemplate.object,
+      "contenu": this.currentTemplate.body
+    }
+
+    this.configService.saveModelMail(model).subscribe(
+      (response) => {
+        console.log(response);
+        Report.success('Notiflix Success', response.message, 'Okay',);
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+
+  }
+  // Variables pour les notifications
+  notif_rupture: boolean = false;
+  notif_depense: boolean = false;
+  notif_paiement: boolean = false;
+  notif_devis: boolean = false;
+  notif_relance: boolean = false;
+  notif_anniversaire: boolean = false;
+  notif_email: boolean = false;
+
+  notification() {
+    let notification =
+    {
+      "produit_rupture": this.notif_rupture ? '1' : '0',
+      "depense_impayer": this.notif_depense ? '1' : '0',
+      "payement_attente": this.notif_paiement ? '1' : '0',
+      "devis_expirer": this.notif_devis ? '1' : '0',
+      "relance_automatique": this.notif_relance ? '1' : '0',
+      "quantite_produit": this.quantite_produit,
+      "nombre_jourNotif_brouillon": this.nombre_jourNotif_brouillon,
+      "nombre_jourNotif_depense": this.nombre_jourNotif_depense,
+      "nombre_jourNotif_echeance": this.nombre_jourNotif_echeance,
+      "nombre_jourNotif_devi": this.nombre_jourNotif_devi,
+      "recevoir_notification": this.notif_email ? '1' : '0'
+    }
+    this.configService.configNotification(notification).subscribe(
+      (response) => {
+        console.log(response);
+        Report.success('Notiflix Success', response.message, 'Okay',);
+        this.getNotification();
+        this.updateNotificationSettings(response.data);
+
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+  }
+
+  listeConfigNotif: any[] = [];
+  getNotification() {
+    this.configService.getAllConfignotification().subscribe(
+      (response) => {
+        this.listeConfigNotif = response.data[0];
+        console.log(this.listeConfigNotif)
+        this.updateNotificationSettings(this.listeConfigNotif)
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+  }
+
+  // Méthode pour mettre à jour les états avec la réponse du backend
+  updateNotificationSettings(response: any) {
+    // Mise à jour des checkboxes
+    this.notif_rupture = response.produit_rupture;
+    this.notif_depense = response.depense_impayer;
+    this.notif_paiement = response.payement_attente;
+    this.notif_devis = response.devis_expirer;
+    this.notif_relance = response.relance_automatique;
+    this.notif_email = response.recevoir_notification;
+
+    // Mise à jour des sliders
+    this.quantite_produit = response.quantite_produit;
+    this.nombre_jourNotif_brouillon = response.nombre_jourNotif_brouillon;
+    this.nombre_jourNotif_depense = response.nombre_jourNotif_depense;
+    this.nombre_jourNotif_echeance = response.nombre_jourNotif_echeance;
+    this.nombre_jourNotif_devi = response.nombre_jourNotif_devi;
+
+    // Mise à jour des valeurs dans le tableau sliders
+    this.sliders[0].value = this.quantite_produit;
+    this.sliders[1].value = this.nombre_jourNotif_brouillon;
+    this.sliders[2].value = this.nombre_jourNotif_depense;
+    this.sliders[3].value = this.nombre_jourNotif_echeance;
+    this.sliders[4].value = this.nombre_jourNotif_devi;
+  }
+
+  // Variables pour les relances automatiques
+  rappel_avant: boolean = false;
+  rappel_apres: boolean = false;
+
+  relanceAutomatique() {
+    let relance =
+    {
+      "envoyer_rappel_avant": this.rappel_avant ? '1' : '0',
+      "nombre_jour_avant": this.sliderValue,
+      "envoyer_rappel_apres": this.rappel_apres ? '1' : '0',
+      "nombre_jour_apres": this.afterSliderValue
+    }
+   this.configService.configRelance(relance).subscribe(
+    (response)=>{
+      console.log(response);
+      Report.success('Notiflix Success', response.message, 'Okay',);
+      this.getRelance();
+      this.updateRelanceSettings(response);
+    },
+    (error)=>{
+      console.log(error);
+    }
+   )
+  }
+
+  listeRelance: any[] = [];
+  getRelance() {
+    this.configService.getAllRelance().subscribe(
+      (response) => {
+        this.listeRelance = response.data[0];
+        console.log(this.listeRelance)
+        this.updateRelanceSettings(this.listeRelance)
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
+  }
+
+   // Méthode pour mettre à jour les états avec la réponse du backend
+   updateRelanceSettings(response: any) {
+    this.rappel_apres = response.envoyer_rappel_apres;
+    this.rappel_avant = response.envoyer_rappel_avant;
+    this.sliderValue = response.nombre_jour_avant;
+    this.afterSliderValue = response.nombre_jour_apres
+    if(response.envoyer_rappel_apres=1){
+      this.isChecked = true;
+    }else{
+      this.isChecked = false
+    }
+
+    if(response.envoyer_rappel_avant=1){
+      this.isAfterChecked = true;
+    }else{
+      this.isAfterChecked = false
+    }
+  }
+
 }

@@ -70,4 +70,20 @@ export class ArticlesService {
   exportServiceToExcel() {
     return this.http.get(`${apiUrl}/exportServices`, { responseType: 'blob' });
   }
+
+
+  // liste stock
+  getAllStock(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/listerStocks`);
+  }
+
+  // liste stock a modifier
+  getAllStockUpdate(): Observable<any> {
+    return this.http.get<any>(`${apiUrl}/ListeStock_a_modifier`);
+  }
+
+  //modifier une stock
+  updateStock(stock: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/modifierStock`, stock);
+  }
 }
