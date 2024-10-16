@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ArticlesService } from 'src/app/services/articles.service';
+import { ConfigurationService } from 'src/app/services/configuration.service';
 
 @Component({
   selector: 'app-stock',
@@ -8,7 +9,19 @@ import { ArticlesService } from 'src/app/services/articles.service';
 })
 export class StockComponent implements OnInit {
 
-  constructor(private articleService: ArticlesService) { }
+  constructor(private articleService: ArticlesService, private filterService: ConfigurationService) { }
+
+
+  actif = 1
+  filterliste:any[]=[];
+  filterStock(filterTerm: string) {
+    this.filterliste = this.filterService.filterByTerm(this.tabStock, filterTerm, ['type_stock']);
+    if(this.filterliste.length==0){
+      this.listeStock();
+    }else{
+      this.tabStockFilter = this.filterliste;
+    } 
+  }
 
   ngOnInit(): void {
     this.listeStock();

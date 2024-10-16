@@ -6,15 +6,38 @@
       [(ngModel)]="filterValue" (input)="onSearch()">
     <button class="btn btnSearch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
   </div>
-  <div class="d-flex filtre">
-    <button type="button" class="btn btnOutline">Sauf annulées</button>
-    <button type="button" class="btn btnOutline">Brouillon</button>
-    <button type="button" class="btn btnOutline">Payées</button>
-    <button type="button" class="btn btnOutline">Impayées</button>
-    <button type="button" class="btn btnOutline">Paiements à venir</button>
-    <button type="button" class="btn btnOutline">Notes de crédit</button>
-    <button type="button" class="btn btnOutline">Annulées</button>		
-    <button type="button" class="btn btnOutline">Etiquette</button>
+  <div class="d-flex filtre" id="Facture" *ngIf="currentDoc==='Facture'">
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 1}" (click)="listeFacture(); actif = 1">Tout</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 2}"  (click)="filterFactures('payer'); actif = 2">Payées</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 3}"  (click)="filterFactures('en_attente'); actif = 3">Impayées</button>
+  </div>
+  <div class="d-flex filtre" id="Devis" *ngIf="currentDoc==='Devis'">
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifD === 1}" (click)="listeDevis(); actifD = 1">Tout</button>
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifD === 2}" (click)="filterDevis('en_attente'); actifD = 2">En attente</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifD === 3}"  (click)="filterDevis('transformer'); actifD = 3">Transformer</button>
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifD === 4}" (click)="filterDevis('valider'); actifD = 4">Validées</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifD === 5}"  (click)="filterDevis('annuler'); actifD = 5">Annulées</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifD === 6}"   (click)="filterDevis('non'); actifD = 6">No archiver</button>
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifD === 7}" (click)="filterDevis('oui'); actifD = 7">Archiver</button>
+  </div>
+  <div class="d-flex filtre"  id="Bon de commande" *ngIf="currentDoc==='Bon de commande'">
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifBC === 1}"  (click)="listeBonCommande(); actifBC = 1">Tout</button>
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifBC === 2}"  (click)="filterBonCommande('en_attente'); actifBC = 2">En attente</button>
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifBC === 3}"  (click)="filterBonCommande('transformer'); actifBC = 3">Transformer</button>
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifBC === 4}"  (click)="filterBonCommande('valider'); actifBC = 4">Validées</button>
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifBC === 5}"  (click)="filterBonCommande('annuler'); actifBC = 5">Annulées</button>
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifBC === 6}"  (click)="filterBonCommande('non'); actifBC = 6">stock no actif</button>
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifBC === 7}"  (click)="filterBonCommande('oui'); actifBC = 7">stock actif</button>
+  </div>
+  <div class="d-flex filtre"  id="Bon de Livraison" *ngIf="currentDoc==='Bon de Livraison'">
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifCL === 1}"  (click)="listeBonLivraison(); actifCL = 1">Tout</button>
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifCL === 2}"  (click)="filterBonLivraison('brouillon'); actifCL = 2">Brouillon</button>
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifCL === 3}"  (click)="filterBonLivraison('preparer'); actifCL = 3">Preparer</button>
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifCL === 4}"  (click)="filterBonLivraison('planifier'); actifCL = 4">Planifier</button>
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifCL === 5}"  (click)="filterBonLivraison('livrer'); actifCL = 5">Livrer</button>
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifCL === 6}"  (click)="filterBonLivraison('annuler'); actifCL = 6">Annulées</button>
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifCL === 7}"  (click)="filterBonLivraison('non'); actifCL = 7">stock no actif</button>
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifCL === 8}"  (click)="filterBonLivraison('oui'); actifCL = 8">stock actif</button>
   </div>
 </div>
 
@@ -35,23 +58,25 @@
         <!-- <li><a  [ngClass]="{'currentItemNav': boutonActif === 5}" (click)="showTypeDocument('Bon d&#x2019;achat')" (click)="boutonActif = 5">Bon d'achat</a></li> -->
       </ul>
     </div>
-    <div class="paramPagination d-flex justify-content-end  mb-2" data-bs-toggle="modal" data-bs-target="#pagination"><i class="bi bi-gear"></i></div>
+    <div class="paramPagination d-flex justify-content-end  mb-2" data-bs-toggle="modal" data-bs-target="#pagination"><i
+        class="bi bi-gear"></i></div>
     <!-- Tableau Facture -->
     <div class="col-md-12" id="Facture" *ngIf="currentDoc==='Facture'">
       <div class="card mb-4 px-2 py-2 pt-4 rounded-4">
         <div class="me-5 mb-2 d-md-flex justify-content-md-end">
           <div class="btn-group ajouterVente">
             <button type="button" class="btn text-light" data-bs-toggle="modal" data-bs-target="#facture"
-              (click)="removeLocalStorage()">Ajouter vente</button>
+              (click)="removeLocalStorage();changeValueModal('ajoutVente')">Ajouter vente</button>
             <button type="button" class="btn ajouter dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
               aria-expanded="false">
               <span class="visually-hidden">Toggle Dropdown</span>
             </button>
             <ul class="dropdown-menu">
               <li>
-                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FactureAvoir">Facture Avoir</a>
+                <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FactureAvoir"
+                  (click)="changeValueModal('ajoutFactureAvoir')">Facture Avoir</a>
                 <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#FactureRecurrente"
-                  (click)="removeLocalStorage()">Facture recurrente</a>
+                  (click)="removeLocalStorage();changeValueModal('ajoutFactureRecurrente')">Facture recurrente</a>
               </li>
             </ul>
           </div>
@@ -83,15 +108,28 @@
               </tr>
             </thead>
             <tbody *ngFor="let facture of  getItemsPage()">
-              <tr data-bs-toggle="modal" data-bs-target="#detailFacture"
-              (click)="details(facture.numero)">
-                <td>{{facture.numero}}</td>
-                <td>{{facture.date}}</td>
-                <td>{{facture.type_facture}}</td>
-                <td>{{facture.prenom_client}} {{facture.nom_client}}</td>
-                <td>{{facture.prix_HT}}</td>
-                <td>{{facture.prix_TTC}}</td>
-                <td>{{facture.statut_paiement}}</td>
+              <tr>
+                <td data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.numero)">
+                  {{facture.numero}}</td>
+                <td data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.numero)">
+                  {{facture.date}}</td>
+                <td data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.numero)">
+                  {{facture.type_facture}}</td>
+                <td data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.numero)">
+                  {{facture.prenom_client}} {{facture.nom_client}}
+                  <span *ngIf="facture.etiquettes && facture.etiquettes.length > 0" class="etiquettes">
+                    <span *ngFor="let etiq of facture.etiquettes; let i = index"
+                      [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2">
+                      {{ etiq.nom_etiquette }}<span *ngIf="i < facture.etiquettes.length - 1">, </span>
+                    </span>
+                  </span>
+                </td>
+                <td data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.numero)">
+                  {{facture.prix_HT}}</td>
+                <td data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.numero)">
+                  {{facture.prix_TTC}}</td>
+                <td data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.numero)">
+                  {{facture.statut_paiement}}</td>
                 <td>
                   <i class="bi bi-eye me-2" title="details" data-bs-toggle="modal" data-bs-target="#detailFacture"
                     (click)="details(facture.numero)"></i>
@@ -142,9 +180,9 @@
       <div class="card mb-4 px-2 py-2 pt-4 rounded-4">
         <div class="d-grid gap-2  mb-4 d-md-flex justify-content-md-end">
           <button type="button" class="btn ajouter mb-2" data-bs-toggle="modal" data-bs-target="#devis"
-          (click)="removeLocalStorage()">
-          Ajouter Dévis
-        </button>
+            (click)="removeLocalStorage();changeValueModal('ajoutDevis')">
+            Ajouter Dévis
+          </button>
         </div>
         <div class="row sectionEspace ligneReseauSearch mb-3">
           <div class="col-md-5">
@@ -169,14 +207,27 @@
               </tr>
             </thead>
             <tbody *ngFor="let devi of  getItemsPage()">
-              <tr (click)="detailDevis(devi.id)" data-bs-toggle="modal"
-              data-bs-target="#detailDevis">
-                <td>{{devi.num_devi}}</td>
-                <td>{{devi.date_limite}}</td>
-                <td>{{devi.prenom_client}} {{devi.nom_client}}</td>
-                <td>{{devi.prix_Ht}}</td>
-                <td>{{devi.prix_Ttc}}</td>
-                <td>{{devi.statut_devi}}</td>
+              <tr>
+                <td (click)="detailDevis(devi.id)" data-bs-toggle="modal" data-bs-target="#detailDevis">
+                  {{devi.num_devi}}</td>
+                <td (click)="detailDevis(devi.id)" data-bs-toggle="modal" data-bs-target="#detailDevis">
+                  {{devi.date_limite}}</td>
+                <td (click)="detailDevis(devi.id)" data-bs-toggle="modal" data-bs-target="#detailDevis">
+                  {{devi.prenom_client}} {{devi.nom_client}}
+                  <span *ngIf="devi.etiquettes && devi.etiquettes.length > 0" class="etiquettes">
+                    <span *ngFor="let etiq of devi.etiquettes; let i = index"
+                      [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2">
+                      {{ etiq.nom_etiquette }}<span *ngIf="i < devi.etiquettes.length - 1">, </span>
+                    </span>
+                  </span>
+                </td>
+                <td (click)="detailDevis(devi.id)" data-bs-toggle="modal" data-bs-target="#detailDevis">
+                  {{devi.prix_Ht}}
+                </td>
+                <td (click)="detailDevis(devi.id)" data-bs-toggle="modal" data-bs-target="#detailDevis">
+                  {{devi.prix_Ttc}}</td>
+                <td (click)="detailDevis(devi.id)" data-bs-toggle="modal" data-bs-target="#detailDevis">
+                  {{devi.statut_devi}}</td>
                 <td>
                   <i class="bi bi-eye me-2" title="details" (click)="detailDevis(devi.id)" data-bs-toggle="modal"
                     data-bs-target="#detailDevis"></i>
@@ -225,13 +276,13 @@
     <!-- Tableau Bon Commande -->
     <div class="col-md-12" id="Bon de commande" *ngIf="currentDoc==='Bon de commande'">
       <div class="card mb-4 px-2 py-2 pt-4 rounded-4">
-        <div  class="d-grid gap-2 mb-2 d-md-flex justify-content-md-end">
-          <button type="button" class="btn ajouter mb-2" data-bs-toggle="modal"
-          data-bs-target="#bonCommande">
-          Ajouter Bon de commande
-        </button>
+        <div class="d-grid gap-2 mb-2 d-md-flex justify-content-md-end">
+          <button type="button" class="btn ajouter mb-2" data-bs-toggle="modal" data-bs-target="#bonCommande"
+            (click)="changeValueModal('ajoutBoncommande')">
+            Ajouter Bon de commande
+          </button>
         </div>
-       
+
         <div class="row sectionEspace ligneReseauSearch mb-3">
           <div class="col-md-5">
             <h3 class="fw-bold">Listes Bon de commande</h3>
@@ -256,14 +307,28 @@
               </tr>
             </thead>
             <tbody *ngFor="let bonCommande of  getItemsPage()">
-              <tr data-bs-toggle="modal" data-bs-target="#detailbonCommande" (click)="detailBonCommande(bonCommande.id)">
-                <td>{{bonCommande.num_BonCommande}}</td>
-                <td>{{bonCommande.date_BonCommande}}</td>
-                <td>{{bonCommande.date_limite}}</td>
-                <td>{{bonCommande.prenom_client}} {{bonCommande.nom_client}}</td>
-                <td>{{bonCommande.prix_Ht}}</td>
-                <td>{{bonCommande.prix_Ttc}}</td>
-                <td>{{bonCommande.statut_BonCommande}}</td>
+              <tr>
+                <td data-bs-toggle="modal" data-bs-target="#detailCommande" (click)="detailBonCommande(bonCommande.id)">
+                  {{bonCommande.num_BonCommande}}</td>
+                <td data-bs-toggle="modal" data-bs-target="#detailCommande" (click)="detailBonCommande(bonCommande.id)">
+                  {{bonCommande.date_BonCommande}}</td>
+                <td data-bs-toggle="modal" data-bs-target="#detailCommande" (click)="detailBonCommande(bonCommande.id)">
+                  {{bonCommande.date_limite}}</td>
+                <td data-bs-toggle="modal" data-bs-target="#detailCommande" (click)="detailBonCommande(bonCommande.id)">
+                  {{bonCommande.prenom_client}} {{bonCommande.nom_client}}
+                  <span *ngIf="bonCommande.etiquettes && bonCommande.etiquettes.length > 0" class="etiquettes">
+                    <span *ngFor="let etiq of bonCommande.etiquettes; let i = index"
+                      [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2">
+                      {{ etiq.nom_etiquette }}<span *ngIf="i < bonCommande.etiquettes.length - 1">, </span>
+                    </span>
+                  </span>
+                </td>
+                <td data-bs-toggle="modal" data-bs-target="#detailCommande" (click)="detailBonCommande(bonCommande.id)">
+                  {{bonCommande.prix_Ht}}</td>
+                <td data-bs-toggle="modal" data-bs-target="#detailCommande" (click)="detailBonCommande(bonCommande.id)">
+                  {{bonCommande.prix_Ttc}}</td>
+                <td data-bs-toggle="modal" data-bs-target="#detailCommande" (click)="detailBonCommande(bonCommande.id)">
+                  {{bonCommande.statut_BonCommande}}</td>
                 <td>
                   <i class="bi bi-eye me-2" title="details" (click)="detailBonCommande(bonCommande.id)"
                     data-bs-toggle="modal" data-bs-target="#detailCommande"></i>
@@ -313,12 +378,12 @@
     <div class="col-md-12" id="Bon de Livraison" *ngIf="currentDoc==='Bon de Livraison'">
       <div class="card mb-4 px-2 py-2 pt-4 rounded-4">
         <div class="d-grid gap-2  mb-4 d-md-flex justify-content-md-end">
-          <button type="button" class="btn ajouter mb-2" data-bs-toggle="modal"
-          data-bs-target="#livraison">
-          Ajouter Bon de Livraison
-        </button>
+          <button type="button" class="btn ajouter mb-2" data-bs-toggle="modal" data-bs-target="#livraison"
+            (click)="changeValueModal('ajoutBonLivraison')">
+            Ajouter Bon de Livraison
+          </button>
         </div>
-       
+
         <div class="row sectionEspace ligneReseauSearch mb-3">
           <div class="col-md-5">
             <h3 class="fw-bold">Listes Bon de Livraison</h3>
@@ -342,8 +407,7 @@
               </tr>
             </thead>
             <tbody *ngFor="let livraison of  getItemsPage()">
-              <tr data-bs-toggle="modal" data-bs-target="#detailBL"
-              (click)="detailLivraison(livraison.id)">
+              <tr data-bs-toggle="modal" data-bs-target="#detailBL" (click)="detailLivraison(livraison.id)">
                 <td>{{livraison.num_livraison}}</td>
                 <td>{{livraison.date_livraison}}</td>
                 <td>{{livraison.prenom_client}} {{livraison.nom_client}}</td>
@@ -399,7 +463,6 @@
 </div>
 
 <!-- les modals -->
-
 <!-- Modal associer étiquette  -->
 <div class="modal fade mt-5" id="etiquette" tabindex="-1" aria-labelledby="etiquetteLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -409,32 +472,71 @@
           <h3 class="modal-title" id="etiquetteLabel">Associer étiquette</h3>
         </div>
         <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-            (click)="ouvrirModalArticle()"></button>
+            (click)="ouvrirModal()"></button>
         </div>
       </div>
       <div class="modal-body">
-        <div>
-          <div class="couleurs">
-            <div *ngFor="let couleur of couleurs" [ngStyle]="{'background-color': couleur}"
-              (click)="selectionnerCouleur(couleur)" [class.selected]="couleur === etiquette.couleur" class="couleur">
-              <span *ngIf="couleur === etiquette.couleur" class="checkmark">✔</span>
+        <div class="etiquette-management">
+          <!-- Liste des étiquettes et bouton Nouvelle étiquette -->
+          <div *ngIf="tabEtiquette.length > 0 && !modeEdition && !addNewEtiquette">
+            <div class="etiquettes ms-5">
+              <div *ngFor="let etiq of tabEtiquette" [ngStyle]="{'background-color': etiq.code_etiquette}"
+                class="etiquetteListe d-flex justify-content-between align-items-center mt-2"
+                (click)="choisirEtiquette(etiq)">
+                {{ etiq.nom_etiquette }}
+                <div>
+                  <!-- (click)="ouvrirModalArticle()" -->
+                  <i class="bi bi-pencil me-2" (click)="editerEtiquette(etiq)"></i>
+                  <i class="bi bi-trash2 me-2" (click)="supprimerEtiquette(etiq.id)"></i>
+                </div>
+              </div>
             </div>
+            <a class="mt-3" (click)="newEtiquette()">+ Nouvelle étiquette</a>
           </div>
 
-          <div class="mb-3">
-            <label for="nom">Nom de l'étiquette :</label>
-            <input class="form-control" type="text" placeholder="non étiquette" id="nom" [(ngModel)]="etiquette.nom"
-              name="nom">
+          <!-- Formulaire d'ajout -->
+          <div *ngIf="(tabEtiquette.length === 0 && !modeEdition) || addNewEtiquette">
+            <div class="couleurs">
+              <div *ngFor="let couleur of couleurs" [ngStyle]="{'background-color': couleur}"
+                (click)="selectionnerCouleur(couleur)" [class.selected]="couleur === etiquette.code_etiquette"
+                class="couleur">
+                <span *ngIf="couleur === etiquette.code_etiquette" class="checkmark">✔</span>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="nom">Nom de l'étiquette :</label>
+              <input class="form-control" type="text" placeholder="Nom étiquette" id="nom" name="nom"
+                [(ngModel)]="etiquette.nom_etiquette">
+            </div>
+
+            <button class="btn btnAction me-2" (click)="ajouterEtiquette();ouvrirModal()">
+              Sauvegarder
+            </button>
+            <button *ngIf="addNewEtiquette" class="btn btn-secondary"
+              (click)="annulerAjout();ouvrirModal()">Annuler</button>
           </div>
 
-          <button class=" btn btnAction" data-bs-toggle="modal" data-bs-target="#exampleModal"
-            (click)="ajouterEtiquette()">Sauvegarder</button>
-
-          <div *ngIf="etiquettes.length > 0" class="etiquettes">
-            <h3>Étiquettes Ajoutées :</h3>
-            <div *ngFor="let etiq of etiquettes" [ngStyle]="{'background-color': etiq.couleur}" class="etiquette">
-              {{ etiq.nom }}
+          <!-- Formulaire de modification -->
+          <div *ngIf="modeEdition">
+            <div class="couleurs">
+              <div *ngFor="let couleur of couleurs" [ngStyle]="{'background-color': couleur}"
+                (click)="selectionnerCouleur(couleur)" [class.selected]="couleur === etiquette.code_etiquette"
+                class="couleur">
+                <span *ngIf="couleur === etiquette.code_etiquette" class="checkmark">✔</span>
+              </div>
             </div>
+
+            <div class="mb-3">
+              <label for="nom">Nom de l'étiquette :</label>
+              <input class="form-control" type="text" placeholder="Nom étiquette" id="nom" name="nom"
+                [(ngModel)]="etiquette.nom_etiquette">
+            </div>
+
+            <button class="btn btnAction me-2" (click)="modifierEtiquette()">
+              Modifier
+            </button>
+            <button class="btn btn-secondary" (click)="annulerModification()">Annuler</button>
           </div>
         </div>
       </div>
@@ -442,24 +544,81 @@
   </div>
 </div>
 
- <!-- Modal configuration pagination -->
- <div class="modal fade mt-5" id="pagination" tabindex="-1" aria-labelledby="paginationLabel" aria-hidden="true">
+<!-- modal detail mail a envoyer -->
+<div class="modal fade mt-5" id="mailDetail" tabindex="-1" aria-labelledby="mailLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content mt-5">
-        <div class="d-flex">
-          <div class="p-3 flex-grow-1">
-            <h3 class="modal-title" id="paginationLabel">Configuration pagination</h3>
+    <div class="modal-content">
+      <div class="d-flex">
+        <div class="p-3 flex-grow-1">
+          <h3 class="modal-title" id="mailLabel">Envoyer bon de commande par courrier électronique</h3>
+        </div>
+        <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="ouvrirModal()"></button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div>
+          <div class="recipients-container">
+            <label>Destinataires :</label>
+            <div class="recipients-input-group">
+              <input type="text" value="ami@gmail.com" readonly>
+            </div>
+            <a href="#" class="add-recipient">+ Autre destinataire</a>
           </div>
-          <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+          <div class="form-group">
+            <label>Objet :</label>
+            <input type="text" class="form-control" value="Commande d'achat 000001 réalisée le 10/10/2024" readonly>
+          </div>
+
+          <!-- <div class="checkbox-group d-flex">
+            <input type="checkbox" id="copy">
+            <label for="copy">Envoyer une copie à zeynab&#64;gmail.com</label>
+          </div> -->
+
+          <div>
+            <!-- <label>Vous pouvez compléter/modifier le message qui sera envoyé :</label> -->
+            <div class="message-box">
+              <p>Bonjour ami SECK,</p>
+              <p>Veuillez trouver ci-joint la Commande d'Achat N° 000001 réalisée le 10/10/2024 pour un montant de
+                4.500,00 (XOF).</p>
+              <p>Si vous avez besoin d'informations supplémentaires, n'hésitez pas à nous contacter.</p>
+              <p>Cordialement,</p>
+              <p>senTech</p>
+              <div class="attachment">
+                <i class="bi bi-paperclip"></i>
+                Commande d'Achat 000001
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn-send">Envoyer</button>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal configuration pagination -->
+<div class="modal fade mt-5" id="pagination" tabindex="-1" aria-labelledby="paginationLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content mt-5">
+      <div class="d-flex">
+        <div class="p-3 flex-grow-1">
+          <h3 class="modal-title" id="paginationLabel">Configuration pagination</h3>
+        </div>
+        <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+      </div>
       <div class="modal-body">
         <div class="mb-3">
           <label for="exampleFormControlInput1" class="form-label">Résultats / page : </label>
           <select [(ngModel)]="itemsParPage">
-            <option value="3"  name="itemsParPage" class="form-control">3</option>
-            <option value="5"  name="itemsParPage" class="form-control">5</option>
-            <option value="7"  name="itemsParPage" class="form-control">7</option>
+            <option value="3" name="itemsParPage" class="form-control">3</option>
+            <option value="5" name="itemsParPage" class="form-control">5</option>
+            <option value="7" name="itemsParPage" class="form-control">7</option>
           </select>
         </div>
         <button class="btn btnAction d-flex justify-content-start" (click)="changeValue()">Sauvegarder</button>
@@ -1352,6 +1511,9 @@
         </div>
       </div>
       <div class="modal-body">
+        <div class="mail" title="Envoyer par courrier électronique" data-bs-toggle="modal" data-bs-target="#mailDetail">
+          <i class="bi bi-envelope"></i>
+        </div>
         <div class="seeFact" data-bs-toggle="modal" data-bs-target="#pdfModel">
           <i class="bi bi-eye"></i>
         </div>
@@ -1700,16 +1862,12 @@
       </div>
       <div class="modal-body container">
         <div class="imprimFact">
-          <button class="btn"
-                  [printStyle]="{img: {'width':'2.5cm'}}"
-                  [useExistingCss]="true"
-                  styleSheetFile="../facture/facture.component.css"
-                  printSectionId="print-section-details"
-                  ngxPrint>
+          <button class="btn" [printStyle]="{img: {'width':'2.5cm'}}" [useExistingCss]="true"
+            styleSheetFile="../facture/facture.component.css" printSectionId="print-section-details" ngxPrint>
             <i class="bi bi-printer"></i>
           </button>
         </div>
-        
+
         <div class="pdfFact" (click)="generatePdf('print-section-details')">
           <i class="bi bi-file-earmark-pdf"></i>
         </div>
@@ -2115,8 +2273,6 @@
         <div class="seeFact" data-bs-toggle="modal" data-bs-target="#pdfModel">
           <i class="bi bi-eye"></i>
         </div>
-
-
         <ng-container *ngIf="detailDevi">
           <div>
             <div class="header">
@@ -2132,14 +2288,14 @@
               </div>
             </div>
 
-            <div class="section border p-3" *ngIf="clientDevi">
+            <div class="section1 border p-3" *ngIf="clientDevi">
               <div class="section-title">
                 1. À qui je-vends ? <span class="edit-icon">✎</span>
               </div>
               <span>{{clientDevi.prenom}} {{clientDevi.nom}}</span>
             </div>
 
-            <div class="section border p-3">
+            <div class="section1 border p-3">
               <div class="section-title">
                 2. Quels produits / services ? <span class="edit-icon">✎</span>
               </div>
@@ -2330,11 +2486,11 @@
               </div>
               <div class="numero-input col-5">
                 <label for="numero">Numéro :&nbsp;</label>
-                <span>{{detailBonLivraison.numero_detailBonLivraison}}</span>
+                <span>{{detailBonLivraison.numero_livraison}}</span>
               </div>
             </div>
 
-            <div class="section border p-3" *ngIf="cientBonLivraison">
+            <div class="section1 border p-3" *ngIf="cientBonLivraison">
               <div class="section-title">
                 1. À qui je-vends ? <span class="edit-icon">✎</span>
               </div>
@@ -2344,7 +2500,7 @@
               <span>{{cientBonLivraison?.telephone}} </span>
             </div>
 
-            <div class="section border p-3">
+            <div class="section1 border p-3">
               <div class="section-title">
                 2. Quels produits / services ? <span class="edit-icon">✎</span>
               </div>
@@ -2425,20 +2581,26 @@
         <div class="containerFacture">
           <div class="d-flex mb-2">
             <div class="p-3 flex-grow-1">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Actif</label>
+              <div class="form-check form-switch me-5" *ngIf="active=='non'">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="stock"
+                  (click)="setTypeActive('oui')">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Activer stock</label>
+              </div>
+              <div class="form-check form-switch me-5" *ngIf="active=='oui'">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked
+                  name="stock" (click)="setTypeActive('non')">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Activer stock</label>
               </div>
             </div>
-            <ng-container *ngIf="etiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
-              <span *ngFor="let etiq of etiquettes; let i = index" [ngStyle]="{'background-color': etiq.couleur}"
-                class="etiquette me-2">
-                {{ etiq.nom }}
-                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquette(i)"></i>
+
+            <ng-container *ngIf="selectedEtiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
+              <span *ngFor="let etiq of selectedEtiquettes; let i = index"
+                [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2">
+                {{ etiq.nom_etiquette }}
+                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquettechosi(i)"></i>
               </span>
               <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
             </ng-container>
-
             <ng-template #associerEtiquetteBlock>
               <span class="me-2" data-bs-toggle="modal" data-bs-target="#etiquette" style="cursor: pointer;">
                 Associer étiquette
@@ -2693,20 +2855,25 @@
         <div class="invoice-form containerFacture">
           <div class="d-flex mb-2">
             <div class="p-3 flex-grow-1">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Actif</label>
+              <div class="form-check form-switch me-5" *ngIf="active=='non'">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="stock"
+                  (click)="setTypeActive('oui')">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Activer stock</label>
+              </div>
+              <div class="form-check form-switch me-5" *ngIf="active=='oui'">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked
+                  name="stock" (click)="setTypeActive('non')">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Activer stock</label>
               </div>
             </div>
-            <ng-container *ngIf="etiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
-              <span *ngFor="let etiq of etiquettes; let i = index" [ngStyle]="{'background-color': etiq.couleur}"
-                class="etiquette me-2">
-                {{ etiq.nom }}
-                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquette(i)"></i>
+            <ng-container *ngIf="selectedEtiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
+              <span *ngFor="let etiq of selectedEtiquettes; let i = index"
+                [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2">
+                {{ etiq.nom_etiquette }}
+                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquettechosi(i)"></i>
               </span>
               <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
             </ng-container>
-
             <ng-template #associerEtiquetteBlock>
               <span class="me-2" data-bs-toggle="modal" data-bs-target="#etiquette" style="cursor: pointer;">
                 Associer étiquette
@@ -2823,20 +2990,25 @@
         <div class="containerFacture">
           <div class="d-flex mb-2">
             <div class="p-3 flex-grow-1">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Actif</label>
+              <div class="form-check form-switch me-5" *ngIf="active=='non'">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="stock"
+                  (click)="setTypeActive('oui')">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Activer stock</label>
+              </div>
+              <div class="form-check form-switch me-5" *ngIf="active=='oui'">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked
+                  name="stock" (click)="setTypeActive('non')">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Activer stock</label>
               </div>
             </div>
-            <ng-container *ngIf="etiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
-              <span *ngFor="let etiq of etiquettes; let i = index" [ngStyle]="{'background-color': etiq.couleur}"
-                class="etiquette me-2">
-                {{ etiq.nom }}
-                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquette(i)"></i>
+            <ng-container *ngIf="selectedEtiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
+              <span *ngFor="let etiq of selectedEtiquettes; let i = index"
+                [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2">
+                {{ etiq.nom_etiquette }}
+                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquettechosi(i)"></i>
               </span>
               <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
             </ng-container>
-
             <ng-template #associerEtiquetteBlock>
               <span class="me-2" data-bs-toggle="modal" data-bs-target="#etiquette" style="cursor: pointer;">
                 Associer étiquette
@@ -2908,7 +3080,7 @@
             <button class="suivant-btn btn mt-3" [disabled]="!exactClient" (click)="showStep(2)">Suivant ▼</button>
           </div>
 
-          <div class="section">
+          <div class="section" [class.visible]="currentStep >= 2">
             <div class="section-title">2. Quels produits / services ?</div>
             <div class="stepTwo" id="data" [class.visible]="currentStep >= 2">
               <table class="table table-bordered border-light">
@@ -3039,7 +3211,7 @@
         </div>
 
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" [class.visible]="currentStep >= 3">
         <button type="button" class="btn btnAction" (click)="createFactureRecurrente()">Ajouter</button>
         <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
       </div>
@@ -3064,20 +3236,19 @@
         <div class="containerFacture">
           <div class="d-flex mb-2">
             <div class="p-3 flex-grow-1">
-              <div class="form-check form-switch">
+              <!-- <div class="form-check form-switch">
                 <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
                 <label class="form-check-label" for="flexSwitchCheckDefault">Actif</label>
-              </div>
+              </div> -->
             </div>
-            <ng-container *ngIf="etiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
-              <span *ngFor="let etiq of etiquettes; let i = index" [ngStyle]="{'background-color': etiq.couleur}"
-                class="etiquette me-2">
-                {{ etiq.nom }}
-                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquette(i)"></i>
+            <ng-container *ngIf="selectedEtiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
+              <span *ngFor="let etiq of selectedEtiquettes; let i = index"
+                [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2">
+                {{ etiq.nom_etiquette }}
+                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquettechosi(i)"></i>
               </span>
               <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
             </ng-container>
-
             <ng-template #associerEtiquetteBlock>
               <span class="me-2" data-bs-toggle="modal" data-bs-target="#etiquette" style="cursor: pointer;">
                 Associer étiquette
@@ -3274,20 +3445,25 @@
         <div class="containerBonCommande containerFacture">
           <div class="d-flex mb-2">
             <div class="p-3 flex-grow-1">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Actif</label>
+              <div class="form-check form-switch me-5" *ngIf="active=='non'">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="stock"
+                  (click)="setTypeActive('oui')">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Activer stock</label>
+              </div>
+              <div class="form-check form-switch me-5" *ngIf="active=='oui'">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked
+                  name="stock" (click)="setTypeActive('non')">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Activer stock</label>
               </div>
             </div>
-            <ng-container *ngIf="etiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
-              <span *ngFor="let etiq of etiquettes; let i = index" [ngStyle]="{'background-color': etiq.couleur}"
-                class="etiquette me-2">
-                {{ etiq.nom }}
-                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquette(i)"></i>
+            <ng-container *ngIf="selectedEtiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
+              <span *ngFor="let etiq of selectedEtiquettes; let i = index"
+                [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2">
+                {{ etiq.nom_etiquette }}
+                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquettechosi(i)"></i>
               </span>
               <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
             </ng-container>
-
             <ng-template #associerEtiquetteBlock>
               <span class="me-2" data-bs-toggle="modal" data-bs-target="#etiquette" style="cursor: pointer;">
                 Associer étiquette
@@ -3431,27 +3607,32 @@
           <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
         </div>
       </div>
-      <div class="modal-body ">
+      <div class="modal-body">
         <div class="seeFact" data-bs-toggle="modal" data-bs-target="#seeModéle">
           <i class="bi bi-eye"></i>
         </div>
         <div class="containerBonCommande containerFacture">
           <div class="d-flex mb-2">
             <div class="p-3 flex-grow-1">
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Actif</label>
+              <div class="form-check form-switch me-5" *ngIf="active=='non'">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="stock"
+                  (click)="setTypeActive('oui')">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Activer stock</label>
+              </div>
+              <div class="form-check form-switch me-5" *ngIf="active=='oui'">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked
+                  name="stock" (click)="setTypeActive('non')">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Activer stock</label>
               </div>
             </div>
-            <ng-container *ngIf="etiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
-              <span *ngFor="let etiq of etiquettes; let i = index" [ngStyle]="{'background-color': etiq.couleur}"
-                class="etiquette me-2">
-                {{ etiq.nom }}
-                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquette(i)"></i>
+            <ng-container *ngIf="selectedEtiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
+              <span *ngFor="let etiq of selectedEtiquettes; let i = index"
+                [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2">
+                {{ etiq.nom_etiquette }}
+                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquettechosi(i)"></i>
               </span>
               <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
             </ng-container>
-
             <ng-template #associerEtiquetteBlock>
               <span class="me-2" data-bs-toggle="modal" data-bs-target="#etiquette" style="cursor: pointer;">
                 Associer étiquette

@@ -12,7 +12,7 @@ import { GrilleTarifaireService } from '../../services/grille-tarifaire.service'
 import { ClientsService } from '../../services/clients.service';
 import { PermissionsService } from '../../services/permissions.service';
 import { EtiquetteService } from '../../services/etiquette.service';
-
+import { ConfigurationService } from 'src/app/services/configuration.service';
 
 interface Etiquette {
   id?: number;
@@ -103,9 +103,19 @@ export class ArticlesComponent implements OnInit {
   stockType: string = '';
 
 
-  constructor(private http: HttpClient, private articleService: ArticlesService, private promoService: PromoService, private Categorie: CategorieArticleService, private grilleservice: GrilleTarifaireService, private clientService: ClientsService, public permissionsService: PermissionsService, private etiquetteService: EtiquetteService, private cdr: ChangeDetectorRef) { }
+  constructor(private http: HttpClient, private articleService: ArticlesService, private promoService: PromoService, private Categorie: CategorieArticleService, private grilleservice: GrilleTarifaireService, private clientService: ClientsService, public permissionsService: PermissionsService, private etiquetteService: EtiquetteService, private cdr: ChangeDetectorRef,private filterService:ConfigurationService) { }
 
 
+  filterliste:any[]=[];
+  filterProduits(filterTerm: string) {
+    this.filterliste = this.filterService.filterByTerm([this.tabArticle], filterTerm, ['active_article']);
+    if(this.filterliste.length==0){
+      this.listeArticles();
+    }else{
+      this.tabArticleFilter = this.filterliste;
+    } 
+  }
+  actif = 1
 
   ngOnInit(): void {
     this.listeArticles();

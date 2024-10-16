@@ -12,6 +12,7 @@ import { ArticlesService } from 'src/app/services/articles.service';
 import { PayementService } from 'src/app/services/payement.service';
 import { EtiquetteService } from 'src/app/services/etiquette.service';
 import { VenteService } from 'src/app/services/vente.service';
+import { ConfigurationService } from 'src/app/services/configuration.service';
 
 interface Etiquette {
   id?: number;
@@ -106,7 +107,7 @@ export class ClientsComponent {
   inputconversations: string = "";
 
 
-  constructor(private http: HttpClient, private ServiceCategorie: CategorieService, private payementService: PayementService, private clientService: ClientsService, private articleService: ArticlesService, private grilleservice: GrilleTarifaireService, private etiquetteService: EtiquetteService, private cdr: ChangeDetectorRef, private docService: VenteService) { }
+  constructor(private http: HttpClient, private ServiceCategorie: CategorieService, private payementService: PayementService, private clientService: ClientsService, private articleService: ArticlesService, private grilleservice: GrilleTarifaireService, private etiquetteService: EtiquetteService, private cdr: ChangeDetectorRef, private docService: VenteService,private filterService: ConfigurationService) { }
 
 
   showPassword: boolean = false;
@@ -114,6 +115,18 @@ export class ClientsComponent {
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
+
+  actif = 1
+  filterliste:any[]=[];
+  filterClient(filterTerm: string) {
+    this.filterliste = this.filterService.filterByTerm(this.tabClient, filterTerm, ['statut_client','type_client']);
+    if(this.filterliste.length==0){
+      this.listeClients();
+    }else{
+      this.tabClientFilter = this.filterliste;
+    } 
+  }
+
 
   ngOnInit(): void {
     this.listeCategorie();

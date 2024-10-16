@@ -15,10 +15,18 @@ import { PayementService } from 'src/app/services/payement.service';
 import { GrilleTarifaireService } from 'src/app/services/grille-tarifaire.service';
 import { VenteService } from 'src/app/services/vente.service';
 import * as XLSX from 'xlsx';
+import { EtiquetteService } from '../../services/etiquette.service';
+import { ConfigurationService } from 'src/app/services/configuration.service';
 
 interface Echeance {
   date: string;
   montant: number;
+}
+
+interface Etiquette {
+  id?: number;
+  nom_etiquette: string;
+  code_etiquette: string;
 }
 
 @Component({
@@ -74,9 +82,13 @@ export class FactureComponent {
   datedevis: string = '';
   datevaliditeDevis: string = '';
 
-  constructor(private http: HttpClient, private ServiceCategorie: CategorieService, private articleService: ArticlesService, private clientService: ClientsService, private userService: UtilisateurService, private productService: ArticlesService, private renderer: Renderer2, private payementService: PayementService, private grilleservice: GrilleTarifaireService, private docService: VenteService) {
+  constructor(private http: HttpClient, private ServiceCategorie: CategorieService, private articleService: ArticlesService, private clientService: ClientsService, private userService: UtilisateurService, private productService: ArticlesService, private renderer: Renderer2, private payementService: PayementService, private grilleservice: GrilleTarifaireService, private docService: VenteService, private etiquetteService: EtiquetteService,private filterService : ConfigurationService){
     this.currentDate = this.getCurrentDate();
   }
+  actif = 1
+  actifD = 1
+  actifBC = 1
+  actifCL = 1
 
   // Gestion bouton
   boutonActif = 1;
@@ -128,6 +140,43 @@ export class FactureComponent {
     this.updateTableHeaderColor();
   }
 
+  filterliste:any[]=[];
+  filterFactures(filterTerm: string) {
+    this.filterliste = this.filterService.filterByTerm(this.tabFactures, filterTerm, ['statut_paiement']);
+    if(this.filterliste.length==0){
+      this.listeFacture();
+    }else{
+      this.tabFactureFilter = this.filterliste;
+    } 
+  }
+
+  filterDevis(filterTerm: string) {
+    this.filterliste = this.filterService.filterByTerm(this.tabDevis, filterTerm, ['statut_devi','archiver']);
+    if(this.filterliste.length==0){
+      this.listeDevis();
+    }else{
+      this.tabFactureFilter = this.filterliste;
+    } 
+  }
+
+  filterBonCommande(filterTerm: string) {
+    this.filterliste = this.filterService.filterByTerm(this.tabBonCommande, filterTerm, ['statut_BonCommande','active_Stock']);
+    if(this.filterliste.length==0){
+      this.listeBonCommande();
+    }else{
+      this.tabFactureFilter = this.filterliste;
+    } 
+  }
+
+
+  filterBonLivraison(filterTerm: string) {
+    this.filterliste = this.filterService.filterByTerm(this.tabLivraison, filterTerm, ['statut_livraison','active_Stock']);
+    if(this.filterliste.length==0){
+      this.listeBonLivraison();
+    }else{
+      this.tabFactureFilter = this.filterliste;
+    } 
+  }
 
   tabAcompte: any[] = [];
   ngOnInit() {
@@ -152,6 +201,7 @@ export class FactureComponent {
     this.listeNumberDevis();
     this.listeNumberBonCommande();
     this.listeNumberBonLivraison();
+    this.listeEtiquette();
 
 
     // this. listeFactureRecurrente();
@@ -268,11 +318,11 @@ export class FactureComponent {
               datePart = `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}`;
               break;
             default:
-              datePart = now.getFullYear().toString();
+              datePart = '';
           }
 
           // Incrémente le compteur
-          // compteur++;
+          compteur++;
 
           // Formate le numéro complet
           this.numComplet = `${prefixe}${datePart}${compteur.toString().padStart(6, '0')}`;
@@ -352,7 +402,7 @@ export class FactureComponent {
               datePart = `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}`;
               break;
             default:
-              datePart = now.getFullYear().toString();
+              datePart = '';
           }
 
           // Incrémente le compteur
@@ -406,7 +456,7 @@ export class FactureComponent {
               datePart = `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}`;
               break;
             default:
-              datePart = now.getFullYear().toString();
+              datePart = '';
           }
 
           // Incrémente le compteur
@@ -432,7 +482,7 @@ export class FactureComponent {
 
   listeNumberBonLivraison() {
     const now = new Date();
-    this.docService.getAllNumeroBonCommande().subscribe(
+    this.docService.getAllNumeroBonLivraison().subscribe(
       (response) => {
         if (response.configuration && response.configuration.length > 0) {
           this.tabNum = response.configuration;
@@ -460,7 +510,7 @@ export class FactureComponent {
               datePart = `${now.getFullYear()}${(now.getMonth() + 1).toString().padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}`;
               break;
             default:
-              datePart = now.getFullYear().toString();
+              datePart = '';
           }
 
           // Incrémente le compteur
@@ -489,6 +539,11 @@ export class FactureComponent {
     this.tabFactureFilter = this.tabFactures.filter(
       (elt: any) => (elt?.nom_client.toLowerCase().includes(this.filterValue.toLowerCase()) || elt?.type_paiement.toLowerCase().includes(this.filterValue.toLowerCase()) || elt?.num_fact.toLowerCase().includes(this.filterValue.toLowerCase()) || elt?.prenom_client.toLowerCase().includes(this.filterValue.toLowerCase()))
     );
+  }
+
+  active: string = 'oui';
+  setTypeActive(type: string) {
+    this.active = type;
   }
 
   color: string = '#737171';
@@ -788,6 +843,8 @@ export class FactureComponent {
     let facture =
     {
       // "date_creation":this.date,
+      "num_facture": this.nextNumber,
+      "active_Stock": this.active,
       "client_id": this.selectedClient,
       "note_fact": this.noteFacture,
       "reduction_facture": this.remise,
@@ -804,6 +861,9 @@ export class FactureComponent {
         prix_total_article: number,
         prix_total_tva_article: number
       }>,
+      "etiquettes": [] as Array<{
+        id_etiquette: number,
+      }>
     },
 
       factureEcheance =
@@ -828,6 +888,9 @@ export class FactureComponent {
           date_pay_echeance: string,
           montant_echeance: number,
         }>,
+        "etiquettes": [] as Array<{
+          id_etiquette: number,
+        }>
       },
 
       factureAcompte =
@@ -856,6 +919,9 @@ export class FactureComponent {
           commentaire: string;
           num_facture: string;
         }>,
+        "etiquettes": [] as Array<{
+          id_etiquette: number,
+        }>
       }
 
     for (let i = 0; i < this.rows.length; i++) {
@@ -896,6 +962,35 @@ export class FactureComponent {
       });
     }
 
+    // Ajouter des etiquette
+    for (let i = 0; i < this.selectedIds.length; i++) {
+      const item = this.selectedIds[i];
+      console.log(item)
+      facture.etiquettes.push({
+        id_etiquette: item,
+      });
+    }
+
+    // Ajouter des etiquette
+    for (let i = 0; i < this.selectedIds.length; i++) {
+      const item = this.selectedIds[i];
+      console.log(item)
+      factureEcheance.etiquettes.push({
+        id_etiquette: item,
+      });
+    }
+
+    // Ajouter des etiquette
+    for (let i = 0; i < this.selectedIds.length; i++) {
+      const item = this.selectedIds[i];
+      console.log(item)
+      factureAcompte.etiquettes.push({
+        id_etiquette: item,
+      });
+    }
+
+
+
     // Ajouter des échéances à la facture
     for (let i = 0; i < this.input.length; i++) {
       const item = this.input[i];
@@ -926,6 +1021,7 @@ export class FactureComponent {
         (facture) => {
           console.log(facture.message);
           Report.success('Notiflix Success', facture.message, 'Okay',);
+          this.listeFacture();
         },
         (err) => {
           console.log(err);
@@ -936,6 +1032,7 @@ export class FactureComponent {
         (facture) => {
           // console.log(facture.message);
           Report.success('Notiflix Success', facture.message, 'Okay',);
+          this.listeFacture();
         },
         (err) => {
           console.log(err);
@@ -967,6 +1064,7 @@ export class FactureComponent {
         this.tabFactures = factures.factures;
         this.innoviceNumber = factures.factures;
         this.tabFactureFilter = this.tabFactures;
+        console.log('liste facture:',this.tabFactureFilter)
       },
       (err) => {
         console.log(err);
@@ -1261,6 +1359,8 @@ export class FactureComponent {
   createFactureAvoir() {
     let factureAvoir =
     {
+      "num_facture": this.nextNumber,
+      "active_Stock": this.active,
       "client_id": this.selectedClient,
       "facture_id": this.currentIdFacture,
       "titre_description": this.titre,
@@ -1278,6 +1378,9 @@ export class FactureComponent {
         prix_total_tva_article: number
 
       }>,
+      "etiquettes": [] as Array<{
+        id_etiquette: number,
+      }>
     }
 
     for (let i = 0; i < this.article.length; i++) {
@@ -1292,6 +1395,15 @@ export class FactureComponent {
         "prix_total_tva_article": row.prix_total_tva_article,
       });
     }
+    // Ajouter des etiquette
+    for (let i = 0; i < this.selectedIds.length; i++) {
+      const item = this.selectedIds[i];
+      console.log(item)
+      factureAvoir.etiquettes.push({
+        id_etiquette: item,
+      });
+    }
+
     this.docService.createFactureAvoir(factureAvoir).subscribe(
       (res) => {
         console.log(res);
@@ -1332,6 +1444,8 @@ export class FactureComponent {
     alert(this.brouillon)
     let factureReccurente =
     {
+      "num_facture": this.nextNumber,
+      "active_Stock": this.active,
       "client_id": this.selectedClient,
       "note_interne": this.note,
       "nombre_periode": this.periode,
@@ -1349,6 +1463,9 @@ export class FactureComponent {
         prix_total_article: number,
         prix_total_tva_article: number
       }>,
+      "etiquettes": [] as Array<{
+        id_etiquette: number,
+      }>
     }
     for (let i = 0; i < this.rows.length; i++) {
       let row = this.rows[i];
@@ -1362,6 +1479,16 @@ export class FactureComponent {
         "prix_total_tva_article": row.totalTTC,
       });
     }
+
+    // Ajouter des etiquette
+    for (let i = 0; i < this.selectedIds.length; i++) {
+      const item = this.selectedIds[i];
+      console.log(item)
+      factureReccurente.etiquettes.push({
+        id_etiquette: item,
+      });
+    }
+
     this.docService.createFactureRecurrente(factureReccurente).subscribe(
       (res) => {
         console.log(res);
@@ -1391,6 +1518,7 @@ export class FactureComponent {
   createDevis() {
     let devis =
     {
+      "num_facture": this.nextNumberDevis,
       "client_id": this.selectedClient,
       "note_devi": 'test',
       "reduction_devi": this.remise,
@@ -1419,6 +1547,9 @@ export class FactureComponent {
         commentaire: string;
         num_facture: string;
       }>,
+      "etiquettes": [] as Array<{
+        id_etiquette: number,
+      }>
     }
     for (let i = 0; i < this.rows.length; i++) {
       let row = this.rows[i];
@@ -1455,10 +1586,20 @@ export class FactureComponent {
       console.log(devis.facture_accompts);
     }
 
+    // Ajouter des etiquette
+    for (let i = 0; i < this.selectedIds.length; i++) {
+      const item = this.selectedIds[i];
+      console.log(item)
+      devis.etiquettes.push({
+        id_etiquette: item,
+      });
+    }
+
     this.docService.createDevis(devis).subscribe(
       (res) => {
         console.log(res);
         Report.success('Notiflix Success', res.message, 'Okay',);
+        this.listeDevis();
       },
       (err) => {
         console.log(err);
@@ -1655,6 +1796,7 @@ export class FactureComponent {
   createBonCommande() {
     let BonCommande =
     {
+      "active_Stock": this.active,
       "client_id": this.selectedClient,
       "note_commande": this.noteFacture,
       "reduction_commande": this.remise,
@@ -1675,6 +1817,9 @@ export class FactureComponent {
         date_pay_echeance: string,
         montant_echeance: number,
       }>,
+      "etiquettes": [] as Array<{
+        id_etiquette: number,
+      }>
     }
     for (let i = 0; i < this.rows.length; i++) {
       let row = this.rows[i];
@@ -1700,10 +1845,20 @@ export class FactureComponent {
       });
     }
 
+    // Ajouter des etiquette
+    for (let i = 0; i < this.selectedIds.length; i++) {
+      const item = this.selectedIds[i];
+      console.log(item)
+      BonCommande.etiquettes.push({
+        id_etiquette: item,
+      });
+    }
+
     this.docService.createBonCommande(BonCommande).subscribe(
       (res) => {
         console.log(res.message);
         Report.success('Notiflix Success', res.message, 'Okay',);
+        this.listeBonCommande();
       },
       (err) => {
         console.log(err);
@@ -1846,6 +2001,7 @@ export class FactureComponent {
   createBonLivraison() {
     let BonLivraison =
     {
+      "active_Stock": this.active,
       "client_id": this.selectedClient,
       "note_livraison": this.noteFacture,
       "reduction_livraison": this.remise,
@@ -1862,6 +2018,9 @@ export class FactureComponent {
         prix_total_article: number,
         prix_total_tva_article: number
       }>,
+      "etiquettes": [] as Array<{
+        id_etiquette: number,
+      }>
     }
     for (let i = 0; i < this.rows.length; i++) {
       let row = this.rows[i];
@@ -1875,9 +2034,19 @@ export class FactureComponent {
         "prix_total_tva_article": row.totalTTC,
       });
     }
+     // Ajouter des etiquette
+     for (let i = 0; i < this.selectedIds.length; i++) {
+      const item = this.selectedIds[i];
+      console.log(item)
+      BonLivraison.etiquettes.push({
+        id_etiquette: item,
+      });
+    }
+
     this.docService.createBonLivraison(BonLivraison).subscribe(
       (response) => {
         Report.success('Notiflix Success', response.message, 'Okay',);
+        this.listeBonLivraison();
       },
       (err) => {
         console.log(err);
@@ -2372,25 +2541,122 @@ export class FactureComponent {
   }
 
   couleurs: string[] = ['#FFEB3B', '#CDDC39', '#FFC107', '#FF5722', '#E91E63', '#9C27B0', '#3F51B5', '#03A9F4', '#00BCD4', '#8BC34A'];
-  etiquette = { nom: '', couleur: '' };
-  etiquettes: { nom: string, couleur: string }[] = [];
+  etiquette: Etiquette = { nom_etiquette: '', code_etiquette: '' };
+  tabEtiquette: Etiquette[] = [];
+  selectedEtiquettes: Etiquette[] = [];
+  modeEdition = false;
+  addNewEtiquette: boolean = false;
+
+
+  choisirEtiquette(etiq: Etiquette) {
+    const index = this.selectedEtiquettes.indexOf(etiq);
+    console.error(this.selectedEtiquettes)
+    if (index === -1) {
+      this.selectedEtiquettes.push(etiq);  // Ajouter si non sélectionnée
+    } else {
+      this.selectedEtiquettes.splice(index, 1);  // Retirer si déjà sélectionnée
+    }
+    this.updateSelectedEtiquetteIds();
+  }
+
+  supprimerEtiquettechosi(index: number) {
+    this.selectedEtiquettes.splice(index, 1);
+    this.updateSelectedEtiquetteIds();
+  }
+
+  selectedIds: any[] = []
+  updateSelectedEtiquetteIds() {
+    this.selectedIds = this.selectedEtiquettes.map(etiq => etiq.id);
+    console.log('IDs des étiquettes sélectionnées:', this.selectedIds);
+  }
+
+  reinitialiserFormulaire() {
+    this.etiquette = { nom_etiquette: '', code_etiquette: '' };
+    this.modeEdition = false;
+  }
+
+  newEtiquette() {
+    this.addNewEtiquette = true;
+    this.etiquette = { nom_etiquette: '', code_etiquette: '' };
+  }
+
+  annulerAjout() {
+    this.addNewEtiquette = false;
+    this.etiquette = { nom_etiquette: '', code_etiquette: '' };
+  }
+
+  annulerModification() {
+    this.modeEdition = false;
+    this.etiquette = { nom_etiquette: '', code_etiquette: '' };
+  }
 
   selectionnerCouleur(couleur: string) {
-    this.etiquette.couleur = couleur;
+    this.etiquette.code_etiquette = couleur;
   }
 
   ajouterEtiquette() {
-    if (this.etiquette.nom && this.etiquette.couleur) {
-      this.etiquettes.push({ ...this.etiquette });
-      this.etiquette.nom = '';
-      this.etiquette.couleur = '';
+    if (this.etiquette.nom_etiquette && this.etiquette.code_etiquette) {
+      this.etiquetteService.addEtiquette(this.etiquette).subscribe(
+        (response) => {
+          console.log('Étiquette ajoutée:', response);
+          this.listeEtiquette();
+          this.addNewEtiquette = false;
+          this.etiquette = { nom_etiquette: '', code_etiquette: '' };
+        },
+        (error) => {
+          console.error('Erreur lors de l\'ajout de l\'étiquette:', error);
+        }
+      );
     }
   }
 
-  supprimerEtiquette(index: number) {
-    this.etiquettes.splice(index, 1);
+  editerEtiquette(etiq: Etiquette) {
+    this.modeEdition = true;
+    this.etiquette = { ...etiq };
   }
 
+  modifierEtiquette() {
+    if (this.etiquette.id && this.etiquette.nom_etiquette && this.etiquette.code_etiquette) {
+      this.etiquetteService.updateEtiquette(this.etiquette.id, this.etiquette).subscribe(
+        (response) => {
+          console.log('Étiquette modifiée:', response);
+          this.listeEtiquette();
+          this.modeEdition = false;
+          this.etiquette = { nom_etiquette: '', code_etiquette: '' };
+        },
+        (error) => {
+          console.error('Erreur lors de la modification de l\'étiquette:', error);
+        }
+      );
+    }
+  }
+
+  listeEtiquette() {
+    this.etiquetteService.getAllEtiquette().subscribe(
+      (reponse) => {
+        this.tabEtiquette = reponse.etiquette;
+        console.log('Liste des étiquettes:', this.tabEtiquette);
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des étiquettes:', error);
+      }
+    );
+  }
+
+
+
+  supprimerEtiquette(id: any) {
+    console.log(id)
+    this.etiquetteService.deleteEtiquette(id).subscribe(
+      (response) => {
+        console.log('Étiquette supprimée:', response);
+        this.listeEtiquette();
+      },
+      (error) => {
+        console.error('Erreur lors de la suppression de l\'étiquette:', error);
+      }
+    );
+  }
   ouvrirModalArticle() {
     // Utiliser l'API DOM pour ouvrir le modal
     const modal = document.getElementById('exampleModal');
@@ -2398,6 +2664,58 @@ export class FactureComponent {
       // @ts-ignore
       const bootstrapModal = new bootstrap.Modal(modal);
       bootstrapModal.show();
+    }
+  }
+
+  modalName = ''
+
+  changeValueModal(value: string) {
+    this.modalName = value;
+  }
+
+  ouvrirModal() {
+    if (this.modalName == 'ajoutVente') {
+      const modal = document.getElementById('facture');
+      if (modal) {
+        // @ts-ignore
+        const bootstrapModal = new bootstrap.Modal(modal);
+        bootstrapModal.show();
+      }
+    } else if (this.modalName == 'ajoutFactureAvoir') {
+      const modal = document.getElementById('FactureAvoir');
+      if (modal) {
+        // @ts-ignore
+        const bootstrapModal = new bootstrap.Modal(modal);
+        bootstrapModal.show();
+      }
+    } else if (this.modalName == 'ajoutFactureRecurrente') {
+      const modal = document.getElementById('FactureRecurrente');
+      if (modal) {
+        // @ts-ignore
+        const bootstrapModal = new bootstrap.Modal(modal);
+        bootstrapModal.show();
+      }
+    } else if (this.modalName == 'ajoutDevis') {
+      const modal = document.getElementById('devis');
+      if (modal) {
+        // @ts-ignore
+        const bootstrapModal = new bootstrap.Modal(modal);
+        bootstrapModal.show();
+      }
+    } else if (this.modalName == 'ajoutBoncommande') {
+      const modal = document.getElementById('bonCommande');
+      if (modal) {
+        // @ts-ignore
+        const bootstrapModal = new bootstrap.Modal(modal);
+        bootstrapModal.show();
+      }
+    } else if (this.modalName == 'ajoutBonLivraison') {
+      const modal = document.getElementById('livraison');
+      if (modal) {
+        // @ts-ignore
+        const bootstrapModal = new bootstrap.Modal(modal);
+        bootstrapModal.show();
+      }
     }
   }
 
