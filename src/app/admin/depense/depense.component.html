@@ -5,11 +5,15 @@
     <input type="search" class="form-control" aria-label="Recipient's username" placeholder="type, numéro,nom,prenom">
     <button class="btn btnSearch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
   </div>
-  <div class="d-flex filtre">
-    <button type="button" class="btn btnOutline">Impayées</button>
-    <button type="button" class="btn btnOutline">A venir</button>
-    <button type="button" class="btn btnOutline">Payées</button>
-    <button type="button" class="btn btnOutline">Etiquette</button>
+  <div class="d-flex filtre" id="fournisseur" *ngIf="currentDoc==='fournisseur'">
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actif === 1}" (click)="listeFournisseur(); actif = 1">Tout</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 2}" (click)="filterFournisseur('particulier'); actif = 2">Particulier</button>
+    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actif === 3}" (click)="filterFournisseur('entreprise'); actif = 3">Entreprise</button>
+  </div>
+  <div class="d-flex filtre" id="depense" *ngIf="currentDoc==='depense'">
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 1}" (click)="listeDepense(); actif = 1">Tout</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 2}" (click)="filterDepense('impayer'); actif = 2">Impayées</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 3}" (click)="filterDepense('payer'); actif = 3">Payées</button>
   </div>
 </div>
 

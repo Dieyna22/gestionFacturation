@@ -209,6 +209,23 @@ padding: 10px;
   justify-content: center;
 }
 
+.mail{
+  position: fixed;
+  top: 300px;
+  left: 80px;
+  background-color: #fff;
+  color: #F19A33;
+  height: 45px;
+  width: 45px;
+  z-index: 9999;
+  border: thin solid #F19A33;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .seeFact{
   position: fixed;
   top: 350px;
@@ -238,7 +255,7 @@ padding: 10px;
   justify-content: center;
 }
 
-.imprimFact:hover{
+/* .imprimFact:hover{
   background-color: #F19A33;
   color: #fff!important;
 }
@@ -250,7 +267,7 @@ padding: 10px;
 .seeFact:hover{
   background-color: #F19A33;
   color: #fff!important;
-}
+} */
 
 .containerModal {
   .invoice {
@@ -1131,3 +1148,115 @@ th, td {
   gap: 8px;
 }
 
+.recipients-container {
+  margin-bottom: 15px;
+}
+
+.recipients-container label {
+  color: #666;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.recipients-input-group {
+  position: relative;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px;
+}
+
+.recipients-input-group input {
+  border: none;
+  width: calc(100% - 20px);
+  outline: none;
+  font-size: 14px;
+}
+
+.add-recipient {
+  display: inline-block;
+  color: #2196F3;
+  text-decoration: none;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.recipient-tag {
+  display: inline-flex;
+  align-items: center;
+  background: #f5f5f5;
+  padding: 2px 8px;
+  border-radius: 3px;
+  margin-right: 5px;
+  font-size: 14px;
+}
+
+.recipient-tag .close {
+  margin-left: 8px;
+  color: #666;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.message-box {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.language-toggle {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  background: #f5f5f5;
+  padding: 3px 8px;
+  border-radius: 15px;
+  font-size: 12px;
+}
+
+.attachment {
+  display: flex;
+  align-items: center;
+  color: #2196F3;
+  margin-top: 15px;
+}
+
+.attachment img {
+  margin-right: 8px;
+}
+
+.modal-footer {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.btn-send {
+  background: #2196F3;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.checkbox-group {
+  margin: 10px 0;
+}

@@ -19,11 +19,16 @@
       <button class="btn btnSearch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
     </div>
     <div class="d-flex filtre">
-      <button type="button" class="btn btnOutline">Prospect</button>
-      <button type="button" class="btn btnOutline">Impayés</button>
-      <button type="button" class="btn btnOutline">Paiements à venir</button>
-      <button type="button" class="btn btnOutline">Tout payé</button>
-      <button type="button" class="btn btnOutline">Etiquette</button>
+      <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 1}"
+        (click)="listeClients(); actif = 1">Tout</button>
+      <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 2}"
+        (click)="filterClient('prospect'); actif = 2">Prospect</button>
+      <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 3}"
+        (click)="filterClient('client'); actif = 3">Client</button>
+      <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 4}"
+        (click)="filterClient('particulier'); actif = 4">Particulier</button>
+      <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 5}"
+        (click)="filterClient('entreprise'); actif = 5">Entreprise</button>
     </div>
   </div>
 
@@ -71,22 +76,29 @@
                   <span *ngIf="client.type_client=='entreprise'" title="entreprise"><i
                       class="bi bi-buildings"></i></span>
                 </td>
-                <td (click)="chargerInfosClient(client);changeValueModal('modif');listeFacture();listeConversationByClient()" data-bs-toggle="modal"
-                  data-bs-target="#ModalModifier">{{client.prenom_client}} {{client.nom_client}}</td>
-                <td (click)="chargerInfosClient(client);changeValueModal('modif');listeFacture();listeConversationByClient()" data-bs-toggle="modal"
-                  data-bs-target="#ModalModifier">{{client.nom_entreprise}}</td>
-                <td (click)="chargerInfosClient(client);changeValueModal('modif');listeFacture();listeConversationByClient()" data-bs-toggle="modal"
-                  data-bs-target="#ModalModifier">{{client.adress_client}}</td>
-                <td (click)="chargerInfosClient(client);changeValueModal('modif');listeFacture();listeConversationByClient()" data-bs-toggle="modal"
-                  data-bs-target="#ModalModifier">{{client.email_client}}</td>
-                <td (click)="chargerInfosClient(client);changeValueModal('modif');listeFacture();listeConversationByClient()" data-bs-toggle="modal"
-                  data-bs-target="#ModalModifier">{{client.tel_client}}</td>
-                <td (click)="chargerInfosClient(client);changeValueModal('modif');listeFacture();listeConversationByClient()" data-bs-toggle="modal"
-                  data-bs-target="#ModalModifier">{{client.statut_client}}</td>
+                <td
+                  (click)="chargerInfosClient(client);changeValueModal('modif');listeFacture();listeConversationByClient()"
+                  data-bs-toggle="modal" data-bs-target="#ModalModifier">{{client.prenom_client}} {{client.nom_client}}
+                </td>
+                <td
+                  (click)="chargerInfosClient(client);changeValueModal('modif');listeFacture();listeConversationByClient()"
+                  data-bs-toggle="modal" data-bs-target="#ModalModifier">{{client.nom_entreprise}}</td>
+                <td
+                  (click)="chargerInfosClient(client);changeValueModal('modif');listeFacture();listeConversationByClient()"
+                  data-bs-toggle="modal" data-bs-target="#ModalModifier">{{client.adress_client}}</td>
+                <td
+                  (click)="chargerInfosClient(client);changeValueModal('modif');listeFacture();listeConversationByClient()"
+                  data-bs-toggle="modal" data-bs-target="#ModalModifier">{{client.email_client}}</td>
+                <td
+                  (click)="chargerInfosClient(client);changeValueModal('modif');listeFacture();listeConversationByClient()"
+                  data-bs-toggle="modal" data-bs-target="#ModalModifier">{{client.tel_client}}</td>
+                <td
+                  (click)="chargerInfosClient(client);changeValueModal('modif');listeFacture();listeConversationByClient()"
+                  data-bs-toggle="modal" data-bs-target="#ModalModifier">{{client.statut_client}}</td>
                 <td>
                   <i class="bi bi-pencil-square me-2" title="modifier"
-                    (click)="chargerInfosClient(client);changeValueModal('modif');listeFacture();listeConversationByClient()" data-bs-toggle="modal"
-                    data-bs-target="#ModalModifier"></i>
+                    (click)="chargerInfosClient(client);changeValueModal('modif');listeFacture();listeConversationByClient()"
+                    data-bs-toggle="modal" data-bs-target="#ModalModifier"></i>
                   <i class="bi bi-trash3" title="Supprimer" (click)="deleteClient(client.id)"></i>
                 </td>
               </tr>
@@ -514,7 +526,7 @@
             <div class="zoneRigth">
               <div class="other zone">
                 <div class="row">
-                  <div >
+                  <div>
                     <!-- <div class="mb-3 ">
                       <label for="exampleInputPassword1" class="form-label">Catégorie</label>
                       <select class="form-select" aria-label="Default select example" name="role"
@@ -851,7 +863,8 @@
                   <textarea id="commentaire"
                     readonly>Solde en faveur créé à partir de la note de crédit du 27/09/2024</textarea>
                 </div>
-                <button type="button" class="button" data-bs-toggle="modal" data-bs-target="#consulterSolde">Consulter</button>
+                <button type="button" class="button" data-bs-toggle="modal"
+                  data-bs-target="#consulterSolde">Consulter</button>
               </form>
             </div>
           </ng-container>
@@ -901,73 +914,78 @@
               </div>
             </div>
           </div>
-            <!-- Le tableau des conversation -->
-            <ng-container *ngIf="conversationByClient.length > 0; else conversation">
-              <div>
-                <div class="table-responsive">
-                  <table class="table table-hover mb-4">
-                    <thead class="mb-2">
-                      <tr>
-                        <th scope="col"> </th>
-                        <th scope="col">Converations </th>
-                        <th scope="col">Date </th>
-                        <th scope="col">Statut </th>
-                        <th scope="col">Action </th>
-                      </tr>
-                    </thead>
-                    <tbody *ngFor="let conversation of conversationByClient">
-                      <tr>
-                        <td data-bs-toggle="modal" data-bs-target="#updateconversation" (click)="chargerInfosConversation(conversation)">
-                          <span  *ngIf="conversation.type=='personnelle'"><i class="bi bi-person"></i></span>
-                          <span  *ngIf="conversation.type=='email'"><i class="bi bi-envelope"></i></span>
-                          <span  *ngIf="conversation.type=='message'"><i class="bi bi-chat"></i></span>
-                          <span  *ngIf="conversation.type=='telephone'"><i class="bi bi-telephone"></i></span>
-                          <span  *ngIf="conversation.type=='courier_postal'"><i class="bi bi-mailbox-flag"></i></span>
-                        
-                        </td>
-                        <td data-bs-toggle="modal" data-bs-target="#updateconversation" (click)="chargerInfosConversation(conversation)">{{conversation.objet}}-...</td>
-                        <td data-bs-toggle="modal" data-bs-target="#updateconversation" (click)="chargerInfosConversation(conversation)">{{conversation.date_conversation}}</td>
-                        <td data-bs-toggle="modal" data-bs-target="#updateconversation" (click)="chargerInfosConversation(conversation)" *ngIf="conversation.statut=='en_attente'">
-                          <i class="bi bi-exclamation-octagon text-danger" title="En attente"></i>
-                        </td>
-                        <td data-bs-toggle="modal" data-bs-target="#updateconversation" (click)="chargerInfosConversation(conversation)" *ngIf="conversation.statut=='termine'">
-                          <i class="bi bi-check-lg text-success" title="Terminer"></i>
-                        </td>
-                        <td>
-                          <i class="bi bi-pencil-square me-2" title="modifier" data-bs-toggle="modal" data-bs-target="#updateconversation" 
-                          (click)="chargerInfosConversation(conversation)"></i>
-                          <i class="bi bi-trash3" title="Supprimer" (click)="deleteConversation(conversation.id)"></i>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-                <!-- Pagination  -->
-                <div *ngIf="getItemsPageDocs().length">
-                  <div class="d-flex justify-content-end mb-2">
-                    <button class="border border-0 btnColor  mx-2" [disabled]="pageActuelle === 1"
-                      (click)="pageActuelle = pageActuelle - 1">
-                      <i class="bi bi-arrow-left-circle fs-4"></i>
-                    </button>
-                    <button class=" rounded-circle mx-2 page" *ngFor="let page of pages" (click)="pageActuelle = page">
-                      <span class="pageActuelle fs-5" *ngIf="page===pageActuelle">{{page}}</span>
-                      <span *ngIf="page != pageActuelle">{{page}}</span>
-                    </button>
-                    <button class="border border-0 btnColor mx-2" [disabled]="pageActuelle === totalPages"
-                      (click)="pageActuelle = pageActuelle + 1">
-                      <i class="bi bi-arrow-right-circle fs-4"></i>
-                    </button>
-                  </div>
+          <!-- Le tableau des conversation -->
+          <ng-container *ngIf="conversationByClient.length > 0; else conversation">
+            <div>
+              <div class="table-responsive">
+                <table class="table table-hover mb-4">
+                  <thead class="mb-2">
+                    <tr>
+                      <th scope="col"> </th>
+                      <th scope="col">Converations </th>
+                      <th scope="col">Date </th>
+                      <th scope="col">Statut </th>
+                      <th scope="col">Action </th>
+                    </tr>
+                  </thead>
+                  <tbody *ngFor="let conversation of conversationByClient">
+                    <tr>
+                      <td data-bs-toggle="modal" data-bs-target="#updateconversation"
+                        (click)="chargerInfosConversation(conversation)">
+                        <span *ngIf="conversation.type=='personnelle'"><i class="bi bi-person"></i></span>
+                        <span *ngIf="conversation.type=='email'"><i class="bi bi-envelope"></i></span>
+                        <span *ngIf="conversation.type=='message'"><i class="bi bi-chat"></i></span>
+                        <span *ngIf="conversation.type=='telephone'"><i class="bi bi-telephone"></i></span>
+                        <span *ngIf="conversation.type=='courier_postal'"><i class="bi bi-mailbox-flag"></i></span>
+
+                      </td>
+                      <td data-bs-toggle="modal" data-bs-target="#updateconversation"
+                        (click)="chargerInfosConversation(conversation)">{{conversation.objet}}-...</td>
+                      <td data-bs-toggle="modal" data-bs-target="#updateconversation"
+                        (click)="chargerInfosConversation(conversation)">{{conversation.date_conversation}}</td>
+                      <td data-bs-toggle="modal" data-bs-target="#updateconversation"
+                        (click)="chargerInfosConversation(conversation)" *ngIf="conversation.statut=='en_attente'">
+                        <i class="bi bi-exclamation-octagon text-danger" title="En attente"></i>
+                      </td>
+                      <td data-bs-toggle="modal" data-bs-target="#updateconversation"
+                        (click)="chargerInfosConversation(conversation)" *ngIf="conversation.statut=='termine'">
+                        <i class="bi bi-check-lg text-success" title="Terminer"></i>
+                      </td>
+                      <td>
+                        <i class="bi bi-pencil-square me-2" title="modifier" data-bs-toggle="modal"
+                          data-bs-target="#updateconversation" (click)="chargerInfosConversation(conversation)"></i>
+                        <i class="bi bi-trash3" title="Supprimer" (click)="deleteConversation(conversation.id)"></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!-- Pagination  -->
+              <div *ngIf="getItemsPageDocs().length">
+                <div class="d-flex justify-content-end mb-2">
+                  <button class="border border-0 btnColor  mx-2" [disabled]="pageActuelle === 1"
+                    (click)="pageActuelle = pageActuelle - 1">
+                    <i class="bi bi-arrow-left-circle fs-4"></i>
+                  </button>
+                  <button class=" rounded-circle mx-2 page" *ngFor="let page of pages" (click)="pageActuelle = page">
+                    <span class="pageActuelle fs-5" *ngIf="page===pageActuelle">{{page}}</span>
+                    <span *ngIf="page != pageActuelle">{{page}}</span>
+                  </button>
+                  <button class="border border-0 btnColor mx-2" [disabled]="pageActuelle === totalPages"
+                    (click)="pageActuelle = pageActuelle + 1">
+                    <i class="bi bi-arrow-right-circle fs-4"></i>
+                  </button>
                 </div>
               </div>
-            </ng-container>
-            <ng-template #conversation>
-              <div class="contenu text-center">
-                <i class="bi bi-emoji-frown-fill"></i>
-                <h5>- 0 Résultats -</h5>
-              </div>
-            </ng-template>
-          
+            </div>
+          </ng-container>
+          <ng-template #conversation>
+            <div class="contenu text-center">
+              <i class="bi bi-emoji-frown-fill"></i>
+              <h5>- 0 Résultats -</h5>
+            </div>
+          </ng-template>
+
         </ng-container>
       </div>
       <div class="modal-footer">
@@ -1158,35 +1176,41 @@
         <div>
           <h6>Type : </h6>
           <div class="btn-group mb-3" role="group" aria-label="Basic example">
-            <button type="button" class="btn typeConversation" title="Personnellement" [ngClass]="{'activetypeConversation': zoneConversation === 1}" (click)="setTypeConversation('personnelle'); zoneConversation = 1"><i
-                class="bi bi-person"></i></button>
+            <button type="button" class="btn typeConversation" title="Personnellement"
+              [ngClass]="{'activetypeConversation': zoneConversation === 1}"
+              (click)="setTypeConversation('personnelle'); zoneConversation = 1"><i class="bi bi-person"></i></button>
 
-            <button type="button" class="btn typeConversation" title="Adresse mail" [ngClass]="{'activetypeConversation': zoneConversation === 2}" (click)="setTypeConversation('email'); zoneConversation = 2"><i
-                class="bi bi-envelope"></i></button>
+            <button type="button" class="btn typeConversation" title="Adresse mail"
+              [ngClass]="{'activetypeConversation': zoneConversation === 2}"
+              (click)="setTypeConversation('email'); zoneConversation = 2"><i class="bi bi-envelope"></i></button>
 
-            <button type="button" class="btn typeConversation" title="Message" [ngClass]="{'activetypeConversation': zoneConversation === 3}" (click)="setTypeConversation('message'); zoneConversation = 3"><i
-                class="bi bi-chat"></i></button>
+            <button type="button" class="btn typeConversation" title="Message"
+              [ngClass]="{'activetypeConversation': zoneConversation === 3}"
+              (click)="setTypeConversation('message'); zoneConversation = 3"><i class="bi bi-chat"></i></button>
 
-            <button type="button" class="btn typeConversation" title="Telephone" [ngClass]="{'activetypeConversation': zoneConversation === 4}" (click)="setTypeConversation('telephone'); zoneConversation = 4"><i
-                class="bi bi-telephone"></i></button>
+            <button type="button" class="btn typeConversation" title="Telephone"
+              [ngClass]="{'activetypeConversation': zoneConversation === 4}"
+              (click)="setTypeConversation('telephone'); zoneConversation = 4"><i class="bi bi-telephone"></i></button>
 
-            <button type="button" class="btn typeConversation" title="Courrier postal" [ngClass]="{'activetypeConversation': zoneConversation === 5}" (click)="setTypeConversation('courier_postal'); zoneConversation = 5"><i
+            <button type="button" class="btn typeConversation" title="Courrier postal"
+              [ngClass]="{'activetypeConversation': zoneConversation === 5}"
+              (click)="setTypeConversation('courier_postal'); zoneConversation = 5"><i
                 class="bi bi-mailbox-flag"></i></button>
           </div>
           <form>
             <div class="form-floating mb-3">
               <input type="date" class="form-control" id="floatingInput" name="dateConversation"
-               [(ngModel)]="dateConversation">
+                [(ngModel)]="dateConversation">
               <label for="floatingInput">Date</label>
             </div>
             <div class="form-floating mb-2">
               <input type="test" class="form-control" id="floatingPassword" name="interlocuteur"
-              [(ngModel)]="interlocuteur">
+                [(ngModel)]="interlocuteur">
               <label for="floatingPassword">Interlocuteur</label>
             </div>
             <div class="form-floating mb-3">
-              <input type="test" class="form-control" id="floatingPassword" name="objectConversation" 
-              [(ngModel)]="objectConversation">
+              <input type="test" class="form-control" id="floatingPassword" name="objectConversation"
+                [(ngModel)]="objectConversation">
               <label for="floatingPassword">Object</label>
             </div>
             <div class="form-floating mb-3">
@@ -1194,7 +1218,8 @@
                 style="height: 100px" name="conversations" [(ngModel)]="conversations"></textarea>
               <label for="floatingTextarea2">Conversation</label>
             </div>
-            <div class="form-check form-switch d-flex justify-content-start mt-5" *ngIf="statutConversation=='en_attente'">
+            <div class="form-check form-switch d-flex justify-content-start mt-5"
+              *ngIf="statutConversation=='en_attente'">
               <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="stock"
                 (click)="setEtatConversation('termine')">
               <label class="form-check-label" for="flexSwitchCheckDefault">En attente</label>
@@ -1206,8 +1231,8 @@
             </div>
           </form>
           <div class="d-grid gap-2  mb-3 d-md-flex justify-content-md-end">
-            <button class=" btn btnAction" data-bs-toggle="modal" data-bs-target="#detailClient" 
-            (click)="ajouterConversation()">Sauvegarder</button>
+            <button class=" btn btnAction" data-bs-toggle="modal" data-bs-target="#detailClient"
+              (click)="ajouterConversation()">Sauvegarder</button>
           </div>
         </div>
       </div>
@@ -1216,7 +1241,8 @@
 </div>
 
 <!-- Modal modifier conversation  -->
-<div class="modal fade mt-5" id="updateconversation" tabindex="-1" aria-labelledby="updateconversationLabel" aria-hidden="true">
+<div class="modal fade mt-5" id="updateconversation" tabindex="-1" aria-labelledby="updateconversationLabel"
+  aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="d-flex">
@@ -1231,35 +1257,42 @@
         <div>
           <h6>Type : </h6>
           <div class="btn-group mb-3" role="group" aria-label="Basic example">
-            <button type="button" class="btn typeConversation" title="Personnellement" [ngClass]="{'activetypeConversation': zoneConversation === 1}" (click)="setTypeConversation('personnelle'); zoneConversation = 1"><i
-                class="bi bi-person"></i></button>
+            <button type="button" class="btn typeConversation" title="Personnellement"
+              [ngClass]="{'activetypeConversation': zoneConversation === 1}"
+              (click)="setTypeConversation('personnelle'); zoneConversation = 1"><i class="bi bi-person"></i></button>
 
-            <button type="button" class="btn typeConversation" title="Adresse mail" [ngClass]="{'activetypeConversation': zoneConversation === 2}" (click)="setTypeConversation('email'); zoneConversation = 2"><i
-                class="bi bi-envelope"></i></button>
+            <button type="button" class="btn typeConversation" title="Adresse mail"
+              [ngClass]="{'activetypeConversation': zoneConversation === 2}"
+              (click)="setTypeConversation('email'); zoneConversation = 2"><i class="bi bi-envelope"></i></button>
 
-            <button type="button" class="btn typeConversation" title="Message" [ngClass]="{'activetypeConversation': zoneConversation === 3}" (click)="setTypeConversation('message'); zoneConversation = 3" ngModel=""><i
+            <button type="button" class="btn typeConversation" title="Message"
+              [ngClass]="{'activetypeConversation': zoneConversation === 3}"
+              (click)="setTypeConversation('message'); zoneConversation = 3" ngModel=""><i
                 class="bi bi-chat"></i></button>
 
-            <button type="button" class="btn typeConversation" title="Telephone" [ngClass]="{'activetypeConversation': zoneConversation === 4}" (click)="setTypeConversation('telephone'); zoneConversation = 4"><i
-                class="bi bi-telephone"></i></button>
+            <button type="button" class="btn typeConversation" title="Telephone"
+              [ngClass]="{'activetypeConversation': zoneConversation === 4}"
+              (click)="setTypeConversation('telephone'); zoneConversation = 4"><i class="bi bi-telephone"></i></button>
 
-            <button type="button" class="btn typeConversation" title="Courrier postal" [ngClass]="{'activetypeConversation': zoneConversation === 5}" (click)="setTypeConversation('courier_postal'); zoneConversation = 5"><i
+            <button type="button" class="btn typeConversation" title="Courrier postal"
+              [ngClass]="{'activetypeConversation': zoneConversation === 5}"
+              (click)="setTypeConversation('courier_postal'); zoneConversation = 5"><i
                 class="bi bi-mailbox-flag"></i></button>
           </div>
           <form>
             <div class="form-floating mb-3">
               <input type="date" class="form-control" id="floatingInput" name="inputdateConversation"
-               [(ngModel)]="inputdateConversation">
+                [(ngModel)]="inputdateConversation">
               <label for="floatingInput">Date</label>
             </div>
             <div class="form-floating mb-2">
               <input type="test" class="form-control" id="floatingPassword" name="inputinterlocuteur"
-              [(ngModel)]="inputinterlocuteur">
+                [(ngModel)]="inputinterlocuteur">
               <label for="floatingPassword">Interlocuteur</label>
             </div>
             <div class="form-floating mb-3">
-              <input type="test" class="form-control" id="floatingPassword" name="inputobjectConversation" 
-              [(ngModel)]="inputobjectConversation">
+              <input type="test" class="form-control" id="floatingPassword" name="inputobjectConversation"
+                [(ngModel)]="inputobjectConversation">
               <label for="floatingPassword">Object</label>
             </div>
             <div class="form-floating mb-3">
@@ -1267,7 +1300,8 @@
                 style="height: 100px" name="inputconversations" [(ngModel)]="inputconversations"></textarea>
               <label for="floatingTextarea2">Conversation</label>
             </div>
-            <div class="form-check form-switch d-flex justify-content-start mt-5" *ngIf="statutConversation=='en_attente'">
+            <div class="form-check form-switch d-flex justify-content-start mt-5"
+              *ngIf="statutConversation=='en_attente'">
               <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="stock"
                 (click)="setEtatConversation('termine')">
               <label class="form-check-label" for="flexSwitchCheckDefault">En attente</label>
@@ -1279,8 +1313,8 @@
             </div>
           </form>
           <div class="d-grid gap-2  mb-3 d-md-flex justify-content-md-end">
-            <button class=" btn btnAction" data-bs-toggle="modal" data-bs-target="#detailClient" 
-            (click)="modifierConversation()">Sauvegarder</button>
+            <button class=" btn btnAction" data-bs-toggle="modal" data-bs-target="#detailClient"
+              (click)="modifierConversation()">Sauvegarder</button>
           </div>
         </div>
       </div>
@@ -1467,38 +1501,38 @@
       <div class="modal-body">
         <div>
           <div class="info">
-              Vous pouvez utiliser ce solde en faveur comme moyen de paiement dans une future vente pour ce client.
+            Vous pouvez utiliser ce solde en faveur comme moyen de paiement dans une future vente pour ce client.
           </div>
           <form>
-              <div class="form-group">
-                  <label for="montant">Montant :</label>
-                  <div class="currency">
-                      <input type="text" id="montant" value="256 000,00">
-                  </div>
+            <div class="form-group">
+              <label for="montant">Montant :</label>
+              <div class="currency">
+                <input type="text" id="montant" value="256 000,00">
               </div>
-              <div class="form-group">
-                  <label for="date">Reçu le :</label>
-                  <div class="date-input">
-                      <input type="text" id="date" value="27/09/2024">
-                  </div>
+            </div>
+            <div class="form-group">
+              <label for="date">Reçu le :</label>
+              <div class="date-input">
+                <input type="text" id="date" value="27/09/2024">
               </div>
-              <div class="form-group">
-                  <label for="paiement">Moyen paiement :</label>
-                  <input type="text" id="paiement" value="Espèces">
+            </div>
+            <div class="form-group">
+              <label for="paiement">Moyen paiement :</label>
+              <input type="text" id="paiement" value="Espèces">
+            </div>
+            <div class="form-group">
+              <label for="commentaire">Commentaire :</label>
+              <textarea id="commentaire">Solde en faveur créé à partir de la note de crédit du 27/09/2024</textarea>
+            </div>
+            <div class="buttons">
+              <button type="button" class="print-btn">🖨️</button>
+              <div class="action-btns">
+                <button type="button" class="modify-btn">Modifier</button>
+                <button type="button" class="cancel-btn">Annuler / Supprimer</button>
               </div>
-              <div class="form-group">
-                  <label for="commentaire">Commentaire :</label>
-                  <textarea id="commentaire">Solde en faveur créé à partir de la note de crédit du 27/09/2024</textarea>
-              </div>
-              <div class="buttons">
-                  <button type="button" class="print-btn">🖨️</button>
-                  <div class="action-btns">
-                      <button type="button" class="modify-btn">Modifier</button>
-                      <button type="button" class="cancel-btn">Annuler / Supprimer</button>
-                  </div>
-              </div>
+            </div>
           </form>
-      </div>
+        </div>
       </div>
     </div>
   </div>

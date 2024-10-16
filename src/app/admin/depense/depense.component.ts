@@ -8,6 +8,7 @@ import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import { PayementService } from 'src/app/services/payement.service';
 import { DatePipe } from '@angular/common';
 import { EtiquetteService } from 'src/app/services/etiquette.service';
+import { ConfigurationService } from 'src/app/services/configuration.service';
 
 interface Etiquette {
   id?: number;
@@ -71,7 +72,7 @@ export class DepenseComponent {
   imageFacture: File | null = null;;
 
 
-  constructor(private http: HttpClient, private payementService: PayementService, private docService: VenteService, private datePipe: DatePipe, private etiquetteService: EtiquetteService, private cdr: ChangeDetectorRef) {
+  constructor(private http: HttpClient, private payementService: PayementService, private docService: VenteService, private datePipe: DatePipe, private etiquetteService: EtiquetteService, private cdr: ChangeDetectorRef, private filterService: ConfigurationService) {
   }
 
   boutonActif = 1;
@@ -121,6 +122,33 @@ export class DepenseComponent {
   showTva: boolean = false;
   showInputTva() {
     this.showTva = !this.showTva;
+  }
+  actif = 1
+  
+  filterliste:any[]=[];
+  filterFournisseur(filterTerm: string) {
+    this.filterliste = this.filterService.filterByTerm(this.tabFournisseur, filterTerm, ['type_fournisseur']);
+    if(this.filterliste.length==0){
+      this.listeFournisseur();
+    }else{
+      this.tabFournisseurFilter = this.filterliste;
+    } 
+  }
+
+  filterDepense(filterTerm: string) {
+    this.filterliste = this.tabDepense.filter(depense => {
+      if (filterTerm === 'payer') {
+        return depense.statut_depense === 'payer' || depense.statut_depense === true;
+      } else if (filterTerm === 'impayer') {
+        return depense.statut_depense === 'impayer' || depense.statut_depense === false;
+      }
+      return false;
+    });
+    if(this.filterliste.length==0){
+      this.listeDepense();
+    }else{
+      this.tabFournisseurFilter = this.filterliste;
+    } 
   }
 
   ngOnInit() {

@@ -14,6 +14,7 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import { EtiquetteService } from 'src/app/services/etiquette.service';
 import * as XLSX from 'xlsx';
+import { ConfigurationService } from 'src/app/services/configuration.service';
 
 interface Etiquette {
   id?: number;
@@ -27,7 +28,7 @@ interface Etiquette {
   styleUrls: ['./commande-dachat.component.css']
 })
 export class CommandeDachatComponent {
-  constructor(private http: HttpClient, private ServiceCategorie: CategorieService, private articleService: ArticlesService, private clientService: ClientsService, private userService: UtilisateurService, private productService: ArticlesService, private renderer: Renderer2, private payementService: PayementService, private grilleservice: GrilleTarifaireService, private docService: VenteService, private commandeAchatService: CommandeDachatService, private etiquetteService: EtiquetteService) {
+  constructor(private http: HttpClient, private ServiceCategorie: CategorieService, private articleService: ArticlesService, private clientService: ClientsService, private userService: UtilisateurService, private productService: ArticlesService, private renderer: Renderer2, private payementService: PayementService, private grilleservice: GrilleTarifaireService, private docService: VenteService, private commandeAchatService: CommandeDachatService, private etiquetteService: EtiquetteService,private filterService: ConfigurationService) {
     // this.currentDate = this.getCurrentDate()
   }
 
@@ -68,6 +69,17 @@ export class CommandeDachatComponent {
 
   dbUsers: any;
   idUserConnect: any;
+
+  actif = 1
+  filterliste:any[]=[];
+  filterCommandeDachat(filterTerm: string) {
+    this.filterliste = this.filterService.filterByTerm(this.tabCommandeDachat, filterTerm, ['statut','active_Stock']);
+    if(this.filterliste.length==0){
+      this.listeCommandeDachat();
+    }else{
+      this.tabCommandeDachatFilter = this.filterliste;
+    } 
+  }
 
   ngOnInit() {
     this.listeArticles();
