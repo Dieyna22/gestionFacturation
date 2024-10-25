@@ -63,7 +63,7 @@ export class DepenseComponent {
   Duree: boolean = false;
   tva: number = 0;
   montantPay: number = 0;
-  montantPayTtc: number = 0;
+  montantPayTtc: number = this.montantPay;
   compte: string = '';
   banque: string = '';
   guichet: string = '';
@@ -596,6 +596,14 @@ export class DepenseComponent {
     );
   }
 
+  idFournisseur: string='';
+  idcurrentFournisseur: any
+  currentFournisseurSelected: any;
+  onClientSelected() {
+    this.currentFournisseurSelected = this.tabFournisseur.filter((fournisseur: any) => fournisseur.id == this.idFournisseur);
+    this.idcurrentFournisseur = this.idFournisseur
+  }
+
   tabPayement: any[] = [];
   listePayement() {
     this.payementService.getAllPayement().subscribe(
@@ -636,7 +644,7 @@ export class DepenseComponent {
     if (this.imageFacture) {
       formData.append('image_facture', this.imageFacture);
     }
-    formData.append('fournisseur_id', '');
+    formData.append('fournisseur_id', this.idFournisseur);
     formData.append('statut_depense', this.statutPay.toString());
     formData.append('id_paiement', this.moyenPayement.toString());
     formData.append('doc_externe', '');
@@ -659,6 +667,7 @@ export class DepenseComponent {
         console.log(response);
         this.vider();
         Report.success('Notiflix Success', response.message, 'Okay',);
+        this.listeDepense();
       },
       (err) => {
         console.log(err);
@@ -727,6 +736,7 @@ export class DepenseComponent {
     this.durePeriode = paramDepense.periode_echeance;
     this.datePay = paramDepense.date_paiement;
     this.selectedEtiquettes = paramDepense.etiquettes;
+    this.idFournisseur = paramDepense.id_fournisseur;
   }
 
   updateDepense() {
@@ -734,6 +744,7 @@ export class DepenseComponent {
     {
       "activation": this.active,
       "id_categorie_depense": this.categorie,
+      "fournisseur_id": this.idFournisseur,
       "date_paiement": this.datePay,
       "commentaire": this.note,
       "tva_depense": this.tva,
@@ -741,7 +752,6 @@ export class DepenseComponent {
       "montant_depense_ttc": this.montantPayTtc,
       "num_facture": this.numero,
       "date_facture": this.dateFacture,
-      "fournisseur_id": null,
       "statut_depense": this.statutPay,
       "id_paiement": this.moyenPayement,
       "doc_externe": null,

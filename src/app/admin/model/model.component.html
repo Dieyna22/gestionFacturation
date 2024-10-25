@@ -78,7 +78,7 @@
               </div>
               <div class="positionTitre">
                 <div class="invoice-title">[TITRE_FACTURE]</div>
-                <div class="invoice-number">Facture N° [NUMERO_FACTURE]</div>
+                <div class="invoice-number">Facture N° [num_facture]</div>
               </div>
             </div>
           </div>
@@ -86,17 +86,17 @@
             <div class="invoice-details">
               <div class="company-info">
                 <h3>Informations entreprise</h3>
-                <p>Nom de l'entreprise : [NOM_ENTREPRISE]</p>
-                <p>Adresse : [ADRESSE_ENTREPRISE]</p>
-                <p>Téléphone : [TEL_ENTREPRISE]</p>
+                <p>Nom de l'entreprise : [expediteur_nom]</p>
+                <p>Adresse : [expediteur_email]</p>
+                <p>Téléphone : [expediteur_tel]</p>
               </div>
 
               <div class="client-info">
                 <h3>Informations client</h3>
-                <p>Nom : [NOM_CLIENT]</p>
+                <p>Nom : [destinataire_nom]</p>
                 <p>Adresse : [ADRESSE_CLIENT]</p>
-                <p>Téléphone : [TEL_CLIENT]</p>
-                <p>Email : [EMAIL_CLIENT]</p>
+                <p>Téléphone : [destinataire_tel]</p>
+                <p>Email : [destinataire_email]</p>
               </div>
             </div>
           </div>
@@ -112,13 +112,14 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <!-- <tr>
                   <td>[DESCRIPTION]</td>
                   <td>[QUANTITE]</td>
                   <td>[PU]</td>
                   <td>[TOTAL]</td>
                   <td></td>
-                </tr>
+                </tr> -->
+                [articles]
               </tbody>
             </table>
             <div class="row">
@@ -188,8 +189,8 @@
             <div class="company-info">
               <h3>Informations entreprise</h3>
               <p>Nom de l'entreprise : [NOM_ENTREPRISE]</p>
-              <p>Adresse : [ADRESSE_ENTREPRISE]</p>
-              <p>Téléphone : [TEL_ENTREPRISE]</p>
+              <p>Adresse : [expediteur_email]</p>
+              <p>Téléphone : [expediteur_tel]</p>
             </div>
 
             <h6>Date: [DATE_FACTURE]</h6>
@@ -201,10 +202,10 @@
               <p>Numéro: <strong>N° [NUMERO_FACTURE]</strong></p>
               <div class="mt-5">
                 <h3>Informations client</h3>
-                <p>Nom : [NOM_CLIENT]</p>
+                <p>Nom : [destinataire_nom]</p>
                 <p>Adresse : [ADRESSE_CLIENT]</p>
-                <p>Téléphone : [TEL_CLIENT]</p>
-                <p>Email : [EMAIL_CLIENT]</p>
+                <p>Téléphone : [destinataire_tel]</p>
+                <p>Email : [destinataire_email]</p>
               </div>
             </div>
           </div>
@@ -274,16 +275,16 @@
             <div class="company-info">
               <h3>Informations entreprise</h3>
               <p>Nom de l'entreprise : [NOM_ENTREPRISE]</p>
-              <p>Adresse : [ADRESSE_ENTREPRISE]</p>
-              <p>Téléphone : [TEL_ENTREPRISE]</p>
+              <p>Adresse : [expediteur_email]</p>
+              <p>Téléphone : [expediteur_tel]</p>
             </div>
 
             <div class="client-info">
               <h3>Informations client</h3>
-              <p>Nom : [NOM_CLIENT]</p>
+              <p>Nom : [destinataire_nom]</p>
               <p>Adresse : [ADRESSE_CLIENT]</p>
-              <p>Téléphone : [TEL_CLIENT]</p>
-              <p>Email : [EMAIL_CLIENT]</p>
+              <p>Téléphone : [destinataire_tel]</p>
+              <p>Email : [destinataire_email]</p>
             </div>
           </div>
         </div>

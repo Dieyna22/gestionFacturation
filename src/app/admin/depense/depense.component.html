@@ -6,14 +6,20 @@
     <button class="btn btnSearch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
   </div>
   <div class="d-flex filtre" id="fournisseur" *ngIf="currentDoc==='fournisseur'">
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actif === 1}" (click)="listeFournisseur(); actif = 1">Tout</button>
-    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 2}" (click)="filterFournisseur('particulier'); actif = 2">Particulier</button>
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actif === 3}" (click)="filterFournisseur('entreprise'); actif = 3">Entreprise</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 1}"
+      (click)="listeFournisseur(); actif = 1">Tout</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 2}"
+      (click)="filterFournisseur('particulier'); actif = 2">Particulier</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 3}"
+      (click)="filterFournisseur('entreprise'); actif = 3">Entreprise</button>
   </div>
   <div class="d-flex filtre" id="depense" *ngIf="currentDoc==='depense'">
-    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 1}" (click)="listeDepense(); actif = 1">Tout</button>
-    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 2}" (click)="filterDepense('impayer'); actif = 2">Impayées</button>
-    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 3}" (click)="filterDepense('payer'); actif = 3">Payées</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 1}"
+      (click)="listeDepense(); actif = 1">Tout</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 2}"
+      (click)="filterDepense('impayer'); actif = 2">Impayées</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 3}"
+      (click)="filterDepense('payer'); actif = 3">Payées</button>
   </div>
 </div>
 
@@ -62,30 +68,34 @@
             </thead>
             <tbody *ngFor="let fournisseur of getItemsPage()">
               <tr>
-                <td (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')" data-bs-toggle="modal"
-                data-bs-target="#updateFournisseur">{{fournisseur.num_fournisseur}}</td>
-                <td (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')" data-bs-toggle="modal"
-                data-bs-target="#updateFournisseur">{{fournisseur.type_fournisseur}}</td>
-                <td (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')" data-bs-toggle="modal"
-                data-bs-target="#updateFournisseur">
-                  <span  *ngIf="fournisseur.type_fournisseur=='particulier'" title="particulier" class="me-2"> <i class="bi bi-person"></i></span>
-                  <span  *ngIf="fournisseur.type_fournisseur=='entreprise'" title="entreprise" class="me-2"> <i class="bi bi-buildings"></i></span>
+                <td (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')"
+                  data-bs-toggle="modal" data-bs-target="#updateFournisseur">{{fournisseur.num_fournisseur}}</td>
+                <td (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')"
+                  data-bs-toggle="modal" data-bs-target="#updateFournisseur">{{fournisseur.type_fournisseur}}</td>
+                <td (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')"
+                  data-bs-toggle="modal" data-bs-target="#updateFournisseur">
+                  <span *ngIf="fournisseur.type_fournisseur=='particulier'" title="particulier" class="me-2"> <i
+                      class="bi bi-person"></i></span>
+                  <span *ngIf="fournisseur.type_fournisseur=='entreprise'" title="entreprise" class="me-2"> <i
+                      class="bi bi-buildings"></i></span>
                   {{fournisseur.prenom_fournisseur}} {{fournisseur.nom_fournisseur}} {{fournisseur.nom_entreprise}}
                   <span *ngIf="fournisseur.etiquettes && fournisseur.etiquettes.length > 0" class="etiquettes">
-                    <span *ngFor="let etiq of fournisseur.etiquettes; let i = index" [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2" >
+                    <span *ngFor="let etiq of fournisseur.etiquettes; let i = index"
+                      [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2">
                       {{ etiq.nom_etiquette }}<span *ngIf="i < fournisseur.etiquettes.length - 1">, </span>
                     </span>
                   </span>
                 </td>
-                <td (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')" data-bs-toggle="modal"
-                data-bs-target="#updateFournisseur">{{fournisseur.adress_fournisseur}}</td>
-                <td (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')" data-bs-toggle="modal"
-                data-bs-target="#updateFournisseur">{{fournisseur.email_fournisseur}}</td>
-                <td (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')" data-bs-toggle="modal"
-                data-bs-target="#updateFournisseur">{{fournisseur.tel_fournisseur}}</td>
+                <td (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')"
+                  data-bs-toggle="modal" data-bs-target="#updateFournisseur">{{fournisseur.adress_fournisseur}}</td>
+                <td (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')"
+                  data-bs-toggle="modal" data-bs-target="#updateFournisseur">{{fournisseur.email_fournisseur}}</td>
+                <td (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')"
+                  data-bs-toggle="modal" data-bs-target="#updateFournisseur">{{fournisseur.tel_fournisseur}}</td>
                 <td>
-                  <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')" data-bs-toggle="modal"
-                  data-bs-target="#updateFournisseur"></i>
+                  <i class="bi bi-pencil-square me-2" title="modifier"
+                    (click)="chargerInfoFournisseur(fournisseur);changeValueModal('updateFournisseur')"
+                    data-bs-toggle="modal" data-bs-target="#updateFournisseur"></i>
                   <i class="bi bi-trash3" title="Supprimer" (click)="supprimerFournisseur(fournisseur.id)"></i>
                 </td>
               </tr>
@@ -146,22 +156,30 @@
             </thead>
             <tbody *ngFor="let depense of getItemsPage()">
               <tr>
-                <td (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')" data-bs-toggle="modal" data-bs-target="#updateDepense">{{depense.num_depense}}</td>
-                <td (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')" data-bs-toggle="modal" data-bs-target="#updateDepense">{{depense.date_paiement}}</td>
-                <td (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')" data-bs-toggle="modal" data-bs-target="#updateDepense">
+                <td (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')" data-bs-toggle="modal"
+                  data-bs-target="#updateDepense">{{depense.num_depense}}</td>
+                <td (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')" data-bs-toggle="modal"
+                  data-bs-target="#updateDepense">{{depense.date_paiement}}</td>
+                <td (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')" data-bs-toggle="modal"
+                  data-bs-target="#updateDepense">
                   {{depense.nom_categorie_depense}}
                   <span *ngIf="depense.etiquettes && depense.etiquettes.length > 0" class="etiquettes">
-                    <span *ngFor="let etiq of depense.etiquettes; let i = index" [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2" >
+                    <span *ngFor="let etiq of depense.etiquettes; let i = index"
+                      [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2">
                       {{ etiq.nom_etiquette }}<span *ngIf="i < depense.etiquettes.length - 1">, </span>
                     </span>
                   </span>
                 </td>
-                <td (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')" data-bs-toggle="modal" data-bs-target="#updateDepense">{{depense.prenom_depense}} {{depense.nom_depense}}</td>
-                <td (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')" data-bs-toggle="modal" data-bs-target="#updateDepense">{{depense.montant_depense_ht}}</td>
-                <td (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')" data-bs-toggle="modal" data-bs-target="#updateDepense">{{depense.montant_depense_ttc}}</td>
+                <td (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')" data-bs-toggle="modal"
+                  data-bs-target="#updateDepense">{{depense.prenom_fournisseur}} {{depense.nom_fournisseur}}</td>
+                <td (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')" data-bs-toggle="modal"
+                  data-bs-target="#updateDepense">{{depense.montant_depense_ht}}</td>
+                <td (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')" data-bs-toggle="modal"
+                  data-bs-target="#updateDepense">{{depense.montant_depense_ttc}}</td>
                 <td>
-                  <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')"
-                    data-bs-toggle="modal" data-bs-target="#updateDepense"></i>
+                  <i class="bi bi-pencil-square me-2" title="modifier"
+                    (click)="chargerInfoDepense(depense);changeValueModal('modifDepense')" data-bs-toggle="modal"
+                    data-bs-target="#updateDepense"></i>
                   <i class="bi bi-trash3" title="Supprimer" (click)="supprimerDepense(depense.id)"></i>
                 </td>
               </tr>
@@ -563,6 +581,31 @@
   </div>
 </div>
 
+<!-- Modal Associer forunisseur -->
+<div class="modal fade mt-5" id="fournisseur" tabindex="-1" aria-labelledby="fournisseurLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="d-grid gap-2 p-2 d-md-flex justify-content-md-end">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+          (click)="ouvrirModal()"></button>
+      </div>
+      <div class="modal-body">
+        <h3>+ Associer un client</h3>
+        <div class="input-group mb-2">
+          <select class="form-select form-select-lg mb-3" aria-label="Large select example" name="idFournisseur"
+            [(ngModel)]="idFournisseur" (change)="onClientSelected() ">
+            <option selected>Selectionnez un fournisseur</option>
+            <option *ngFor="let fournisseur of tabFournisseur" [value]="fournisseur.id">
+              {{fournisseur.prenom_fournisseur}} {{fournisseur.nom_fournisseur}} {{fournisseur.nom_entreprise}}
+            </option>
+          </select>
+        </div>
+        <button class="btnAction mx-auto btn" data-bs-dismiss="modal" aria-label="Close"
+          (click)="ouvrirModal()">Sauvegarder</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modal ajouter depense -->
 <div class="modal fade mt-5" id="adddepence" tabindex="-1" aria-labelledby="adddepenceLabel" aria-hidden="true">
@@ -605,6 +648,20 @@
             <input class="w-50" type="text" id="numero" name="nextNumberDepense" [(ngModel)]="nextNumberDepense"
               readonly>&nbsp;
             <i class="bi bi-gear" data-bs-toggle="modal" data-bs-target="#settingDepense"></i>
+          </div>
+          <div class="client-section mb-3">
+            <button class="associate-client" data-bs-toggle="modal" data-bs-target="#fournisseur"
+              *ngIf="!currentFournisseur">+ Associer
+              Fournisseur</button>
+          </div>
+          <div class="client-info mb-3" *ngFor="let fournisseurSelected of currentFournisseurSelected">
+            <Span>Fournisseur</Span><br>
+            <input type="text"
+              value=" {{fournisseurSelected.prenom_fournisseur}} {{fournisseurSelected.nom_fournisseur}} {{fournisseurSelected.nom_entreprise}}"
+              readonly>
+            <div class="client-details">
+              <span> {{fournisseurSelected.email_fournisseur}}</span>
+            </div>
           </div>
           <div class="form-group">
             <label for="category">Catégorie :</label>
@@ -768,7 +825,8 @@
             <div class="mb-3 row">
               <label for="imageFacture" class="col-sm-2 col-form-label">Image Facture :</label>
               <div class="col-sm-10">
-                <input type="file" class="form-control" id="imageFacture" name="imageFacture" (change)="getFile($event)">
+                <input type="file" class="form-control" id="imageFacture" name="imageFacture"
+                  (change)="getFile($event)">
               </div>
             </div>
           </div>
@@ -829,6 +887,20 @@
             </div>
           </div>
 
+          <div class="client-section mb-3">
+            <button class="associate-client" data-bs-toggle="modal" data-bs-target="#fournisseur"
+              *ngIf="!currentFournisseur">+ Associer/changer
+              Fournisseur</button>
+          </div>
+          <div class="client-info mb-3" *ngFor="let fournisseurSelected of currentFournisseurSelected ">
+            <Span>Nouveau Fournisseur</Span><br>
+            <input type="text"
+              value=" {{fournisseurSelected.prenom_fournisseur}} {{fournisseurSelected.nom_fournisseur}} {{fournisseurSelected.nom_entreprise}}"
+              readonly>
+            <div class="client-details">
+              <span> {{fournisseurSelected.email_fournisseur}}</span>
+            </div>
+          </div>
 
           <div class="form-group">
             <label for="category">Catégorie :</label>
