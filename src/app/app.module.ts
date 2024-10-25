@@ -35,6 +35,7 @@ import { CommandeDachatComponent } from './admin/commande-dachat/commande-dachat
 import { ComptableComponent } from './admin/comptable/comptable.component';
 import { RapportComponent } from './admin/rapport/rapport.component';
 import { StockComponent } from './admin/stock/stock.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @NgModule({
@@ -73,7 +74,8 @@ import { StockComponent } from './admin/stock/stock.component';
     AppRoutingModule,
     FormsModule,
     NgxPrintModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxPaginationModule
   ],
   providers: [
     AuthService,

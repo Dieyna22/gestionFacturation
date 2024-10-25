@@ -91,4 +91,64 @@ export class ConfigurationService {
     return filteredList;
   }
 
+  // rapport flux de Trésorerie
+  getRapportFluxTrésorerie(data: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/RapportFluxTrésorerie`, data);
+  }
+
+  // rapport de vente(facture)
+  getRapportFacture(data: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/RapportFacture`, data);
+  }
+
+  // rapport depense
+  getRapportDepense(data: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/RapportDepense`, data);
+  }
+
+  // rapport Paiement Reçu
+  getRapportPaiementRecu(data: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/RapportPaiementRecu`, data);
+  }
+
+  // rapport Paiement en attents
+  getRapportPaiement_enAttents(data: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/RapportPaiement_enAttents`, data);
+  }
+
+  // rapport Commande Vente
+  getRapportCommandeVente(data: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/RapportCommandeVente`, data);
+  }
+
+  // rapport livraison 
+  getRapportLivraison(data: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/RapportLivraison`, data);
+  }
+
+  // rapport  moyen payement 
+  getRapportMoyenPayement(data: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/RapportMoyenPayement`, data);
+  }
+
+  // rapport  TVA 
+  getRapportTVA(data: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/RapportTVA`, data);
+  }
+
+  // rapport  resultat 
+  getRapportResultat(data: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/RapportResultat`, data);
+  }
+
+  // rapport  Journal Ventes 
+  getRapportJournalVentes(data: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/getJournalVentesEntreDates`, data);
+  }
+
+  // rapport  Journal d'achat 
+  getRapportJournalDachat(data: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/getJournalAchatsEntreDates`, data);
+  }
+
 }

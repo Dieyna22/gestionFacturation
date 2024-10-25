@@ -21,6 +21,7 @@
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.4",
     "jspdf": "^2.5.1",
+    "ngx-pagination": "^6.0.3",
     "ngx-print": "^1.5.1",
     "notiflix": "^3.2.7",
     "rxjs": "~7.8.0",
