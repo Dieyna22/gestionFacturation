@@ -138,20 +138,6 @@ export class ModelComponent implements OnInit, OnDestroy {
     this.currentModel = modelId;
   }
 
-  // color: string = '#467aea';
-
-  // onColorChange() {
-  //   this.updateTableHeaderColor();
-
-  // }
-  // private updateTableHeaderColor() {
-  //   const theadCells = document.querySelectorAll('thead tr th');
-  //   const titreZone = document.querySelector('h1')
-  //   theadCells.forEach((cell: any) => {
-  //     this.renderer.setStyle(cell, 'background-color', this.color);
-  //     this.renderer.setStyle(cell, 'color', 'white')
-  //   });
-  // }
 
   constructor(private renderer: Renderer2, private userService: UtilisateurService, private http: HttpClient, private configModel: ConfigurationService) {
     this.currentDate = this.getCurrentDate();
@@ -176,9 +162,10 @@ export class ModelComponent implements OnInit, OnDestroy {
     )
   }
 
-  showConfig: boolean = false;
-  onshowConfig() {
-    this.showConfig = !this.showConfig;
+  showConfig: string = 'model';
+  onshowConfig(value:string) {
+    this.showConfig =value;
+    console.warn(this.showConfig)
   }
 
   // varaible pour ajouter des options sur le model des document
@@ -357,7 +344,6 @@ export class ModelComponent implements OnInit, OnDestroy {
         this.listeModel = response.modelesDocuments;
         console.log(this.listeModel);
         this.isLoading = false;
-
       },
       (error) => {
         console.log(error);

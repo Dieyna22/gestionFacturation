@@ -113,6 +113,11 @@ export class FactureComponent {
     this.titre = docId;
   }
 
+  typeDocument = 'vente';
+  setTypeDocument(typeDoc: string) {
+    this.typeDocument = typeDoc;
+  }
+
   currentModel: string = 'bloc'
 
   // Mettre à jour le modèle actuel
@@ -202,6 +207,7 @@ export class FactureComponent {
     this.listeNumberBonCommande();
     this.listeNumberBonLivraison();
     this.listeEtiquette();
+    this.listeModelByTypeDocument();
 
 
     // this. listeFactureRecurrente();
@@ -2371,38 +2377,38 @@ export class FactureComponent {
 
 
   //exporter vente
-  exportExcel() {
-    this.docService.exportVenteToExcel().subscribe(
-      (data: Blob) => {
-        data.arrayBuffer().then((buffer) => {
-          const workbook = XLSX.read(buffer, { type: 'array' });
-          const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+  // exportExcel() {
+  //   this.docService.exportVenteToExcel().subscribe(
+  //     (data: Blob) => {
+  //       data.arrayBuffer().then((buffer) => {
+  //         const workbook = XLSX.read(buffer, { type: 'array' });
+  //         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
 
-          // Augmenter la largeur des colonnes
-          if (worksheet['!ref']) {
-            const range = XLSX.utils.decode_range(worksheet['!ref']);
-            const cols: XLSX.ColInfo[] = [];
-            for (let C = range.s.c; C <= range.e.c; ++C) {
-              cols.push({ wch: 20 }); // Définir la largeur à 15
-            }
-            worksheet['!cols'] = cols;
-          }
+  //         // Augmenter la largeur des colonnes
+  //         if (worksheet['!ref']) {
+  //           const range = XLSX.utils.decode_range(worksheet['!ref']);
+  //           const cols: XLSX.ColInfo[] = [];
+  //           for (let C = range.s.c; C <= range.e.c; ++C) {
+  //             cols.push({ wch: 20 }); // Définir la largeur à 15
+  //           }
+  //           worksheet['!cols'] = cols;
+  //         }
 
-          const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-          const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'exportVentes.xlsx';
-          a.click();
-          window.URL.revokeObjectURL(url);
-        });
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }
+  //         const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  //         const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  //         const url = window.URL.createObjectURL(blob);
+  //         const a = document.createElement('a');
+  //         a.href = url;
+  //         a.download = 'exportVentes.xlsx';
+  //         a.click();
+  //         window.URL.revokeObjectURL(url);
+  //       });
+  //     },
+  //     (err) => {
+  //       console.log(err);
+  //     }
+  //   );
+  // }
 
   //exporter devis
   exportDeviExcel() {
@@ -2716,6 +2722,180 @@ export class FactureComponent {
         const bootstrapModal = new bootstrap.Modal(modal);
         bootstrapModal.show();
       }
+    }
+  }
+
+  // liste model document
+  isLoading: boolean = true;
+  listeModel: any[] = [];
+  listeModelByTypeDocument() {
+    this.filterService.getModelByTypeDocument(this.typeDocument).subscribe(
+      (response) => {
+        this.listeModel = response.modelesDocuments;
+        console.log(this.listeModel);
+        this.isLoading = false;
+      },
+      (error) => {
+        console.log(error);
+        this.isLoading = false;
+        console.log(this.isLoading)
+      }
+    )
+  }
+
+  docId:any;
+  modelId:any;
+  recupIdDocument(idDocs:any){
+    this.docId = idDocs;
+    this.emailDoc()
+  }
+
+  recupIdModel(idModel:any){
+    this.modelId = idModel;
+    this.generatePDF()
+  }
+
+  // generer pdf facture 
+  generatePDF(){
+    this.docService.genererPdf(this.docId,this.modelId).subscribe(
+      (response)=>{
+        console.log(response);
+      },
+      (error)=>{
+        console.log(error);
+      }
+    )
+  }
+
+  // detail email facture
+  emailDoc(){
+    this.docService.detailEmailFacture(this.docId).subscribe(
+      (response)=>{
+        console.warn(response);
+      },
+      (error)=>{
+        console.log(error);
+      }
+    )
+  }
+
+  exportExcel() {
+    const originalPage = this.pageActuelle;
+    const originalItemsPerPage = this.itemsParPage;
+    let idTab: string;
+    let fileName: string;
+
+
+    idTab = this.typeDocument;
+    fileName = `${this.typeDocument}.xlsx`;   
+    this.itemsParPage = this.tabFactureFilter.length;
+
+    try {
+
+      setTimeout(() => {
+        try {
+          const element = document.getElementById(idTab);
+          if (!element) {
+            throw new Error(`Table avec l'id ${idTab} non trouvée`);
+          }
+
+          const cells = element.getElementsByTagName('td');
+          Array.from(cells).forEach(cell => {
+            const value = cell.textContent || '';
+            if (/^0+\d+$/.test(value)) {
+              cell.setAttribute('data-t', 's');
+              cell.setAttribute('data-v', value);
+            }
+          });
+
+          const options = {
+            raw: false,
+            rawNumbers: false,
+            dateNF: 'dd/mm/yyyy',
+            cellText: true,
+            cellStyles: true,
+            cellDates: true,
+          };
+
+          const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element, options);
+
+          if (ws['!ref']) {
+            const range = XLSX.utils.decode_range(ws['!ref']);
+            for (let R = range.s.r; R <= range.e.r; ++R) {
+              for (let C = range.s.c; C <= range.e.c; ++C) {
+                const cellAddress = { c: C, r: R };
+                const cellRef = XLSX.utils.encode_cell(cellAddress);
+                const cell = ws[cellRef];
+
+                if (cell && cell.v !== undefined) {
+                  const value = String(cell.v);
+                  if (/^0+\d+$/.test(value)) {
+                    ws[cellRef] = {
+                      t: 's',
+                      v: value,
+                      w: value,
+                      s: {
+                        numFmt: '@'
+                      }
+                    };
+                  }
+                }
+              }
+            }
+          }
+
+          ws['!types'] = {
+            numFmt: '@'
+          };
+
+          if (ws['!ref']) {
+            const range = XLSX.utils.decode_range(ws['!ref']);
+            const colWidths = [];
+
+            for (let C = range.s.c; C <= range.e.c; ++C) {
+              let maxWidth = 10;
+              for (let R = range.s.r; R <= range.e.r; ++R) {
+                const cellAddress = { c: C, r: R };
+                const cellRef = XLSX.utils.encode_cell(cellAddress);
+                const cell = ws[cellRef];
+                if (cell && cell.v) {
+                  maxWidth = Math.max(maxWidth, String(cell.v).length + 2);
+                }
+              }
+              colWidths.push({ wch: maxWidth });
+            }
+            ws['!cols'] = colWidths;
+          }
+
+          const wb: XLSX.WorkBook = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+          if (!fileName) {
+            fileName = 'export.xlsx';
+          }
+
+          const wopts: XLSX.WritingOptions = {
+            bookType: 'xlsx',
+            bookSST: false,
+            type: 'binary',  // Correctly set to 'binary'
+            cellStyles: true,  // Retaining this if you need styles
+          };
+
+
+          XLSX.writeFile(wb, fileName, wopts);
+
+        } catch (error) {
+          console.error('Erreur lors de l\'export Excel:', error);
+        }
+      }, 200);
+
+    } catch (error) {
+      console.error('Erreur lors de la configuration de l\'export:', error);
+    } finally {
+      setTimeout(() => {
+        this.pageActuelle = originalPage;
+        this.itemsParPage = originalItemsPerPage;
+      }, 300);
     }
   }
 

@@ -562,4 +562,38 @@ th, td {
   border: 1px solid #ddd;
   text-align: left;
 }
+
+.invoice-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.company-info,
+.client-info {
+  flex: 1;
+}
+
+.client-info {
+  text-align: right;
+}
+
+.company-info h3,
+.client-info h3 {
+  color: #000;
+  margin: 15px 0;
+}
+
+.info-block p {
+  margin: 5px 0;
+}
+
+.invoice-title {
+  margin: 0 0 10px 0;
+}
+
+.invoice-number {
+  margin: 0 0 30px 0;
+}
+   .header .left, .header .right { width: 48%; display: inline-block; vertical-align: top; } .header .left { text-align: left; } .header .right { text-align: right; }
 `;

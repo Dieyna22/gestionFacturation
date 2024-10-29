@@ -362,4 +362,18 @@ export class VenteService {
     return this.http.get<any>(`${apiUrl}/listeSoldeParClient/${clientId}`);
   }
 
+  // telecharger pdf facture
+  genererPdf(factureId: any,modelDocumentId:any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/genererPDFFacture/${factureId}/${modelDocumentId}`, '');
+  }
+
+
+ 
+
+
+  // detail email facture
+  detailEmailFacture(factureId: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/DetailEmailFacture_genererPDF/${factureId}`, '');
+  }
+
 }

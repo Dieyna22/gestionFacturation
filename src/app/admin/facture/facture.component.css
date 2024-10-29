@@ -1260,3 +1260,8 @@ th, td {
 .checkbox-group {
   margin: 10px 0;
 }
+
+.zoneAffichage{
+  overflow-y: scroll;
+  height: 190px;
+}

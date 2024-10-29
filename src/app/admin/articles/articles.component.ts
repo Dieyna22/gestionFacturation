@@ -103,17 +103,17 @@ export class ArticlesComponent implements OnInit {
   stockType: string = '';
 
 
-  constructor(private http: HttpClient, private articleService: ArticlesService, private promoService: PromoService, private Categorie: CategorieArticleService, private grilleservice: GrilleTarifaireService, private clientService: ClientsService, public permissionsService: PermissionsService, private etiquetteService: EtiquetteService, private cdr: ChangeDetectorRef,private filterService:ConfigurationService) { }
+  constructor(private http: HttpClient, private articleService: ArticlesService, private promoService: PromoService, private Categorie: CategorieArticleService, private grilleservice: GrilleTarifaireService, private clientService: ClientsService, public permissionsService: PermissionsService, private etiquetteService: EtiquetteService, private cdr: ChangeDetectorRef, private filterService: ConfigurationService) { }
 
 
-  filterliste:any[]=[];
+  filterliste: any[] = [];
   filterProduits(filterTerm: string) {
     this.filterliste = this.filterService.filterByTerm([this.tabArticle], filterTerm, ['active_article']);
-    if(this.filterliste.length==0){
+    if (this.filterliste.length == 0) {
       this.listeArticles();
-    }else{
+    } else {
       this.tabArticleFilter = this.filterliste;
-    } 
+    }
   }
   actif = 1
 
@@ -306,7 +306,7 @@ export class ArticlesComponent implements OnInit {
       }
     )
   }
-  
+
   products: any;
   listeArticles() {
     this.articleService.getAllArticles().subscribe(
@@ -782,38 +782,38 @@ export class ArticlesComponent implements OnInit {
     }
   }
 
-  exportExcel() {
-    this.articleService.exportToExcel().subscribe(
-      (data: Blob) => {
-        data.arrayBuffer().then((buffer) => {
-          const workbook = XLSX.read(buffer, { type: 'array' });
-          const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+  // exportExcel() {
+  //   this.articleService.exportToExcel().subscribe(
+  //     (data: Blob) => {
+  //       data.arrayBuffer().then((buffer) => {
+  //         const workbook = XLSX.read(buffer, { type: 'array' });
+  //         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
 
-          // Augmenter la largeur des colonnes
-          if (worksheet['!ref']) {
-            const range = XLSX.utils.decode_range(worksheet['!ref']);
-            const cols: XLSX.ColInfo[] = [];
-            for (let C = range.s.c; C <= range.e.c; ++C) {
-              cols.push({ wch: 20 }); // Définir la largeur à 15
-            }
-            worksheet['!cols'] = cols;
-          }
+  //         // Augmenter la largeur des colonnes
+  //         if (worksheet['!ref']) {
+  //           const range = XLSX.utils.decode_range(worksheet['!ref']);
+  //           const cols: XLSX.ColInfo[] = [];
+  //           for (let C = range.s.c; C <= range.e.c; ++C) {
+  //             cols.push({ wch: 20 }); // Définir la largeur à 15
+  //           }
+  //           worksheet['!cols'] = cols;
+  //         }
 
-          const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-          const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'exportArticle.xlsx';
-          a.click();
-          window.URL.revokeObjectURL(url);
-        });
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }
+  //         const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  //         const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  //         const url = window.URL.createObjectURL(blob);
+  //         const a = document.createElement('a');
+  //         a.href = url;
+  //         a.download = 'exportArticle.xlsx';
+  //         a.click();
+  //         window.URL.revokeObjectURL(url);
+  //       });
+  //     },
+  //     (err) => {
+  //       console.log(err);
+  //     }
+  //   );
+  // }
 
 
   couleurs: string[] = ['#FFEB3B', '#CDDC39', '#FFC107', '#FF5722', '#E91E63', '#9C27B0', '#3F51B5', '#03A9F4', '#00BCD4', '#8BC34A'];
@@ -992,4 +992,123 @@ export class ArticlesComponent implements OnInit {
   }
 
 
+  exportExcel() {
+    const originalPage = this.pageActuelle;
+    const originalItemsPerPage = this.itemsParPage;
+    let idTab: string;
+    let fileName: string;
+
+
+    idTab = 'tabArticle';
+    fileName = 'Articles.xlsx';
+    this.itemsParPage = this.tabArticleFilter.length;
+
+    try {
+
+      setTimeout(() => {
+        try {
+          const element = document.getElementById(idTab);
+          if (!element) {
+            throw new Error(`Table avec l'id ${idTab} non trouvée`);
+          }
+
+          const cells = element.getElementsByTagName('td');
+          Array.from(cells).forEach(cell => {
+            const value = cell.textContent || '';
+            if (/^0+\d+$/.test(value)) {
+              cell.setAttribute('data-t', 's');
+              cell.setAttribute('data-v', value);
+            }
+          });
+
+          const options = {
+            raw: false,
+            rawNumbers: false,
+            dateNF: 'dd/mm/yyyy',
+            cellText: true,
+            cellStyles: true,
+            cellDates: true,
+          };
+
+          const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element, options);
+
+          if (ws['!ref']) {
+            const range = XLSX.utils.decode_range(ws['!ref']);
+            for (let R = range.s.r; R <= range.e.r; ++R) {
+              for (let C = range.s.c; C <= range.e.c; ++C) {
+                const cellAddress = { c: C, r: R };
+                const cellRef = XLSX.utils.encode_cell(cellAddress);
+                const cell = ws[cellRef];
+
+                if (cell && cell.v !== undefined) {
+                  const value = String(cell.v);
+                  if (/^0+\d+$/.test(value)) {
+                    ws[cellRef] = {
+                      t: 's',
+                      v: value,
+                      w: value,
+                      s: {
+                        numFmt: '@'
+                      }
+                    };
+                  }
+                }
+              }
+            }
+          }
+
+          ws['!types'] = {
+            numFmt: '@'
+          };
+
+          if (ws['!ref']) {
+            const range = XLSX.utils.decode_range(ws['!ref']);
+            const colWidths = [];
+
+            for (let C = range.s.c; C <= range.e.c; ++C) {
+              let maxWidth = 10;
+              for (let R = range.s.r; R <= range.e.r; ++R) {
+                const cellAddress = { c: C, r: R };
+                const cellRef = XLSX.utils.encode_cell(cellAddress);
+                const cell = ws[cellRef];
+                if (cell && cell.v) {
+                  maxWidth = Math.max(maxWidth, String(cell.v).length + 2);
+                }
+              }
+              colWidths.push({ wch: maxWidth });
+            }
+            ws['!cols'] = colWidths;
+          }
+
+          const wb: XLSX.WorkBook = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+          if (!fileName) {
+            fileName = 'export.xlsx';
+          }
+
+          const wopts: XLSX.WritingOptions = {
+            bookType: 'xlsx',
+            bookSST: false,
+            type: 'binary',  // Correctly set to 'binary'
+            cellStyles: true,  // Retaining this if you need styles
+          };
+
+
+          XLSX.writeFile(wb, fileName, wopts);
+
+        } catch (error) {
+          console.error('Erreur lors de l\'export Excel:', error);
+        }
+      }, 200);
+
+    } catch (error) {
+      console.error('Erreur lors de la configuration de l\'export:', error);
+    } finally {
+      setTimeout(() => {
+        this.pageActuelle = originalPage;
+        this.itemsParPage = originalItemsPerPage;
+      }, 300);
+    }
+  }
 }

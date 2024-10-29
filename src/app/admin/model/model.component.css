@@ -567,3 +567,7 @@ th, td {
   border: 1px solid #ddd;
   text-align: left;
 }
+
+.header .left, .header .right { width: 48%; display: inline-block; vertical-align: top; } 
+.header .left { text-align: left; } 
+.header .right { text-align: right; }
