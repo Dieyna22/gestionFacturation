@@ -7,37 +7,62 @@
     <button class="btn btnSearch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
   </div>
   <div class="d-flex filtre" id="Facture" *ngIf="currentDoc==='Facture'">
-    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 1}" (click)="listeFacture(); actif = 1">Tout</button>
-    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 2}"  (click)="filterFactures('payer'); actif = 2">Payées</button>
-    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 3}"  (click)="filterFactures('en_attente'); actif = 3">Impayées</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 1}"
+      (click)="listeFacture(); actif = 1">Tout</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 2}"
+      (click)="filterFactures('payer'); actif = 2">Payées</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 3}"
+      (click)="filterFactures('en_attente'); actif = 3">Impayées</button>
   </div>
   <div class="d-flex filtre" id="Devis" *ngIf="currentDoc==='Devis'">
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifD === 1}" (click)="listeDevis(); actifD = 1">Tout</button>
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifD === 2}" (click)="filterDevis('en_attente'); actifD = 2">En attente</button>
-    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifD === 3}"  (click)="filterDevis('transformer'); actifD = 3">Transformer</button>
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifD === 4}" (click)="filterDevis('valider'); actifD = 4">Validées</button>
-    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifD === 5}"  (click)="filterDevis('annuler'); actifD = 5">Annulées</button>
-    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifD === 6}"   (click)="filterDevis('non'); actifD = 6">No archiver</button>
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifD === 7}" (click)="filterDevis('oui'); actifD = 7">Archiver</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifD === 1}"
+      (click)="listeDevis(); actifD = 1">Tout</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifD === 2}"
+      (click)="filterDevis('en_attente'); actifD = 2">En attente</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifD === 3}"
+      (click)="filterDevis('transformer'); actifD = 3">Transformer</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifD === 4}"
+      (click)="filterDevis('valider'); actifD = 4">Validées</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifD === 5}"
+      (click)="filterDevis('annuler'); actifD = 5">Annulées</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifD === 6}"
+      (click)="filterDevis('non'); actifD = 6">No archiver</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifD === 7}"
+      (click)="filterDevis('oui'); actifD = 7">Archiver</button>
   </div>
-  <div class="d-flex filtre"  id="Bon de commande" *ngIf="currentDoc==='Bon de commande'">
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifBC === 1}"  (click)="listeBonCommande(); actifBC = 1">Tout</button>
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifBC === 2}"  (click)="filterBonCommande('en_attente'); actifBC = 2">En attente</button>
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifBC === 3}"  (click)="filterBonCommande('transformer'); actifBC = 3">Transformer</button>
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifBC === 4}"  (click)="filterBonCommande('valider'); actifBC = 4">Validées</button>
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifBC === 5}"  (click)="filterBonCommande('annuler'); actifBC = 5">Annulées</button>
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifBC === 6}"  (click)="filterBonCommande('non'); actifBC = 6">stock no actif</button>
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifBC === 7}"  (click)="filterBonCommande('oui'); actifBC = 7">stock actif</button>
+  <div class="d-flex filtre" id="Bon de commande" *ngIf="currentDoc==='Bon de commande'">
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifBC === 1}"
+      (click)="listeBonCommande(); actifBC = 1">Tout</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifBC === 2}"
+      (click)="filterBonCommande('en_attente'); actifBC = 2">En attente</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifBC === 3}"
+      (click)="filterBonCommande('transformer'); actifBC = 3">Transformer</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifBC === 4}"
+      (click)="filterBonCommande('valider'); actifBC = 4">Validées</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifBC === 5}"
+      (click)="filterBonCommande('annuler'); actifBC = 5">Annulées</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifBC === 6}"
+      (click)="filterBonCommande('non'); actifBC = 6">stock no actif</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifBC === 7}"
+      (click)="filterBonCommande('oui'); actifBC = 7">stock actif</button>
   </div>
-  <div class="d-flex filtre"  id="Bon de Livraison" *ngIf="currentDoc==='Bon de Livraison'">
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifCL === 1}"  (click)="listeBonLivraison(); actifCL = 1">Tout</button>
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifCL === 2}"  (click)="filterBonLivraison('brouillon'); actifCL = 2">Brouillon</button>
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifCL === 3}"  (click)="filterBonLivraison('preparer'); actifCL = 3">Preparer</button>
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifCL === 4}"  (click)="filterBonLivraison('planifier'); actifCL = 4">Planifier</button>
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifCL === 5}"  (click)="filterBonLivraison('livrer'); actifCL = 5">Livrer</button>
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifCL === 6}"  (click)="filterBonLivraison('annuler'); actifCL = 6">Annulées</button>
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifCL === 7}"  (click)="filterBonLivraison('non'); actifCL = 7">stock no actif</button>
-    <button type="button" class="btn btnOutline"  [ngClass]="{'btnOutlineActive': actifCL === 8}"  (click)="filterBonLivraison('oui'); actifCL = 8">stock actif</button>
+  <div class="d-flex filtre" id="Bon de Livraison" *ngIf="currentDoc==='Bon de Livraison'">
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifCL === 1}"
+      (click)="listeBonLivraison(); actifCL = 1">Tout</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifCL === 2}"
+      (click)="filterBonLivraison('brouillon'); actifCL = 2">Brouillon</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifCL === 3}"
+      (click)="filterBonLivraison('preparer'); actifCL = 3">Preparer</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifCL === 4}"
+      (click)="filterBonLivraison('planifier'); actifCL = 4">Planifier</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifCL === 5}"
+      (click)="filterBonLivraison('livrer'); actifCL = 5">Livrer</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifCL === 6}"
+      (click)="filterBonLivraison('annuler'); actifCL = 6">Annulées</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifCL === 7}"
+      (click)="filterBonLivraison('non'); actifCL = 7">stock no actif</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actifCL === 8}"
+      (click)="filterBonLivraison('oui'); actifCL = 8">stock actif</button>
   </div>
 </div>
 
@@ -47,13 +72,17 @@
   <div class="contenu">
     <div class="header d-grid gap-2 d-md-flex justify-content-md-end">
       <ul class="nav">
-        <li><a [ngClass]="{'currentItemNav': boutonActif === 1}" (click)="showTypeDocument('Facture')"
+        <li><a [ngClass]="{'currentItemNav': boutonActif === 1}"
+            (click)="showTypeDocument('Facture');setTypeDocument('vente');listeModelByTypeDocument()"
             (click)="boutonActif = 1" (click)="listeFacture()">Ventes</a></li>
-        <li><a [ngClass]="{'currentItemNav': boutonActif === 2}" (click)="showTypeDocument('Devis')"
+        <li><a [ngClass]="{'currentItemNav': boutonActif === 2}"
+            (click)="showTypeDocument('Devis');setTypeDocument('devi');listeModelByTypeDocument()"
             (click)="boutonActif = 2" (click)="listeDevis()">Devis</a></li>
-        <li><a [ngClass]="{'currentItemNav': boutonActif === 3}" (click)="showTypeDocument('Bon de commande')"
+        <li><a [ngClass]="{'currentItemNav': boutonActif === 3}"
+            (click)="showTypeDocument('Bon de commande');setTypeDocument('command_vente');listeModelByTypeDocument()"
             (click)="boutonActif = 3" (click)=" listeBonCommande()">Bon de commande</a></li>
-        <li><a [ngClass]="{'currentItemNav': boutonActif === 4}" (click)="showTypeDocument('Bon de Livraison')"
+        <li><a [ngClass]="{'currentItemNav': boutonActif === 4}"
+            (click)="showTypeDocument('Bon de Livraison');setTypeDocument('livraison');listeModelByTypeDocument()"
             (click)="boutonActif = 4" (click)=" listeBonLivraison()">Bon de Livraison</a></li>
         <!-- <li><a  [ngClass]="{'currentItemNav': boutonActif === 5}" (click)="showTypeDocument('Bon d&#x2019;achat')" (click)="boutonActif = 5">Bon d'achat</a></li> -->
       </ul>
@@ -82,19 +111,16 @@
           </div>
         </div>
 
-
-
         <div class="row sectionEspace ligneReseauSearch mb-3">
           <div class="col-md-5">
             <h3 class="fw-bold">Listes Facture</h3>
           </div>
-
         </div>
 
         <!-- Le tableau des factures -->
         <!-- tout -->
         <div class="table-responsive" id="tout" *ngIf="currentfactureType==='tout'">
-          <table class="table table-hover mb-4">
+          <table class="table table-hover mb-4" id="vente">
             <thead class="mb-2">
               <tr>
                 <th scope="col">Numéro </th>
@@ -109,13 +135,17 @@
             </thead>
             <tbody *ngFor="let facture of  getItemsPage()">
               <tr>
-                <td data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.numero)">
+                <td data-bs-toggle="modal" data-bs-target="#detailFacture"
+                  (click)="details(facture.numero);recupIdDocument(facture.id)">
                   {{facture.numero}}</td>
-                <td data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.numero)">
+                <td data-bs-toggle="modal" data-bs-target="#detailFacture"
+                  (click)="details(facture.numero);recupIdDocument(facture.id)">
                   {{facture.date}}</td>
-                <td data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.numero)">
+                <td data-bs-toggle="modal" data-bs-target="#detailFacture"
+                  (click)="details(facture.numero);recupIdDocument(facture.id)">
                   {{facture.type_facture}}</td>
-                <td data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.numero)">
+                <td data-bs-toggle="modal" data-bs-target="#detailFacture"
+                  (click)="details(facture.numero);recupIdDocument(facture.id)">
                   {{facture.prenom_client}} {{facture.nom_client}}
                   <span *ngIf="facture.etiquettes && facture.etiquettes.length > 0" class="etiquettes">
                     <span *ngFor="let etiq of facture.etiquettes; let i = index"
@@ -124,15 +154,18 @@
                     </span>
                   </span>
                 </td>
-                <td data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.numero)">
+                <td data-bs-toggle="modal" data-bs-target="#detailFacture"
+                  (click)="details(facture.numero);recupIdDocument(facture.id)">
                   {{facture.prix_HT}}</td>
-                <td data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.numero)">
+                <td data-bs-toggle="modal" data-bs-target="#detailFacture"
+                  (click)="details(facture.numero);recupIdDocument(facture.id)">
                   {{facture.prix_TTC}}</td>
-                <td data-bs-toggle="modal" data-bs-target="#detailFacture" (click)="details(facture.numero)">
+                <td data-bs-toggle="modal" data-bs-target="#detailFacture"
+                  (click)="details(facture.numero);recupIdDocument(facture.id)">
                   {{facture.statut_paiement}}</td>
                 <td>
                   <i class="bi bi-eye me-2" title="details" data-bs-toggle="modal" data-bs-target="#detailFacture"
-                    (click)="details(facture.numero)"></i>
+                    (click)="details(facture.numero);recupIdDocument(facture.id)"></i>
                   <i class="bi bi-trash3" title="Supprimer" (click)="supprimerFacture(facture.numero)"></i>
                 </td>
               </tr>
@@ -158,22 +191,6 @@
           </div>
         </div>
       </div>
-      <!-- btn exporter vente -->
-      <div (click)="exportExcel()" class="mt-5">
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0,0,256,256"
-          width="30px" height="30px">
-          <g fill-opacity="0.32941" fill="#000000" fill-rule="nonzero" stroke="none" stroke-width="1"
-            stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray=""
-            stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none"
-            style="mix-blend-mode: normal">
-            <g transform="scale(5.12,5.12)">
-              <path
-                d="M28.875,0c-0.01953,0.00781 -0.04297,0.01953 -0.0625,0.03125l-28,5.3125c-0.47656,0.08984 -0.82031,0.51172 -0.8125,1v37.3125c-0.00781,0.48828 0.33594,0.91016 0.8125,1l28,5.3125c0.28906,0.05469 0.58984,-0.01953 0.82031,-0.20703c0.22656,-0.1875 0.36328,-0.46484 0.36719,-0.76172v-5h17c1.09375,0 2,-0.90625 2,-2v-34c0,-1.09375 -0.90625,-2 -2,-2h-17v-5c0.00391,-0.28906 -0.12109,-0.5625 -0.33594,-0.75391c-0.21484,-0.19141 -0.50391,-0.28125 -0.78906,-0.24609zM28,2.1875v4.34375c-0.13281,0.27734 -0.13281,0.59766 0,0.875v35.40625c-0.02734,0.13281 -0.02734,0.27344 0,0.40625v4.59375l-26,-4.96875v-35.6875zM30,8h17v34h-17v-5h4v-2h-4v-6h4v-2h-4v-5h4v-2h-4v-5h4v-2h-4zM36,13v2h8v-2zM6.6875,15.6875l5.46875,9.34375l-5.96875,9.34375h5l3.25,-6.03125c0.22656,-0.58203 0.375,-1.02734 0.4375,-1.3125h0.03125c0.12891,0.60938 0.25391,1.02344 0.375,1.25l3.25,6.09375h4.96875l-5.75,-9.4375l5.59375,-9.25h-4.6875l-2.96875,5.53125c-0.28516,0.72266 -0.48828,1.29297 -0.59375,1.65625h-0.03125c-0.16406,-0.60937 -0.35156,-1.15234 -0.5625,-1.59375l-2.6875,-5.59375zM36,20v2h8v-2zM36,27v2h8v-2zM36,35v2h8v-2z">
-              </path>
-            </g>
-          </g>
-        </svg>
-      </div>
     </div>
     <!-- Tableau Dévis -->
     <div class="col-md-12" id="Devis" *ngIf="currentDoc==='Devis'">
@@ -194,7 +211,7 @@
 
         <!-- Le tableau des dévis -->
         <div class="table-responsive">
-          <table class="table table-hover mb-4">
+          <table class="table table-hover mb-4" id="devi">
             <thead class="mb-2">
               <tr>
                 <th scope="col">Numéro </th>
@@ -256,22 +273,6 @@
           </div>
         </div>
       </div>
-      <!-- btn exporter devis -->
-      <div (click)="exportDeviExcel()" class="mt-5">
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0,0,256,256"
-          width="30px" height="30px">
-          <g fill-opacity="0.32941" fill="#000000" fill-rule="nonzero" stroke="none" stroke-width="1"
-            stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray=""
-            stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none"
-            style="mix-blend-mode: normal">
-            <g transform="scale(5.12,5.12)">
-              <path
-                d="M28.875,0c-0.01953,0.00781 -0.04297,0.01953 -0.0625,0.03125l-28,5.3125c-0.47656,0.08984 -0.82031,0.51172 -0.8125,1v37.3125c-0.00781,0.48828 0.33594,0.91016 0.8125,1l28,5.3125c0.28906,0.05469 0.58984,-0.01953 0.82031,-0.20703c0.22656,-0.1875 0.36328,-0.46484 0.36719,-0.76172v-5h17c1.09375,0 2,-0.90625 2,-2v-34c0,-1.09375 -0.90625,-2 -2,-2h-17v-5c0.00391,-0.28906 -0.12109,-0.5625 -0.33594,-0.75391c-0.21484,-0.19141 -0.50391,-0.28125 -0.78906,-0.24609zM28,2.1875v4.34375c-0.13281,0.27734 -0.13281,0.59766 0,0.875v35.40625c-0.02734,0.13281 -0.02734,0.27344 0,0.40625v4.59375l-26,-4.96875v-35.6875zM30,8h17v34h-17v-5h4v-2h-4v-6h4v-2h-4v-5h4v-2h-4v-5h4v-2h-4zM36,13v2h8v-2zM6.6875,15.6875l5.46875,9.34375l-5.96875,9.34375h5l3.25,-6.03125c0.22656,-0.58203 0.375,-1.02734 0.4375,-1.3125h0.03125c0.12891,0.60938 0.25391,1.02344 0.375,1.25l3.25,6.09375h4.96875l-5.75,-9.4375l5.59375,-9.25h-4.6875l-2.96875,5.53125c-0.28516,0.72266 -0.48828,1.29297 -0.59375,1.65625h-0.03125c-0.16406,-0.60937 -0.35156,-1.15234 -0.5625,-1.59375l-2.6875,-5.59375zM36,20v2h8v-2zM36,27v2h8v-2zM36,35v2h8v-2z">
-              </path>
-            </g>
-          </g>
-        </svg>
-      </div>
     </div>
     <!-- Tableau Bon Commande -->
     <div class="col-md-12" id="Bon de commande" *ngIf="currentDoc==='Bon de commande'">
@@ -293,7 +294,7 @@
 
         <!-- Le tableau des dévis -->
         <div class="table-responsive">
-          <table class="table table-hover mb-4">
+          <table class="table table-hover mb-4" id="command_vente">
             <thead class="mb-2">
               <tr>
                 <th scope="col">Numéro </th>
@@ -357,22 +358,6 @@
           </div>
         </div>
       </div>
-      <!-- btn exporter bon de commande -->
-      <div (click)="exportBonCommandeExcel()" class="mt-5">
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0,0,256,256"
-          width="30px" height="30px">
-          <g fill-opacity="0.32941" fill="#000000" fill-rule="nonzero" stroke="none" stroke-width="1"
-            stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray=""
-            stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none"
-            style="mix-blend-mode: normal">
-            <g transform="scale(5.12,5.12)">
-              <path
-                d="M28.875,0c-0.01953,0.00781 -0.04297,0.01953 -0.0625,0.03125l-28,5.3125c-0.47656,0.08984 -0.82031,0.51172 -0.8125,1v37.3125c-0.00781,0.48828 0.33594,0.91016 0.8125,1l28,5.3125c0.28906,0.05469 0.58984,-0.01953 0.82031,-0.20703c0.22656,-0.1875 0.36328,-0.46484 0.36719,-0.76172v-5h17c1.09375,0 2,-0.90625 2,-2v-34c0,-1.09375 -0.90625,-2 -2,-2h-17v-5c0.00391,-0.28906 -0.12109,-0.5625 -0.33594,-0.75391c-0.21484,-0.19141 -0.50391,-0.28125 -0.78906,-0.24609zM28,2.1875v4.34375c-0.13281,0.27734 -0.13281,0.59766 0,0.875v35.40625c-0.02734,0.13281 -0.02734,0.27344 0,0.40625v4.59375l-26,-4.96875v-35.6875zM30,8h17v34h-17v-5h4v-2h-4v-6h4v-2h-4v-5h4v-2h-4v-5h4v-2h-4zM36,13v2h8v-2zM6.6875,15.6875l5.46875,9.34375l-5.96875,9.34375h5l3.25,-6.03125c0.22656,-0.58203 0.375,-1.02734 0.4375,-1.3125h0.03125c0.12891,0.60938 0.25391,1.02344 0.375,1.25l3.25,6.09375h4.96875l-5.75,-9.4375l5.59375,-9.25h-4.6875l-2.96875,5.53125c-0.28516,0.72266 -0.48828,1.29297 -0.59375,1.65625h-0.03125c-0.16406,-0.60937 -0.35156,-1.15234 -0.5625,-1.59375l-2.6875,-5.59375zM36,20v2h8v-2zM36,27v2h8v-2zM36,35v2h8v-2z">
-              </path>
-            </g>
-          </g>
-        </svg>
-      </div>
     </div>
     <!-- Tableau Bon de livraison -->
     <div class="col-md-12" id="Bon de Livraison" *ngIf="currentDoc==='Bon de Livraison'">
@@ -394,7 +379,7 @@
 
         <!-- Le tableau des Bon de livraison -->
         <div class="table-responsive">
-          <table class="table table-hover mb-4">
+          <table class="table table-hover mb-4" id="livraison">
             <thead class="mb-2">
               <tr>
                 <th scope="col">Numéro </th>
@@ -442,8 +427,9 @@
           </div>
         </div>
       </div>
-      <!-- btn exporter bon de livraison -->
-      <div (click)="exportBonLivraisonExcel()" class="mt-5">
+    </div>
+      <!-- btn exporter docs -->
+      <div (click)="exportExcel()" class="mt-5">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0,0,256,256"
           width="30px" height="30px">
           <g fill-opacity="0.32941" fill="#000000" fill-rule="nonzero" stroke="none" stroke-width="1"
@@ -458,7 +444,6 @@
           </g>
         </svg>
       </div>
-    </div>
   </div>
 </div>
 
@@ -1514,8 +1499,18 @@
         <div class="mail" title="Envoyer par courrier électronique" data-bs-toggle="modal" data-bs-target="#mailDetail">
           <i class="bi bi-envelope"></i>
         </div>
-        <div class="seeFact" data-bs-toggle="modal" data-bs-target="#pdfModel">
+        <!-- <div class="seeFact" data-bs-toggle="modal" data-bs-target="#pdfModel">
           <i class="bi bi-eye"></i>
+        </div> -->
+        <div class="imprimFact">
+          <button class="btn" [printStyle]="{img: {'width':'2.5cm'}}" [useExistingCss]="true"
+            styleSheetFile="../facture/facture.component.css" printSectionId="print-section-details" ngxPrint>
+            <i class="bi bi-printer"></i>
+          </button>
+        </div>
+
+        <div class="pdfFact" data-bs-toggle="modal" data-bs-target="#modelPdf">
+          <i class="bi bi-file-earmark-pdf"></i>
         </div>
         <div class="header mb-4 d-grid gap-2 d-md-flex justify-content-md-end">
           <ul class="nav">
@@ -1852,179 +1847,19 @@
   </div>
 </div>
 
-<!-- Modal pour télécharger facture -->
-<div class="modal fade mt-5" id="pdfModel" tabindex="-1" aria-labelledby="pdfModelLabel" aria-hidden="true"
-  *ngIf="detailFacture">
-  <div class="modal-dialog modal-dialog-centered modal-xl">
+<!-- choisir model de facture pour le pdf -->
+<div class="modal fade mt-5" id="modelPdf" tabindex="-1" aria-labelledby="modelPdfLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="d-grid gap-2 p-2 d-md-flex justify-content-md-end">
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body container">
-        <div class="imprimFact">
-          <button class="btn" [printStyle]="{img: {'width':'2.5cm'}}" [useExistingCss]="true"
-            styleSheetFile="../facture/facture.component.css" printSectionId="print-section-details" ngxPrint>
-            <i class="bi bi-printer"></i>
-          </button>
-        </div>
-
-        <div class="pdfFact" (click)="generatePdf('print-section-details')">
-          <i class="bi bi-file-earmark-pdf"></i>
-        </div>
-        <div class="colorModéle">
-          <input type="color" class="form-control form-control-color " [(ngModel)]="color" (input)="onColorChange()">
-        </div>
-        <div class="card px-4 py-2 pt-4 shadow rounded-4 container" id="print-section-details">
-          <div class="invoice container">
-            <div class="row">
-              <div class="col-7" *ngIf="InfoSup">
-                <img src="http://127.0.0.1:8000{{InfoSup.logo}}" class="logo" style="width: 125px; height: 125px;">
-                <table>
-                  <thead class="thead-custom">
-                    <tr>
-                      <th> Informations entreprise</th>
-                    </tr>
-                  </thead>
-                  <tbody class="bg-secondary text-dark p-5 bg-opacity-25">
-                    <p class="me-3 ms-3">Nom de l'entreprise : {{ InfoSup.nom_entreprise }} </p>
-                    <p class="me-3 ms-3">Adresse : {{ InfoSup.adress_entreprise}}</p>
-                    <p class="me-3 ms-3">Téléphone : {{ InfoSup.tel_entreprise }}</p>
-                  </tbody>
-                </table>
-
-                <h4 class="mt-5"><span>{{detailFacture.date_creation | date:'yyyy-MM-dd'}}</span></h4>
-
-              </div>
-              <div class="col-5">
-                <div class="invoice-number">
-                  <h2>{{titre}}</h2>
-                  <p class="fw-bold fs-5 row">
-                    <label class="col-3">Numéro: </label>
-                    <span>{{detailFacture.numero_facture}}</span>&nbsp;
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-7">
-              </div>
-              <div class="col-5">
-                <table>
-                  <thead class="">
-                    <tr>
-                      <th> Informations client</th>
-                    </tr>
-                  </thead>
-                  <tbody class="bg-secondary text-dark p-5 bg-opacity-25" *ngIf="client">
-                    <span>{{client.prenom}} {{client.nom}}</span><br>
-                    <span>{{client.nom_entreprise}}</span><br>
-                    <span>{{client.telephone}}</span><br>
-                    <span>{{client.adresse}}</span>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <br>
-            <br>
-            <br>
-            <ng-container *ngIf="detailFacture.type_paiement==='immediat' || detailFacture.type_paiement==='echeance' ">
-              <table class="detailFacture">
-                <thead>
-                  <tr>
-                    <th>Produit / Service</th>
-                    <th>Quantité</th>
-                    <th>TVA</th>
-                    <th>Prix unitaire</th>
-                    <th>Prix Total TTC</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let article of article">
-                    <td>{{article.nom_article}}</td>
-                    <td>{{article.quantite_article}}</td>
-                    <td>{{article.prix_achat}}</td>
-                    <td>{{article.prix_unitaire_article}}</td>
-                    <td>{{article.prix_total_tva_article}}</td>
-                    <td>{{detailFacture.prix_TTC}}</td>
-                  </tr>
-                </tbody>
-              </table>
-              <p class="total mt-2">Total: {{detailFacture.prix_TTC}} XOF</p>
-            </ng-container>
-            <ng-container *ngIf="detailFacture.type_paiement==='facture_Accompt'">
-              <table class="acompteTab">
-                <thead>
-                  <tr>
-                    <th>Produit / Service</th>
-                    <th>Quantité</th>
-                    <th>TVA</th>
-                    <th>Prix unitaire</th>
-                    <th>Prix Total TTC</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let article of article">
-                    <td>{{article.nom_article}}</td>
-                    <td>{{article.quantite_article}}</td>
-                    <td>{{article.prix_achat}}</td>
-                    <td>{{article.prix_unitaire_article}}</td>
-                    <td>{{article.prix_total_tva_article}}</td>
-                    <td>{{detailFacture.prix_TTC}}</td>
-                  </tr>
-                </tbody>
-                <tfoot>
-                  <tr class="total-row">
-                    <td colspan="5" style="text-align: right;">Total</td>
-                    <td>{{detailFacture.prix_TTC}} XOF</td>
-                  </tr>
-                </tfoot>
-              </table>
-            </ng-container>
-            <div class="row">
-              <div class="col-6 mt-5">
-                <ng-container *ngIf="detailFacture.type_paiement==='echeance'">
-                  <h2>Échéances</h2>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Numéro</th>
-                        <th>Prévue le :</th>
-                        <th>Montant :</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let echeance of echeance; let i = index">
-                        <td>{{detailFacture.numero_facture}}-{{i+1}}</td>
-                        <td>{{echeance.date_pay_echeance}}</td>
-                        <td>{{echeance.montant_echeance}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </ng-container>
-
-              </div>
-              <div class="col-6">
-              </div>
-            </div>
-            <div class="row" *ngIf="detailFacture.type_paiement==='facture_Accompt'">
-              <table class="table table-bordered">
-                <thead class="thead-custom">
-                  <tr>
-                    <th>Facture Acompte</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let acompte of acompteFacture">
-                    <td>{{acompte.titreAccomp}} - Facture N° {{detailFacture.numero_facture}} (du
-                      {{acompte.dateEcheance}})</td>
-                    <td>{{acompte.montant}}</td>
-                  </tr>
-                </tbody>
-              </table>
-              <p class="total mt-2">Solde: {{totalRemise}}XOF</p>
+      <div class="modal-body">
+        <h3>Selectionnez un modele</h3>
+        <div class="zoneAffichage">
+          <div class="itemConfigM " *ngFor="let model of listeModel; let i = index">
+            <div class="border p-3 mb-1" (click)="recupIdModel(model.id)">
+              Design {{model.typeDocument}} {{i+1}}
             </div>
           </div>
         </div>
@@ -2032,7 +1867,6 @@
     </div>
   </div>
 </div>
-
 <!-- Modal facture d'accompte -->
 <div class="modal fade" id="echeance" tabindex="-1" aria-labelledby="echeanceLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">

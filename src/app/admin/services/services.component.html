@@ -43,12 +43,12 @@
 
           <!-- Le tableau des réseaux -->
           <div class="table-responsive ">
-            <table class="table mb-4 table-hover ">
+            <table class="table mb-4 table-hover" id="tabService">
               <thead>
                 <tr>
                   <th scope="col">Nom </th>
+                  <th scope="col">Description</th>
                   <th scope="col">Prix Unitaire</th>
-                  <!-- <th scope="col">Prix Promo</th> -->
                   <th scope="col">Action </th>
                 </tr>
               </thead>
@@ -63,9 +63,10 @@
                     </span>
                   </span>
                 </td>
+                <td (click)="chargerInfosArticle(article);changeValue('modif')"
+                data-bs-toggle="modal" data-bs-target="#ModalModifier">{{article.description}}</td>
                   <td (click)="chargerInfosArticle(article);changeValue('modif')"
                   data-bs-toggle="modal" data-bs-target="#ModalModifier">{{article.prix_unitaire}}</td>
-                  <!-- <td>{{article.prix_promo}}</td> -->
                   <td>
                     <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfosArticle(article);changeValue('modif')"
                       data-bs-toggle="modal" data-bs-target="#ModalModifier"></i>

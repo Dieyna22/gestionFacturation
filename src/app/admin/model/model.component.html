@@ -30,7 +30,7 @@
           <input type="text" class="form-control-plaintext" id="staticEmail" [(ngModel)]="titre">
         </div>
       </div>
-      <div class="right" (click)="onshowConfig()">
+      <div class="right" (click)="onshowConfig('configModel')">
         <button>+ Configurer plusieurs modèles</button>
       </div>
     </div>
@@ -43,18 +43,30 @@
         </label>
       </div>
     </div>
+    <div *ngIf="showConfig=='configModel'">
+      <p>Pensez à bien indiquer toutes les mentions obligatoires propres à votre pays/région/secteur d'activité (ex. N° de
+        TVA intracommunautaire, forme juridique, capital social, mention microentreprise etc.)</p>
+      <div class="configM  overflow-auto d-flex justify-content-start  align-items-center">
+        <div class="itemConfigM me-2" *ngFor="let model of listeModel; let i = index">
+          <figure data-bs-toggle="modal" data-bs-target="#updateModel" (click)="chargerInfosModel(model)">
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBU6ELr8P7tD2Bx3e-5jAbo0LJhARvbVXCEGHTG3g59ZcgLsvz" alt="">
+            <figcaption>Design {{model.typeDocument}} {{i+1}}</figcaption>
+          </figure>
+        </div>
+        <div class="addnewModel mb-5 text-light" (click)="onshowConfig('model')">
+          +
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="document" [class.disabled]="isChecked" *ngIf="!showConfig">
+  <div class="document" [class.disabled]="isChecked" *ngIf="showConfig=='model'">
     <div class="savemodel" (click)="saveModel()">
       <i class="bi bi-floppy"></i>
     </div>
     <div class="row persoFacture mb-2 ">
       <div class="col-md-6">
         <h5>Personnaliser votre document</h5>
-        <!-- <input type="color" class="form-control form-control-color " [(ngModel)]="color" (input)="onColorChange()"
-          [disabled]="isChecked"> -->
-        <!-- <input type="color" value="#467aea" class="color-picker"
-          oninput="document.documentElement.style.setProperty('--header-color', this.value)"> -->
         <input type="color" [(ngModel)]="headerColor" (input)="updateColor($event)" class="color-picker">
         <input type="hidden" name="selected-color" [value]="headerColor" [(ngModel)]="headerColor">
       </div>
@@ -68,504 +80,273 @@
       </div>
     </div>
     <div class="modéle">
-      <!-- modéle one -->
       <div class="modelFacture">
-        <div class="invoice-container" id="bloc" *ngIf="currentModel==='bloc'">
-          <div class="row mb-4">
-            <div class="invoice-header">
-              <div class="logo-container">
-                <img src="[LOGO_ENTREPRISE]" alt="Logo" class="logo">
-              </div>
-              <div class="positionTitre">
-                <div class="invoice-title">[TITRE_FACTURE]</div>
-                <div class="invoice-number">Facture N° [num_facture]</div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="invoice-details">
-              <div class="company-info">
-                <h3>Informations entreprise</h3>
-                <p>Nom de l'entreprise : [expediteur_nom]</p>
-                <p>Adresse : [expediteur_email]</p>
-                <p>Téléphone : [expediteur_tel]</p>
-              </div>
 
-              <div class="client-info">
-                <h3>Informations client</h3>
-                <p>Nom : [destinataire_nom]</p>
-                <p>Adresse : [ADRESSE_CLIENT]</p>
-                <p>Téléphone : [destinataire_tel]</p>
-                <p>Email : [destinataire_email]</p>
-              </div>
+        <!-- modéle one -->
+        <div class="invoice-container" id="bloc" *ngIf="currentModel==='bloc'" style="margin: auto;">
+          <div style="margin-bottom: 20px; display: flex; align-items: center;">
+            <div class="logo-container" style="flex: 1;">
+              <img src="logo" alt="Logo" class="logo" style="max-width: 100%; height: auto;">
+            </div>
+            <div class="positionTitre" style="flex: 2; text-align: right;">
+              <div class="invoice-title" style="font-size: 24px; font-weight: bold;">{{titre}}</div>
+              <div class="invoice-number" style="font-size: 16px;">{{titre}} N° numero</div>
             </div>
           </div>
-          <div class="invoice-items">
-            <table class="table table-bordered border-light">
-              <thead class="bgColor">
+
+          <div class="invoice-details" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+            <div class="company-info" style="flex: 1;">
+              <h3 style="margin: 0;">Informations entreprise</h3>
+              <p style="margin: 0;">Nom de l'entreprise : expediteur_nom</p>
+              <p style="margin: 0;">Email : expediteur_email</p>
+              <p style="margin: 0;">Téléphone : expediteur_tel</p>
+            </div>
+
+            <div class="client-info" style="flex: 1; text-align: right;">
+              <h3 style="margin: 0;">Informations client</h3>
+              <p style="margin: 0;">Nom : destinataire_nom</p>
+              <p style="margin: 0;">Téléphone : destinataire_tel</p>
+              <p style="margin: 0;">Email : destinataire_email</p>
+            </div>
+          </div>
+
+          <div class="invoice-items" style="margin-top: 20px;">
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+              <thead style="background-color: #467aea;">
                 <tr>
-                  <th>Description</th>
-                  <th>Quantité</th>
-                  <th>PU</th>
-                  <th>Total</th>
-                  <th></th>
+                  <th style="border: 1px solid #ccc; padding: 8px;">Description</th>
+                  <th style="border: 1px solid #ccc; padding: 8px;">Quantité</th>
+                  <th style="border: 1px solid #ccc; padding: 8px;">TVA</th>
+                  <th style="border: 1px solid #ccc; padding: 8px;">Prix unitaire</th>
+                  <th style="border: 1px solid #ccc; padding: 8px;">Prix Total TTC</th>
                 </tr>
               </thead>
               <tbody>
-                <!-- <tr>
-                  <td>[DESCRIPTION]</td>
-                  <td>[QUANTITE]</td>
-                  <td>[PU]</td>
-                  <td>[TOTAL]</td>
-                  <td></td>
-                </tr> -->
-                [articles]
+                articles
               </tbody>
             </table>
-            <div class="row">
-              <div class="col-4 mt-5">
-              </div>
-              <div class="col-8">
-                <br>
-                <br>
-                <table class="table table-sm text-right">
+
+            <div style="display: flex; justify-content: end;"><br><br><br>
+              <div style="flex: 1;"></div>
+              <div style="flex: 1; text-align: right;">
+                <table style="width: 50%; border-collapse: collapse; font-size: 14px; float: right;">
                   <tr>
-                    <td><strong>Total à payer</strong></td>
-                    <td class="text-right">[MONTANT_TOTAL]</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Total à payer</strong></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">montant_total</td>
                   </tr>
                   <tr>
-                    <td><strong>TVA</strong></td>
-                    <td class="text-right">[TVA]</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>TVA</strong></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">[TVA]</td>
                   </tr>
                   <tr>
-                    <td><strong>Montant Total TTC</strong></td>
-                    <td class="text-right">[MONTANT_TOTAL_TTC]</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Montant Total TTC</strong></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">montant_total</td>
                   </tr>
                   <tr>
-                    <td><strong>Remise</strong></td>
-                    <td class="text-right">[REMISE]</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Remise</strong></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">[REMISE]</td>
                   </tr>
                   <tr>
-                    <td><strong>Montant Net à payer </strong></td>
-                    <td class="text-right">[MONTANT_NET]</td>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Montant Net à payer</strong></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">[MONTANT_NET]</td>
                   </tr>
                 </table>
               </div>
             </div>
           </div>
-          <script>
-            const form = document.getElementById('color-form');
-            const customColor = document.getElementById('custom-color');
-            const customRadio = document.getElementById('custom');
 
-            function updateHeaderColor(color) {
-              document.documentElement.style.setProperty('--header-color', color);
-            }
-
-            form.addEventListener('change', function (e) {
-              if (e.target.type === 'radio') {
-                updateHeaderColor(e.target.value);
-              } else if (e.target.id === 'custom-color') {
-                updateHeaderColor(e.target.value);
-                customRadio.value = e.target.value;
-                customRadio.checked = true;
-              }
-            });
-
-            customColor.addEventListener('input', function (e) {
-              updateHeaderColor(e.target.value);
-              customRadio.value = e.target.value;
-              customRadio.checked = true;
-            });
-          </script>
         </div>
-      </div>
 
-      <!-- modélé two -->
-      <div class="invoice" id="compact" *ngIf="currentModel==='compact'">
-        <div class="row mb-3">
-          <div class="col-7">
-            <img src="[LOGO_ENTREPRISE]" alt="Logo" class="logo"> <br> <br>
-            <div class="company-info">
-              <h3>Informations entreprise</h3>
-              <p>Nom de l'entreprise : [NOM_ENTREPRISE]</p>
-              <p>Adresse : [expediteur_email]</p>
-              <p>Téléphone : [expediteur_tel]</p>
+        <!-- modélé two -->
+        <div class="invoice" id="compact" *ngIf="currentModel==='compact'" style="font-family: Arial, sans-serif;">
+          <div class="header" style="margin-bottom: 20px;">
+            <div class="left">
+              <h3>Expéditeur</h3>
+              <p>Nom : expediteur_nom</p>
+              <p>Email : expediteur_email</p>
+              <p>Téléphone : expediteur_tel</p>
             </div>
-
-            <h6>Date: [DATE_FACTURE]</h6>
-
+            <div class="right">
+              <h3>Destinataire</h3>
+              <p>Nom : destinataire_nom</p>
+              <p>Email : destinataire_email</p>
+              <p>Téléphone : destinataire_tel</p>
+            </div>
           </div>
-          <div class="col-5">
-            <div class="invoice-number">
-              <h2>[TITRE_FACTURE]</h2>
-              <p>Numéro: <strong>N° [NUMERO_FACTURE]</strong></p>
-              <div class="mt-5">
-                <h3>Informations client</h3>
-                <p>Nom : [destinataire_nom]</p>
-                <p>Adresse : [ADRESSE_CLIENT]</p>
-                <p>Téléphone : [destinataire_tel]</p>
-                <p>Email : [destinataire_email]</p>
+          <div class="invoice-number" style="font-size: 16px; margin-bottom: 10px;font-weight: bold;">{{titre}} N°
+            numero</div>
+          <div>
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+              <thead style="background-color: #467aea;">
+                <tr>
+                  <th style="border: 1px solid #ccc; padding: 8px;">Description</th>
+                  <th style="border: 1px solid #ccc; padding: 8px;">Quantité</th>
+                  <th style="border: 1px solid #ccc; padding: 8px;">TVA</th>
+                  <th style="border: 1px solid #ccc; padding: 8px;">Prix unitaire</th>
+                  <th style="border: 1px solid #ccc; padding: 8px;">Prix Total TTC</th>
+                </tr>
+              </thead>
+              <tbody>
+                articles
+              </tbody>
+            </table>
+
+            <div style="display: flex; justify-content: end;"><br><br><br>
+              <div style="flex: 1;"></div>
+              <div style="flex: 1; text-align: right;">
+                <table style="width: 50%; border-collapse: collapse; font-size: 14px; float: right;">
+                  <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Total à payer</strong></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">montant_total</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>TVA</strong></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">[TVA]</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Montant Total TTC</strong></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">montant_total</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Remise</strong></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">[REMISE]</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Montant Net à payer</strong></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">[MONTANT_NET]</td>
+                  </tr>
+                </table>
               </div>
             </div>
           </div>
         </div>
-        <div class="row">
-          <table class="table table-bordered border-light">
-            <thead class="thead-custom">
-              <tr>
-                <th>Description</th>
-                <th>Quantité</th>
-                <th>PU</th>
-                <th>Total</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>[DESCRIPTION]</td>
-                <td>[QUANTITE]</td>
-                <td>[PU]</td>
-                <td>[TOTAL]</td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="row">
-            <div class="col-6 mt-5">
-            </div>
-            <div class="col-6">
-              <br>
-              <br>
-              <table class="table table-sm text-right">
-                <tr>
-                  <td><strong>Total à payer</strong></td>
-                  <td class="text-right">[MONTANT_TOTAL]</td>
-                </tr>
-                <tr>
-                  <td><strong>TVA</strong></td>
-                  <td class="text-right">[TVA]</td>
-                </tr>
-                <tr>
-                  <td><strong>Montant Total TTC</strong></td>
-                  <td class="text-right">[MONTANT_TOTAL_TTC]</td>
-                </tr>
-                <tr>
-                  <td><strong>Remise</strong></td>
-                  <td class="text-right">[REMISE]</td>
-                </tr>
-                <tr>
-                  <td><strong>Montant Net à payer </strong></td>
-                  <td class="text-right">[MONTANT_NET]</td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- modélé three -->
-      <div class="new-container" id="photo" *ngIf="currentModel==='photo'">
-        <header>
-          <h1>[TITRE_FACTURE] N° [NUMERO_FACTURE]</h1>
-          <div class="new-logo"><img src="[LOGO_ENTREPRISE]" alt="Logo" class="logo1"></div>
-        </header>
-        <div class="row mt-5">
-          <div class="invoice-details">
-            <div class="company-info">
-              <h3>Informations entreprise</h3>
-              <p>Nom de l'entreprise : [NOM_ENTREPRISE]</p>
-              <p>Adresse : [expediteur_email]</p>
-              <p>Téléphone : [expediteur_tel]</p>
+        <!-- modélé three -->
+        <div class="new-container" id="photo" *ngIf="currentModel==='photo'"
+          style="margin: auto; font-family: Arial, sans-serif;">
+          <header style="text-align: center; margin-bottom: 30px;">
+            <h1 style="margin: 0;">{{titre}} N° numero</h1>
+            <div class="new-logo" style="margin-top: 10px;">
+              <img src="logo" alt="Logo" class="logo1" style="max-width: 100%; height: auto;">
+            </div>
+          </header>
+
+          <div class="invoice-details" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+            <div class="company-info" style="flex: 1;">
+              <h3>Expéditeur</h3>
+              <p>Nom : expediteur_nom</p>
+              <p>Email : expediteur_email</p>
+              <p>Téléphone : expediteur_tel</p>
             </div>
 
-            <div class="client-info">
-              <h3>Informations client</h3>
-              <p>Nom : [destinataire_nom]</p>
-              <p>Adresse : [ADRESSE_CLIENT]</p>
-              <p>Téléphone : [destinataire_tel]</p>
-              <p>Email : [destinataire_email]</p>
+            <div class="client-info" style="flex: 1; text-align: right;">
+              <h3>Destinataire</h3>
+              <p>Nom : destinataire_nom</p>
+              <p>Email : destinataire_email</p>
+              <p>Téléphone : destinataire_tel</p>
             </div>
           </div>
-        </div>
-        <div class="invoice-items">
-          <table class="table table-bordered border-light">
-            <thead class="thead-custom">
-              <tr>
-                <th>Description</th>
-                <th>Quantité</th>
-                <th>PU</th>
-                <th>Total</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>[DESCRIPTION]</td>
-                <td>[QUANTITE]</td>
-                <td>[PU]</td>
-                <td>[TOTAL]</td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="row">
-            <div class="col-4 mt-5">
-            </div>
-            <div class="col-8">
-              <br>
-              <br>
-              <table class="table table-sm text-right">
+
+          <div class="invoice-items">
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+              <thead style="background-color: #467aea;">
                 <tr>
-                  <td><strong>Total à payer</strong></td>
-                  <td class="text-right">[MONTANT_TOTAL]</td>
+                  <th style="border: 1px solid #ccc; padding: 8px;">Description</th>
+                  <th style="border: 1px solid #ccc; padding: 8px;">Quantité</th>
+                  <th style="border: 1px solid #ccc; padding: 8px;">TVA</th>
+                  <th style="border: 1px solid #ccc; padding: 8px;">Prix unitaire</th>
+                  <th style="border: 1px solid #ccc; padding: 8px;">Prix Total TTC</th>
                 </tr>
-                <tr>
-                  <td><strong>TVA</strong></td>
-                  <td class="text-right">[TVA]</td>
-                </tr>
-                <tr>
-                  <td><strong>Montant Total TTC</strong></td>
-                  <td class="text-right">[MONTANT_TOTAL_TTC]</td>
-                </tr>
-                <tr>
-                  <td><strong>Remise</strong></td>
-                  <td class="text-right">[REMISE]</td>
-                </tr>
-                <tr>
-                  <td><strong>Montant Net à payer </strong></td>
-                  <td class="text-right">[MONTANT_NET]</td>
-                </tr>
-              </table>
+              </thead>
+              <tbody>
+                articles
+              </tbody>
+            </table>
+
+            <div style="display: flex; justify-content: end;"><br><br><br>
+              <div style="flex: 1;"></div>
+              <div style="flex: 1; text-align: right;">
+                <table style="width: 50%; border-collapse: collapse; font-size: 14px; float: right;">
+                  <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Total à payer</strong></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">montant_total</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>TVA</strong></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">[TVA]</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Montant Total TTC</strong></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">montant_total</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Remise</strong></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">[REMISE]</td>
+                  </tr>
+                  <tr>
+                    <td style="padding: 8px; border: 1px solid #ddd;"><strong>Montant Net à payer</strong></td>
+                    <td style="padding: 8px; border: 1px solid #ddd;">[MONTANT_NET]</td>
+                  </tr>
+                </table>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- <footer>
-            <p >Taktyl est une marque commerciale de ALYMIA SAS au Capital de 1.000.000 FCFA</p>
-            <p>NINEA 008540892 RCCM SN-DKR-2021 B 14645</p>
-        </footer> -->
-      </div>
-
-      <div class="addOption">
-        <div class="form-sections-container">
-          <!-- Première colonne -->
-          <div class="form-column">
-            <div class="form-section">
-              <label>
-                <input type="checkbox" class="form-check-input" [(ngModel)]="showSignatureExpediteur"
-                  name="showSignatureExpediteur">
-                Signature expéditeur
-              </label>
-              <div class="section-content">
-                <input type="text" class="form-control" [(ngModel)]="mentionExpediteur" name="mentionExpediteur"
-                  placeholder="Ajouter une mention avant la signature">
-                <div class="signature-box">
-                  <p class="text-start"><i>Signature expéditeur</i></p>
-                  <div *ngIf="ApercuImageSignatureExpediteur; else addSignatureBlock" class="image-preview-container">
-                    <div class="image-preview">
-                      <img *ngIf="ApercuImageSignatureExpediteur" [src]="ApercuImageSignatureExpediteur"
-                        alt="Aperçu de la signature" class="signature-image">
-                      <div class="overlay">
-                        <span (click)="removeImage()" class="remove-text">Supprimer</span>
+        <div class="addOption">
+          <div class="form-sections-container">
+            <!-- Première colonne -->
+            <div class="form-column">
+              <div class="form-section">
+                <label>
+                  <input type="checkbox" class="form-check-input" [(ngModel)]="showSignatureExpediteur"
+                    name="showSignatureExpediteur">
+                  Signature expéditeur
+                </label>
+                <div class="section-content">
+                  <input type="text" class="form-control" [(ngModel)]="mentionExpediteur" name="mentionExpediteur"
+                    placeholder="Ajouter une mention avant la signature">
+                  <div class="signature-box">
+                    <p class="text-start"><i>Signature expéditeur</i></p>
+                    <div *ngIf="ApercuImageSignatureExpediteur; else addSignatureBlock" class="image-preview-container">
+                      <div class="image-preview">
+                        <img *ngIf="ApercuImageSignatureExpediteur" [src]="ApercuImageSignatureExpediteur"
+                          alt="Aperçu de la signature" class="signature-image">
+                        <div class="overlay">
+                          <span (click)="removeImage()" class="remove-text">Supprimer</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
 
-                  <ng-template #addSignatureBlock>
-                    <span (click)="ajouterSignature('expediteur');onAddSignature()" class="titre">
-                      + Ajouter signature
-                      <input type="file" #fileInput style="display: none;"
-                        (change)="onFileSelected($event);ApercuOnFileSelected($event)" accept="image/*">
-                    </span><br>
-                  </ng-template>
-                  <small>La taille de l'image ne peut pas dépasser 1 MB.
-                    Seuls les formats suivants sont supportés : PNG, GIF et JPG.</small>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-section">
-              <label>
-                <input type="checkbox" class="form-check-input" [(ngModel)]="showAutresImages" name="showAutresImages">
-                Autres images (labels, logos...)
-              </label>
-              <div *ngIf="ApercuAutreImage; else addOtherImageBlock" class="image-preview-container">
-                <div class="image-preview">
-                  <img *ngIf="ApercuAutreImage" [src]="ApercuAutreImage" alt="Aperçu de la signature"
-                    class="otherImage">
-                  <div class="overlay">
-                    <span (click)="removeOtherImage()" class="remove-text">Supprimer</span>
-                  </div>
-                </div>
-              </div>
-              <ng-template #addOtherImageBlock>
-                <div class="section-content">
-                  <svg (click)="onAddSignatureOther()" xmlns="http://www.w3.org/2000/svg" width="36" height="36"
-                    fill="currentColor" class="bi bi-plus-circle-dotted ms-4" viewBox="0 0 16 16">
-                    <path
-                      d="M8 0q-.264 0-.523.017l.064.998a7 7 0 0 1 .918 0l.064-.998A8 8 0 0 0 8 0M6.44.152q-.52.104-1.012.27l.321.948q.43-.147.884-.237L6.44.153zm4.132.271a8 8 0 0 0-1.011-.27l-.194.98q.453.09.884.237zm1.873.925a8 8 0 0 0-.906-.524l-.443.896q.413.205.793.459zM4.46.824q-.471.233-.905.524l.556.83a7 7 0 0 1 .793-.458zM2.725 1.985q-.394.346-.74.74l.752.66q.303-.345.648-.648zm11.29.74a8 8 0 0 0-.74-.74l-.66.752q.346.303.648.648zm1.161 1.735a8 8 0 0 0-.524-.905l-.83.556q.254.38.458.793l.896-.443zM1.348 3.555q-.292.433-.524.906l.896.443q.205-.413.459-.793zM.423 5.428a8 8 0 0 0-.27 1.011l.98.194q.09-.453.237-.884zM15.848 6.44a8 8 0 0 0-.27-1.012l-.948.321q.147.43.237.884zM.017 7.477a8 8 0 0 0 0 1.046l.998-.064a7 7 0 0 1 0-.918zM16 8a8 8 0 0 0-.017-.523l-.998.064a7 7 0 0 1 0 .918l.998.064A8 8 0 0 0 16 8M.152 9.56q.104.52.27 1.012l.948-.321a7 7 0 0 1-.237-.884l-.98.194zm15.425 1.012q.168-.493.27-1.011l-.98-.194q-.09.453-.237.884zM.824 11.54a8 8 0 0 0 .524.905l.83-.556a7 7 0 0 1-.458-.793zm13.828.905q.292-.434.524-.906l-.896-.443q-.205.413-.459.793zm-12.667.83q.346.394.74.74l.66-.752a7 7 0 0 1-.648-.648zm11.29.74q.394-.346.74-.74l-.752-.66q-.302.346-.648.648zm-1.735 1.161q.471-.233.905-.524l-.556-.83a7 7 0 0 1-.793.458zm-7.985-.524q.434.292.906.524l.443-.896a7 7 0 0 1-.793-.459zm1.873.925q.493.168 1.011.27l.194-.98a7 7 0 0 1-.884-.237zm4.132.271a8 8 0 0 0 1.012-.27l-.321-.948a7 7 0 0 1-.884.237l.194.98zm-2.083.135a8 8 0 0 0 1.046 0l-.064-.998a7 7 0 0 1-.918 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
-                  </svg><br>
-                  <span (click)="ajouterImage()">
-                    Ajouter image
-                    <input type="file" #fileInputOther style="display: none;"
-                      (change)="onFileSelectedOther($event);ApercuOnFileSelectedOther($event)" accept="image/*">
-                  </span>
-                </div>
-              </ng-template>
-
-            </div>
-
-            <div class="form-section">
-              <label>
-                <input type="checkbox" class="form-check-input" [(ngModel)]="showCoordonneesBancaires"
-                  name="showCoordonneesBancaires">
-                Coordonnées bancaires
-              </label>
-              <div class="section-content">
-                <input class="form-control mb-2" [(ngModel)]="titulaireCompte" name="titulaireCompte"
-                  placeholder="Titulaire Compte">
-                <input class="form-control mb-2" [(ngModel)]="banque" name="banque" placeholder="Banque">
-                <input class="form-control" [(ngModel)]="compte" name="compte" placeholder="Compte">
-              </div>
-            </div>
-          </div>
-
-          <!-- Deuxième colonne -->
-          <div class="form-column">
-            <div class="form-section">
-              <label>
-                <input type="checkbox" class="form-check-input" [(ngModel)]="showSignatureDestinataire"
-                  name="showSignatureDestinataire">
-                Signature destinataire
-              </label>
-              <div class="section-content">
-                <input type="text" class="form-control" [(ngModel)]="mentionDestinataire" name="mentionDestinataire"
-                  placeholder="Ajouter une mention avant la signature">
-                <div class="signature-box">
-                  <p class="text-start"><i>Signature destinataire</i></p>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-section">
-              <label>
-                <input type="checkbox" class="form-check-input" [(ngModel)]="showConditionsPaiement"
-                  name="showConditionsPaiement">
-                Conditions de paiement
-              </label>
-              <div class="section-content">
-                <textarea [(ngModel)]="conditionsPaiement" name="conditionsPaiement"
-                  placeholder="Écrivez ici les conditions de paiement, d'escompte, les pénalités, etc."
-                  class="form-control"></textarea>
-              </div>
-            </div>
-
-            <div class="form-section">
-              <label>
-                <input type="checkbox" class="form-check-input" [(ngModel)]="showNotePiedPage" name="showNotePiedPage">
-                Note pied de page
-              </label>
-              <div class="section-content">
-                <textarea [(ngModel)]="notePiedPage" name="notePiedPage"
-                  placeholder="Écrivez ici ce que vous voudriez ajouter à la fin de ce document..."
-                  class="form-control"></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="configModele" *ngIf="showConfig">
-    <p>Pensez à bien indiquer toutes les mentions obligatoires propres à votre pays/région/secteur d'activité (ex. N° de
-      TVA intracommunautaire, forme juridique, capital social, mention microentreprise etc.)</p>
-    <div class="configM  overflow-auto d-flex justify-content-start  align-items-center ">
-      <div class="itemConfigM me-2" *ngFor="let model of listeModel; let i = index">
-        <figure data-bs-toggle="modal" data-bs-target="#updateModel" (click)="chargerInfosModel(model)">
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBU6ELr8P7tD2Bx3e-5jAbo0LJhARvbVXCEGHTG3g59ZcgLsvz"
-            alt="">
-          <figcaption>Design {{model.typeDocument}} {{i+1}}</figcaption>
-        </figure>
-      </div>
-      <div class="addnewModel mb-5 text-light" (click)="onshowConfig()">
-        +
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<!-- Modal modifier model document-->
-<div class="modal fade mt-5" id="updateModel" tabindex="-1" aria-labelledby="updateModelLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-    <div class="modal-content">
-      <div class="d-flex">
-        <div class="p-3 flex-grow-1">
-          <h3 class="modal-title" id="updateModelLabel">Modèle de document</h3>
-        </div>
-        <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-      </div>
-      <div class="modal-body">
-        <div class="row persoFacture mb-2 ">
-          <div class="col-md-6">
-            <h5>Personnaliser votre document</h5>
-            <!-- <input type="color" class="form-control form-control-color " [(ngModel)]="color" (input)="onColorChange()"
-              [disabled]="isChecked"> -->
-            <input type="color" value="#467aea" class="color-picker"
-              oninput="document.documentElement.style.setProperty('--header-color', this.value)">
-          </div>
-          <div class="col-md-6 d-flex" *ngIf="currentModelSelected">
-            <img src="../../../assets/images/bloc.png" class="me-3" alt="" (click)="showModel('bloc')"
-              [ngClass]="{'activemodele': modelActif === 1}" (click)="modelActif = 1"
-              *ngIf="currentModelSelected.typeDesign=='bloc'">
-            <img src="../../../assets/images/compact.png" class="me-3" alt="" (click)="showModel('compact')"
-              [ngClass]="{'activemodele': modelActif === 2}" (click)="modelActif = 2"
-              *ngIf="currentModelSelected.typeDesign=='compact'">
-            <img src="../../../assets/images/photo.png" alt="" (click)="showModel('photo')"
-              [ngClass]="{'activemodele': modelActif === 3}" (click)="modelActif = 3"
-              *ngIf="currentModelSelected.typeDesign=='photo'">
-          </div>
-        </div>
-
-        <div class="modéle">
-          <div [innerHTML]="contenuModel"></div>
-          <div class="addOption">
-            <div class="form-sections-container" *ngIf="currentModelSelected">
-              <!-- Première colonne -->
-              <div class="form-column">
-                <div class="form-section">
-                  <label>
-                    <input type="checkbox" class="form-check-input" [(ngModel)]="showSignatureExpediteur"
-                      name="showSignatureExpediteur">
-                    Signature expéditeur
-                  </label>
-                  <div class="section-content">
-                    <input type="text" class="form-control" [(ngModel)]="mentionExpediteur" name="mentionExpediteur"
-                      placeholder="Ajouter une mention avant la signature">
-                    <div class="signature-box">
-                      <p class="text-start"><i>Signature expéditeur</i></p>
-                      <img src="http://127.0.0.1:8000{{currentModelSelected.image_expediteur}}" class="signature-image">
+                    <ng-template #addSignatureBlock>
                       <span (click)="ajouterSignature('expediteur');onAddSignature()" class="titre">
                         + Ajouter signature
-                        <input type="file" #fileInput style="display: none;" (change)="onFileSelected($event)"
-                          accept="image/*">
+                        <input type="file" #fileInput style="display: none;"
+                          (change)="onFileSelected($event);ApercuOnFileSelected($event)" accept="image/*">
                       </span><br>
-                      <small>La taille de l'image ne peut pas dépasser 1 MB.
-                        Seuls les formats suivants sont supportés : PNG, GIF et JPG.</small>
+                    </ng-template>
+                    <small>La taille de l'image ne peut pas dépasser 1 MB.
+                      Seuls les formats suivants sont supportés : PNG, GIF et JPG.</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <label>
+                  <input type="checkbox" class="form-check-input" [(ngModel)]="showAutresImages"
+                    name="showAutresImages">
+                  Autres images (labels, logos...)
+                </label>
+                <div *ngIf="ApercuAutreImage; else addOtherImageBlock" class="image-preview-container">
+                  <div class="image-preview">
+                    <img *ngIf="ApercuAutreImage" [src]="ApercuAutreImage" alt="Aperçu de la signature"
+                      class="otherImage">
+                    <div class="overlay">
+                      <span (click)="removeOtherImage()" class="remove-text">Supprimer</span>
                     </div>
                   </div>
                 </div>
-
-                <div class="form-section">
-                  <label>
-                    <input type="checkbox" class="form-check-input" [(ngModel)]="showAutresImages"
-                      name="showAutresImages">
-                    Autres images (labels, logos...)
-                  </label>
+                <ng-template #addOtherImageBlock>
                   <div class="section-content">
                     <svg (click)="onAddSignatureOther()" xmlns="http://www.w3.org/2000/svg" width="36" height="36"
                       fill="currentColor" class="bi bi-plus-circle-dotted ms-4" viewBox="0 0 16 16">
@@ -574,79 +355,243 @@
                     </svg><br>
                     <span (click)="ajouterImage()">
                       Ajouter image
-                      <input type="file" #fileInputOther style="display: none;" (change)="onFileSelectedOther($event)"
-                        accept="image/*">
+                      <input type="file" #fileInputOther style="display: none;"
+                        (change)="onFileSelectedOther($event);ApercuOnFileSelectedOther($event)" accept="image/*">
                     </span>
                   </div>
-                  <img src="http://127.0.0.1:8000{{currentModelSelected.image}}" class="signature-image">
-                </div>
+                </ng-template>
 
-                <div class="form-section">
-                  <label>
-                    <input type="checkbox" class="form-check-input" [(ngModel)]="showCoordonneesBancaires"
-                      name="showCoordonneesBancaires">
-                    Coordonnées bancaires
-                  </label>
-                  <div class="section-content">
-                    <input class="form-control mb-2" [(ngModel)]="titulaireCompte" name="titulaireCompte"
-                      placeholder="Titulaire Compte">
-                    <input class="form-control mb-2" [(ngModel)]="banque" name="banque" placeholder="Banque">
-                    <input class="form-control" [(ngModel)]="compte" name="compte" placeholder="Compte">
+              </div>
+
+              <div class="form-section">
+                <label>
+                  <input type="checkbox" class="form-check-input" [(ngModel)]="showCoordonneesBancaires"
+                    name="showCoordonneesBancaires">
+                  Coordonnées bancaires
+                </label>
+                <div class="section-content">
+                  <input class="form-control mb-2" [(ngModel)]="titulaireCompte" name="titulaireCompte"
+                    placeholder="Titulaire Compte">
+                  <input class="form-control mb-2" [(ngModel)]="banque" name="banque" placeholder="Banque">
+                  <input class="form-control" [(ngModel)]="compte" name="compte" placeholder="Compte">
+                </div>
+              </div>
+            </div>
+
+            <!-- Deuxième colonne -->
+            <div class="form-column">
+              <div class="form-section">
+                <label>
+                  <input type="checkbox" class="form-check-input" [(ngModel)]="showSignatureDestinataire"
+                    name="showSignatureDestinataire">
+                  Signature destinataire
+                </label>
+                <div class="section-content">
+                  <input type="text" class="form-control" [(ngModel)]="mentionDestinataire" name="mentionDestinataire"
+                    placeholder="Ajouter une mention avant la signature">
+                  <div class="signature-box">
+                    <p class="text-start"><i>Signature destinataire</i></p>
                   </div>
                 </div>
               </div>
 
-              <!-- Deuxième colonne -->
-              <div class="form-column">
-                <div class="form-section">
-                  <label>
-                    <input type="checkbox" class="form-check-input" [(ngModel)]="showSignatureDestinataire"
-                      name="showSignatureDestinataire">
-                    Signature destinataire
-                  </label>
-                  <div class="section-content">
-                    <input type="text" class="form-control" [(ngModel)]="mentionDestinataire" name="mentionDestinataire"
-                      placeholder="Ajouter une mention avant la signature">
-                    <div class="signature-box">
-                      <p class="text-start"><i>Signature destinataire</i></p>
+              <div class="form-section">
+                <label>
+                  <input type="checkbox" class="form-check-input" [(ngModel)]="showConditionsPaiement"
+                    name="showConditionsPaiement">
+                  Conditions de paiement
+                </label>
+                <div class="section-content">
+                  <textarea [(ngModel)]="conditionsPaiement" name="conditionsPaiement"
+                    placeholder="Écrivez ici les conditions de paiement, d'escompte, les pénalités, etc."
+                    class="form-control"></textarea>
+                </div>
+              </div>
+
+              <div class="form-section">
+                <label>
+                  <input type="checkbox" class="form-check-input" [(ngModel)]="showNotePiedPage"
+                    name="showNotePiedPage">
+                  Note pied de page
+                </label>
+                <div class="section-content">
+                  <textarea [(ngModel)]="notePiedPage" name="notePiedPage"
+                    placeholder="Écrivez ici ce que vous voudriez ajouter à la fin de ce document..."
+                    class="form-control"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p>Pensez à bien indiquer toutes les mentions obligatoires propres à votre pays/région/secteur d'activité (ex.
+          N° de
+          TVA intracommunautaire, forme juridique, capital social, mention microentreprise etc.)</p>
+        <div class="configM  overflow-auto d-flex justify-content-start  align-items-center">
+          <div class="itemConfigM me-2" *ngFor="let model of listeModel; let i = index">
+            <figure data-bs-toggle="modal" data-bs-target="#updateModel" (click)="chargerInfosModel(model)">
+              <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSBU6ELr8P7tD2Bx3e-5jAbo0LJhARvbVXCEGHTG3g59ZcgLsvz"
+                alt="">
+              <figcaption>Design {{model.typeDocument}} {{i+1}}</figcaption>
+            </figure>
+          </div>
+          <div class="addnewModel mb-5 text-light" (click)="onshowConfig('model')">
+            +
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal modifier model document-->
+  <div class="modal fade mt-5" id="updateModel" tabindex="-1" aria-labelledby="updateModelLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+      <div class="modal-content">
+        <div class="d-flex">
+          <div class="p-3 flex-grow-1">
+            <h3 class="modal-title" id="updateModelLabel">Modèle de document</h3>
+          </div>
+          <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+        </div>
+        <div class="modal-body">
+          <div class="row persoFacture mb-2 ">
+            <div class="col-md-6">
+              <h5>Personnaliser votre document</h5>
+              <input type="color" value="#467aea" class="color-picker"
+                oninput="document.documentElement.style.setProperty('--header-color', this.value)">
+            </div>
+            <div class="col-md-6 d-flex" *ngIf="currentModelSelected">
+              <img src="../../../assets/images/bloc.png" class="me-3" alt="" (click)="showModel('bloc')"
+                [ngClass]="{'activemodele': modelActif === 1}" (click)="modelActif = 1"
+                *ngIf="currentModelSelected.typeDesign=='bloc'">
+              <img src="../../../assets/images/compact.png" class="me-3" alt="" (click)="showModel('compact')"
+                [ngClass]="{'activemodele': modelActif === 2}" (click)="modelActif = 2"
+                *ngIf="currentModelSelected.typeDesign=='compact'">
+              <img src="../../../assets/images/photo.png" alt="" (click)="showModel('photo')"
+                [ngClass]="{'activemodele': modelActif === 3}" (click)="modelActif = 3"
+                *ngIf="currentModelSelected.typeDesign=='photo'">
+            </div>
+          </div>
+
+          <div class="modéle">
+            <div [innerHTML]="contenuModel"></div>
+            <div class="addOption">
+              <div class="form-sections-container" *ngIf="currentModelSelected">
+                <!-- Première colonne -->
+                <div class="form-column">
+                  <div class="form-section">
+                    <label>
+                      <input type="checkbox" class="form-check-input" [(ngModel)]="showSignatureExpediteur"
+                        name="showSignatureExpediteur">
+                      Signature expéditeur
+                    </label>
+                    <div class="section-content">
+                      <input type="text" class="form-control" [(ngModel)]="mentionExpediteur" name="mentionExpediteur"
+                        placeholder="Ajouter une mention avant la signature">
+                      <div class="signature-box">
+                        <p class="text-start"><i>Signature expéditeur</i></p>
+                        <img src="http://127.0.0.1:8000{{currentModelSelected.image_expediteur}}"
+                          class="signature-image">
+                        <span (click)="ajouterSignature('expediteur');onAddSignature()" class="titre">
+                          + Ajouter signature
+                          <input type="file" #fileInput style="display: none;" (change)="onFileSelected($event)"
+                            accept="image/*">
+                        </span><br>
+                        <small>La taille de l'image ne peut pas dépasser 1 MB.
+                          Seuls les formats suivants sont supportés : PNG, GIF et JPG.</small>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-section">
+                    <label>
+                      <input type="checkbox" class="form-check-input" [(ngModel)]="showAutresImages"
+                        name="showAutresImages">
+                      Autres images (labels, logos...)
+                    </label>
+                    <div class="section-content">
+                      <svg (click)="onAddSignatureOther()" xmlns="http://www.w3.org/2000/svg" width="36" height="36"
+                        fill="currentColor" class="bi bi-plus-circle-dotted ms-4" viewBox="0 0 16 16">
+                        <path
+                          d="M8 0q-.264 0-.523.017l.064.998a7 7 0 0 1 .918 0l.064-.998A8 8 0 0 0 8 0M6.44.152q-.52.104-1.012.27l.321.948q.43-.147.884-.237L6.44.153zm4.132.271a8 8 0 0 0-1.011-.27l-.194.98q.453.09.884.237zm1.873.925a8 8 0 0 0-.906-.524l-.443.896q.413.205.793.459zM4.46.824q-.471.233-.905.524l.556.83a7 7 0 0 1 .793-.458zM2.725 1.985q-.394.346-.74.74l.752.66q.303-.345.648-.648zm11.29.74a8 8 0 0 0-.74-.74l-.66.752q.346.303.648.648zm1.161 1.735a8 8 0 0 0-.524-.905l-.83.556q.254.38.458.793l.896-.443zM1.348 3.555q-.292.433-.524.906l.896.443q.205-.413.459-.793zM.423 5.428a8 8 0 0 0-.27 1.011l.98.194q.09-.453.237-.884zM15.848 6.44a8 8 0 0 0-.27-1.012l-.948.321q.147.43.237.884zM.017 7.477a8 8 0 0 0 0 1.046l.998-.064a7 7 0 0 1 0-.918zM16 8a8 8 0 0 0-.017-.523l-.998.064a7 7 0 0 1 0 .918l.998.064A8 8 0 0 0 16 8M.152 9.56q.104.52.27 1.012l.948-.321a7 7 0 0 1-.237-.884l-.98.194zm15.425 1.012q.168-.493.27-1.011l-.98-.194q-.09.453-.237.884zM.824 11.54a8 8 0 0 0 .524.905l.83-.556a7 7 0 0 1-.458-.793zm13.828.905q.292-.434.524-.906l-.896-.443q-.205.413-.459.793zm-12.667.83q.346.394.74.74l.66-.752a7 7 0 0 1-.648-.648zm11.29.74q.394-.346.74-.74l-.752-.66q-.302.346-.648.648zm-1.735 1.161q.471-.233.905-.524l-.556-.83a7 7 0 0 1-.793.458zm-7.985-.524q.434.292.906.524l.443-.896a7 7 0 0 1-.793-.459zm1.873.925q.493.168 1.011.27l.194-.98a7 7 0 0 1-.884-.237zm4.132.271a8 8 0 0 0 1.012-.27l-.321-.948a7 7 0 0 1-.884.237l.194.98zm-2.083.135a8 8 0 0 0 1.046 0l-.064-.998a7 7 0 0 1-.918 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z" />
+                      </svg><br>
+                      <span (click)="ajouterImage()">
+                        Ajouter image
+                        <input type="file" #fileInputOther style="display: none;" (change)="onFileSelectedOther($event)"
+                          accept="image/*">
+                      </span>
+                    </div>
+                    <img src="http://127.0.0.1:8000{{currentModelSelected.image}}" class="signature-image">
+                  </div>
+
+                  <div class="form-section">
+                    <label>
+                      <input type="checkbox" class="form-check-input" [(ngModel)]="showCoordonneesBancaires"
+                        name="showCoordonneesBancaires">
+                      Coordonnées bancaires
+                    </label>
+                    <div class="section-content">
+                      <input class="form-control mb-2" [(ngModel)]="titulaireCompte" name="titulaireCompte"
+                        placeholder="Titulaire Compte">
+                      <input class="form-control mb-2" [(ngModel)]="banque" name="banque" placeholder="Banque">
+                      <input class="form-control" [(ngModel)]="compte" name="compte" placeholder="Compte">
                     </div>
                   </div>
                 </div>
 
-                <div class="form-section">
-                  <label>
-                    <input type="checkbox" class="form-check-input" [(ngModel)]="showConditionsPaiement"
-                      name="showConditionsPaiement">
-                    Conditions de paiement
-                  </label>
-                  <div class="section-content">
-                    <textarea [(ngModel)]="conditionsPaiement" name="conditionsPaiement"
-                      placeholder="Écrivez ici les conditions de paiement, d'escompte, les pénalités, etc."
-                      class="form-control"></textarea>
+                <!-- Deuxième colonne -->
+                <div class="form-column">
+                  <div class="form-section">
+                    <label>
+                      <input type="checkbox" class="form-check-input" [(ngModel)]="showSignatureDestinataire"
+                        name="showSignatureDestinataire">
+                      Signature destinataire
+                    </label>
+                    <div class="section-content">
+                      <input type="text" class="form-control" [(ngModel)]="mentionDestinataire"
+                        name="mentionDestinataire" placeholder="Ajouter une mention avant la signature">
+                      <div class="signature-box">
+                        <p class="text-start"><i>Signature destinataire</i></p>
+                      </div>
+                    </div>
                   </div>
-                </div>
 
-                <div class="form-section">
-                  <label>
-                    <input type="checkbox" class="form-check-input" [(ngModel)]="showNotePiedPage"
-                      name="showNotePiedPage">
-                    Note pied de page
-                  </label>
-                  <div class="section-content">
-                    <textarea [(ngModel)]="notePiedPage" name="notePiedPage"
-                      placeholder="Écrivez ici ce que vous voudriez ajouter à la fin de ce document..."
-                      class="form-control"></textarea>
+                  <div class="form-section">
+                    <label>
+                      <input type="checkbox" class="form-check-input" [(ngModel)]="showConditionsPaiement"
+                        name="showConditionsPaiement">
+                      Conditions de paiement
+                    </label>
+                    <div class="section-content">
+                      <textarea [(ngModel)]="conditionsPaiement" name="conditionsPaiement"
+                        placeholder="Écrivez ici les conditions de paiement, d'escompte, les pénalités, etc."
+                        class="form-control"></textarea>
+                    </div>
+                  </div>
+
+                  <div class="form-section">
+                    <label>
+                      <input type="checkbox" class="form-check-input" [(ngModel)]="showNotePiedPage"
+                        name="showNotePiedPage">
+                      Note pied de page
+                    </label>
+                    <div class="section-content">
+                      <textarea [(ngModel)]="notePiedPage" name="notePiedPage"
+                        placeholder="Écrivez ici ce que vous voudriez ajouter à la fin de ce document..."
+                        class="form-control"></textarea>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btnAction" (click)="updateModel()">Modifier</button>
-        <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+        <div class="modal-footer">
+          <button type="button" class="btn btnAction" (click)="updateModel()">Modifier</button>
+          <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+        </div>
       </div>
     </div>
   </div>
-</div>

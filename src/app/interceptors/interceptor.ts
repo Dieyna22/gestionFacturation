@@ -5,12 +5,15 @@ import {
   HttpRequest,
   HttpHandler,
   HttpEvent,
+  HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable, EMPTY } from 'rxjs';
+import { Observable, EMPTY, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private router: Router) { }
+  constructor(private router: Router) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -18,27 +21,49 @@ export class AuthInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     const userOnlineStr = localStorage.getItem('userOnline');
 
-    // Assurez-vous que userOnlineStr n'est pas nul et n'est pas une chaîne vide
-    if (userOnlineStr && userOnlineStr.trim() !== '') {
+    // Éviter d'ajouter le token si la requête concerne la connexion
+    if (request.url.includes('/login')) {
+      return next.handle(request);
+    }
+
+    // Continuer si un token existe dans le localStorage
+    if (userOnlineStr) {
       const userOnline = JSON.parse(userOnlineStr);
-      if (userOnline && userOnline.authorization.token!== undefined && userOnline.authorization.token!== null) {
-        const token = userOnline.authorization.token;
+      const token = userOnline?.authorization?.token;
 
-        // Utilisez une condition appropriée pour vérifier si le token est défini
-        if (token === undefined || token === null) {
-          this.router.navigate(['/accueil']);
-          return EMPTY; // Retourne un Observable vide
-        }
-
+      if (token) {
         request = request.clone({
           setHeaders: {
-            Authorization: `Bearer ${token}`,
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
           },
+          withCredentials: true
         });
+      } else {
+        console.log("Aucun token trouvé, redirection vers la page de connexion.");
+        this.router.navigate(['']); // Rediriger vers la connexion si le token est manquant
+        return EMPTY;
       }
     }
 
-    return next.handle(request);
+    // Gérer les réponses et les erreurs
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        // Vérifier si l'erreur est liée à l'authentification (401)
+        if (error.status === 401) {
+          console.error("Erreur 401 : Accès non autorisé");
+          Notify.failure('Session Expirer !!!', {
+            position: 'center-center', // Positionner au centre
+        });
+          this.router.navigate(['']); // Rediriger vers la connexion pour une erreur 401
+        }
+        // Détecter les erreurs CORS ou les problèmes réseau (statut 0)
+        if (error.status === 0) {
+          console.error("Erreur CORS ou problème réseau détecté");
+        }
+        // Retourner l'erreur après le traitement
+        return throwError(error);
+      })
+    );
   }
 }
-

@@ -568,38 +568,38 @@ export class ClientsComponent {
   }
 
 
-  exportExcel() {
-    this.clientService.exportToExcel().subscribe(
-      (data: Blob) => {
-        data.arrayBuffer().then((buffer) => {
-          const workbook = XLSX.read(buffer, { type: 'array' });
-          const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+  // exportExcel() {
+  //   this.clientService.exportToExcel().subscribe(
+  //     (data: Blob) => {
+  //       data.arrayBuffer().then((buffer) => {
+  //         const workbook = XLSX.read(buffer, { type: 'array' });
+  //         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
 
-          // Augmenter la largeur des colonnes
-          if (worksheet['!ref']) {
-            const range = XLSX.utils.decode_range(worksheet['!ref']);
-            const cols: XLSX.ColInfo[] = [];
-            for (let C = range.s.c; C <= range.e.c; ++C) {
-              cols.push({ wch: 20 }); // Définir la largeur à 15
-            }
-            worksheet['!cols'] = cols;
-          }
+  //         // Augmenter la largeur des colonnes
+  //         if (worksheet['!ref']) {
+  //           const range = XLSX.utils.decode_range(worksheet['!ref']);
+  //           const cols: XLSX.ColInfo[] = [];
+  //           for (let C = range.s.c; C <= range.e.c; ++C) {
+  //             cols.push({ wch: 20 }); // Définir la largeur à 15
+  //           }
+  //           worksheet['!cols'] = cols;
+  //         }
 
-          const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-          const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'export.xlsx';
-          a.click();
-          window.URL.revokeObjectURL(url);
-        });
-      },
-      (err) => {
-        console.log(err);
-      }
-    );
-  }
+  //         const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  //         const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  //         const url = window.URL.createObjectURL(blob);
+  //         const a = document.createElement('a');
+  //         a.href = url;
+  //         a.download = 'export.xlsx';
+  //         a.click();
+  //         window.URL.revokeObjectURL(url);
+  //       });
+  //     },
+  //     (err) => {
+  //       console.log(err);
+  //     }
+  //   );
+  // }
 
   couleurs: string[] = ['#FFEB3B', '#CDDC39', '#FFC107', '#FF5722', '#E91E63', '#9C27B0', '#3F51B5', '#03A9F4', '#00BCD4', '#8BC34A'];
   etiquette: Etiquette = { nom_etiquette: '', code_etiquette: '' };
@@ -990,7 +990,125 @@ export class ClientsComponent {
       });
   }
 
+  exportExcel() {
+    const originalPage = this.pageActuelle;
+    const originalItemsPerPage = this.itemsParPage;
+    let idTab: string;
+    let fileName: string;
 
+
+    idTab = 'tabClient';
+    fileName = 'Clients.xlsx';
+    this.itemsParPage = this.tabClientFilter.length;
+
+    try {
+
+      setTimeout(() => {
+        try {
+          const element = document.getElementById(idTab);
+          if (!element) {
+            throw new Error(`Table avec l'id ${idTab} non trouvée`);
+          }
+
+          const cells = element.getElementsByTagName('td');
+          Array.from(cells).forEach(cell => {
+            const value = cell.textContent || '';
+            if (/^0+\d+$/.test(value)) {
+              cell.setAttribute('data-t', 's');
+              cell.setAttribute('data-v', value);
+            }
+          });
+
+          const options = {
+            raw: false,
+            rawNumbers: false,
+            dateNF: 'dd/mm/yyyy',
+            cellText: true,
+            cellStyles: true,
+            cellDates: true,
+          };
+
+          const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(element, options);
+
+          if (ws['!ref']) {
+            const range = XLSX.utils.decode_range(ws['!ref']);
+            for (let R = range.s.r; R <= range.e.r; ++R) {
+              for (let C = range.s.c; C <= range.e.c; ++C) {
+                const cellAddress = { c: C, r: R };
+                const cellRef = XLSX.utils.encode_cell(cellAddress);
+                const cell = ws[cellRef];
+
+                if (cell && cell.v !== undefined) {
+                  const value = String(cell.v);
+                  if (/^0+\d+$/.test(value)) {
+                    ws[cellRef] = {
+                      t: 's',
+                      v: value,
+                      w: value,
+                      s: {
+                        numFmt: '@'
+                      }
+                    };
+                  }
+                }
+              }
+            }
+          }
+
+          ws['!types'] = {
+            numFmt: '@'
+          };
+
+          if (ws['!ref']) {
+            const range = XLSX.utils.decode_range(ws['!ref']);
+            const colWidths = [];
+
+            for (let C = range.s.c; C <= range.e.c; ++C) {
+              let maxWidth = 10;
+              for (let R = range.s.r; R <= range.e.r; ++R) {
+                const cellAddress = { c: C, r: R };
+                const cellRef = XLSX.utils.encode_cell(cellAddress);
+                const cell = ws[cellRef];
+                if (cell && cell.v) {
+                  maxWidth = Math.max(maxWidth, String(cell.v).length + 2);
+                }
+              }
+              colWidths.push({ wch: maxWidth });
+            }
+            ws['!cols'] = colWidths;
+          }
+
+          const wb: XLSX.WorkBook = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+
+          if (!fileName) {
+            fileName = 'export.xlsx';
+          }
+
+          const wopts: XLSX.WritingOptions = {
+            bookType: 'xlsx',
+            bookSST: false,
+            type: 'binary',  // Correctly set to 'binary'
+            cellStyles: true,  // Retaining this if you need styles
+          };
+
+
+          XLSX.writeFile(wb, fileName, wopts);
+
+        } catch (error) {
+          console.error('Erreur lors de l\'export Excel:', error);
+        }
+      }, 200);
+
+    } catch (error) {
+      console.error('Erreur lors de la configuration de l\'export:', error);
+    } finally {
+      setTimeout(() => {
+        this.pageActuelle = originalPage;
+        this.itemsParPage = originalItemsPerPage;
+      }, 300);
+    }
+  }
 
 
 
