@@ -82,7 +82,7 @@ export class FactureComponent {
   datedevis: string = '';
   datevaliditeDevis: string = '';
 
-  constructor(private http: HttpClient, private ServiceCategorie: CategorieService, private articleService: ArticlesService, private clientService: ClientsService, private userService: UtilisateurService, private productService: ArticlesService, private renderer: Renderer2, private payementService: PayementService, private grilleservice: GrilleTarifaireService, private docService: VenteService, private etiquetteService: EtiquetteService,private filterService : ConfigurationService){
+  constructor(private http: HttpClient, private ServiceCategorie: CategorieService, private articleService: ArticlesService, private clientService: ClientsService, private userService: UtilisateurService, private productService: ArticlesService, private renderer: Renderer2, private payementService: PayementService, private grilleservice: GrilleTarifaireService, private docService: VenteService, private etiquetteService: EtiquetteService, private filterService: ConfigurationService) {
     this.currentDate = this.getCurrentDate();
   }
   actif = 1
@@ -145,42 +145,42 @@ export class FactureComponent {
     this.updateTableHeaderColor();
   }
 
-  filterliste:any[]=[];
+  filterliste: any[] = [];
   filterFactures(filterTerm: string) {
     this.filterliste = this.filterService.filterByTerm(this.tabFactures, filterTerm, ['statut_paiement']);
-    if(this.filterliste.length==0){
+    if (this.filterliste.length == 0) {
       this.listeFacture();
-    }else{
+    } else {
       this.tabFactureFilter = this.filterliste;
-    } 
+    }
   }
 
   filterDevis(filterTerm: string) {
-    this.filterliste = this.filterService.filterByTerm(this.tabDevis, filterTerm, ['statut_devi','archiver']);
-    if(this.filterliste.length==0){
+    this.filterliste = this.filterService.filterByTerm(this.tabDevis, filterTerm, ['statut_devi', 'archiver']);
+    if (this.filterliste.length == 0) {
       this.listeDevis();
-    }else{
+    } else {
       this.tabFactureFilter = this.filterliste;
-    } 
+    }
   }
 
   filterBonCommande(filterTerm: string) {
-    this.filterliste = this.filterService.filterByTerm(this.tabBonCommande, filterTerm, ['statut_BonCommande','active_Stock']);
-    if(this.filterliste.length==0){
+    this.filterliste = this.filterService.filterByTerm(this.tabBonCommande, filterTerm, ['statut_BonCommande', 'active_Stock']);
+    if (this.filterliste.length == 0) {
       this.listeBonCommande();
-    }else{
+    } else {
       this.tabFactureFilter = this.filterliste;
-    } 
+    }
   }
 
 
   filterBonLivraison(filterTerm: string) {
-    this.filterliste = this.filterService.filterByTerm(this.tabLivraison, filterTerm, ['statut_livraison','active_Stock']);
-    if(this.filterliste.length==0){
+    this.filterliste = this.filterService.filterByTerm(this.tabLivraison, filterTerm, ['statut_livraison', 'active_Stock']);
+    if (this.filterliste.length == 0) {
       this.listeBonLivraison();
-    }else{
+    } else {
       this.tabFactureFilter = this.filterliste;
-    } 
+    }
   }
 
   tabAcompte: any[] = [];
@@ -1070,7 +1070,7 @@ export class FactureComponent {
         this.tabFactures = factures.factures;
         this.innoviceNumber = factures.factures;
         this.tabFactureFilter = this.tabFactures;
-        console.log('liste facture:',this.tabFactureFilter)
+        console.log('liste facture:', this.tabFactureFilter)
       },
       (err) => {
         console.log(err);
@@ -1163,6 +1163,7 @@ export class FactureComponent {
   acompteFacture: any
   detailFacture: any;
   currentIdFacture: any
+  currentNumFacture: any
   FactureId: any;
   details(paramFacture: any) {
     this.docService.DetailFacture(paramFacture).subscribe(
@@ -1174,7 +1175,8 @@ export class FactureComponent {
         this.echeance = this.detailFacture.echeances
         this.acompteFacture = this.detailFacture.factures_accomptes
         this.currentIdFacture = this.detailFacture.id;
-        console.log(this.client.prenom);
+        this.currentNumFacture = this.detailFacture.numero_facture
+        console.log(this.currentNumFacture);
 
         this.listeEcheanceFacture();
         this.listePaiementFacture();
@@ -1268,11 +1270,13 @@ export class FactureComponent {
   }
 
   // liste payment reçu par facture
+  id_paiement:any;
   tabPaiementFacture: any[] = []
   listePaiementFacture() {
     this.docService.paymentRecuParFacture(this.currentIdFacture).subscribe(
       (paiements) => {
         this.tabPaiementFacture = paiements.paiements_recus;
+        this.id_paiement = paiements.paiements_recus.id;
         console.log(this.tabPaiementFacture);
       },
       (err) => {
@@ -1280,6 +1284,7 @@ export class FactureComponent {
       }
     )
   }
+
 
   paymentRecuEnecheance(paramPayment: any) {
     Confirm.init({
@@ -1665,7 +1670,9 @@ export class FactureComponent {
   clientDevi: any;
   articleDevi: any;
   numDevi: any;
+  devis_id: any;
   detailDevis(idDevis: any) {
+    this.devis_id = idDevis
     this.docService.detailDevis(idDevis).subscribe(
       (devis) => {
         this.detailDevi = devis.devi_details
@@ -1938,13 +1945,17 @@ export class FactureComponent {
   clientCommande: any;
   articlesCommande: any;
   echeancesCommande: any;
+  commande_id:any
+  numCommande:any
   detailBonCommande(idCommande: any) {
+   this.commande_id = idCommande;
     this.docService.detailBonCommande(idCommande).subscribe(
       (detailCommande) => {
         this.bonCommande = detailCommande.bonCommande_details;
         this.clientCommande = this.bonCommande.client;
         this.articlesCommande = this.bonCommande.articles;
         this.echeancesCommande = this.bonCommande.echeances;
+        this.numCommande = this.bonCommande.numero_bonCommande;
         console.log(this.bonCommande);
         console.log(this.echeancesCommande.date_pay_echeance);
         console.log(this.articlesCommande);
@@ -2040,8 +2051,8 @@ export class FactureComponent {
         "prix_total_tva_article": row.totalTTC,
       });
     }
-     // Ajouter des etiquette
-     for (let i = 0; i < this.selectedIds.length; i++) {
+    // Ajouter des etiquette
+    for (let i = 0; i < this.selectedIds.length; i++) {
       const item = this.selectedIds[i];
       console.log(item)
       BonLivraison.etiquettes.push({
@@ -2078,12 +2089,16 @@ export class FactureComponent {
   detailBonLivraison: any;
   cientBonLivraison: any;
   articlesLivraison: any;
+  livraison_id:any;
+  num_livraison:any;
   detailLivraison(idLivraison: any) {
+    this.livraison_id = idLivraison;
     this.docService.detailBonLivraison(idLivraison).subscribe(
       (detailLivraison) => {
         this.detailBonLivraison = detailLivraison.bonCommande_details;
         this.cientBonLivraison = this.detailBonLivraison.client;
         this.articlesLivraison = this.detailBonLivraison.articles;
+        this.num_livraison = detailLivraison.numero_livraison;
         console.log(this.detailBonLivraison)
         console.log(this.cientBonLivraison)
         console.log(this.articlesLivraison)
@@ -2374,41 +2389,6 @@ export class FactureComponent {
   get totalPages(): number {
     return Math.ceil(this.tabFactureFilter.length / this.itemsParPage);
   }
-
-
-  //exporter vente
-  // exportExcel() {
-  //   this.docService.exportVenteToExcel().subscribe(
-  //     (data: Blob) => {
-  //       data.arrayBuffer().then((buffer) => {
-  //         const workbook = XLSX.read(buffer, { type: 'array' });
-  //         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-
-  //         // Augmenter la largeur des colonnes
-  //         if (worksheet['!ref']) {
-  //           const range = XLSX.utils.decode_range(worksheet['!ref']);
-  //           const cols: XLSX.ColInfo[] = [];
-  //           for (let C = range.s.c; C <= range.e.c; ++C) {
-  //             cols.push({ wch: 20 }); // Définir la largeur à 15
-  //           }
-  //           worksheet['!cols'] = cols;
-  //         }
-
-  //         const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-  //         const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  //         const url = window.URL.createObjectURL(blob);
-  //         const a = document.createElement('a');
-  //         a.href = url;
-  //         a.download = 'exportVentes.xlsx';
-  //         a.click();
-  //         window.URL.revokeObjectURL(url);
-  //       });
-  //     },
-  //     (err) => {
-  //       console.log(err);
-  //     }
-  //   );
-  // }
 
   //exporter devis
   exportDeviExcel() {
@@ -2743,40 +2723,131 @@ export class FactureComponent {
     )
   }
 
-  docId:any;
-  modelId:any;
-  recupIdDocument(idDocs:any){
+  docId: any;
+  modelId: any;
+  recupIdDocument(idDocs: any) {
     this.docId = idDocs;
-    this.emailDoc()
   }
 
-  recupIdModel(idModel:any){
+  recupIdModel(idModel: any) {
     this.modelId = idModel;
-    this.generatePDF()
+    this.downloadPDF();
   }
+
+  recupIdModelEmail(idModel: any) {
+    this.modelId = idModel;
+    alert(this.modelId);
+    this.emailDoc();
+  }
+
+resumeVente: string='';
+
+setValueResume(value:string){
+  this.resumeVente = value;
+}
 
   // generer pdf facture 
-  generatePDF(){
-    this.docService.genererPdf(this.docId,this.modelId).subscribe(
-      (response)=>{
-        console.log(response);
-      },
-      (error)=>{
-        console.log(error);
+  downloadPDF() {
+    let urlPdf: any;
+    let nomPdf: any;
+    if (this.typeDocument == 'vente') {
+      urlPdf = `http://127.0.0.1:8000/api/genererPDFFacture/${this.docId}/${this.modelId}`;
+      nomPdf = `facture_${this.currentNumFacture}.pdf`;
+    } else if (this.typeDocument == 'devi') {
+      urlPdf = `http://127.0.0.1:8000/api/genererPDFDevis/${this.devis_id}/${this.modelId}`;
+      nomPdf = `devi${this.numDevi}.pdf`;
+    } else if (this.typeDocument == 'command_vente') {
+      urlPdf = `http://127.0.0.1:8000/api/genererPDFBonCommande/${this.commande_id}/${this.modelId}`;
+      nomPdf = `commande_vente${this.numCommande}.pdf`;
+    } else if (this.typeDocument == 'livraison') {
+      urlPdf = `http://127.0.0.1:8000/api/genererPDFLivraison/${this.livraison_id}/${this.modelId}`;
+      nomPdf = `livraison${this.num_livraison}.pdf`;
+    }
+
+    this.http.post(urlPdf, '', {
+      responseType: 'blob',
+      observe: 'response'
+    }).subscribe(response => {
+      // Vérifier si response.body n'est pas null
+      if (response.body) {
+        const blob = new Blob([response.body], { type: 'application/pdf' });
+        const url = window.URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = nomPdf;
+        link.click();
+
+        window.URL.revokeObjectURL(url);
+      } else {
+        console.error('Le contenu du PDF est vide');
+        // Vous pouvez ajouter ici un message d'erreur pour l'utilisateur
       }
-    )
+    }, error => {
+      console.error('Erreur lors du téléchargement du PDF:', error);
+      // Gérer l'erreur (par exemple, afficher un message à l'utilisateur)
+    });
   }
 
+
+  detailEmail: any;
   // detail email facture
-  emailDoc(){
-    this.docService.detailEmailFacture(this.docId).subscribe(
-      (response)=>{
-        console.warn(response);
-      },
-      (error)=>{
-        console.log(error);
+  emailDoc() {
+    let urlPdf: any;
+    if (this.typeDocument == 'vente') {
+      urlPdf = `http://127.0.0.1:8000/api/DetailEmailFacture_genererPDF/${this.docId}/${this.modelId}`;
+      if(this.currentDetail == 'Réglements'){
+        urlPdf = `http://127.0.0.1:8000/api/DetailEmailPaiementRecu_genererPDF/${this.id_paiement}/${this.modelId}`;
+        if(this.resumeVente == 'resume'){
+          urlPdf = `http://127.0.0.1:8000/api/DetailEmailResumeVente_genererPDF/${this.docId}/${this.modelId}`;
+        }
       }
-    )
+    } else if (this.typeDocument == 'devi') {
+      urlPdf = `http://127.0.0.1:8000/api/DetailEmailDevi_genererPDF/${this.devis_id}/${this.modelId}`;
+    } else if (this.typeDocument == 'command_vente') {
+      urlPdf = `http://127.0.0.1:8000/api/DetailEmailBonCommande_genererPDF/${this.commande_id}/${this.modelId}`;
+    } else if (this.typeDocument == 'livraison') {
+      urlPdf = `http://127.0.0.1:8000/api/DetailEmailLivraison_genererPDF/${this.livraison_id}/${this.modelId}`;
+    }
+
+    this.http.post(urlPdf, '', {
+    
+    }).subscribe(response => {
+      console.log(response)
+      this.detailEmail = response;
+    }, error => {
+      console.error('Erreur lors du téléchargement du PDF:', error);
+      
+    })
+  }
+
+
+  // envoyer email facture
+  envoiMail() {
+    let urlPdf: any;
+    if (this.typeDocument == 'vente') {
+      urlPdf = `http://127.0.0.1:8000/api/envoyerEmailFacture/${this.docId}/${this.modelId}`;
+      if(this.currentDetail == 'Réglements'){
+        urlPdf = `http://127.0.0.1:8000/api/envoyerEmailResumeVente/${this.id_paiement}/${this.modelId}`;
+      } if(this.resumeVente == 'resume'){
+        urlPdf = `http://127.0.0.1:8000/api/envoyerEmailResumeVente/${this.docId}/${this.modelId}`;
+      }
+    } else if (this.typeDocument == 'devi') {
+      urlPdf = `http://127.0.0.1:8000/api/envoyerEmailDevi/${this.devis_id}/${this.modelId}`;
+    } else if (this.typeDocument == 'command_vente') {
+      urlPdf = `http://127.0.0.1:8000/api/envoyerEmailPaiementRecu/${this.commande_id}/${this.modelId}`;
+    } else if (this.typeDocument == 'livraison') {
+      urlPdf = `http://127.0.0.1:8000/api/envoyerEmailLivraison/${this.livraison_id}/${this.modelId}`;
+    }
+
+    this.http.post(urlPdf, '', {}).subscribe(response => {
+      console.log(response)
+      Report.success('Notiflix Success', 'response', 'Okay',);
+      this.resumeVente = '';
+    }, error => {
+      console.error('Erreur lors de l envoi du mail:', error);
+      
+    })
   }
 
   exportExcel() {
@@ -2787,7 +2858,7 @@ export class FactureComponent {
 
 
     idTab = this.typeDocument;
-    fileName = `${this.typeDocument}.xlsx`;   
+    fileName = `${this.typeDocument}.xlsx`;
     this.itemsParPage = this.tabFactureFilter.length;
 
     try {

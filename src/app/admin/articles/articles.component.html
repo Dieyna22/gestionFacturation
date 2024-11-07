@@ -86,7 +86,7 @@
                   </td>
                   <!-- <td>{{article.nom_categorie}}</td> -->
                   <td (click)="chargerInfosArticle(article);changeValueModal('modif')" data-bs-toggle="modal" data-bs-target="#ModalModifier">
-                    {{article.prix_achat}}</td>
+                    {{article.prix_ht_achat}}</td>
                   <td (click)="chargerInfosArticle(article);changeValueModal('modif')" data-bs-toggle="modal" data-bs-target="#ModalModifier">
                     {{article.prix_unitaire}}</td>
                   <td (click)="chargerInfosArticle(article);changeValueModal('modif')" data-bs-toggle="modal" data-bs-target="#ModalModifier">
@@ -212,7 +212,13 @@
                 <label for="validationServer02" class="form-label">Prix d'achat</label>
                 <input type="text" class="form-control" id="validationServer02" name="achat" [(ngModel)]="achat">
               </div>
-              <div class="mb-3 col-6 ">
+              <div class="mb-3 col-6">
+                <label for="validationServer02" class="form-label">Tva Prix d'achat</label>
+                <input type="text" class="form-control" id="validationServer02" name="tvaPrix" [(ngModel)]="tvaPrix">
+              </div>
+            </div>
+            <div class="row">
+              <div class="mb-3 col-12">
                 <label for="validationServer02" class="form-label">Prix de vente</label>
                 <input type="text" class="form-control" id="validationServer02" name="vente" [(ngModel)]="vente">
               </div>
@@ -470,7 +476,13 @@
                 <label for="validationServer02" class="form-label">Prix d'achat</label>
                 <input type="text" class="form-control" id="validationServer02" name="achat" [(ngModel)]="inputachat">
               </div>
-              <div class="mb-3 col-6 ">
+              <div class="mb-3 col-6">
+                <label for="validationServer02" class="form-label">Tva Prix d'achat</label>
+                <input type="text" class="form-control" id="validationServer02" name="tvaPrix" [(ngModel)]="inputTvaPrix">
+              </div>
+            </div>
+            <div class="row">
+              <div class="mb-3 col-12">
                 <label for="validationServer02" class="form-label">Prix de vente</label>
                 <input type="text" class="form-control" id="validationServer02" name="vente" [(ngModel)]="inputvente">
               </div>

@@ -91,6 +91,7 @@ export class CommandeDachatComponent {
     this.listeCategorieDepense();
     this.listeFournisseur();
     this.listeDepense();
+    this.listeModelByTypeDocument();
     // Renvoie un tableau de valeurs ou un tableau vide 
     this.dbUsers = JSON.parse(localStorage.getItem("userOnline") || "[]");
     this.idUserConnect = this.dbUsers.user.id;
@@ -606,7 +607,7 @@ export class CommandeDachatComponent {
       "active_Stock": this.active,
       "num_commandeAchat": this.nextNumber,
       "fournisseur_id": this.idFournisseur,
-      "depense_id": this.recentDepenses[0].id,
+      "depense_id": this.recentDepenses[0]?.id,
       "note_interne": this.noteInterne,
       "commentaire": this.commentaire,
       "reduction_commande": this.remise,
@@ -1207,4 +1208,96 @@ export class CommandeDachatComponent {
       }, 300);
     }
   }
+
+
+  docId: any;
+  modelId: any;
+  recupIdDocument(idDocs: any) {
+    this.docId = idDocs;
+  }
+
+  recupIdModel(idModel: any) {
+    this.modelId = idModel;
+    this.downloadPDF();
+  }
+
+  recupIdModelEmail(idModel: any) {
+    this.modelId = idModel;
+    alert(this.modelId);
+    this.emailDoc();
+  }
+
+ // generer pdf facture 
+ downloadPDF() {
+  this.http.post(`http://127.0.0.1:8000/api/genererPDFCommandeAchat/${this.docId}/${this.modelId}`, '', {
+    responseType: 'blob',
+    observe: 'response'
+  }).subscribe(response => {
+    // Vérifier si response.body n'est pas null
+    if (response.body) {
+      const blob = new Blob([response.body], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `command_achat${this.currentCommandeDachat.num_CommandeAchat}.pdf`;
+      link.click();
+
+      window.URL.revokeObjectURL(url);
+    } else {
+      console.error('Le contenu du PDF est vide');
+      // Vous pouvez ajouter ici un message d'erreur pour l'utilisateur
+    }
+  }, error => {
+    console.error('Erreur lors du téléchargement du PDF:', error);
+    // Gérer l'erreur (par exemple, afficher un message à l'utilisateur)
+  });
+}
+
+
+  // liste model document
+  isLoading: boolean = true;
+  listeModel: any[] = [];
+  listeModelByTypeDocument() {
+    this.filterService.getModelByTypeDocument('command_achat').subscribe(
+      (response) => {
+        console.log(response)
+        this.listeModel = response.modelesDocuments;
+        console.log(this.listeModel);
+        this.isLoading = false;
+      },
+      (error) => {
+        console.log(error);
+        this.isLoading = false;
+        console.log(this.isLoading)
+      }
+    )
+  }
+
+detailEmail: any;
+// detail email facture
+emailDoc() {
+  this.http.post(`http://127.0.0.1:8000/api/DetailEmailCommandeAchat_genererPDF/${this.docId}/${this.modelId}`, '', {
+  
+  }).subscribe(response => {
+    console.log(response)
+    this.detailEmail = response;
+  }, error => {
+    console.error('Erreur lors du téléchargement du PDF:', error);
+    
+  })
+}
+
+
+// envoyer email facture
+envoiMail() {
+  this.http.post(`http://127.0.0.1:8000/api/envoyerEmailCommandeAchat/${this.docId}/`, '', {}).subscribe(response => {
+    console.log(response)
+    Report.success('Notiflix Success', 'response', 'Okay',);
+  }, error => {
+    console.error('Erreur lors de l envoi du mail:', error);
+    
+  })
+}
+
 }

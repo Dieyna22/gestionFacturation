@@ -151,4 +151,9 @@ export class ConfigurationService {
     return this.http.post<any>(`${apiUrl}/getJournalAchatsEntreDates`, data);
   }
 
+  // Rapport Valeur Stock 
+  getRapportValeurStock (data: any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/Rapport_Valeur_Stock`, data);
+  }
+
 }

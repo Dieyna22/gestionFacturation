@@ -7,11 +7,16 @@
     <button class="btn btnSearch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
   </div>
   <div class="d-flex filtre">
-    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 1}" (click)="listeCommandeDachat(); actif = 1">tout</button>
-    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 2}" (click)="filterCommandeDachat('brouillon'); actif = 2">Brouillon</button>
-    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 3}" (click)="filterCommandeDachat('commander'); actif = 3">Commandées</button>
-    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 4}" (click)="filterCommandeDachat('recu'); actif = 4">Reçues</button>
-    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 5}" (click)="filterCommandeDachat('annuler'); actif = 5">Annulées</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 1}"
+      (click)="listeCommandeDachat(); actif = 1">tout</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 2}"
+      (click)="filterCommandeDachat('brouillon'); actif = 2">Brouillon</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 3}"
+      (click)="filterCommandeDachat('commander'); actif = 3">Commandées</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 4}"
+      (click)="filterCommandeDachat('recu'); actif = 4">Reçues</button>
+    <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 5}"
+      (click)="filterCommandeDachat('annuler'); actif = 5">Annulées</button>
   </div>
 </div>
 <!-- Contenu dashbord  -->
@@ -48,7 +53,7 @@
             <tbody *ngFor="let CommandeAchat of getItemsPage()">
               <tr>
                 <td data-bs-toggle="modal" data-bs-target="#ModalModifier"
-                  (click)="chargerInfosCommandeDachat(CommandeAchat);changeValueModal('modif')">
+                  (click)="chargerInfosCommandeDachat(CommandeAchat);changeValueModal('modif');recupIdDocument(CommandeAchat.id)">
                   {{CommandeAchat.num_CommandeAchat}}
                   <span *ngIf="CommandeAchat.etiquettes && CommandeAchat.etiquettes.length > 0" class="etiquettes">
                     <span *ngFor="let etiq of CommandeAchat.etiquettes; let i = index"
@@ -58,24 +63,24 @@
                   </span>
                 </td>
                 <td data-bs-toggle="modal" data-bs-target="#ModalModifier"
-                  (click)="chargerInfosCommandeDachat(CommandeAchat);changeValueModal('modif')">
+                  (click)="chargerInfosCommandeDachat(CommandeAchat);changeValueModal('modif');recupIdDocument(CommandeAchat.id)">
                   {{CommandeAchat.date_creation}}</td>
                 <td data-bs-toggle="modal" data-bs-target="#ModalModifier"
-                  (click)="chargerInfosCommandeDachat(CommandeAchat);changeValueModal('modif')">
+                  (click)="chargerInfosCommandeDachat(CommandeAchat);changeValueModal('modif');recupIdDocument(CommandeAchat.id)">
                   {{CommandeAchat.livraison}}</td>
                 <td data-bs-toggle="modal" data-bs-target="#ModalModifier"
-                  (click)="chargerInfosCommandeDachat(CommandeAchat);changeValueModal('modif')">
+                  (click)="chargerInfosCommandeDachat(CommandeAchat);changeValueModal('modif');recupIdDocument(CommandeAchat.id)">
                   {{CommandeAchat.Prenom_fournisseur}} {{CommandeAchat.Nom_Fournisseur}}</td>
                 <td data-bs-toggle="modal" data-bs-target="#ModalModifier"
-                  (click)="chargerInfosCommandeDachat(CommandeAchat);changeValueModal('modif')">
+                  (click)="chargerInfosCommandeDachat(CommandeAchat);changeValueModal('modif');recupIdDocument(CommandeAchat.id)">
                   {{CommandeAchat.prix_TTC}}</td>
                 <td data-bs-toggle="modal" data-bs-target="#ModalModifier"
-                  (click)="chargerInfosCommandeDachat(CommandeAchat);changeValueModal('modif')">{{CommandeAchat.statut}}
+                  (click)="chargerInfosCommandeDachat(CommandeAchat);changeValueModal('modif');recupIdDocument(CommandeAchat.id)">{{CommandeAchat.statut}}
                 </td>
                 <td>
                   <i class="bi bi-pencil-square me-2" title="modifier" data-bs-toggle="modal"
                     data-bs-target="#ModalModifier"
-                    (click)="chargerInfosCommandeDachat(CommandeAchat);changeValueModal('modif')"></i>
+                    (click)="chargerInfosCommandeDachat(CommandeAchat);changeValueModal('modif');recupIdDocument(CommandeAchat.id)"></i>
                   <i class="bi bi-trash3" title="Supprimer" (click)="deleteCommandeDachat(CommandeAchat.id)"></i>
                 </td>
               </tr>
@@ -198,19 +203,20 @@
                 <input type="date" class="form-control" id="staticEmail" name="datePay" [(ngModel)]="datePay">
               </div>
             </div>
-              <div class="mb-3 row">
-                <label for="staticEmail" class="col-sm-2 col-form-label">Montant Ht :</label>
-                <div class="col-sm-10">
-                  <input type="number" class="form-control" id="staticEmail" [value]="total" name="montantPay" [(ngModel)]="montantPay" readonly>
-                </div>
+            <div class="mb-3 row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Montant Ht :</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="staticEmail" [value]="total" name="montantPay"
+                  [(ngModel)]="montantPay" readonly>
               </div>
-              <div class="mb-3 row">
-                <label for="staticEmail" class="col-sm-2 col-form-label">Montant Ttc :</label>
-                <div class="col-sm-10">
-                  <input type="number" class="form-control" id="staticEmail" [value]="total" name="montantPayTtc"
-                    [(ngModel)]="montantPayTtc" readonly>
-                </div>
+            </div>
+            <div class="mb-3 row">
+              <label for="staticEmail" class="col-sm-2 col-form-label">Montant Ttc :</label>
+              <div class="col-sm-10">
+                <input type="number" class="form-control" id="staticEmail" [value]="total" name="montantPayTtc"
+                  [(ngModel)]="montantPayTtc" readonly>
               </div>
+            </div>
 
 
             <div class="form-check form-switch" *ngIf="impayer=='impayer'">
@@ -264,7 +270,8 @@
 </div>
 
 <!-- Modal ajout commande d'achat -->
-<div class="modal fade mt-5" id="commandeDachat" tabindex="-1" aria-labelledby="commandeDachatLabel" aria-hidden="true"  *ngIf="recentDepenses">
+<div class="modal fade mt-5" id="commandeDachat" tabindex="-1" aria-labelledby="commandeDachatLabel" aria-hidden="true"
+  *ngIf="recentDepenses">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
     <div class="modal-content">
       <div class="bgHeader">
@@ -377,7 +384,8 @@
                     </div>
                   </td>
                   <td><input type="number" class="form-control" [(ngModel)]="row.quantity" (input)="calculateTotal(row)"
-                      (input)="verifProduitFonction(row)" (input)="calculateTotalTva(row);onInputChange()" placeholder="Quantité"></td>
+                      (input)="verifProduitFonction(row)" (input)="calculateTotalTva(row);onInputChange()"
+                      placeholder="Quantité"></td>
                   <td>
                     <span *ngIf="row.promotionalPrice; else grillePrice">{{ row.promotionalPrice |
                       number:'1.2-2'
@@ -391,8 +399,8 @@
                     </ng-template>
                   </td>
                   <td><input type="number" class="form-control" [(ngModel)]="row.reductionArticle"
-                      (input)="calculateTotal(row)" (input)="calculateTotalTva(row);onInputChange()" (input)="verifProduitFonction(row)"
-                      placeholder="réduction"></td>
+                      (input)="calculateTotal(row)" (input)="calculateTotalTva(row);onInputChange()"
+                      (input)="verifProduitFonction(row)" placeholder="réduction"></td>
                   <td><input type="number" class="form-control" [(ngModel)]="row.tva" (input)="calculateTotalTva(row)"
                       (input)="verifProduitFonction(row);onInputChange()" placeholder="tva"></td>
                   <td><span class="text-right">{{row.total | number:'1.2-2' }}</span></td>
@@ -441,9 +449,9 @@
               <a style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#adddepence"> + Associer une
                 depense</a>
             </ng-template>
-            
 
-           
+
+
 
           </div>
         </div>
@@ -629,10 +637,10 @@
         </div>
       </div>
       <div class="modal-body">
-        <div class="mail" title="Envoyer par courrier électronique" data-bs-toggle="modal" data-bs-target="#mailDetail">
+        <div class="mail" title="Envoyer par courrier électronique" data-bs-toggle="modal" data-bs-target="#modelEmail">
           <i class="bi bi-envelope"></i>
         </div>
-        <div class="pdfFact" title="Telecharger PDF">
+        <div class="pdfFact" data-bs-toggle="modal" data-bs-target="#modelPdf">
           <i class="bi bi-file-earmark-pdf"></i>
         </div>
         <div class="invoice-form containerFacture">
@@ -713,7 +721,8 @@
               <input type="text" class="border border-0 mx-auto p-2 ms-3 mt-2" placeholder="Titre" name="titre">
               <hr>
             </div> -->
-            <span *ngIf="isAssociatedWithDepense"><i class="bi bi-info-circle-fill me-2"></i>Si vous voulez modifier les produits de cette commande, vous devez d'abord supprimer la dépense associée </span>
+            <span *ngIf="isAssociatedWithDepense"><i class="bi bi-info-circle-fill me-2"></i>Si vous voulez modifier les
+              produits de cette commande, vous devez d'abord supprimer la dépense associée </span>
             <table class="table table-bordered border-light">
               <thead class="thead-custom">
                 <tr>
@@ -752,7 +761,8 @@
                     </div>
                   </td>
                   <td><input type="number" class="form-control" [(ngModel)]="row.quantity" (input)="calculateTotal(row)"
-                      (input)="verifProduitFonction(row)" (input)="calculateTotalTva(row);onInputChange()" placeholder="Quantité" [disabled]="isAssociatedWithDepense"></td>
+                      (input)="verifProduitFonction(row)" (input)="calculateTotalTva(row);onInputChange()"
+                      placeholder="Quantité" [disabled]="isAssociatedWithDepense"></td>
                   <td>
                     <span *ngIf="row.promotionalPrice; else grillePrice">{{ row.promotionalPrice |
                       number:'1.2-2'
@@ -766,8 +776,8 @@
                     </ng-template>
                   </td>
                   <td><input type="number" class="form-control" [(ngModel)]="row.reductionArticle"
-                      (input)="calculateTotal(row)" (input)="calculateTotalTva(row);onInputChange()"  (input)="verifProduitFonction(row)"
-                      placeholder="réduction"></td>
+                      (input)="calculateTotal(row)" (input)="calculateTotalTva(row);onInputChange()"
+                      (input)="verifProduitFonction(row)" placeholder="réduction"></td>
                   <td><input type="number" class="form-control" [(ngModel)]="row.tva" (input)="calculateTotalTva(row)"
                       (input)="verifProduitFonction(row);onInputChange()" placeholder="tva"></td>
                   <td><span class="text-right">{{row.total | number:'1.2-2' }}</span></td>
@@ -777,7 +787,8 @@
                 </tr>
               </tbody>
             </table>
-            <button class="btn " (click)="addRow()" *ngIf="!isPreview" [disabled]="isAssociatedWithDepense"><i class="bi bi-plus-circle me-1"></i> Ajouter
+            <button class="btn " (click)="addRow()" *ngIf="!isPreview" [disabled]="isAssociatedWithDepense"><i
+                class="bi bi-plus-circle me-1"></i> Ajouter
               une ligne
             </button>
 
@@ -792,7 +803,8 @@
             </div>
 
             <div class="depenseList mx-auto" *ngIf="currentCommandeDachat && currentCommandeDachat.id_depense>0">
-              <button class="btn numDepense mb-2" (click)="supprimerDepense(currentCommandeDachat.id_depense)">Depense {{currentCommandeDachat.num_depense}}  <i class="bi bi-x-lg"></i></button>
+              <button class="btn numDepense mb-2" (click)="supprimerDepense(currentCommandeDachat.id_depense)">Depense
+                {{currentCommandeDachat.num_depense}} <i class="bi bi-x-lg"></i></button>
               <div class="form-check form-switch mb-2" *ngIf="currentCommandeDachat.statut_depense=='impayer'">
                 <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
                 <label class="form-check-label" for="flexSwitchCheckDefault">Impayé</label>
@@ -810,42 +822,46 @@
               </div>
             </div>
 
-            <a style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#adddepence"  *ngIf="currentCommandeDachat && currentCommandeDachat.id_depense==null">+ Associer une
+            <a style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#adddepence"
+              *ngIf="currentCommandeDachat && currentCommandeDachat.id_depense==null">+ Associer une
               depense</a>
 
-              <ng-container *ngIf="recentDepenses && recentDepenses.length>0;else addDepense">
-                <div class="depenseList mx-auto">
-                  <button class="btn numDepense mb-2">Depense {{recentDepenses[0].num_depense}}</button>
-                  <div class="form-check form-switch mb-2" *ngIf="recentDepenses[0].statut_depense=='impayer'">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                    <label class="form-check-label" for="flexSwitchCheckDefault">Impayé</label>
-                  </div>
-                  <div class="form-check form-switch mb-2" *ngIf="recentDepenses[0].statut_depense=='payer'">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked>
-                    <label class="form-check-label" for="flexSwitchCheckDefault">payé</label>
-                  </div>
-                  <div class="mb-3 d-flex">
-                    <label for="staticEmail" class="col-form-label">Date paiement :</label>
-                    <div class="">
-                      <input type="date" class="form-control" id="staticEmail" name="datePay"
-                        [(ngModel)]="recentDepenses[0].date_paiement">
-                    </div>
+            <ng-container *ngIf="recentDepenses && recentDepenses.length>0;else addDepense">
+              <div class="depenseList mx-auto">
+                <button class="btn numDepense mb-2">Depense {{recentDepenses[0].num_depense}}</button>
+                <div class="form-check form-switch mb-2" *ngIf="recentDepenses[0].statut_depense=='impayer'">
+                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                  <label class="form-check-label" for="flexSwitchCheckDefault">Impayé</label>
+                </div>
+                <div class="form-check form-switch mb-2" *ngIf="recentDepenses[0].statut_depense=='payer'">
+                  <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked>
+                  <label class="form-check-label" for="flexSwitchCheckDefault">payé</label>
+                </div>
+                <div class="mb-3 d-flex">
+                  <label for="staticEmail" class="col-form-label">Date paiement :</label>
+                  <div class="">
+                    <input type="date" class="form-control" id="staticEmail" name="datePay"
+                      [(ngModel)]="recentDepenses[0].date_paiement">
                   </div>
                 </div>
-              </ng-container>
-  
-              <ng-template #addDepense>
-                <a style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#adddepence"> + Associer une
-                  depense</a>
-              </ng-template>
+              </div>
+            </ng-container>
+
+            <ng-template #addDepense>
+              <a style="cursor:pointer;" data-bs-toggle="modal" data-bs-target="#adddepence"> + Associer une
+                depense</a>
+            </ng-template>
 
           </div>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btnAction" (click)="updateCommandeDachat()"  *ngIf="currentCommandeDachat && currentCommandeDachat.statut=='commander'">Modifier commande d'achat</button>
-        <button type="button" class="btn btnClose" data-bs-dismiss="modal" (click)="annulerCommandeDachat()" *ngIf="currentCommandeDachat && currentCommandeDachat.statut=='commander'">Annuler commande d'achat</button>
-        <button type="button" class="btn btnClose" data-bs-dismiss="modal" (click)="annulerCommandeDachat()" *ngIf="currentCommandeDachat && currentCommandeDachat.statut=='annuler'">Reprendre commande d'achat</button>
+        <button type="button" class="btn btnAction" (click)="updateCommandeDachat()"
+          *ngIf="currentCommandeDachat && currentCommandeDachat.statut=='commander'">Modifier commande d'achat</button>
+        <button type="button" class="btn btnClose" data-bs-dismiss="modal" (click)="annulerCommandeDachat()"
+          *ngIf="currentCommandeDachat && currentCommandeDachat.statut=='commander'">Annuler commande d'achat</button>
+        <button type="button" class="btn btnClose" data-bs-dismiss="modal" (click)="annulerCommandeDachat()"
+          *ngIf="currentCommandeDachat && currentCommandeDachat.statut=='annuler'">Reprendre commande d'achat</button>
       </div>
     </div>
   </div>
@@ -857,50 +873,106 @@
     <div class="modal-content">
       <div class="d-flex">
         <div class="p-3 flex-grow-1">
-          <h3 class="modal-title" id="mailLabel">Envoyer bon de commande par courrier électronique</h3>
+          <h3 class="modal-title" id="mailLabel">Envoyer commande d'achat par courrier électronique</h3>
+        </div>
+        <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+            (click)="ouvrirModal()"></button>
+        </div>
+      </div>
+      <div class="modal-body" *ngIf="detailEmail">
+        <div>
+          <div class="recipients-container">
+            <label>Destinataires :</label>
+            <div class="recipients-input-group">
+              <input type="text" [value]="detailEmail.client_email" readonly>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Objet :</label>
+            <input type="text" class="form-control" [value]="detailEmail.subject" readonly>
+          </div>
+
+          <div>
+            <div class="message-box">
+              <p>{{detailEmail.body}}</p>
+              <div class="attachment" (click)="downloadPDF()">
+                <i class="bi bi-paperclip"></i>
+                <span>commande_Achat.pdf</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn-send" (click)="envoiMail()">Envoyer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- modal update stock -->
+<div class="modal fade mt-5" id="updateStock" tabindex="-1" aria-labelledby="updateStockLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="d-flex">
+        <div class="p-3 flex-grow-1">
+          <h3 class="modal-title" id="mailLabel">Commande reçue</h3>
         </div>
         <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
             (click)="ouvrirModal()"></button>
         </div>
       </div>
       <div class="modal-body">
-        <div>
-          <div class="recipients-container">
-            <label>Destinataires :</label>
-            <div class="recipients-input-group">
-              <input type="text" value="ami@gmail.com" readonly>
-            </div>
-            <a href="#" class="add-recipient">+ Autre destinataire</a>
-          </div>
+        <div class="stock">
+          <button class="modal-button primary">
+            Augmenter mon stock avec les informations de cette commande
+          </button>
+          <button class="modal-button">
+            Ne pas modifier mon stock
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-          <div class="form-group">
-            <label>Objet :</label>
-            <input type="text" class="form-control" value="Commande d'achat 000001 réalisée le 10/10/2024" readonly>
-          </div>
-
-          <!-- <div class="checkbox-group d-flex">
-            <input type="checkbox" id="copy">
-            <label for="copy">Envoyer une copie à zeynab&#64;gmail.com</label>
-          </div> -->
-
-          <div>
-            <!-- <label>Vous pouvez compléter/modifier le message qui sera envoyé :</label> -->
-            <div class="message-box">
-              <p>Bonjour ami SECK,</p>
-              <p>Veuillez trouver ci-joint la Commande d'Achat N° 000001 réalisée le 10/10/2024 pour un montant de
-                4.500,00 (XOF).</p>
-              <p>Si vous avez besoin d'informations supplémentaires, n'hésitez pas à nous contacter.</p>
-              <p>Cordialement,</p>
-              <p>senTech</p>
-              <div class="attachment">
-                <i class="bi bi-paperclip"></i>
-                Commande d'Achat 000001
-              </div>
+<!-- choisir model de facture pour le pdf -->
+<div class="modal fade mt-5" id="modelPdf" tabindex="-1" aria-labelledby="modelPdfLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="d-grid gap-2 p-2 d-md-flex justify-content-md-end">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h3>Selectionnez un modele</h3>
+        <div class="zoneAffichage">
+          <div class="itemConfigM " *ngFor="let model of listeModel; let i = index">
+            <div class="border p-3 mb-1" (click)="recupIdModel(model.id)">
+              Model {{model.typeDocument}} {{i+1}}
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-          <div class="modal-footer">
-            <button class="btn-send">Envoyer</button>
+<!-- choisir model de facture pour le mail -->
+<div class="modal fade mt-5" id="modelEmail" tabindex="-1" aria-labelledby="modelEmailLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="d-grid gap-2 p-2 d-md-flex justify-content-md-end">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h3>Selectionnez un modele</h3>
+        <div class="zoneAffichage">
+          <div class="itemConfigM " *ngFor="let model of listeModel; let i = index">
+            <div class="border p-3 mb-1" (click)="recupIdModelEmail(model.id)" data-bs-toggle="modal" data-bs-target="#mailDetail">
+              Model {{model.typeDocument}} {{i+1}}
+            </div>
           </div>
         </div>
       </div>

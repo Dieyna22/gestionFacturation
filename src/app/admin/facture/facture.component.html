@@ -363,7 +363,7 @@
     <div class="col-md-12" id="Bon de Livraison" *ngIf="currentDoc==='Bon de Livraison'">
       <div class="card mb-4 px-2 py-2 pt-4 rounded-4">
         <div class="d-grid gap-2  mb-4 d-md-flex justify-content-md-end">
-          <button type="button" class="btn ajouter mb-2" data-bs-toggle="modal" data-bs-target="#livraison"
+          <button type="button" class="btn ajouter mb-2" data-bs-toggle="modal" data-bs-target="#livraisons"
             (click)="changeValueModal('ajoutBonLivraison')">
             Ajouter Bon de Livraison
           </button>
@@ -428,22 +428,21 @@
         </div>
       </div>
     </div>
-      <!-- btn exporter docs -->
-      <div (click)="exportExcel()" class="mt-5">
-        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0,0,256,256"
-          width="30px" height="30px">
-          <g fill-opacity="0.32941" fill="#000000" fill-rule="nonzero" stroke="none" stroke-width="1"
-            stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray=""
-            stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none"
-            style="mix-blend-mode: normal">
-            <g transform="scale(5.12,5.12)">
-              <path
-                d="M28.875,0c-0.01953,0.00781 -0.04297,0.01953 -0.0625,0.03125l-28,5.3125c-0.47656,0.08984 -0.82031,0.51172 -0.8125,1v37.3125c-0.00781,0.48828 0.33594,0.91016 0.8125,1l28,5.3125c0.28906,0.05469 0.58984,-0.01953 0.82031,-0.20703c0.22656,-0.1875 0.36328,-0.46484 0.36719,-0.76172v-5h17c1.09375,0 2,-0.90625 2,-2v-34c0,-1.09375 -0.90625,-2 -2,-2h-17v-5c0.00391,-0.28906 -0.12109,-0.5625 -0.33594,-0.75391c-0.21484,-0.19141 -0.50391,-0.28125 -0.78906,-0.24609zM28,2.1875v4.34375c-0.13281,0.27734 -0.13281,0.59766 0,0.875v35.40625c-0.02734,0.13281 -0.02734,0.27344 0,0.40625v4.59375l-26,-4.96875v-35.6875zM30,8h17v34h-17v-5h4v-2h-4v-6h4v-2h-4v-5h4v-2h-4v-5h4v-2h-4zM36,13v2h8v-2zM6.6875,15.6875l5.46875,9.34375l-5.96875,9.34375h5l3.25,-6.03125c0.22656,-0.58203 0.375,-1.02734 0.4375,-1.3125h0.03125c0.12891,0.60938 0.25391,1.02344 0.375,1.25l3.25,6.09375h4.96875l-5.75,-9.4375l5.59375,-9.25h-4.6875l-2.96875,5.53125c-0.28516,0.72266 -0.48828,1.29297 -0.59375,1.65625h-0.03125c-0.16406,-0.60937 -0.35156,-1.15234 -0.5625,-1.59375l-2.6875,-5.59375zM36,20v2h8v-2zM36,27v2h8v-2zM36,35v2h8v-2z">
-              </path>
-            </g>
+    <!-- btn exporter docs -->
+    <div (click)="exportExcel()" class="mt-5">
+      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0,0,256,256"
+        width="30px" height="30px">
+        <g fill-opacity="0.32941" fill="#000000" fill-rule="nonzero" stroke="none" stroke-width="1"
+          stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+          font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
+          <g transform="scale(5.12,5.12)">
+            <path
+              d="M28.875,0c-0.01953,0.00781 -0.04297,0.01953 -0.0625,0.03125l-28,5.3125c-0.47656,0.08984 -0.82031,0.51172 -0.8125,1v37.3125c-0.00781,0.48828 0.33594,0.91016 0.8125,1l28,5.3125c0.28906,0.05469 0.58984,-0.01953 0.82031,-0.20703c0.22656,-0.1875 0.36328,-0.46484 0.36719,-0.76172v-5h17c1.09375,0 2,-0.90625 2,-2v-34c0,-1.09375 -0.90625,-2 -2,-2h-17v-5c0.00391,-0.28906 -0.12109,-0.5625 -0.33594,-0.75391c-0.21484,-0.19141 -0.50391,-0.28125 -0.78906,-0.24609zM28,2.1875v4.34375c-0.13281,0.27734 -0.13281,0.59766 0,0.875v35.40625c-0.02734,0.13281 -0.02734,0.27344 0,0.40625v4.59375l-26,-4.96875v-35.6875zM30,8h17v34h-17v-5h4v-2h-4v-6h4v-2h-4v-5h4v-2h-4v-5h4v-2h-4zM36,13v2h8v-2zM6.6875,15.6875l5.46875,9.34375l-5.96875,9.34375h5l3.25,-6.03125c0.22656,-0.58203 0.375,-1.02734 0.4375,-1.3125h0.03125c0.12891,0.60938 0.25391,1.02344 0.375,1.25l3.25,6.09375h4.96875l-5.75,-9.4375l5.59375,-9.25h-4.6875l-2.96875,5.53125c-0.28516,0.72266 -0.48828,1.29297 -0.59375,1.65625h-0.03125c-0.16406,-0.60937 -0.35156,-1.15234 -0.5625,-1.59375l-2.6875,-5.59375zM36,20v2h8v-2zM36,27v2h8v-2zM36,35v2h8v-2z">
+            </path>
           </g>
-        </svg>
-      </div>
+        </g>
+      </svg>
+    </div>
   </div>
 </div>
 
@@ -535,50 +534,38 @@
     <div class="modal-content">
       <div class="d-flex">
         <div class="p-3 flex-grow-1">
-          <h3 class="modal-title" id="mailLabel">Envoyer bon de commande par courrier électronique</h3>
+          <h3 class="modal-title" id="mailLabel">Envoyer {{typeDocument}} par courrier électronique</h3>
         </div>
         <div class="p-3"> <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
             (click)="ouvrirModal()"></button>
         </div>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" *ngIf="detailEmail">
         <div>
           <div class="recipients-container">
             <label>Destinataires :</label>
             <div class="recipients-input-group">
-              <input type="text" value="ami@gmail.com" readonly>
+              <input type="text" [value]="detailEmail.client_email" readonly>
             </div>
-            <a href="#" class="add-recipient">+ Autre destinataire</a>
           </div>
 
           <div class="form-group">
             <label>Objet :</label>
-            <input type="text" class="form-control" value="Commande d'achat 000001 réalisée le 10/10/2024" readonly>
+            <input type="text" class="form-control" [value]="detailEmail.subject" readonly>
           </div>
 
-          <!-- <div class="checkbox-group d-flex">
-            <input type="checkbox" id="copy">
-            <label for="copy">Envoyer une copie à zeynab&#64;gmail.com</label>
-          </div> -->
-
           <div>
-            <!-- <label>Vous pouvez compléter/modifier le message qui sera envoyé :</label> -->
             <div class="message-box">
-              <p>Bonjour ami SECK,</p>
-              <p>Veuillez trouver ci-joint la Commande d'Achat N° 000001 réalisée le 10/10/2024 pour un montant de
-                4.500,00 (XOF).</p>
-              <p>Si vous avez besoin d'informations supplémentaires, n'hésitez pas à nous contacter.</p>
-              <p>Cordialement,</p>
-              <p>senTech</p>
-              <div class="attachment">
+              <p>{{detailEmail.body}}</p>
+              <div class="attachment" (click)="downloadPDF()">
                 <i class="bi bi-paperclip"></i>
-                Commande d'Achat 000001
+                <span>{{typeDocument}}.pdf</span>
               </div>
             </div>
           </div>
 
           <div class="modal-footer">
-            <button class="btn-send">Envoyer</button>
+            <button class="btn-send" (click)="envoiMail()">Envoyer</button>
           </div>
         </div>
       </div>
@@ -1121,7 +1108,7 @@
           </div>
 
 
-          <button class="save-btn" data-bs-toggle="modal" data-bs-target="#livraison"
+          <button class="save-btn" data-bs-toggle="modal" data-bs-target="#livraisons"
             (click)="configurationNumeroBonLivraison()">Sauvegarder</button>
         </div>
       </div>
@@ -1202,7 +1189,7 @@
           </button>
         </div>
         <button class="btnAction mx-auto btn mt-3" data-bs-toggle="modal"
-          data-bs-target="#livraison">Sauvegarder</button>
+          data-bs-target="#livraisons">Sauvegarder</button>
       </div>
     </div>
   </div>
@@ -1260,7 +1247,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- Modal definition solde pour un client -->
 <div class="modal fade mt-5" id="solde" tabindex="-1" aria-labelledby="soldeLabel" aria-hidden="true">
@@ -1496,22 +1482,21 @@
         </div>
       </div>
       <div class="modal-body">
-        <div class="mail" title="Envoyer par courrier électronique" data-bs-toggle="modal" data-bs-target="#mailDetail">
+        <div class="mail" title="Envoyer par courrier électronique" data-bs-toggle="modal" data-bs-target="#modelEmail">
           <i class="bi bi-envelope"></i>
+        </div>
+        <div class="pdfFact" data-bs-toggle="modal" data-bs-target="#modelPdf">
+          <i class="bi bi-file-earmark-pdf"></i>
         </div>
         <!-- <div class="seeFact" data-bs-toggle="modal" data-bs-target="#pdfModel">
           <i class="bi bi-eye"></i>
         </div> -->
-        <div class="imprimFact">
+        <!-- <div class="imprimFact">
           <button class="btn" [printStyle]="{img: {'width':'2.5cm'}}" [useExistingCss]="true"
             styleSheetFile="../facture/facture.component.css" printSectionId="print-section-details" ngxPrint>
             <i class="bi bi-printer"></i>
           </button>
-        </div>
-
-        <div class="pdfFact" data-bs-toggle="modal" data-bs-target="#modelPdf">
-          <i class="bi bi-file-earmark-pdf"></i>
-        </div>
+        </div> -->
         <div class="header mb-4 d-grid gap-2 d-md-flex justify-content-md-end">
           <ul class="nav">
             <li><a [ngClass]="{'currentItemNav': boutonActif === 1}" (click)="showDetailFacture('Récapitulatif')"
@@ -1769,8 +1754,12 @@
                       <td>{{paiement.num_paiement}}</td>
                       <td>{{paiement.date_recu}}</td>
                       <td>{{paiement.montant}}</td>
-                      <td class="text-center"> <i class="bi bi-reply" title="transformer en échèance"
-                          (click)="paymentRecuEnecheance(paiement.id)"></i></td>
+                      <td class="text-center">
+                        <i class="bi bi-envelope me-2" title="Envoyer par courrier électronique" data-bs-toggle="modal"
+                          data-bs-target="#modelEmail"></i>
+                        <i class="bi bi-reply" title="transformer en échèance"
+                          (click)="paymentRecuEnecheance(paiement.id)"></i>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -1799,6 +1788,15 @@
                 <a href="#" class="add-link">+ Ajouter une échéance</a>
               </div>
             </div>
+
+             <div class="resume">
+               <h3>Résumé de la vente et ses règlements</h3>
+                <div class="icon-container" (click)="setValueResume('resume')">
+                  <i class="bi bi-file-pdf"></i>
+                  <i class="bi bi-envelope" data-bs-toggle="modal"
+                  data-bs-target="#modelEmail"></i>
+                </div>
+              </div>
 
             <div class="reminders">
               <span>⚙</span> Relances automatiques (désactivé)
@@ -1859,7 +1857,7 @@
         <div class="zoneAffichage">
           <div class="itemConfigM " *ngFor="let model of listeModel; let i = index">
             <div class="border p-3 mb-1" (click)="recupIdModel(model.id)">
-              Design {{model.typeDocument}} {{i+1}}
+              Model {{model.typeDocument}} {{i+1}}
             </div>
           </div>
         </div>
@@ -1867,6 +1865,29 @@
     </div>
   </div>
 </div>
+
+<!-- choisir model de facture pour le mail -->
+<div class="modal fade mt-5" id="modelEmail" tabindex="-1" aria-labelledby="modelEmailLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="d-grid gap-2 p-2 d-md-flex justify-content-md-end">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h3>Selectionnez un modele</h3>
+        <div class="zoneAffichage">
+          <div class="itemConfigM " *ngFor="let model of listeModel; let i = index">
+            <div class="border p-3 mb-1" (click)="recupIdModelEmail(model.id)" data-bs-toggle="modal"
+              data-bs-target="#mailDetail">
+              Model {{model.typeDocument}} {{i+1}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal facture d'accompte -->
 <div class="modal fade" id="echeance" tabindex="-1" aria-labelledby="echeanceLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -2104,8 +2125,11 @@
         </div>
       </div>
       <div class="modal-body">
-        <div class="seeFact" data-bs-toggle="modal" data-bs-target="#pdfModel">
-          <i class="bi bi-eye"></i>
+        <div class="mail" title="Envoyer par courrier électronique" data-bs-toggle="modal" data-bs-target="#modelEmail">
+          <i class="bi bi-envelope"></i>
+        </div>
+        <div class="pdfFact" data-bs-toggle="modal" data-bs-target="#modelPdf">
+          <i class="bi bi-file-earmark-pdf"></i>
         </div>
         <ng-container *ngIf="detailDevi">
           <div>
@@ -2197,13 +2221,15 @@
         </div>
       </div>
       <div class="modal-body">
-        <div class="seeFact" data-bs-toggle="modal" data-bs-target="#pdfModel">
-          <i class="bi bi-eye"></i>
+        <div class="mail" title="Envoyer par courrier électronique" data-bs-toggle="modal" data-bs-target="#modelEmail">
+          <i class="bi bi-envelope"></i>
+        </div>
+        <div class="pdfFact" data-bs-toggle="modal" data-bs-target="#modelPdf">
+          <i class="bi bi-file-earmark-pdf"></i>
         </div>
 
         <ng-container *ngIf="bonCommande">
           <div>
-
             <div class="headerFacture row">
               <div class="date-inputs col-7">
                 <div class="date-input">
@@ -2293,6 +2319,193 @@
   </div>
 </div>
 
+<!-- Modal creation Bon de livraison -->
+<div class="modal fade mt-5" id="livraisons" tabindex="-1" aria-labelledby="livraisonLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered  modal-xl">
+    <div class="modal-content">
+      <div class="bgHeader">
+        <div class="d-flex justify-content-between p-2">
+          <h4 class="modal-title" id="exampleModalLabel">{{titre}}</h4>
+          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="seeFact" data-bs-toggle="modal" data-bs-target="#seeModéle">
+          <i class="bi bi-eye"></i>
+        </div>
+        <div class="containerBonCommande containerFacture">
+          <div class="d-flex mb-2">
+            <div class="p-3 flex-grow-1">
+              <div class="form-check form-switch me-5" *ngIf="active=='non'">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="stock"
+                  (click)="setTypeActive('oui')">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Activer stock</label>
+              </div>
+              <div class="form-check form-switch me-5" *ngIf="active=='oui'">
+                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked
+                  name="stock" (click)="setTypeActive('non')">
+                <label class="form-check-label" for="flexSwitchCheckDefault">Activer stock</label>
+              </div>
+            </div>
+            <ng-container *ngIf="selectedEtiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
+              <span *ngFor="let etiq of selectedEtiquettes; let i = index"
+                [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2">
+                {{ etiq.nom_etiquette }}
+                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquettechosi(i)"></i>
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-container>
+            <ng-template #associerEtiquetteBlock>
+              <span class="me-2" data-bs-toggle="modal" data-bs-target="#etiquette" style="cursor: pointer;">
+                Associer étiquette
+              </span>
+              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
+            </ng-template>
+          </div>
+          <div class="headerFacture">
+            <div class="date-inputs">
+              <div class="date-input">
+                <label for="date-devis">Date livraison :</label>
+                <input type="date" id="date-devis" name=datedevis [(ngModel)]="datedevis">
+              </div>
+            </div>
+            <div class="numero-input">
+              <label for="numero">Numéro :&nbsp;</label>
+              <input type="text" id="numero" [(ngModel)]="nextNumberBonLivraison" readonly>&nbsp;
+              <i class="bi bi-gear" data-bs-toggle="modal" data-bs-target="#settinglLivraison"></i>
+            </div>
+          </div>
+
+
+          <div class="d-md-flex">
+            <div class="client-section w-50 me-2">
+              <button class="associate-client" data-bs-toggle="modal" data-bs-target="#clientLivraison"
+                *ngIf="!currentClient">+ Associer Client</button>
+
+              <div class="client-info" *ngFor="let clientSelect of currentClient">
+                <input type="text" value="{{clientSelect?.prenom_client}} {{clientSelect?.nom_client}}" readonly>
+                <div class="client-details">
+                  <p class="me-3 ms-3">Adresse : {{clientSelect?.adress_client}}</p>
+                  <p class="me-3 ms-3">Téléphone : {{clientSelect?.tel_client}}</p>
+                  <p class="me-3 ms-3">Entreprise : {{clientSelect?.nom_entreprise}}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="client-section w-50">
+              <button class="associate-client"  *ngIf="!currentClient">+ Associer Transporteur</button>
+  
+              <div class="client-info"  *ngFor="let clientSelect of currentClient">
+                <input type="text" value="{{clientSelect?.prenom_client}} {{clientSelect?.nom_client}}"  readonly>
+                <div class="client-details">
+                  <p class="me-3 ms-3">Adresse : {{clientSelect?.adress_client}}</p>
+                  <p class="me-3 ms-3">Téléphone : {{clientSelect?.tel_client}}</p>
+                  <p class="me-3 ms-3">Entreprise : {{clientSelect?.nom_entreprise}}</p>
+                </div>
+              </div>
+            </div> -->
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Description</th>
+                <th>Quantité</th>
+                <th>PU</th>
+                <th>TVA</th>
+                <th>Total HT</th>
+                <th>Total TTC</th>
+                <th *ngIf="!isPreview"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of rows; let i = index">
+                <td>
+                  <div class="input-group mb-2 me-2">
+                    <select class="form-control" [(ngModel)]="row.selectedProduct" (change)="onProductSelect(row)"
+                      (change)="listeGrille(row)" (change)="listePriceByArticle(row)"
+                      (input)="verifProduitFonction(row)">
+                      <option value="0">Sélectionnez un produit/service</option>
+                      <option *ngFor="let product of products" [value]="product.id">{{ product.nom_article }}</option>
+                    </select>
+                    <div class="dropdown">
+                      <button class="btn ajouter text-white dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">Ajouter</button>
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#produit">Produit</a></li>
+                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#service">Service</a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </td>
+                <td><input type="number" class="form-control" [(ngModel)]="row.quantity" (input)="calculateTotal(row)"
+                    (input)="verifProduitFonction(row)" (input)="calculateTotalTva(row)" placeholder="Quantité"></td>
+                <td>
+                  <span *ngIf="row.promotionalPrice; else grillePrice">{{ row.promotionalPrice | number:'1.2-2'
+                    }}</span>
+                  <ng-template #grillePrice>
+                    <span *ngIf="row.grillePrice; else regularPrice">{{ row.grillePrice | number:'1.2-2' }}</span>
+                    <ng-template #regularPrice>
+                      <span>{{ row.unitPrice | number:'1.2-2' }}</span>
+                    </ng-template>
+                  </ng-template>
+                </td>
+                <td><input type="number" class="form-control" [(ngModel)]="row.tva" (input)="calculateTotalTva(row)"
+                    (input)="verifProduitFonction(row)" placeholder="tva"></td>
+                <td><span class="text-right">{{row.total | number:'1.2-2' }}</span></td>
+                <td><span class="text-right">{{row.totalTTC | number:'1.2-2' }}</span></td>
+                <td *ngIf="!isPreview"><button class="btn btn-danger btnDelete btn-sm" (click)="deleteRow(i)"><i
+                      class="bi bi-trash"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="add-line" (click)="addRow()">
+            + Nouvelle ligne
+          </div>
+
+          <div class="row">
+            <div class="form-group col-4">
+              <label for="commentaire">Commentaire:</label>
+              <textarea id="commentaire" class="comment-box" name="noteFacture" [(ngModel)]="noteFacture"></textarea>
+            </div>
+            <div class="col-8">
+              <br>
+              <br>
+              <table class="table table-sm text-right">
+                <tr>
+                  <td><strong>Total HT</strong></td>
+                  <td class="text-right"> <span class="font-weight-bold">{{ total | number:'1.2-2' }}</span> FCfa</td>
+                </tr>
+                <tr>
+                  <td><strong>TVA</strong></td>
+                  <td class="text-right"> <span class="font-weight-bold">{{ totalTVA | number:'1.2-2' }}</span> FCfa
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>Total TTC</strong></td>
+                  <td class="text-right"> <span class="font-weight-bold">{{ totalTTC | number:'1.2-2' }}</span> FCfa
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <button class="btn btnAction" type="button" (click)="createBonLivraison()">Ajouter bon livraison</button>
+            <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
+          </div>
+          <!-- <div class="button-group">
+            <button class="button">Livraison en préparation</button>
+            <button class="button">Livraison planifiée</button>
+            <button class="button">Livraison réalisée</button>
+        </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Modal détail bon de livraison -->
 <div class="modal fade mt-5" id="detailBL" tabindex="-1" aria-labelledby="detailBLLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl">
@@ -2304,8 +2517,11 @@
         </div>
       </div>
       <div class="modal-body">
-        <div class="seeFact" data-bs-toggle="modal" data-bs-target="#pdfModel">
-          <i class="bi bi-eye"></i>
+        <div class="mail" title="Envoyer par courrier électronique" data-bs-toggle="modal" data-bs-target="#modelEmail">
+          <i class="bi bi-envelope"></i>
+        </div>
+        <div class="pdfFact" data-bs-toggle="modal" data-bs-target="#modelPdf">
+          <i class="bi bi-file-earmark-pdf"></i>
         </div>
 
         <ng-container *ngIf="detailBonLivraison">
@@ -3425,193 +3641,6 @@
             <a href="#" data-bs-toggle="modal" data-bs-target="#echanceBonCommande">Associer un échéancier</a>
           </div>
           <button class="button" (click)=" createBonCommande()">Commande réalisée</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal creation Bon de livraison -->
-<div class="modal fade mt-5" id="livraison" tabindex="-1" aria-labelledby="livraisonLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered  modal-xl">
-    <div class="modal-content">
-      <div class="bgHeader">
-        <div class="d-flex justify-content-between p-2">
-          <h4 class="modal-title" id="exampleModalLabel">{{titre}}</h4>
-          <div><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
-        </div>
-      </div>
-      <div class="modal-body">
-        <div class="seeFact" data-bs-toggle="modal" data-bs-target="#seeModéle">
-          <i class="bi bi-eye"></i>
-        </div>
-        <div class="containerBonCommande containerFacture">
-          <div class="d-flex mb-2">
-            <div class="p-3 flex-grow-1">
-              <div class="form-check form-switch me-5" *ngIf="active=='non'">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="stock"
-                  (click)="setTypeActive('oui')">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Activer stock</label>
-              </div>
-              <div class="form-check form-switch me-5" *ngIf="active=='oui'">
-                <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked
-                  name="stock" (click)="setTypeActive('non')">
-                <label class="form-check-label" for="flexSwitchCheckDefault">Activer stock</label>
-              </div>
-            </div>
-            <ng-container *ngIf="selectedEtiquettes.length > 0; else associerEtiquetteBlock" class="etiquettes">
-              <span *ngFor="let etiq of selectedEtiquettes; let i = index"
-                [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2">
-                {{ etiq.nom_etiquette }}
-                <i class="bi bi-x-lg text-light" (click)="supprimerEtiquettechosi(i)"></i>
-              </span>
-              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
-            </ng-container>
-            <ng-template #associerEtiquetteBlock>
-              <span class="me-2" data-bs-toggle="modal" data-bs-target="#etiquette" style="cursor: pointer;">
-                Associer étiquette
-              </span>
-              <i class="bi bi-plus-circle-dotted" data-bs-toggle="modal" data-bs-target="#etiquette"></i>
-            </ng-template>
-          </div>
-          <div class="headerFacture">
-            <div class="date-inputs">
-              <div class="date-input">
-                <label for="date-devis">Date livraison :</label>
-                <input type="date" id="date-devis" name=datedevis [(ngModel)]="datedevis">
-              </div>
-            </div>
-            <div class="numero-input">
-              <label for="numero">Numéro :&nbsp;</label>
-              <input type="text" id="numero" [(ngModel)]="nextNumberBonLivraison" readonly>&nbsp;
-              <i class="bi bi-gear" data-bs-toggle="modal" data-bs-target="#settinglLivraison"></i>
-            </div>
-          </div>
-
-
-          <div class="d-md-flex">
-            <div class="client-section w-50 me-2">
-              <button class="associate-client" data-bs-toggle="modal" data-bs-target="#clientLivraison"
-                *ngIf="!currentClient">+ Associer Client</button>
-
-              <div class="client-info" *ngFor="let clientSelect of currentClient">
-                <input type="text" value="{{clientSelect?.prenom_client}} {{clientSelect?.nom_client}}" readonly>
-                <div class="client-details">
-                  <p class="me-3 ms-3">Adresse : {{clientSelect?.adress_client}}</p>
-                  <p class="me-3 ms-3">Téléphone : {{clientSelect?.tel_client}}</p>
-                  <p class="me-3 ms-3">Entreprise : {{clientSelect?.nom_entreprise}}</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- <div class="client-section w-50">
-              <button class="associate-client"  *ngIf="!currentClient">+ Associer Transporteur</button>
-  
-              <div class="client-info"  *ngFor="let clientSelect of currentClient">
-                <input type="text" value="{{clientSelect?.prenom_client}} {{clientSelect?.nom_client}}"  readonly>
-                <div class="client-details">
-                  <p class="me-3 ms-3">Adresse : {{clientSelect?.adress_client}}</p>
-                  <p class="me-3 ms-3">Téléphone : {{clientSelect?.tel_client}}</p>
-                  <p class="me-3 ms-3">Entreprise : {{clientSelect?.nom_entreprise}}</p>
-                </div>
-              </div>
-            </div> -->
-          </div>
-
-          <table>
-            <thead>
-              <tr>
-                <th>Description</th>
-                <th>Quantité</th>
-                <th>PU</th>
-                <th>TVA</th>
-                <th>Total HT</th>
-                <th>Total TTC</th>
-                <th *ngIf="!isPreview"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let row of rows; let i = index">
-                <td>
-                  <div class="input-group mb-2 me-2">
-                    <select class="form-control" [(ngModel)]="row.selectedProduct" (change)="onProductSelect(row)"
-                      (change)="listeGrille(row)" (change)="listePriceByArticle(row)"
-                      (input)="verifProduitFonction(row)">
-                      <option value="0">Sélectionnez un produit/service</option>
-                      <option *ngFor="let product of products" [value]="product.id">{{ product.nom_article }}</option>
-                    </select>
-                    <div class="dropdown">
-                      <button class="btn ajouter text-white dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">Ajouter</button>
-                      <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#produit">Produit</a></li>
-                        <li><a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#service">Service</a></li>
-                      </ul>
-                    </div>
-                  </div>
-                </td>
-                <td><input type="number" class="form-control" [(ngModel)]="row.quantity" (input)="calculateTotal(row)"
-                    (input)="verifProduitFonction(row)" (input)="calculateTotalTva(row)" placeholder="Quantité"></td>
-                <td>
-                  <span *ngIf="row.promotionalPrice; else grillePrice">{{ row.promotionalPrice | number:'1.2-2'
-                    }}</span>
-                  <ng-template #grillePrice>
-                    <span *ngIf="row.grillePrice; else regularPrice">{{ row.grillePrice | number:'1.2-2' }}</span>
-                    <ng-template #regularPrice>
-                      <span>{{ row.unitPrice | number:'1.2-2' }}</span>
-                    </ng-template>
-                  </ng-template>
-                </td>
-                <td><input type="number" class="form-control" [(ngModel)]="row.tva" (input)="calculateTotalTva(row)"
-                    (input)="verifProduitFonction(row)" placeholder="tva"></td>
-                <td><span class="text-right">{{row.total | number:'1.2-2' }}</span></td>
-                <td><span class="text-right">{{row.totalTTC | number:'1.2-2' }}</span></td>
-                <td *ngIf="!isPreview"><button class="btn btn-danger btnDelete btn-sm" (click)="deleteRow(i)"><i
-                      class="bi bi-trash"></i></button></td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div class="add-line" (click)="addRow()">
-            + Nouvelle ligne
-          </div>
-
-          <div class="row">
-            <div class="form-group col-4">
-              <label for="commentaire">Commentaire:</label>
-              <textarea id="commentaire" class="comment-box" name="noteFacture" [(ngModel)]="noteFacture"></textarea>
-            </div>
-            <div class="col-8">
-              <br>
-              <br>
-              <table class="table table-sm text-right">
-                <tr>
-                  <td><strong>Total HT</strong></td>
-                  <td class="text-right"> <span class="font-weight-bold">{{ total | number:'1.2-2' }}</span> FCfa</td>
-                </tr>
-                <tr>
-                  <td><strong>TVA</strong></td>
-                  <td class="text-right"> <span class="font-weight-bold">{{ totalTVA | number:'1.2-2' }}</span> FCfa
-                  </td>
-                </tr>
-                <tr>
-                  <td><strong>Total TTC</strong></td>
-                  <td class="text-right"> <span class="font-weight-bold">{{ totalTTC | number:'1.2-2' }}</span> FCfa
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </div>
-
-          <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button class="btn btnAction" type="button" (click)="createBonLivraison()">Ajouter bon livraison</button>
-            <button type="button" class="btn btnClose" data-bs-dismiss="modal">Annuler</button>
-          </div>
-          <!-- <div class="button-group">
-            <button class="button">Livraison en préparation</button>
-            <button class="button">Livraison planifiée</button>
-            <button class="button">Livraison réalisée</button>
-        </div> -->
         </div>
       </div>
     </div>

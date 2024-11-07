@@ -395,12 +395,12 @@ export class RapportComponent implements OnInit {
   groupedData: GroupedExpenseData = {};
   groupedByCategory: GroupedByCategory = {};
   groupedByFournisseur: GroupedByFournisseur = {};
-  labelsCategory:any;
-  depenseCategory:any;
-  labelsFournisseur:any;
-  depenseFournisseur:any;
-  listeCategory:any;
-  listeFournissuer:any;
+  labelsCategory: any;
+  depenseCategory: any;
+  labelsFournisseur: any;
+  depenseFournisseur: any;
+  listeCategory: any;
+  listeFournissuer: any;
 
   listeDepense() {
     const date = {
@@ -433,7 +433,7 @@ export class RapportComponent implements OnInit {
           // --- Grouping by Category ---
           if (!groupedByCategory[category]) {
             groupedByCategory[category] = {
-              nomCategory:depense.categorie_depense?.nom_categorie_depense,
+              nomCategory: depense.categorie_depense?.nom_categorie_depense,
               totalHT: 0,
               totalTTC: 0,
               categoryId: depense.categorie_depense?.id,
@@ -913,6 +913,28 @@ export class RapportComponent implements OnInit {
       (response: any) => {
         console.log(response);
         this.journalDachat = response;
+        // Ajouter un petit délai
+        setTimeout(() => {
+          this.generateRapport(); // Votre méthode qui génère le graphique
+        }, 100);
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des données:', error);
+      }
+    );
+  }
+
+  ValeurStock: any;
+  listeValeurStock() {
+    const date = {
+      date_debut: this.dateDebut,
+      date_fin: this.dateFin
+    };
+
+    this.rapportService.getRapportValeurStock(date).subscribe(
+      (response: any) => {
+        console.log(response);
+        this.ValeurStock = response;
         // Ajouter un petit délai
         setTimeout(() => {
           this.generateRapport(); // Votre méthode qui génère le graphique
@@ -1439,7 +1461,14 @@ export class RapportComponent implements OnInit {
       type: 'none',
       getData: () => '',
     },
-    { id: 'stock', titre: 'Valeur du stock', label: 'Stock', isOpen: false },
+    {
+      id: 'stock',
+      titre: 'Valeur du stock',
+      label: 'Stock',
+      isOpen: false,
+      type: 'none',
+      getData: () => '',
+    },
   ];
 
   selectedRapport: any = null;
@@ -1502,6 +1531,9 @@ export class RapportComponent implements OnInit {
     } else if (this.selectedRapport.id == "journalAchat") {
       this.cdr.detectChanges();
       this.listeJournalDachat();
+    } else if (this.selectedRapport.id == "stock") {
+      this.cdr.detectChanges();
+      this.listeValeurStock();
     }
   }
 
