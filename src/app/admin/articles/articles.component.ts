@@ -49,7 +49,7 @@ export class ArticlesComponent implements OnInit {
   unite: string = "";
   tva: number = 0;
   titrePrix: string = "";
-  tvaPrix: string = "";
+  tvaPrix: number = 0;
   prixVente: string = "";
   entrepotName: string = "";
   addEntrepot: string = "";
@@ -82,6 +82,7 @@ export class ArticlesComponent implements OnInit {
   inputtvaPrix: string = "";
   inputprixVente: string = "";
   inputcodeBarres: string = ""
+  inputTvaPrix: number = 0
 
   currentStep = 1;
   isFileValid = false;
@@ -238,7 +239,7 @@ export class ArticlesComponent implements OnInit {
       "active_Stock": this.active,
       "nom_article": this.nom,
       "description": this.desc,
-      "prix_achat": this.achat,
+      "prix_ht_achat": this.achat,
       "prix_unitaire": this.vente,
       "tva": this.tva,
       "type_article": "produit",
@@ -246,6 +247,7 @@ export class ArticlesComponent implements OnInit {
       "quantite": this.quantite,
       "quantite_alert": this.quantiteAlerte,
       "id_categorie_article": this.CategorieArticle,
+      "tva_achat":this.tvaPrix,
       "code_barre": this.codeBarres,
       "autres_prix": [] as Array<{
         titrePrix: string,
@@ -336,6 +338,7 @@ export class ArticlesComponent implements OnInit {
     this.note = '';
     this.unite = '';
     this.tva = 0;
+    this.tvaPrix=0;
     this.titrePrix = '';
     // this.tva = '';
     this.montant = '';
@@ -368,6 +371,7 @@ export class ArticlesComponent implements OnInit {
     this.inputtvaPrix = '';
     // this.inputmontant = '';
     this.inputcodeBarres = '';
+    this.inputTvaPrix =0;
 
     this.prixList.push({ titrePrix: '', tva: '', montant: '' });
     this.selectedEtiquettes.push();
@@ -408,12 +412,13 @@ export class ArticlesComponent implements OnInit {
     this.inputdesc = paramArticle.description;
     this.inputvente = paramArticle.prix_unitaire;
     this.inputtypeArticle = paramArticle.type_article;
-    this.inputachat = paramArticle.prix_achat;
+    this.inputachat = paramArticle.prix_ht_achat;
     this.inputquantite = paramArticle.quantite;
     this.inputquantiteAlerte = paramArticle.quantite_alert;
     this.inputCategorieArticle = paramArticle.id_categorie_article;
     this.inputunite = paramArticle.unité;
     this.inputtva = paramArticle.tva;
+    this.inputTvaPrix = paramArticle. tva_achat;
     this.inputentrepotName = paramArticle.entrepot_art[0].entrepot_id;
     this.inputLotnom = paramArticle.lot[0].nomLot;
     this.inputLotquantite = paramArticle.lot[0].quantiteLot;
@@ -440,13 +445,14 @@ export class ArticlesComponent implements OnInit {
       "description": this.inputdesc,
       "prix_unitaire": this.inputvente,
       "type_article": this.currentArticle.type_article,
-      "prix_achat": this.inputachat,
+      "prix_ht_achat": this.inputachat,
       "quantite": this.inputquantite,
       "quantite_alert": this.inputquantiteAlerte,
       "id_categorie_article": this.inputCategorieArticle,
       "unité": this.inputunite,
       "tva": this.inputtva,
       "code_barre": this.inputcodeBarres,
+      "tva_achat":this.inputTvaPrix,
       "autres_prix": [] as Array<{
         titrePrix: string,
         montant: string,

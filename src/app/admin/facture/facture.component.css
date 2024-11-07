@@ -194,7 +194,7 @@ padding: 10px;
 
 .pdfFact{
   position: fixed;
-  top: 400px;
+  top: 350px;
   left: 80px;
   background-color: #fff;
   color: #F19A33;
@@ -226,22 +226,6 @@ padding: 10px;
   justify-content: center;
 }
 
-.seeFact{
-  position: fixed;
-  top: 350px;
-  left: 80px;
-  background-color: #fff;
-  color: #F19A33;
-  height: 45px;
-  width: 45px;
-  z-index: 9999;
-  border: thin solid #F19A33;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
 .colorModéle{
   position: fixed;
   top: 450px;
@@ -1264,4 +1248,30 @@ th, td {
 .zoneAffichage{
   overflow-y: scroll;
   height: 190px;
+}
+.resume {
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 25px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  justify-content: center;
+  align-items: center;
+  width: 450px;
+}
+
+.icon-container {
+  display: flex;
+  margin-right: 10px;
+}
+
+.icon-container i {
+  font-size: 20px;
+  margin-right: 5px;
+  color: #0077b6;
+}
+
+h3 {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333;
 }

@@ -362,18 +362,14 @@ export class VenteService {
     return this.http.get<any>(`${apiUrl}/listeSoldeParClient/${clientId}`);
   }
 
-  // telecharger pdf facture
-  genererPdf(factureId: any,modelDocumentId:any): Observable<any> {
-    return this.http.post<any>(`${apiUrl}/genererPDFFacture/${factureId}/${modelDocumentId}`, '');
+  // detail email facture
+  detailEmailFacture(factureId: any,modelDocumentId:any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/DetailEmailFacture_genererPDF/${factureId}/${modelDocumentId}`, '');
   }
 
-
- 
-
-
-  // detail email facture
-  detailEmailFacture(factureId: any): Observable<any> {
-    return this.http.post<any>(`${apiUrl}/DetailEmailFacture_genererPDF/${factureId}`, '');
+  // envoyer email facture
+  EnvoyerEmailFacture(factureId: any,modelDocumentId:any): Observable<any> {
+    return this.http.post<any>(`${apiUrl}/envoyerEmailFacture/${factureId}/${modelDocumentId}`, '');
   }
 
 }

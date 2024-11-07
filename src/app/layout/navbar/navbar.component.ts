@@ -155,7 +155,7 @@ export class NavbarComponent {
 
   updateSliderValue(event: Event) {
     this.sliderValue = Number(event);
- }
+  }
 
   toggleAfterCheck() {
     this.isAfterChecked = !this.isAfterChecked;
@@ -183,10 +183,10 @@ export class NavbarComponent {
 
   emailTemplates: Record<string, EmailTemplate> = {
     'facture': {
-      object: "Facture {FACTURE_NUMERO} du {FACTURE_DATE}",
+      object: "Facture {VENTE_NUMERO} du {VENTE_DATE}",
       body: `Bonjour {DESTINATAIRE},
 
-Veuillez trouver ci-joint la facture N° {FACTURE_NUMERO} du {FACTURE_DATE} pour un montant de {FACTURE_MONTANT}.
+Veuillez trouver ci-joint la facture N° {VENTE_NUMERO} du {VENTE_DATE} pour un montant de {VENTE_PRIX_TOTAL}.
 
 Nous vous remercions pour votre règlement.
 
@@ -501,17 +501,17 @@ Cordialement,
       "envoyer_rappel_apres": this.rappel_apres ? '1' : '0',
       "nombre_jour_apres": this.afterSliderValue
     }
-   this.configService.configRelance(relance).subscribe(
-    (response)=>{
-      console.log(response);
-      Report.success('Notiflix Success', response.message, 'Okay',);
-      this.getRelance();
-      this.updateRelanceSettings(response);
-    },
-    (error)=>{
-      console.log(error);
-    }
-   )
+    this.configService.configRelance(relance).subscribe(
+      (response) => {
+        console.log(response);
+        Report.success('Notiflix Success', response.message, 'Okay',);
+        this.getRelance();
+        this.updateRelanceSettings(response);
+      },
+      (error) => {
+        console.log(error);
+      }
+    )
   }
 
   listeRelance: any[] = [];
@@ -528,21 +528,21 @@ Cordialement,
     )
   }
 
-   // Méthode pour mettre à jour les états avec la réponse du backend
-   updateRelanceSettings(response: any) {
+  // Méthode pour mettre à jour les états avec la réponse du backend
+  updateRelanceSettings(response: any) {
     this.rappel_apres = response.envoyer_rappel_apres;
     this.rappel_avant = response.envoyer_rappel_avant;
     this.sliderValue = response.nombre_jour_avant;
     this.afterSliderValue = response.nombre_jour_apres
-    if(response.envoyer_rappel_apres=1){
+    if (response.envoyer_rappel_apres = 1) {
       this.isChecked = true;
-    }else{
+    } else {
       this.isChecked = false
     }
 
-    if(response.envoyer_rappel_avant=1){
+    if (response.envoyer_rappel_avant = 1) {
       this.isAfterChecked = true;
-    }else{
+    } else {
       this.isAfterChecked = false
     }
   }

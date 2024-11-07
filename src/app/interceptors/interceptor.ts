@@ -34,10 +34,12 @@ export class AuthInterceptor implements HttpInterceptor {
       if (token) {
         request = request.clone({
           setHeaders: {
-            'Content-Type': 'application/json',
+            // 'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
           },
-          withCredentials: true
+          // withCredentials: true
         });
       } else {
         console.log("Aucun token trouvé, redirection vers la page de connexion.");
