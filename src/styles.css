@@ -160,7 +160,7 @@ thead tr {
   color: #FFFFFF !important;
   padding: 15px 30px;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   border-radius: 8px !important;
 }
 
