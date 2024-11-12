@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
 import { PermissionsService } from '../../services/permissions.service';
+import { ConfigurationService } from 'src/app/services/configuration.service';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -42,7 +44,7 @@ export class LoginComponent {
     }
   }
 
-  constructor(private route: Router, private authAdmin: AuthService,  private permissionsService: PermissionsService) { }
+  constructor(private route: Router, private authAdmin: AuthService,  private permissionsService: PermissionsService, private  session:ConfigurationService) { }
 
   // On vide tous les champs 
   viderChamps() {
@@ -66,9 +68,9 @@ export class LoginComponent {
     this.authAdmin.connexionAdmin(user).subscribe(
       (response) => {
         Notify.success('connexion reussie');
-        localStorage.setItem('userOnline', JSON.stringify(response));
-        // Charger les permissions après connexion
-        this.permissionsService.loadPermissions();
+        const token = response;
+        // Démarrer la session avec le token
+        this.session.startSession(token);
         this.route.navigate(['/admin']);
         Loading.remove();
       },
@@ -77,7 +79,11 @@ export class LoginComponent {
         this.authAdmin.connexionUser(user).subscribe(
           (response) => {
             Notify.success('connexion reussie');
-            localStorage.setItem('userOnline', JSON.stringify(response));
+            const token = response;
+            // Démarrer la session avec le token
+            this.session.startSession(token);
+              // Charger les permissions après connexion
+            this.permissionsService.loadPermissions();         
             this.route.navigate(['/admin']);
             Loading.remove();
           },

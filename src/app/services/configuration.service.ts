@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { apiUrl } from './apiUrl';
 import { Report } from 'notiflix/build/notiflix-report-aio';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
 
 
 @Injectable({
@@ -91,6 +93,94 @@ export class ConfigurationService {
     return filteredList;
   }
 
+  // fermer modal
+  closeModal() {
+    // Récupère tous les modaux ouverts
+    const modals = document.querySelectorAll('.modal.show');
+
+    // Ferme chaque modal ouvert
+    modals.forEach(modal => {
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden', 'true');
+      // modal.style.display = 'none';
+
+      // Supprime le backdrop si présent
+      const backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.classList.remove('show');
+        document.body.removeChild(backdrop);
+      }
+    });
+  }
+
+
+  
+
+  // Variable pour stocker l'ID de l'intervalle
+private logoutInterval: any;
+private expirationTimer: any;
+
+// 1. Fonction pour démarrer la session
+startSession(token: string) {
+  const loginTime = new Date().getTime(); // Heure de connexion actuelle
+  // Enregistrer le token et le loginTime dans localStorage
+  const userOnline = {
+    token,
+    loginTime,
+  };
+  localStorage.setItem('userOnline', JSON.stringify(userOnline));
+
+  // Démarrer le minuteur de déconnexion
+  this.setLogoutTimer();
+  // Démarrer l'intervalle pour vérifier la déconnexion
+  this.logoutInterval = setInterval(() => this.setLogoutTimer(), 30000); // Exécuter toutes les 30 secondes
+}
+
+// 2. Fonction de vérification de la session au démarrage
+checkSessionOnLoad() {
+  const userOnlineStr = localStorage.getItem('userOnline');
+  if (userOnlineStr) {
+    const userOnline = JSON.parse(userOnlineStr);
+    const currentTime = new Date().getTime();
+    const sessionTimeout = userOnline.loginTime + 58 * 60 * 1000; // 58 minutes en millisecondes
+
+    // Vérifier si la session a expiré ou non
+    if (currentTime < sessionTimeout) {
+      // La session est valide, démarrer le timer
+      this.logoutInterval = setInterval(() => this.setLogoutTimer(), 30000); // Exécuter toutes les 30 secondes
+    } else {
+      // La session est expirée, déconnecter l'utilisateur
+      this.closeModal();
+      this.logout();
+    }
+  }
+}
+
+// 3. Fonction de vérification de la session
+setLogoutTimer() {
+  const userOnlineStr = localStorage.getItem('userOnline');
+  if (userOnlineStr) {
+    const userOnline = JSON.parse(userOnlineStr);
+    this.expirationTimer = userOnline?.loginTime;
+  }
+  const currentTime = new Date().getTime();
+  const sessionTimeout = this.expirationTimer + 58 * 60 * 1000; // 58 minutes en millisecondes
+  if (currentTime >= sessionTimeout) {
+    this.closeModal();
+    this.logout();
+    return false; // La session a expiré
+  }
+  return true;
+}
+
+// 4. Fonction de déconnexion
+logout() {
+  localStorage.removeItem('userOnline');
+  clearInterval(this.logoutInterval); // Annuler l'intervalle pour éviter des vérifications inutiles après déconnexion
+  this.router.navigate(['']); // Rediriger vers la page de connexion
+}
+
+
   // rapport flux de Trésorerie
   getRapportFluxTrésorerie(data: any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/RapportFluxTrésorerie`, data);
@@ -152,7 +242,7 @@ export class ConfigurationService {
   }
 
   // Rapport Valeur Stock 
-  getRapportValeurStock (data: any): Observable<any> {
+  getRapportValeurStock(data: any): Observable<any> {
     return this.http.post<any>(`${apiUrl}/Rapport_Valeur_Stock`, data);
   }
 

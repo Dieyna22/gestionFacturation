@@ -157,6 +157,7 @@ export class ClientsComponent {
     this.grilleservice.addGrille(grille).subscribe(
       (user: any) => {
         Report.success('Notiflix Success', user.message, 'Okay',);
+        this.filterService.closeModal();
       },
       (err) => {
       }
@@ -246,6 +247,7 @@ export class ClientsComponent {
 
     this.clientService.addClient(clients).subscribe(
       (client: any) => {
+        this.filterService.closeModal();
         Report.success('Notiflix Success', client.message, 'Okay',);
         this.vider();
         this.listeClients();
@@ -423,6 +425,7 @@ export class ClientsComponent {
         Loading.hourglass();
         this.clientService.updateClient(this.currentClient.id, clients).subscribe(
           (reponse) => {
+            this.filterService.closeModal();
             Notify.success(reponse.message);
             this.listeClients();
             this.vider();
@@ -490,6 +493,9 @@ export class ClientsComponent {
         prenom: '', nom: '', Nom_entreprise: '', type_client: '', Statut_client: '', email_client: '', adress_client: '',
         Adresse_Code_postal: '', ville_client: '', pays_client: '', tel_client: '', noteInterne_client: '', nom_destinataire: '', pays_livraison: '',
         ville_livraison: '', code_postal_livraison: '', tel_destinataire: '', email_destinataire: '', infoSupplemnt: '',
+      },
+      {
+        desciption:'le type de client doit etre particulier ou entreprise et leur staut client ou prospect/Avant de sauvegarder surprimer ce  colonnes '
       }
     ];
 
@@ -498,16 +504,14 @@ export class ClientsComponent {
 
     // Définition d'une largeur uniforme pour toutes les colonnes
     const columnWidth = 20; // Largeur en caractères
-
     // Application de la largeur à toutes les colonnes utilisées
     if (worksheet['!ref']) {
       const range = XLSX.utils.decode_range(worksheet['!ref']);
-      const columnCount = range.e.c + 1; // Nombre de colonnes
-
+      const columnCount = range.e.c + 2; // Nombre de colonnes
       worksheet['!cols'] = Array(columnCount).fill({ wch: columnWidth });
     } else {
       // Fallback si !ref n'est pas défini (ce qui est peu probable dans ce cas)
-      const columnCount = Object.keys(modelData[0]).length;
+      const columnCount = Object.keys(modelData[0]).length; // On prend la première ligne
       worksheet['!cols'] = Array(columnCount).fill({ wch: columnWidth });
     }
 
@@ -543,6 +547,7 @@ export class ClientsComponent {
       window.URL.revokeObjectURL(link.href);
       link.remove();
     }, 100);
+    this.filterService.closeModal();
   }
 
   private file: File | null = null;
@@ -560,46 +565,13 @@ export class ClientsComponent {
       formData.append('file', this.file, this.file.name);
 
       this.http.post('http://127.0.0.1:8000/api/importClient', formData).subscribe(
-        response => { this.goToNextStep(); this.listeClients() },
-        error => console.error('Erreur d\'importation', error)
+        (response) => { this.goToNextStep(); this.listeClients();this.filterService.closeModal(); },
+        (error) => console.error('Erreur d\'importation', error)
       );
     }
 
   }
 
-
-  // exportExcel() {
-  //   this.clientService.exportToExcel().subscribe(
-  //     (data: Blob) => {
-  //       data.arrayBuffer().then((buffer) => {
-  //         const workbook = XLSX.read(buffer, { type: 'array' });
-  //         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-
-  //         // Augmenter la largeur des colonnes
-  //         if (worksheet['!ref']) {
-  //           const range = XLSX.utils.decode_range(worksheet['!ref']);
-  //           const cols: XLSX.ColInfo[] = [];
-  //           for (let C = range.s.c; C <= range.e.c; ++C) {
-  //             cols.push({ wch: 20 }); // Définir la largeur à 15
-  //           }
-  //           worksheet['!cols'] = cols;
-  //         }
-
-  //         const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-  //         const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  //         const url = window.URL.createObjectURL(blob);
-  //         const a = document.createElement('a');
-  //         a.href = url;
-  //         a.download = 'export.xlsx';
-  //         a.click();
-  //         window.URL.revokeObjectURL(url);
-  //       });
-  //     },
-  //     (err) => {
-  //       console.log(err);
-  //     }
-  //   );
-  // }
 
   couleurs: string[] = ['#FFEB3B', '#CDDC39', '#FFC107', '#FF5722', '#E91E63', '#9C27B0', '#3F51B5', '#03A9F4', '#00BCD4', '#8BC34A'];
   etiquette: Etiquette = { nom_etiquette: '', code_etiquette: '' };
@@ -893,6 +865,7 @@ export class ClientsComponent {
     }
     this.clientService.addConversation(conversation).subscribe(
       (chat: any) => {
+        this.filterService.closeModal();
         Report.success('Notiflix Success', chat.message, 'Okay',);
       },
       (err) => {
@@ -1109,12 +1082,4 @@ export class ClientsComponent {
       }, 300);
     }
   }
-
-
-
-
-
-
-
-
 }
