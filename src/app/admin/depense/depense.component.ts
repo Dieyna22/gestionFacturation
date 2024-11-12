@@ -374,6 +374,7 @@ export class DepenseComponent {
     this.docService.createFournisseur(fournisseur).subscribe(
       (response) => {
         console.log(response);
+        this.filterService.closeModal();
         this.listeFournisseur();
         this.vider();
         Report.success('Notiflix Success', response.message, 'Okay',);
@@ -487,7 +488,8 @@ export class DepenseComponent {
     }
     this.docService.updateFournisseur(this.currentFournisseur.id, fournisseur).subscribe(
       (response) => {
-        console.log(response);
+        console.log(response);       
+         this.filterService.closeModal();
         this.listeFournisseur();
         this.vider();
         Report.success('Notiflix Success', response.message, 'Okay',);
@@ -499,6 +501,7 @@ export class DepenseComponent {
   }
 
   vider() {
+    this.idFournisseur='';
     this.typeFournisseur = '';
     this.prenom = '';
     this.nom = '';
@@ -666,9 +669,10 @@ export class DepenseComponent {
     this.docService.createDepense(formData).subscribe(
       (response) => {
         console.log(response);
+        this.filterService.closeModal();
         this.vider();
-        Report.success('Notiflix Success', response.message, 'Okay',);
         this.listeDepense();
+        Report.success('Notiflix Success', response.message, 'Okay',);
       },
       (err) => {
         console.log(err);
@@ -771,6 +775,7 @@ export class DepenseComponent {
     this.docService.updateDepense(this.currentDepense.id, depense).subscribe(
       (response) => {
         console.log(response);
+        this.filterService.closeModal();
         this.vider();
         this.listeDepense();
         this.showInputTva();

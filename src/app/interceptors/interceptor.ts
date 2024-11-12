@@ -10,10 +10,11 @@ import {
 import { Observable, EMPTY, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { ConfigurationService } from '../services/configuration.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private router: Router) {}
+  constructor(private router: Router,private config:ConfigurationService) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -21,15 +22,15 @@ export class AuthInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     const userOnlineStr = localStorage.getItem('userOnline');
 
-    // Éviter d'ajouter le token si la requête concerne la connexion
-    if (request.url.includes('/login')) {
+     // Éviter d'ajouter le token si la requête concerne l'inscription ou la connexion
+     if (request.url.includes('/register') || request.url.includes('/login')) {
       return next.handle(request);
     }
 
     // Continuer si un token existe dans le localStorage
     if (userOnlineStr) {
       const userOnline = JSON.parse(userOnlineStr);
-      const token = userOnline?.authorization?.token;
+      const token = userOnline?.token?.authorization?.token;
 
       if (token) {
         request = request.clone({
@@ -47,7 +48,6 @@ export class AuthInterceptor implements HttpInterceptor {
         return EMPTY;
       }
     }
-
     // Gérer les réponses et les erreurs
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
@@ -57,6 +57,7 @@ export class AuthInterceptor implements HttpInterceptor {
           Notify.failure('Session Expirer !!!', {
             position: 'center-center', // Positionner au centre
         });
+          this.config.closeModal();
           this.router.navigate(['']); // Rediriger vers la connexion pour une erreur 401
         }
         // Détecter les erreurs CORS ou les problèmes réseau (statut 0)

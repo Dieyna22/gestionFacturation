@@ -44,12 +44,12 @@ export class NavbarComponent {
   ngOnInit() {
     // Renvoie un tableau de valeurs ou un tableau vide 
     this.dbUsers = JSON.parse(localStorage.getItem("userOnline") || "[]");
-    this.nom = this.dbUsers.user.name;
-    this.role = this.dbUsers.user.role;
-    this.entreprise = this.dbUsers.user.nom_entreprise;
-    this.usermail = this.dbUsers.user.email;
-    this.usernom = this.dbUsers.user.nom;
-    this.userprenom = this.dbUsers.user.prenom;
+    this.nom = this.dbUsers.token.user.name;
+    this.role = this.dbUsers.token.user.role;
+    this.entreprise = this.dbUsers.token.user.nom_entreprise;
+    this.usermail = this.dbUsers.token.user.email;
+    this.usernom = this.dbUsers.token.user.nom;
+    this.userprenom = this.dbUsers.token.user.prenom;
     this.getInfoAdmin();
     this.getNotification();
     this.getRelance();

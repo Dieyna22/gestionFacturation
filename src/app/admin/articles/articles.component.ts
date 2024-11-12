@@ -23,7 +23,7 @@ interface Etiquette {
 @Component({
   selector: 'app-articles',
   templateUrl: './articles.component.html',
-  styleUrls: ['./articles.component.css']
+  styleUrls: ['./articles.component.css'],
 })
 export class ArticlesComponent implements OnInit {
   @Output() etiquetteSelectionnee = new EventEmitter<Etiquette>();
@@ -41,7 +41,7 @@ export class ArticlesComponent implements OnInit {
   desc: string = "";
   vente: string = "";
   typeArticle: string = "";
-  achat: string = "";
+  achat: any;
   quantite: string = "";
   quantiteAlerte: string = "";
   CategorieArticle: string = "";
@@ -157,6 +157,7 @@ export class ArticlesComponent implements OnInit {
     }
     this.grilleservice.addGrille(grille).subscribe(
       (user: any) => {
+        this.filterService.closeModal();
         Report.success('Notiflix Success', user.message, 'Okay',);
       },
       (err) => {
@@ -169,7 +170,6 @@ export class ArticlesComponent implements OnInit {
     this.clientService.getAllClients().subscribe(
       (clients: any) => {
         this.tabClient = clients;
-
       },
       (err) => {
       }
@@ -203,6 +203,7 @@ export class ArticlesComponent implements OnInit {
       (entrepot: any) => {
         Report.success('Notiflix Success', entrepot.message, 'Okay',);
         this.vider();
+        this.filterService.closeModal();
         this.listeArticles();
       },
       (err) => {
@@ -233,13 +234,20 @@ export class ArticlesComponent implements OnInit {
     this.prixList.splice(index, 1);
   }
 
+  // calcul Prix d'achat ttc
+  totalTTC: number = 0;
+  calculateTotalTva(): void {
+    this.totalTTC = (1 + this.tvaPrix/ 100) * this.achat;
+  }
+
   ajouterArticle() {
-    console.log(this.codeBarres);
+    this.calculateTotalTva();
     let articles = {
       "active_Stock": this.active,
       "nom_article": this.nom,
       "description": this.desc,
       "prix_ht_achat": this.achat,
+      "prix_ttc_achat":this.totalTTC,
       "prix_unitaire": this.vente,
       "tva": this.tva,
       "type_article": "produit",
@@ -247,7 +255,7 @@ export class ArticlesComponent implements OnInit {
       "quantite": this.quantite,
       "quantite_alert": this.quantiteAlerte,
       "id_categorie_article": this.CategorieArticle,
-      "tva_achat":this.tvaPrix,
+      "tva_achat": this.tvaPrix,
       "code_barre": this.codeBarres,
       "autres_prix": [] as Array<{
         titrePrix: string,
@@ -300,8 +308,9 @@ export class ArticlesComponent implements OnInit {
 
     this.articleService.addArticle(articles).subscribe(
       (article: any) => {
-        Report.success('Notiflix Success', article.message, 'Okay',);
         this.vider();
+        this.filterService.closeModal();
+        Report.success('Notiflix Success', article.message, 'Okay',);
         this.listeArticles();
       },
       (err) => {
@@ -338,7 +347,7 @@ export class ArticlesComponent implements OnInit {
     this.note = '';
     this.unite = '';
     this.tva = 0;
-    this.tvaPrix=0;
+    this.tvaPrix = 0;
     this.titrePrix = '';
     // this.tva = '';
     this.montant = '';
@@ -350,7 +359,7 @@ export class ArticlesComponent implements OnInit {
     this.quantiteVariantes = '';
     this.quantiteInEntrepot = '';
     this.codeBarres = '';
-
+    this.totalTTC=0;
     this.inputnom = '';
     this.inputdesc = '';
     this.inputvente = '';
@@ -371,7 +380,7 @@ export class ArticlesComponent implements OnInit {
     this.inputtvaPrix = '';
     // this.inputmontant = '';
     this.inputcodeBarres = '';
-    this.inputTvaPrix =0;
+    this.inputTvaPrix = 0;
 
     this.prixList.push({ titrePrix: '', tva: '', montant: '' });
     this.selectedEtiquettes.push();
@@ -391,7 +400,7 @@ export class ArticlesComponent implements OnInit {
         Loading.hourglass();
         this.articleService.deleteArticle(paramArticle).subscribe(
           (response) => {
-            Notify.success(response.message);
+            Notify.success(response.message,{ position: 'center-center'});
             this.listeArticles();
             Loading.remove()
           }
@@ -418,7 +427,7 @@ export class ArticlesComponent implements OnInit {
     this.inputCategorieArticle = paramArticle.id_categorie_article;
     this.inputunite = paramArticle.unité;
     this.inputtva = paramArticle.tva;
-    this.inputTvaPrix = paramArticle. tva_achat;
+    this.inputTvaPrix = paramArticle.tva_achat;
     this.inputentrepotName = paramArticle.entrepot_art[0].entrepot_id;
     this.inputLotnom = paramArticle.lot[0].nomLot;
     this.inputLotquantite = paramArticle.lot[0].quantiteLot;
@@ -438,6 +447,7 @@ export class ArticlesComponent implements OnInit {
   }
 
   updateArticle() {
+    this.calculateTotalTva();
     let articles = {
       "active_Stock": this.active,
       "num_article": this.numArticles,
@@ -446,13 +456,14 @@ export class ArticlesComponent implements OnInit {
       "prix_unitaire": this.inputvente,
       "type_article": this.currentArticle.type_article,
       "prix_ht_achat": this.inputachat,
+      "prix_ttc_achat":this.totalTTC,
       "quantite": this.inputquantite,
       "quantite_alert": this.inputquantiteAlerte,
       "id_categorie_article": this.inputCategorieArticle,
       "unité": this.inputunite,
       "tva": this.inputtva,
       "code_barre": this.inputcodeBarres,
-      "tva_achat":this.inputTvaPrix,
+      "tva_achat": this.inputTvaPrix,
       "autres_prix": [] as Array<{
         titrePrix: string,
         montant: string,
@@ -516,9 +527,10 @@ export class ArticlesComponent implements OnInit {
         Loading.hourglass();
         this.articleService.updateArticle(this.currentArticle.id, articles).subscribe(
           (reponse) => {
-            Notify.success(reponse.message);
-            this.listeArticles();
             this.vider();
+            this.filterService.closeModal();
+            Notify.success(reponse.message,{ position: 'center-center'});
+            this.listeArticles();
             Loading.remove();
           }
         );
@@ -543,9 +555,10 @@ export class ArticlesComponent implements OnInit {
         Loading.hourglass();
         this.articleService.updateStockArticle(this.currentArticle.id, stock).subscribe(
           (reponse) => {
-            Notify.success(reponse.message);
-            this.listeArticles();
             this.vider();
+            this.filterService.closeModal();
+            Notify.success(reponse.message, { position: 'center-center', });
+            this.listeArticles();
             Loading.remove();
           }
         );
@@ -584,7 +597,8 @@ export class ArticlesComponent implements OnInit {
         Loading.hourglass();
         this.articleService.affecterArticle(this.idArticle, promo).subscribe(
           (response) => {
-            Notify.success(response.message);
+            this.filterService.closeModal();
+            Notify.success(response.message, { position: 'center-center', });
             this.listeArticles();
             Loading.remove();
           },
@@ -622,7 +636,8 @@ export class ArticlesComponent implements OnInit {
         Loading.hourglass();
         this.articleService.affecterCategorieArticle(this.idArticle, CategorieArticle).subscribe(
           (response) => {
-            Notify.success(response.message);
+            this.filterService.closeModal();
+            Notify.success(response.message, { position: 'center-center', });
             this.listeArticles();
             this.inputCategorieArticle = '';
             Loading.remove();
@@ -718,7 +733,17 @@ export class ArticlesComponent implements OnInit {
     // Création du modèle de données
     const modelData = [
       {
-        Libellé: '', Description: '', prix_unitaire: '', quantite: '', Prix_achat: '', categorie_article: '', tva: '', unite: '',
+        'Libellé': '',
+        'Description': '',
+        'prix_unitaire': '',
+        'quantite': '',
+        'Prix_achat': '',
+        'type_article': 'produit',
+        'tva': '',
+        'unite': ''
+      },
+      {
+        'Consigne': 'Les unités doivent être : ex: unité, kg, tonne, cm, l, m, m2, m3, h, jour, semaine, mois, g le type de produit doit etre produit/Avant de sauvegarder surprimer ce  colonnes',
       }
     ];
 
@@ -727,25 +752,21 @@ export class ArticlesComponent implements OnInit {
 
     // Définition d'une largeur uniforme pour toutes les colonnes
     const columnWidth = 20; // Largeur en caractères
-
-
     // Application de la largeur à toutes les colonnes utilisées
     if (worksheet['!ref']) {
       const range = XLSX.utils.decode_range(worksheet['!ref']);
-      const columnCount = range.e.c + 1; // Nombre de colonnes
-
+      const columnCount = range.e.c + 2; // Nombre de colonnes
       worksheet['!cols'] = Array(columnCount).fill({ wch: columnWidth });
     } else {
       // Fallback si !ref n'est pas défini (ce qui est peu probable dans ce cas)
-      const columnCount = Object.keys(modelData[0]).length;
+      const columnCount = Object.keys(modelData[0]).length; // On prend la première ligne
       worksheet['!cols'] = Array(columnCount).fill({ wch: columnWidth });
     }
 
-
     // Création du classeur
     const workbook: XLSX.WorkBook = {
-      Sheets: { 'Clients': worksheet },
-      SheetNames: ['Clients']
+      Sheets: { 'articles': worksheet },
+      SheetNames: ['articles']
     };
 
     // Conversion du classeur en buffer
@@ -753,6 +774,7 @@ export class ArticlesComponent implements OnInit {
 
     // Sauvegarde du fichier
     this.saveAsExcelFile(excelBuffer, "modele_ajoutArticles");
+    this.filterService.closeModal();
   }
 
   private saveAsExcelFile(buffer: any, fileName: string): void {
@@ -788,40 +810,7 @@ export class ArticlesComponent implements OnInit {
     }
   }
 
-  // exportExcel() {
-  //   this.articleService.exportToExcel().subscribe(
-  //     (data: Blob) => {
-  //       data.arrayBuffer().then((buffer) => {
-  //         const workbook = XLSX.read(buffer, { type: 'array' });
-  //         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-
-  //         // Augmenter la largeur des colonnes
-  //         if (worksheet['!ref']) {
-  //           const range = XLSX.utils.decode_range(worksheet['!ref']);
-  //           const cols: XLSX.ColInfo[] = [];
-  //           for (let C = range.s.c; C <= range.e.c; ++C) {
-  //             cols.push({ wch: 20 }); // Définir la largeur à 15
-  //           }
-  //           worksheet['!cols'] = cols;
-  //         }
-
-  //         const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-  //         const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  //         const url = window.URL.createObjectURL(blob);
-  //         const a = document.createElement('a');
-  //         a.href = url;
-  //         a.download = 'exportArticle.xlsx';
-  //         a.click();
-  //         window.URL.revokeObjectURL(url);
-  //       });
-  //     },
-  //     (err) => {
-  //       console.log(err);
-  //     }
-  //   );
-  // }
-
-
+ 
   couleurs: string[] = ['#FFEB3B', '#CDDC39', '#FFC107', '#FF5722', '#E91E63', '#9C27B0', '#3F51B5', '#03A9F4', '#00BCD4', '#8BC34A'];
   etiquette: Etiquette = { nom_etiquette: '', code_etiquette: '' };
   tabEtiquette: Etiquette[] = [];

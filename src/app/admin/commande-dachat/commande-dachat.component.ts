@@ -94,7 +94,7 @@ export class CommandeDachatComponent {
     this.listeModelByTypeDocument();
     // Renvoie un tableau de valeurs ou un tableau vide 
     this.dbUsers = JSON.parse(localStorage.getItem("userOnline") || "[]");
-    this.idUserConnect = this.dbUsers.user.id;
+    this.idUserConnect = this.dbUsers.token.user.id;
     console.log('id user connect:', this.idUserConnect);
   }
 
@@ -125,9 +125,11 @@ export class CommandeDachatComponent {
 
   prixTTC: any;
   totalTTC: number = 0;
+  prix_unitaire_ttc: number = 0;
   tvaCommande: any
   calculateTotalTva(row: any): void {
     row.totalTTC = row.quantity * (1 + row.tva / 100) * (row.promotionalPrice || row.grillePrice || row.price || row.unitPrice) - row.reductionArticle;
+    row.prix_unitaire_ttc = (1 + row.tva / 100) * (row.promotionalPrice || row.grillePrice || row.price || row.unitPrice) - row.reductionArticle;
     this.prixTTC = row.totalTTC;
     this.tvaCommande = row.tva;
     this.calculateTVA();
@@ -544,6 +546,7 @@ export class CommandeDachatComponent {
     this.docService.createDepense(depense).subscribe(
       (response) => {
         console.log(response);
+        this.filterService.closeModal();
         Report.success('Notiflix Success', response.message, 'Okay',);
         this.listeDepense();
         this.filterRecentDepense();
@@ -617,7 +620,8 @@ export class CommandeDachatComponent {
       "articles": [] as Array<{
         id_article: number;
         quantite_article: number;
-        prix_unitaire_article: number;
+        prix_unitaire_article_ht: number;
+        prix_unitaire_article_ttc: number;
         TVA_article: number,
         reduction_article: number;
         prix_total_article: number,
@@ -632,7 +636,8 @@ export class CommandeDachatComponent {
       CommandeDachat.articles.push({
         "id_article": row.selectedProduct,
         "quantite_article": row.quantity,
-        "prix_unitaire_article": row.promotionalPrice ? row.promotionalPrice : (row.tabGrille ? row.tabGrille : row.unitPrice),
+        "prix_unitaire_article_ht": row.promotionalPrice ? row.promotionalPrice : (row.tabGrille ? row.tabGrille : row.unitPrice),
+        "prix_unitaire_article_ttc":row.prix_unitaire_ttc,
         "TVA_article": row.tva,
         "reduction_article": row.reductionArticle,
         "prix_total_article": row.total,
@@ -653,6 +658,7 @@ export class CommandeDachatComponent {
     this.commandeAchatService.addCommandeDachat(CommandeDachat).subscribe(
       (res) => {
         console.log(res.message);
+        this.filterService.closeModal();
         Report.success('Notiflix Success', res.message, 'Okay',);
         this.listeCommandeDachat();
         this.resetCommandeDachat();
@@ -745,7 +751,7 @@ export class CommandeDachatComponent {
       this.rows.unshift({
         "selectedProduct": row.id_article,
         "quantity": row.quantite,
-        "unitPrice": row.prix_unitaire,
+        "unitPrice": row.prix_unitaire_ht,
         "reductionArticle": row.reduction_article || 0, // Assurez-vous que la réduction est initialisée
         "tva": row.TVA_article || 0,                   // Initialisation du tva
         "total": row.prix_total_article || 0,           // Initialisation du total
@@ -787,7 +793,7 @@ export class CommandeDachatComponent {
       "active_Stock": this.active,
       "num_commandeAchat": this.nextNumber,
       "fournisseur_id": this.idFournisseur,
-      "depense_id": this.recentDepenses[0].id,
+      "depense_id": this.recentDepenses[0]?.id,
       "note_interne": this.noteInterne,
       "commentaire": this.commentaire,
       "reduction_commande": this.remise,
@@ -797,7 +803,8 @@ export class CommandeDachatComponent {
       "articles": [] as Array<{
         id_article: number;
         quantite_article: number;
-        prix_unitaire_article: number;
+        prix_unitaire_article_ht: number;
+        prix_unitaire_article_ttc:number;
         TVA_article: number,
         reduction_article: number;
         prix_total_article: number,
@@ -812,7 +819,8 @@ export class CommandeDachatComponent {
       CommandeDachat.articles.push({
         "id_article": row.selectedProduct,
         "quantite_article": row.quantity,
-        "prix_unitaire_article": row.promotionalPrice ? row.promotionalPrice : (row.tabGrille ? row.tabGrille : row.unitPrice),
+        "prix_unitaire_article_ht": row.promotionalPrice ? row.promotionalPrice : (row.tabGrille ? row.tabGrille : row.unitPrice),
+        "prix_unitaire_article_ttc":row.prix_unitaire_ttc,
         "TVA_article": row.tva,
         "reduction_article": row.reductionArticle,
         "prix_total_article": row.total,
@@ -840,6 +848,7 @@ export class CommandeDachatComponent {
         Loading.hourglass();
         this.commandeAchatService.updateCommandeDachat(this.currentCommandeDachat.id, CommandeDachat).subscribe(
           (reponse) => {
+            this.filterService.closeModal();
             Report.success('Notiflix Success', reponse.message, 'Okay',);
             this.listeCommandeDachat();
             this.resetCommandeDachat();
@@ -883,45 +892,13 @@ export class CommandeDachatComponent {
     this.dateCommande = '';  // ou la valeur par défaut souhaitée
     this.dateLivraison = '';  // ou la valeur par défaut souhaitée
     this.totalRemise = 0;
-
+    this.currentFournisseur = '';
     // Vider les articles et étiquettes
     this.rows = [];  // Réinitialiser les articles
     this.selectedIds = [];  // Réinitialiser les étiquettes
   }
 
 
-  // exportExcel() {
-  //   this.commandeAchatService.exportToExcel().subscribe(
-  //     (data: Blob) => {
-  //       data.arrayBuffer().then((buffer) => {
-  //         const workbook = XLSX.read(buffer, { type: 'array' });
-  //         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
-
-  //         // Augmenter la largeur des colonnes
-  //         if (worksheet['!ref']) {
-  //           const range = XLSX.utils.decode_range(worksheet['!ref']);
-  //           const cols: XLSX.ColInfo[] = [];
-  //           for (let C = range.s.c; C <= range.e.c; ++C) {
-  //             cols.push({ wch: 20 }); // Définir la largeur à 15
-  //           }
-  //           worksheet['!cols'] = cols;
-  //         }
-
-  //         const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-  //         const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-  //         const url = window.URL.createObjectURL(blob);
-  //         const a = document.createElement('a');
-  //         a.href = url;
-  //         a.download = 'exportCommandeDachat.xlsx';
-  //         a.click();
-  //         window.URL.revokeObjectURL(url);
-  //       });
-  //     },
-  //     (err) => {
-  //       console.log(err);
-  //     }
-  //   );
-  // }
 
   etiquetteListe: any[] = [];
   couleurs: string[] = ['#FFEB3B', '#CDDC39', '#FFC107', '#FF5722', '#E91E63', '#9C27B0', '#3F51B5', '#03A9F4', '#00BCD4', '#8BC34A'];
@@ -1291,7 +1268,7 @@ emailDoc() {
 
 // envoyer email facture
 envoiMail() {
-  this.http.post(`http://127.0.0.1:8000/api/envoyerEmailCommandeAchat/${this.docId}/`, '', {}).subscribe(response => {
+  this.http.post(`http://127.0.0.1:8000/api/envoyerEmailCommandeAchat/${this.docId}/${this.modelId}`, '', {}).subscribe(response => {
     console.log(response)
     Report.success('Notiflix Success', 'response', 'Okay',);
   }, error => {

@@ -23,7 +23,7 @@ export class SidebarComponent {
   ngOnInit() {
     // Renvoie un tableau de valeurs ou un tableau vide 
     this.dbUsers = JSON.parse(localStorage.getItem("userOnline") || "[]"); 
-    this.role = this.dbUsers.user.role
+    this.role = this.dbUsers.token.user.role
 
     if (this.role == "super_admin") {
       this.isSuperAdmin = true;
@@ -95,6 +95,7 @@ export class SidebarComponent {
             console.log(reponse);
             Notify.success(reponse.message);
             Loading.remove();
+            this.listeNotification()
           }
         );
       });

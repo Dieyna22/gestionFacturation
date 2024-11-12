@@ -11,6 +11,7 @@ import * as XLSX from 'xlsx';
 import { GrilleTarifaireService } from 'src/app/services/grille-tarifaire.service';
 import { EtiquetteService } from 'src/app/services/etiquette.service';
 import { ClientsService } from 'src/app/services/clients.service';
+import { ConfigurationService } from 'src/app/services/configuration.service';
 
 interface Etiquette {
   id?: number;
@@ -74,7 +75,7 @@ export class ServicesComponent {
 
   prixList: { titrePrix: string, tva: string, montant: string }[] = [];
 
-  constructor(private http: HttpClient, private articleService: ArticlesService, private promoService: PromoService, private Categorie: CategorieArticleService, private grilleservice: GrilleTarifaireService, private etiquetteService: EtiquetteService, private clientService: ClientsService, private cdr: ChangeDetectorRef) { }
+  constructor(private http: HttpClient, private articleService: ArticlesService, private promoService: PromoService, private Categorie: CategorieArticleService, private grilleservice: GrilleTarifaireService, private etiquetteService: EtiquetteService, private clientService: ClientsService, private cdr: ChangeDetectorRef,private configService:ConfigurationService) { }
 
 
 
@@ -131,6 +132,7 @@ export class ServicesComponent {
     }
     this.grilleservice.addGrille(grille).subscribe(
       (user: any) => {
+        this.configService.closeModal();
         Report.success('Notiflix Success', user.message, 'Okay',);
       },
       (err) => {
@@ -201,6 +203,7 @@ export class ServicesComponent {
     }
     this.articleService.addArticle(articles).subscribe(
       (article: any) => {
+        this.configService.closeModal();
         Report.success('Notiflix Success', article.message, 'Okay',);
         this.vider();
         this.listeArticles();
@@ -272,7 +275,7 @@ export class ServicesComponent {
         Loading.hourglass();
         this.articleService.deleteArticle(paramArticle).subscribe(
           (response) => {
-            Notify.success(response.message);
+            Notify.success(response.message,{ position: 'center-center'});
             this.listeArticles();
             Loading.remove()
           }
@@ -358,7 +361,8 @@ export class ServicesComponent {
         Loading.hourglass();
         this.articleService.updateArticle(this.currentArticle.id, articles).subscribe(
           (reponse) => {
-            Notify.success(reponse.message);
+            this.configService.closeModal();
+            Notify.success(reponse.message,{ position: 'center-center'});
             this.listeArticles();
             this.vider();
             Loading.remove();
@@ -401,7 +405,7 @@ export class ServicesComponent {
         Loading.hourglass();
         this.articleService.affecterArticle(this.idArticle, promo).subscribe(
           (response) => {
-            Notify.success(response.message);
+            Notify.success(response.message,{ position: 'center-center'});
             Loading.remove();
           },
           (err) => {

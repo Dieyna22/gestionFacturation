@@ -42,7 +42,7 @@ main {
 
                 width: 100%;
 
-                h5 {
+                h5 :is(h5) {
                     color: #F19A33;
                     font-size: 18px;
 
@@ -74,7 +74,7 @@ main {
 
         #updateInfo {
 
-            button {
+            button:is(button) {
                 background-color: #F97316;
                 color: white;
                 border: none;
@@ -83,7 +83,7 @@ main {
 
         #updatePassword {
 
-            button {
+            button :is(button) {
                 background-color: #F97316;
                 color: white;
                 border: none;
