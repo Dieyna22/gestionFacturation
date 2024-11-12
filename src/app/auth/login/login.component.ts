@@ -67,7 +67,7 @@ export class LoginComponent {
     // Connexion en tant qu'admin
     this.authAdmin.connexionAdmin(user).subscribe(
       (response) => {
-        Notify.success('connexion reussie');
+        Notify.success('connexion reussie',{position: 'center-center'});
         const token = response;
         // Démarrer la session avec le token
         this.session.startSession(token);
@@ -88,7 +88,7 @@ export class LoginComponent {
             Loading.remove();
           },
           (err) => {
-            Notify.failure(err.error.message);
+            Notify.failure(err.error.message,{position: 'center-center'});
             Loading.remove();
           }
         )
