@@ -176,6 +176,7 @@ setLogoutTimer() {
 // 4. Fonction de déconnexion
 logout() {
   localStorage.removeItem('userOnline');
+  localStorage.setItem("isUsers", JSON.stringify(false));
   clearInterval(this.logoutInterval); // Annuler l'intervalle pour éviter des vérifications inutiles après déconnexion
   this.router.navigate(['']); // Rediriger vers la page de connexion
 }

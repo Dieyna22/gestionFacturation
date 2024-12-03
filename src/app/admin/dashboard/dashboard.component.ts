@@ -32,10 +32,8 @@ export class DashboardComponent {
         this.tabFactures = factures.factures;
         this.factureImpayer = factures.factures.filter((fact: any) => fact.statut_paiement == 'en_attente');
         this.facturePayer = factures.factures.filter((fact: any) => fact.statut_paiement == 'payer');
-        console.log(this.tabFactures)
       },
       (err) => {
-        console.log(err);
       }
     )
   }
@@ -48,7 +46,6 @@ export class DashboardComponent {
     
       },
       (err) => {
-        console.log(err);
       }
     )
   }
@@ -95,7 +92,6 @@ export class DashboardComponent {
          this.tabService = article.filter((article: any) => article.type_article == 'service');
        },
        (err) => {
-         console.log(err);
        }
      )
    }
@@ -105,10 +101,8 @@ export class DashboardComponent {
     this.docService.getAllBonCommande().subscribe(
       (bonCommande) => {
         this.tabBonCommande = bonCommande.BonCommandes;
-        console.log(this.tabBonCommande);
       },
       (err) => {
-        console.log(err);
       }
     )
   }
@@ -119,10 +113,8 @@ export class DashboardComponent {
     this.docService.getAllBonLivraison().subscribe(
       (bonLivraisons) => {
         this.tabLivraison = bonLivraisons.livraisons;
-        console.log(this.tabLivraison)
       },
       (err) => {
-        console.log(err);
       }
     )
   }

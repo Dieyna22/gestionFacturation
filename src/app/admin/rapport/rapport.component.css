@@ -56,3 +56,9 @@ p{
     text-decoration: none;
     cursor: pointer;
   }
+
+  .chart-container {
+    width: 100%;  /* Reduire la largeur du conteneur */
+    height: 300px; /* Définir la hauteur du graphique */
+    margin: 0 auto; /* Centrer le graphique horizontalement */
+  }

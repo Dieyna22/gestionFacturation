@@ -598,6 +598,25 @@ export class FactureComponent {
     this.entreprise = '';
     this.adress = '';
     this.telephone = '';
+    this.desc = '';
+    this.vente = '';
+    this.achat = '';
+    this.quantite = '';
+    this.quantiteAlerte = '';
+    this.CategorieArticle = '';
+    this.note = '';
+    this.moyenPayement = '';
+    this.typePaiement = '';
+    this.tabGrille = '';
+    this.acompte = '';
+    this.dateDebut = '';
+    this.dateFin = '';
+    this.totalAcompte = '';
+    this.montantAcompte = '';
+    this.commentaire = '';
+    this.datedevis = '';
+    this.datevaliditeDevis = '';
+    
   }
 
   listeClients() {

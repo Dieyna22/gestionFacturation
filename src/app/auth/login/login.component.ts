@@ -39,12 +39,16 @@ export class LoginComponent {
   exactPass: boolean = false;
 
   ngOnInit() {
+    if (!localStorage.getItem("isUsers")) {
+      localStorage.setItem("isUsers", JSON.stringify(false))
+    }
+
     if (!localStorage.getItem("userOnline")) {
       localStorage.setItem("userOnline", JSON.stringify(""))
     }
   }
 
-  constructor(private route: Router, private authAdmin: AuthService,  private permissionsService: PermissionsService, private  session:ConfigurationService) { }
+  constructor(private route: Router, private authAdmin: AuthService, private permissionsService: PermissionsService, private session: ConfigurationService) { }
 
   // On vide tous les champs 
   viderChamps() {
@@ -67,8 +71,9 @@ export class LoginComponent {
     // Connexion en tant qu'admin
     this.authAdmin.connexionAdmin(user).subscribe(
       (response) => {
-        Notify.success('connexion reussie',{position: 'center-center'});
+        Notify.success('connexion reussie', { position: 'center-center' });
         const token = response;
+        localStorage.setItem("isUsers", JSON.stringify(true));
         // Démarrer la session avec le token
         this.session.startSession(token);
         this.route.navigate(['/admin']);
@@ -80,15 +85,16 @@ export class LoginComponent {
           (response) => {
             Notify.success('connexion reussie');
             const token = response;
+            localStorage.setItem("isUsers", JSON.stringify(true));
             // Démarrer la session avec le token
             this.session.startSession(token);
-              // Charger les permissions après connexion
-            this.permissionsService.loadPermissions();         
+            // Charger les permissions après connexion
+            this.permissionsService.loadPermissions();
             this.route.navigate(['/admin']);
             Loading.remove();
           },
           (err) => {
-            Notify.failure(err.error.message,{position: 'center-center'});
+            Notify.failure(err.error.message, { position: 'center-center' });
             Loading.remove();
           }
         )

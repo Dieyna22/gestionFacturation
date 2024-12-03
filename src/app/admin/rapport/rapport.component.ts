@@ -121,6 +121,7 @@ interface GroupedByCategory {
 
 interface GroupedByFournisseur {
   [fournisseur: string]: {
+    nomFournisseur: string;
     totalHT: number;
     totalTTC: number;
     fournisseurId: number;
@@ -331,7 +332,7 @@ export class RapportComponent implements OnInit {
 
     // Calculer la somme pour chaque client
     this.factureListe.forEach((facture: any) => {
-      const clientKey = `${facture.client_nom}_${facture.client_prenom}`;
+      const clientKey = `${facture.client_prenom}_${facture.client_nom}`;
       const montantHT = parseFloat(facture.prix_HT) || 0;
       const montantTTC = parseFloat(facture.prix_TTC) || 0;
 
@@ -400,7 +401,7 @@ export class RapportComponent implements OnInit {
   labelsFournisseur: any;
   depenseFournisseur: any;
   listeCategory: any;
-  listeFournissuer: any;
+  listeFournisseur: any;
 
   listeDepense() {
     const date = {
@@ -411,7 +412,7 @@ export class RapportComponent implements OnInit {
     this.rapportService.getRapportDepense(date).subscribe(
       (response: Depense[]) => {
         console.log(response);
-        this.depenseListe = response;
+
 
         // Réinitialiser les totaux
         this.depenseHT = 0;
@@ -449,6 +450,8 @@ export class RapportComponent implements OnInit {
           // --- Grouping by Fournisseur ---
           if (!groupedByFournisseur[fournisseurNom]) {
             groupedByFournisseur[fournisseurNom] = {
+              nomFournisseur: depense.fournisseur?.nom_entreprise ||
+                `${depense.fournisseur?.nom_fournisseur} ${depense.fournisseur?.prenom_fournisseur}`,
               totalHT: 0,
               totalTTC: 0,
               fournisseurId: depense.fournisseur?.id,
@@ -471,18 +474,20 @@ export class RapportComponent implements OnInit {
         this.labelsCategory = categories;
         this.depenseCategory = categories.map(cat => groupedByCategory[cat].totalHT);
 
-        this.listeCategory = groupedByCategory;
+        this.listeCategory = Object.values(groupedByCategory);
 
         const fournisseur = Object.keys(groupedByFournisseur);
         this.labelsFournisseur = fournisseur;
         this.depenseFournisseur = fournisseur.map(cat => groupedByFournisseur[cat].totalHT);
 
+        this.listeFournisseur = Object.values(groupedByFournisseur);
+
         // Stocker les données groupées pour l'affichage
         this.groupedByCategory = groupedByCategory;
         this.groupedByFournisseur = groupedByFournisseur;
 
-        console.log('Données groupées par catégorie:', groupedByCategory);
-        console.log('Données groupées par fournisseur:', groupedByFournisseur);
+        console.log('Données groupées par catégorie:', this.listeCategory);
+        console.log('Données groupées par fournisseur:', this.listeFournisseur);
 
         // Ajouter un petit délai
         setTimeout(() => {
@@ -494,6 +499,13 @@ export class RapportComponent implements OnInit {
       }
     );
   }
+
+  updateDateRangeDepense() {
+    if (this.dateDebut && this.dateFin) {
+      this.listeDepense();
+    }
+  }
+
   listePaiementRecu() {
     const date = {
       date_debut: this.dateDebut,
@@ -542,6 +554,12 @@ export class RapportComponent implements OnInit {
         console.error('Erreur lors de la récupération des données:', error);
       }
     );
+  }
+
+  updateDateRangePaiementRecu() {
+    if (this.dateDebut && this.dateFin) {
+      this.listePaiementRecu();
+    }
   }
 
   listePaiementEnAttents() {
@@ -594,6 +612,12 @@ export class RapportComponent implements OnInit {
     );
   }
 
+  updateDateRangePaiementEnAttente() {
+    if (this.dateDebut && this.dateFin) {
+      this.listePaiementEnAttents();
+    }
+  }
+
   listeCommandeVente() {
     const date = {
       date_debut: this.dateDebut,
@@ -604,6 +628,7 @@ export class RapportComponent implements OnInit {
       (response: any) => {
         console.log(response);
         this.factureListe = response;
+        this.calculerSommesClientsCommandeVente();
 
         // Réinitialiser les totaux et les données mensuelles
         this.factureHT = 0;
@@ -644,6 +669,40 @@ export class RapportComponent implements OnInit {
     );
   }
 
+  calculerSommesClientsCommandeVente(): void {
+    // Créer un objet temporaire pour faire les sommes
+    const sommes: { [key: string]: ClientSomme } = {};
+
+    // Calculer la somme pour chaque client
+    this.factureListe.forEach((facture: any) => {
+      const clientKey = `${facture.client.prenom_client}_${facture.client.nom_client}`;
+      const montantHT = parseFloat(facture.prix_HT) || 0;
+      const montantTTC = parseFloat(facture.prix_TTC) || 0;
+
+      if (sommes[clientKey]) {
+        sommes[clientKey].total_HT += montantHT;
+        sommes[clientKey].total_TTC += montantTTC;
+      } else {
+        sommes[clientKey] = {
+          nomClient: `${facture.client.prenom_client} ${facture.client.nom_client}`,
+          total_HT: montantHT,
+          total_TTC: montantTTC
+        };
+      }
+    });
+
+    // Convertir l'objet en tableau pour l'affichage
+    this.clientsSommes = Object.values(sommes);
+    console.log('Sommes par client:', this.clientsSommes);
+
+  }
+
+  updateDateRangeCommandeVente() {
+    if (this.dateDebut && this.dateFin) {
+      this.listeCommandeVente();
+    }
+  }
+
   listeLivraison() {
     const date = {
       date_debut: this.dateDebut,
@@ -654,6 +713,7 @@ export class RapportComponent implements OnInit {
       (response: any) => {
         console.log(response);
         this.factureListe = response;
+        this.calculerSommesClientsLivraison();
 
         // Réinitialiser les totaux et les données mensuelles
         this.factureHT = 0;
@@ -692,6 +752,40 @@ export class RapportComponent implements OnInit {
         console.error('Erreur lors de la récupération des données:', error);
       }
     );
+  }
+
+  calculerSommesClientsLivraison(): void {
+    // Créer un objet temporaire pour faire les sommes
+    const sommes: { [key: string]: ClientSomme } = {};
+
+    // Calculer la somme pour chaque client
+    this.factureListe.forEach((facture: any) => {
+      const clientKey = `${facture.client.prenom_client}_${facture.client.nom_client}`;
+      const montantHT = parseFloat(facture.prix_HT) || 0;
+      const montantTTC = parseFloat(facture.prix_TTC) || 0;
+
+      if (sommes[clientKey]) {
+        sommes[clientKey].total_HT += montantHT;
+        sommes[clientKey].total_TTC += montantTTC;
+      } else {
+        sommes[clientKey] = {
+          nomClient: `${facture.client.prenom_client} ${facture.client.nom_client}`,
+          total_HT: montantHT,
+          total_TTC: montantTTC
+        };
+      }
+    });
+
+    // Convertir l'objet en tableau pour l'affichage
+    this.clientsSommes = Object.values(sommes);
+    console.log('Sommes par client:', this.clientsSommes);
+
+  }
+
+  updateDateRangeLivraison() {
+    if (this.dateDebut && this.dateFin) {
+      this.listeLivraison();
+    }
   }
 
   PaiementListe: Paiement[] = []; // Assurez-vous que cette propriété existe
@@ -740,6 +834,12 @@ export class RapportComponent implements OnInit {
         console.error('Erreur lors de la récupération des données:', error);
       }
     );
+  }
+
+  updateDateRangePaiement(){
+    if (this.dateDebut && this.dateFin) {
+      this.listeMoyenPaiement();
+    }
   }
 
   TVAs_utilises: TVA[] = [];
@@ -801,6 +901,12 @@ export class RapportComponent implements OnInit {
         console.error('Erreur lors de la récupération des données:', error);
       }
     );
+  }
+
+  updateDateRangeTva(){
+    if (this.dateDebut && this.dateFin) {
+      this.listeTva();
+    }
   }
 
   resultat: any
@@ -880,7 +986,13 @@ export class RapportComponent implements OnInit {
     );
   }
 
-  journalVente: any;
+  updateDateRangeResultat() {
+    if (this.dateDebut && this.dateFin) {
+      this.listeResulat();
+    }
+  }
+
+  journalVente:any;
   listeJournalVentes() {
     const date = {
       date_debut: this.dateDebut,
@@ -900,6 +1012,11 @@ export class RapportComponent implements OnInit {
         console.error('Erreur lors de la récupération des données:', error);
       }
     );
+  }
+  updateDateRangeJournalVente() {
+    if (this.dateDebut && this.dateFin) {
+      this.listeJournalVentes();
+    }
   }
 
   journalDachat: any;
@@ -923,18 +1040,23 @@ export class RapportComponent implements OnInit {
       }
     );
   }
+  updateDateRangeJournalDachat() {
+    if (this.dateDebut && this.dateFin) {
+      this.listeJournalDachat();
+    }
+  }
+
 
   ValeurStock: any;
   listeValeurStock() {
-    const date = {
-      date_debut: this.dateDebut,
-      date_fin: this.dateFin
+    const data = {
+      date: this.dateFin,
+      value:this.currentViewStock,
     };
-
-    this.rapportService.getRapportValeurStock(date).subscribe(
+    this.rapportService.getRapportValeurStock(data).subscribe(
       (response: any) => {
-        console.log(response);
-        this.ValeurStock = response;
+        this.ValeurStock = Object.values(response);
+        console.log(this.ValeurStock);
         // Ajouter un petit délai
         setTimeout(() => {
           this.generateRapport(); // Votre méthode qui génère le graphique
@@ -944,6 +1066,12 @@ export class RapportComponent implements OnInit {
         console.error('Erreur lors de la récupération des données:', error);
       }
     );
+  }
+
+  updateDateRangestock(){
+    if (this.dateFin) {
+      this.listeValeurStock();
+    }
   }
 
 
@@ -1021,56 +1149,7 @@ export class RapportComponent implements OnInit {
       type: 'bar',
       getData: () => {
         return this.getDataForView() || {};
-
       }
-      // getData: () => ({
-      //   labels: this.labels,
-      //   datasets: [{
-      //       label: 'Ventes',
-      //       data: this.facture,
-      //       fill: false,
-      //       backgroundColor: 'rgb(75, 192, 192)',
-      //       tension: 0.1
-      //     }]
-      // }),
-      //  getData: () => ({
-      //    axis: 'y',
-      //    labels: this.clientsSommes.map(client => client.nomClient),
-      //    datasets: [{
-      //      label: 'Ventes',
-      //      data: this.clientsSommes.map(client => client.total_TTC),
-      //      fill: false,
-      //      backgroundColor: [
-      //        'rgba(255, 99, 132, 0.2)',
-      //        'rgba(255, 159, 64, 0.2)',
-      //        'rgba(255, 205, 86, 0.2)',
-      //        'rgba(75, 192, 192, 0.2)',
-      //        'rgba(54, 162, 235, 0.2)',
-      //        'rgba(153, 102, 255, 0.2)',
-      //        'rgba(201, 203, 207, 0.2)'
-      //      ],
-      //      tension: 0.1
-      //    }],
-      //  }),
-      //  getData: () => ({
-      //    axis: 'y',
-      //    labels: this.articlesSommes.map(article => article.nom_article),
-      //    datasets: [{
-      //      label: 'Articles',
-      //      data: this.articlesSommes.map(article => article.total_TTC),
-      //      fill: false,
-      //      backgroundColor: [
-      //        'rgba(255, 99, 132, 0.2)',
-      //        'rgba(255, 159, 64, 0.2)',
-      //        'rgba(255, 205, 86, 0.2)',
-      //        'rgba(75, 192, 192, 0.2)',
-      //        'rgba(54, 162, 235, 0.2)',
-      //        'rgba(153, 102, 255, 0.2)',
-      //        'rgba(201, 203, 207, 0.2)'
-      //      ],
-      //      tension: 0.1
-      //    }],
-      //  })
     },
     {
       id: 'depenses',
@@ -1078,35 +1157,9 @@ export class RapportComponent implements OnInit {
       label: 'Dépenses',
       isOpen: false,
       type: 'pie',
-      getData: () => ({
-        labels: this.labelsFournisseur,
-        datasets: [{
-          label: 'Depenses',
-          data: this.depenseFournisseur,
-          fill: false,
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 205, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(201, 203, 207, 0.2)'
-          ],
-          borderColor: [
-            'rgb(255, 99, 132)',
-            'rgb(255, 159, 64)',
-            'rgb(255, 205, 86)',
-            'rgb(75, 192, 192)',
-            'rgb(54, 162, 235)',
-            'rgb(153, 102, 255)',
-            'rgb(201, 203, 207)'
-          ],
-          borderWidth: 1,
-          barPercentage: 0.5
-
-        }],
-      })
+      getData: () => {
+        return this.getDataForViewDepense() || {};
+      }
 
     },
     {
@@ -1123,21 +1176,9 @@ export class RapportComponent implements OnInit {
             data: this.depense,  // Tableau des dépenses mensuelles
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-              'rgba(255, 205, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(201, 203, 207, 0.2)'
             ],
             borderColor: [
               'rgb(255, 99, 132)',
-              'rgb(255, 159, 64)',
-              'rgb(255, 205, 86)',
-              'rgb(75, 192, 192)',
-              'rgb(54, 162, 235)',
-              'rgb(153, 102, 255)',
-              'rgb(201, 203, 207)'
             ],
             borderWidth: 1,
             barPercentage: 0.5,
@@ -1148,22 +1189,10 @@ export class RapportComponent implements OnInit {
             label: 'Factures TTC',
             data: this.facture,  // Tableau des factures mensuelles
             backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
               'rgba(255, 159, 64, 0.2)',
-              'rgba(255, 205, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(201, 203, 207, 0.2)'
             ],
             borderColor: [
-              'rgb(255, 99, 132)',
-              'rgb(255, 159, 64)',
-              'rgb(255, 205, 86)',
-              'rgb(75, 192, 192)',
-              'rgb(54, 162, 235)',
-              'rgb(153, 102, 255)',
-              'rgb(201, 203, 207)'
+              'rgb(255, 159, 64)'
             ],
             borderWidth: 1,
             barPercentage: 0.5,
@@ -1174,22 +1203,10 @@ export class RapportComponent implements OnInit {
             label: 'Resultat',
             data: this.resultat,  // Tableau des resultat
             backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
               'rgba(255, 205, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(201, 203, 207, 0.2)'
             ],
             borderColor: [
-              'rgb(255, 99, 132)',
-              'rgb(255, 159, 64)',
               'rgb(255, 205, 86)',
-              'rgb(75, 192, 192)',
-              'rgb(54, 162, 235)',
-              'rgb(153, 102, 255)',
-              'rgb(201, 203, 207)'
             ],
             borderWidth: 1,
             barPercentage: 0.5,
@@ -1281,35 +1298,9 @@ export class RapportComponent implements OnInit {
       label: 'Commandes',
       isOpen: false,
       type: 'bar',
-      getData: () => ({
-        labels: this.labels,
-        datasets: [{
-          label: 'Commandes de ventes',
-          data: this.facture,
-          fill: false,
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 205, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(201, 203, 207, 0.2)'
-          ],
-          borderColor: [
-            'rgb(255, 99, 132)',
-            'rgb(255, 159, 64)',
-            'rgb(255, 205, 86)',
-            'rgb(75, 192, 192)',
-            'rgb(54, 162, 235)',
-            'rgb(153, 102, 255)',
-            'rgb(201, 203, 207)'
-          ],
-          borderWidth: 1,
-          barPercentage: 0.5,
-          tension: 0.1
-        }]
-      })
+      getData: () => {
+        return this.getDataForViewCommandeVente() || {};
+      }
     },
     {
       id: 'livraison',
@@ -1317,35 +1308,9 @@ export class RapportComponent implements OnInit {
       label: 'Livraisons',
       isOpen: false,
       type: 'bar',
-      getData: () => ({
-        labels: this.labels,
-        datasets: [{
-          label: 'Livraisons',
-          data: this.facture,
-          fill: false,
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(255, 205, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(201, 203, 207, 0.2)'
-          ],
-          borderColor: [
-            'rgb(255, 99, 132)',
-            'rgb(255, 159, 64)',
-            'rgb(255, 205, 86)',
-            'rgb(75, 192, 192)',
-            'rgb(54, 162, 235)',
-            'rgb(153, 102, 255)',
-            'rgb(201, 203, 207)'
-          ],
-          borderWidth: 1,
-          barPercentage: 0.5,
-          tension: 0.1
-        }]
-      })
+      getData: () => {
+        return this.getDataForViewLivraison() || {};
+      }
     },
     {
       id: 'paiements',
@@ -1399,21 +1364,9 @@ export class RapportComponent implements OnInit {
             data: this.tvasSeparees.map(t => t.montant_totalTVAFacture),
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-              'rgba(255, 205, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(201, 203, 207, 0.2)'
             ],
             borderColor: [
               'rgb(255, 99, 132)',
-              'rgb(255, 159, 64)',
-              'rgb(255, 205, 86)',
-              'rgb(75, 192, 192)',
-              'rgb(54, 162, 235)',
-              'rgb(153, 102, 255)',
-              'rgb(201, 203, 207)'
             ],
             borderWidth: 1,
             barPercentage: 0.5
@@ -1422,22 +1375,10 @@ export class RapportComponent implements OnInit {
             label: 'TVA Dépenses',
             data: this.tvasSeparees.map(t => t.montant_totalTVADepense),
             backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
               'rgba(255, 205, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(201, 203, 207, 0.2)'
             ],
             borderColor: [
-              'rgb(255, 99, 132)',
-              'rgb(255, 159, 64)',
               'rgb(255, 205, 86)',
-              'rgb(75, 192, 192)',
-              'rgb(54, 162, 235)',
-              'rgb(153, 102, 255)',
-              'rgb(201, 203, 207)'
             ],
             borderWidth: 1,
             barPercentage: 0.5
@@ -1456,7 +1397,7 @@ export class RapportComponent implements OnInit {
     {
       id: 'journalAchat',
       titre: 'Journal Achats',
-      label: 'Dépenses',
+      label: 'Achats',
       isOpen: false,
       type: 'none',
       getData: () => '',
@@ -1559,7 +1500,8 @@ export class RapportComponent implements OnInit {
           type: this.selectedRapport.type as "bar" | "line" | "pie",
           data: data,
           options: {
-            //  indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
           }
 
         }) as Chart<"bar" | "line" | "pie", number[], string>;
@@ -1705,10 +1647,9 @@ export class RapportComponent implements OnInit {
     }
   }
 
+  //Facture
   // Une seule variable pour gérer l'affichage
   currentView: 'facture' | 'client' | 'article' = 'facture';
-
-
   // Fonction pour gérer le changement de vue
   onGroupByChange(event: any): void {
     const selectedId = event.target.id;
@@ -1729,7 +1670,6 @@ export class RapportComponent implements OnInit {
     this.pageFactures = 1;
     this.generateRapport();
   }
-
   // Fonction qui récupère les données selon la vue sélectionnée
   getDataForView(): any {
     switch (this.currentView) {
@@ -1826,6 +1766,276 @@ export class RapportComponent implements OnInit {
     }
   }
 
+  //Depense
+  currentViewDepense: 'category' | 'fournisseur' = 'category';
+  onGroupByChangeDepense(event: any): void {
+    const selectedId = event.target.id;
+
+    switch (selectedId) {
+      case 'groupByCategory':
+        this.currentViewDepense = 'category';
+        break;
+      case 'groupByForunisseur':
+        this.currentViewDepense = 'fournisseur';
+        break;
+    }
+
+    // Réinitialiser la pagination
+    this.pageDepenses = 1;
+    this.generateRapport();
+  }
+  getDataForViewDepense(): any {
+    switch (this.currentViewDepense) {
+      case 'category':
+        return {
+          labels: this.labelsCategory,
+          datasets: [{
+            label: 'Depenses',
+            data: this.depenseCategory,
+            fill: false,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(255, 205, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(201, 203, 207, 0.2)'
+            ],
+            borderColor: [
+              'rgb(255, 99, 132)',
+              'rgb(255, 159, 64)',
+              'rgb(255, 205, 86)',
+              'rgb(75, 192, 192)',
+              'rgb(54, 162, 235)',
+              'rgb(153, 102, 255)',
+              'rgb(201, 203, 207)'
+            ],
+            borderWidth: 1,
+            barPercentage: 0.5
+
+          }],
+        };
+
+      case 'fournisseur':
+        return {
+          labels: this.labelsFournisseur,
+          datasets: [{
+            label: 'Depenses',
+            data: this.depenseFournisseur,
+            fill: false,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(255, 205, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(201, 203, 207, 0.2)'
+            ],
+            borderColor: [
+              'rgb(255, 99, 132)',
+              'rgb(255, 159, 64)',
+              'rgb(255, 205, 86)',
+              'rgb(75, 192, 192)',
+              'rgb(54, 162, 235)',
+              'rgb(153, 102, 255)',
+              'rgb(201, 203, 207)'
+            ],
+            borderWidth: 1,
+            barPercentage: 0.5
+
+          }],
+        };
+
+      default:
+        return {};  // Assure qu'une valeur vide est retournée si nécessaire
+    }
+  }
+
+  //commande de vente
+  currentViewCommandeVente: 'commande' | 'client' = 'commande';
+  onGroupByChangeCommandeVente(event: any): void {
+    const selectedId = event.target.id;
+
+    switch (selectedId) {
+      case 'groupByCommandeVente':
+        this.currentViewCommandeVente = 'commande';
+        break;
+      case 'groupByClientCommande':
+        this.currentViewCommandeVente = 'client';
+        break;
+    }
+
+    // Réinitialiser la pagination
+    this.pageFactures = 1;
+    this.generateRapport();
+  }
+  getDataForViewCommandeVente(): any {
+    switch (this.currentViewCommandeVente) {
+      case 'commande':
+        return {
+          labels: this.labels,
+          datasets: [{
+            label: 'Commandes de ventes',
+            data: this.facture,
+            fill: false,
+            backgroundColor: [
+              'rgba(75, 192, 192, 0.2)',
+            ],
+            borderColor: [
+              'rgb(75, 192, 192)'
+            ],
+            borderWidth: 1,
+            barPercentage: 0.5,
+            tension: 0.1
+          }]
+        };
+
+      case 'client':
+        return {
+          labels: this.clientsSommes.map((client: any) => client.nomClient),
+          datasets: [{
+            label: 'Clients',
+            data: this.clientsSommes.map((client: any) => client.total_TTC),
+            fill: false,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(255, 205, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(201, 203, 207, 0.2)'
+            ],
+            borderColor: [
+              'rgb(255, 99, 132)',
+              'rgb(255, 159, 64)',
+              'rgb(255, 205, 86)',
+              'rgb(75, 192, 192)',
+              'rgb(54, 162, 235)',
+              'rgb(153, 102, 255)',
+              'rgb(201, 203, 207)'
+            ],
+            borderWidth: 1,
+            barPercentage: 0.5,
+          }]
+        };
+
+      default:
+        return {};  // Assure qu'une valeur vide est retournée si nécessaire
+    }
+  }
+
+  //livraison
+  currentViewLivraison: 'livraison' | 'client' = 'livraison';
+  onGroupByChangeLivraison(event: any): void {
+    const selectedId = event.target.id;
+
+    switch (selectedId) {
+      case 'groupByLivraison':
+        this.currentViewLivraison = 'livraison';
+        break;
+      case 'groupByClientLivraison':
+        this.currentViewLivraison = 'client';
+        break;
+    }
+
+    // Réinitialiser la pagination
+    this.pageFactures = 1;
+    this.generateRapport();
+  }
+  getDataForViewLivraison(): any {
+    switch (this.currentViewLivraison) {
+      case 'livraison':
+        return {
+          labels: this.labels,
+          datasets: [{
+            label: 'Livraisons',
+            data: this.facture,
+            fill: false,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(255, 205, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(201, 203, 207, 0.2)'
+            ],
+            borderColor: [
+              'rgb(255, 99, 132)',
+              'rgb(255, 159, 64)',
+              'rgb(255, 205, 86)',
+              'rgb(75, 192, 192)',
+              'rgb(54, 162, 235)',
+              'rgb(153, 102, 255)',
+              'rgb(201, 203, 207)'
+            ],
+            borderWidth: 1,
+            barPercentage: 0.5,
+            tension: 0.1
+          }]
+        };
+
+      case 'client':
+        return {
+          labels: this.clientsSommes.map((client: any) => client.nomClient),
+          datasets: [{
+            label: 'Clients',
+            data: this.clientsSommes.map((client: any) => client.total_TTC),
+            fill: false,
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(255, 205, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(201, 203, 207, 0.2)'
+            ],
+            borderColor: [
+              'rgb(255, 99, 132)',
+              'rgb(255, 159, 64)',
+              'rgb(255, 205, 86)',
+              'rgb(75, 192, 192)',
+              'rgb(54, 162, 235)',
+              'rgb(153, 102, 255)',
+              'rgb(201, 203, 207)'
+            ],
+            borderWidth: 1,
+            barPercentage: 0.5,
+          }]
+        };
+
+      default:
+        return {};  // Assure qu'une valeur vide est retournée si nécessaire
+    }
+  }
+
+  //valeur de stock
+  currentViewStock: 'FIFO' | 'prix_achat_moyen' | 'prix_achat_actuel' = 'FIFO';
+  // Fonction pour gérer le changement de vue
+  onGroupByChangeStok(event: any): void {
+    const selectedId = event.target.id;
+
+    switch (selectedId) {
+      case 'groupByFIFO':
+        this.currentViewStock = 'FIFO';
+        this.listeValeurStock();
+        break;
+      case 'groupByAchat':
+        this.currentViewStock = 'prix_achat_moyen';
+        this.listeValeurStock();
+        break;
+      case 'groupByActuel':
+        this.currentViewStock = 'prix_achat_actuel';
+        this.listeValeurStock();
+        break;
+    }
+
+    // Réinitialiser la pagination
+    this.pageFactures = 1;
+    this.generateRapport();
+  }
 }
-
-
