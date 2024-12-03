@@ -68,6 +68,7 @@ export class NavbarComponent {
         });
         Loading.hourglass();
         localStorage.removeItem('userOnline');
+        localStorage.setItem("isUsers", JSON.stringify(false));
         this.route.navigate(['/connexion']);
         Loading.remove();
 

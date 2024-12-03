@@ -6,11 +6,18 @@
       <div class="ItemRapport text-center mb-3">
         <h6>{{ rapport.titre }}</h6>
         <p (click)="toggleRapport(rapport.id)">Générer rapport</p>
-        <div [id]="rapport.id" *ngIf="rapport.isOpen">
+        <div [id]="rapport.id" *ngIf="rapport.isOpen  && rapport.id !=='stock'">
           <div class="d-flex justify-content-center">
             <span class="me-1 mt-2">{{ rapport.label }} entre :</span>
             <span class="me-2"><input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut"></span>
             <span class="me-2 mt-2">et</span>
+            <span><input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin"></span><br>
+          </div>
+          <button class="btn btnGenere mt-3" (click)="openModal(rapport);listeRapport(rapport)">Générer</button>
+        </div>
+        <div [id]="rapport.id" *ngIf="rapport.isOpen && rapport.id ==='stock'">
+          <div class="d-flex justify-content-center">
+            <span class="me-1 mt-2">{{ rapport.label }} :</span>
             <span><input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin"></span><br>
           </div>
           <button class="btn btnGenere mt-3" (click)="openModal(rapport);listeRapport(rapport)">Générer</button>
@@ -31,7 +38,12 @@
       </div>
     </div>
     <div class="modal-body">
-      <canvas #chartCanvas *ngIf="selectedRapport.type !== 'none'"></canvas>
+      <!-- les rapports avec graphes -->
+      <div *ngIf="selectedRapport.type !== 'none'">
+        <!-- graphes -->
+      <div class="chart-container">
+        <canvas #chartCanvas></canvas>
+      </div>
       <!-- rapport flux de trésorerie -->
       <div *ngIf="selectedRapport.id === 'mvt'">
         <div class="d-flex shadow-sm p-3 mb-5 mt-5 rounded">
@@ -43,7 +55,7 @@
               (change)="updateDateRange()"></span><br>
         </div>
         <ng-container
-          *ngIf="depenseListe && factureListe && depenseListe.length > 0 && factureListe.length > 0; else flux">
+          *ngIf="depenseListe && factureListe && depenseListe.length > 0 || factureListe.length > 0; else flux">
           <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab">
             <div class="table-responsive">
               <table class="table table-hover mb-4" id="tableDataFlux">
@@ -106,9 +118,11 @@
                   <label class="col-form-label col-sm-2">{{selectedRapport.label }} entre :</label>
                   <div class="col-sm-6">
                     <div class="input-group">
-                      <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut" (change)=" updateDateRangeVente()">
+                      <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut"
+                        (change)="updateDateRangeVente()">
                       <span class="input-group-text">et</span>
-                      <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin" (change)=" updateDateRangeVente()">
+                      <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin"
+                        (change)="updateDateRangeVente()">
                     </div>
                   </div>
                 </div>
@@ -138,8 +152,8 @@
             </div>
           </div>
         </div>
-        <ng-container *ngIf="factureListe || factureListe.length > 0; else vente">
-          <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab"  *ngIf="currentView === 'facture'">
+        <ng-container *ngIf="factureListe && factureListe.length > 0; else vente">
+          <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab" *ngIf="currentView === 'facture'">
             <div class="table-responsive">
               <table class="table table-hover mb-4" id="tableDataVente">
                 <thead class="mb-2">
@@ -176,7 +190,7 @@
               </div>
             </div>
           </div>
-          <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab"  *ngIf="currentView === 'client'">
+          <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab" *ngIf="currentView === 'client'">
             <div class="table-responsive">
               <table class="table table-hover mb-4" id="tableDataVente">
                 <thead class="mb-2">
@@ -206,7 +220,7 @@
               </div>
             </div>
           </div>
-          <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab"  *ngIf="currentView === 'article'">
+          <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab" *ngIf="currentView === 'article'">
             <div class="table-responsive">
               <table class="table table-hover mb-4" id="tableDataVente">
                 <thead class="mb-2">
@@ -257,27 +271,11 @@
                   <label class="col-form-label col-sm-2">{{selectedRapport.label }} entre :</label>
                   <div class="col-sm-6">
                     <div class="input-group">
-                      <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut">
+                      <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut"
+                        (change)="updateDateRangeDepense()">
                       <span class="input-group-text">et</span>
-                      <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">Afficher :</label>
-                  <div class="col-sm-10">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByInvoice">
-                      <label class="form-check-label" for="groupByInvoice">Toutes</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByClient">
-                      <label class="form-check-label" for="groupByClient">Payées</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByProduct">
-                      <label class="form-check-label" for="groupByProduct">Impayées</label>
+                      <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin"
+                        (change)="updateDateRangeDepense()">
                     </div>
                   </div>
                 </div>
@@ -285,12 +283,14 @@
                   <label class="col-form-label col-sm-2">Grouper par :</label>
                   <div class="col-sm-10">
                     <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByInvoice">
-                      <label class="form-check-label" for="groupByInvoice">Catégorie</label>
+                      <input class="form-check-input" type="radio" name="groupBy" id="groupByCategory"
+                        (change)="onGroupByChangeDepense($event)" checked>
+                      <label class="form-check-label" for="groupByCategory">Catégorie</label>
                     </div>
                     <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByClient">
-                      <label class="form-check-label" for="groupByClient">Fournisseur</label>
+                      <input class="form-check-input" type="radio" name="groupBy" id="groupByForunisseur"
+                        (change)="onGroupByChangeDepense($event)">
+                      <label class="form-check-label" for="groupByForunisseur">Fournisseur</label>
                     </div>
                   </div>
                 </div>
@@ -298,36 +298,74 @@
             </div>
           </div>
         </div>
-        <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab">
-          <div class="table-responsive">
-            <table class="table table-hover mb-4">
-              <thead class="mb-2">
-                <tr>
-                  <th scope="col">Catégorie</th>
-                  <th scope="col">Total HT</th>
-                  <th scope="col">Total TTC</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  *ngFor="let depense of depenseListe | paginate: { itemsPerPage: 8, currentPage: pageDepenses }; let i = index">
-                  <td>{{depenseListe[i].categorie_depense.nom_categorie_depense}}</td>
-                  <td>{{depenseListe[i].montant_depense_ht}}</td>
-                  <td>{{depenseListe[i].montant_depense_ttc}} </td>
-                </tr>
-                <tr>
-                  <td>Total</td>
-                  <td>{{depenseHT}}</td>
-                  <td>{{depenseTTC}}</td>
-                </tr>
-              </tbody>
-            </table>
-            <!-- Ajout des contrôles de pagination -->
-            <div class="pagination-controls d-flex justify-content-end">
-              <pagination-controls (pageChange)="pageDepenses = $event"></pagination-controls>
+        <ng-container *ngIf="listeCategory && listeCategory.length > 0; else depense">
+          <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab" *ngIf="currentViewDepense === 'category'">
+            <div class="table-responsive">
+              <table class="table table-hover mb-4">
+                <thead class="mb-2">
+                  <tr>
+                    <th scope="col">Catégorie</th>
+                    <th scope="col">Total HT</th>
+                    <th scope="col">Total TTC</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let depense of listeCategory | paginate: { itemsPerPage: 8, currentPage: pageDepenses }; let i = index">
+                    <td>{{depense.nomCategory}}</td>
+                    <td>{{depense.totalHT}}</td>
+                    <td>{{depense.totalTTC}} </td>
+                  </tr>
+                  <tr>
+                    <td>Total</td>
+                    <td>{{depenseHT}}</td>
+                    <td>{{depenseTTC}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- Ajout des contrôles de pagination -->
+              <div class="pagination-controls d-flex justify-content-end">
+                <pagination-controls (pageChange)="pageDepenses = $event"></pagination-controls>
+              </div>
             </div>
           </div>
-        </div>
+          <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab" *ngIf="currentViewDepense === 'fournisseur'">
+            <div class="table-responsive">
+              <table class="table table-hover mb-4">
+                <thead class="mb-2">
+                  <tr>
+                    <th scope="col">Fournisseur</th>
+                    <th scope="col">Total HT</th>
+                    <th scope="col">Total TTC</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let depense of listeFournisseur | paginate: { itemsPerPage: 8, currentPage: pageDepenses }; let i = index">
+                    <td>{{depense.nomFournisseur}}</td>
+                    <td>{{depense.totalHT}}</td>
+                    <td>{{depense.totalTTC}} </td>
+                  </tr>
+                  <tr>
+                    <td>Total</td>
+                    <td>{{depenseHT}}</td>
+                    <td>{{depenseTTC}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- Ajout des contrôles de pagination -->
+              <div class="pagination-controls d-flex justify-content-end">
+                <pagination-controls (pageChange)="pageDepenses = $event"></pagination-controls>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #depense>
+          <div class="contenu text-center">
+            <i class="bi bi-emoji-frown-fill"></i>
+            <h5>Pas de données dans la fourchette de dates sélectionnées</h5>
+          </div>
+        </ng-template>
       </div>
       <!-- rapport resultat -->
       <div *ngIf="selectedRapport.id === 'resultat'">
@@ -339,37 +377,11 @@
                   <label class="col-form-label col-sm-2">{{selectedRapport.label }} entre :</label>
                   <div class="col-sm-6">
                     <div class="input-group">
-                      <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut">
+                      <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut"
+                        (change)="updateDateRangeResultat()">
                       <span class="input-group-text">et</span>
-                      <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">Compare :</label>
-                  <div class="col-sm-10">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByInvoice">
-                      <label class="form-check-label" for="groupByInvoice">Ventes vs. Dépenses</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByClient">
-                      <label class="form-check-label" for="groupByClient">Prix de vente vs. Prix d'achat</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByProduct">
-                      <label class="form-check-label" for="groupByProduct">Paiements reçus vs. Dépenses payées</label>
-                    </div>
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">Inclure :</label>
-                  <div class="col-sm-10">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByInvoice">
-                      <label class="form-check-label" for="groupByInvoice">Ventes annulées et leurs notes de
-                        crédit</label>
+                      <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin"
+                        (change)="updateDateRangeResultat()">
                     </div>
                   </div>
                 </div>
@@ -377,558 +389,39 @@
             </div>
           </div>
         </div>
-        <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab">
-          <div class="table-responsive">
-            <table class="table table-hover mb-4">
-              <thead class="mb-2">
-                <tr>
-                  <th scope="col"></th>
-                  <th scope="col">Total HT</th>
-                  <th scope="col">Total TTC</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Vente</td>
-                  <td>{{factureHT}}</td>
-                  <td>{{factureTTC}}</td>
-                </tr>
-                <tr>
-                  <td>Depense</td>
-                  <td>{{depenseHT}}</td>
-                  <td>{{depenseTTC}}</td>
-                </tr>
-                <tr>
-                  <td>Resultat</td>
-                  <td>{{depenseHT - factureHT}}</td>
-                  <td>{{depenseTTC - factureTTC}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <!-- rapport Paiement Reçu -->
-      <div *ngIf="selectedRapport.id === 'pRecu'">
-        <div class="container mt-4">
-          <div class="card">
-            <div class="card-body">
-              <form>
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">{{selectedRapport.label }} entre :</label>
-                  <div class="col-sm-6">
-                    <div class="input-group">
-                      <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut">
-                      <span class="input-group-text">et</span>
-                      <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">Grouper par :</label>
-                  <div class="col-sm-10">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByInvoice">
-                      <label class="form-check-label" for="groupByInvoice">Paiement reçu</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByClient">
-                      <label class="form-check-label" for="groupByClient">Client</label>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">Client :</label>
-                  <div class="col-sm-10">
-                    <select class="form-select">
-                      <option selected>Sélectionnez...</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">Afficher :</label>
-                  <div class="col-sm-10">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByInvoice">
-                      <label class="form-check-label" for="groupByInvoice">Paiements de Ventes annulée</label>
-                    </div>
-                  </div>
-                </div>
-              </form>
+        <ng-container *ngIf="depenseListe && factureListe ; else resultat">
+          <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab">
+            <div class="table-responsive">
+              <table class="table table-hover mb-4">
+                <thead class="mb-2">
+                  <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Total HT</th>
+                    <th scope="col">Total TTC</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Vente</td>
+                    <td>{{factureHT}}</td>
+                    <td>{{factureTTC}}</td>
+                  </tr>
+                  <tr>
+                    <td>Depense</td>
+                    <td>{{depenseHT}}</td>
+                    <td>{{depenseTTC}}</td>
+                  </tr>
+                  <tr>
+                    <td>Resultat</td>
+                    <td>{{depenseHT - factureHT}}</td>
+                    <td>{{depenseTTC - factureTTC}}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
-        </div>
-        <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab">
-          <div class="table-responsive">
-            <table class="table table-hover mb-4">
-              <thead class="mb-2">
-                <tr>
-                  <th scope="col">Vente - Date</th>
-                  <th scope="col">Vente - N°</th>
-                  <th scope="col">Client - Nom</th>
-                  <th scope="col">Statut</th>
-                  <th scope="col">Paiement - Moyen de paiement</th>
-                  <th scope="col">Paiement - Montant</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  *ngFor="let facture of factureListe | paginate: { itemsPerPage: 2, currentPage: pageFactures }; let j = index">
-                  <td>{{facture.date_recu}}</td>
-                  <td>{{facture.facture.num_facture}}</td>
-                  <td>{{facture.facture.client.prenom_client}} {{facture.facture.client.nom_client}}</td>
-                  <td>{{facture.facture.statut_paiement}}</td>
-                  <td>{{facture.paiement.nom_payement}}</td>
-                  <td>{{facture.montant}}</td>
-                </tr>
-                <tr>
-                  <td>Total</td>
-                  <td colspan="3"></td>
-                  <td>{{factureHT}}</td>
-                  <td>{{factureTTC}}</td>
-                </tr>
-              </tbody>
-            </table>
-            <!-- Ajout des contrôles de pagination -->
-            <div class="pagination-controls d-flex justify-content-end">
-              <pagination-controls (pageChange)="pageFactures = $event"></pagination-controls>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- rapport Paiement en attente -->
-      <div *ngIf="selectedRapport.id === 'pAttente'">
-        <div class="container mt-4">
-          <div class="card">
-            <div class="card-body">
-              <form>
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">{{selectedRapport.label }} entre :</label>
-                  <div class="col-sm-6">
-                    <div class="input-group">
-                      <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut">
-                      <span class="input-group-text">et</span>
-                      <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">Grouper par :</label>
-                  <div class="col-sm-10">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByInvoice">
-                      <label class="form-check-label" for="groupByInvoice">Échéances</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByClient">
-                      <label class="form-check-label" for="groupByClient">Client</label>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">Client :</label>
-                  <div class="col-sm-10">
-                    <select class="form-select">
-                      <option selected>Sélectionnez...</option>
-                    </select>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab">
-          <div class="table-responsive">
-            <table class="table table-hover mb-4">
-              <thead class="mb-2">
-                <tr>
-                  <th scope="col">Vente - N°</th>
-                  <th scope="col">Client - Nom</th>
-                  <th scope="col">Paiement - Prévu</th>
-                  <th scope="col">Paiement - Montant</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  *ngFor="let facture of factureListe | paginate: { itemsPerPage: 2, currentPage: pageFactures }; let j = index">
-                  <td>{{facture.facture.num_facture}}</td>
-                  <td>{{facture.facture.client.prenom_client}} {{facture.facture.client.nom_client}}</td>
-                  <td>{{facture.date_pay_echeance}}</td>
-                  <td>{{facture.montant_echeance}}</td>
-                </tr>
-                <tr>
-                  <td>Total</td>
-                  <td colspan="2"></td>
-                  <td>{{factureTTC}}</td>
-                </tr>
-              </tbody>
-            </table>
-            <!-- Ajout des contrôles de pagination -->
-            <div class="pagination-controls d-flex justify-content-end">
-              <pagination-controls (pageChange)="pageFactures = $event"></pagination-controls>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- rapport commande vente -->
-      <div *ngIf="selectedRapport.id === 'commandes'">
-        <div class="container mt-4">
-          <div class="card">
-            <div class="card-body">
-              <form>
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">{{selectedRapport.label }} entre :</label>
-                  <div class="col-sm-6">
-                    <div class="input-group">
-                      <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut">
-                      <span class="input-group-text">et</span>
-                      <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">Grouper par :</label>
-                  <div class="col-sm-10">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByInvoice">
-                      <label class="form-check-label" for="groupByInvoice">Commande</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByClient">
-                      <label class="form-check-label" for="groupByClient">Client</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByProduct">
-                      <label class="form-check-label" for="groupByProduct">Produit/Service</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="noGroup" checked>
-                      <label class="form-check-label" for="noGroup">Ne pas grouper</label>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">Client :</label>
-                  <div class="col-sm-10">
-                    <select class="form-select">
-                      <option selected>Sélectionnez...</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">Afficher :</label>
-                  <div class="col-sm-10">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByInvoice">
-                      <label class="form-check-label" for="groupByInvoice">Commandes de ventes annulées</label>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab">
-          <div class="table-responsive">
-            <table class="table table-hover mb-4">
-              <thead class="mb-2">
-                <tr>
-                  <th scope="col">Commande - Date</th>
-                  <th scope="col">Commande - N°</th>
-                  <th scope="col">Client - Nom</th>
-                  <th scope="col">Total HT</th>
-                  <th scope="col">Total TTC</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  *ngFor="let facture of factureListe | paginate: { itemsPerPage: 2, currentPage: pageFactures }; let j = index">
-                  <td>{{facture.date_limite_commande}}</td>
-                  <td>{{facture.num_commande}}</td>
-                  <td>{{facture.client.prenom_client}} {{facture.client.nom_client}}</td>
-                  <td>{{facture.prix_HT}}</td>
-                  <td>{{facture.prix_TTC}}</td>
-                </tr>
-                <tr>
-                  <td>Total</td>
-                  <td colspan="2"></td>
-                  <td>{{factureHT}}</td>
-                  <td>{{factureTTC}}</td>
-                </tr>
-              </tbody>
-            </table>
-            <!-- Ajout des contrôles de pagination -->
-            <div class="pagination-controls d-flex justify-content-end">
-              <pagination-controls (pageChange)="pageFactures = $event"></pagination-controls>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- rapport livraison -->
-      <div *ngIf="selectedRapport.id === 'livraison'">
-        <div class="container mt-4">
-          <div class="card">
-            <div class="card-body">
-              <form>
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">{{selectedRapport.label }} entre :</label>
-                  <div class="col-sm-6">
-                    <div class="input-group">
-                      <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut">
-                      <span class="input-group-text">et</span>
-                      <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">Grouper par :</label>
-                  <div class="col-sm-10">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByInvoice">
-                      <label class="form-check-label" for="groupByInvoice">Livraison</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByClient">
-                      <label class="form-check-label" for="groupByClient">Client</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByProduct">
-                      <label class="form-check-label" for="groupByProduct">Produit/Service</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="noGroup" checked>
-                      <label class="form-check-label" for="noGroup">Ne pas grouper</label>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">Client :</label>
-                  <div class="col-sm-10">
-                    <select class="form-select">
-                      <option selected>Sélectionnez...</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">Afficher :</label>
-                  <div class="col-sm-10">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByInvoice">
-                      <label class="form-check-label" for="groupByInvoice">Livraison annulées</label>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab">
-          <div class="table-responsive">
-            <table class="table table-hover mb-4">
-              <thead class="mb-2">
-                <tr>
-                  <th scope="col">Livraison - Date</th>
-                  <th scope="col">Livraison - N°</th>
-                  <th scope="col">Client - Nom</th>
-                  <th scope="col">Total HT</th>
-                  <th scope="col">Total TTC</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  *ngFor="let facture of factureListe | paginate: { itemsPerPage: 2, currentPage: pageFactures }; let j = index">
-                  <td>{{facture.date_livraison}}</td>
-                  <td>{{facture.num_livraison}}</td>
-                  <td>{{facture.client.prenom_client}} {{facture.client.nom_client}}</td>
-                  <td>{{facture.prix_HT}}</td>
-                  <td>{{facture.prix_TTC}}</td>
-                </tr>
-                <tr>
-                  <td>Total</td>
-                  <td colspan="2"></td>
-                  <td>{{factureHT}}</td>
-                  <td>{{factureTTC}}</td>
-                </tr>
-              </tbody>
-            </table>
-            <!-- Ajout des contrôles de pagination -->
-            <div class="pagination-controls d-flex justify-content-end">
-              <pagination-controls (pageChange)="pageFactures = $event"></pagination-controls>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- rapport moyen de paiement  -->
-      <div *ngIf="selectedRapport.id === 'paiements'">
-        <div class="container mt-4">
-          <div class="card">
-            <div class="card-body">
-              <form>
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">{{selectedRapport.label }} entre :</label>
-                  <div class="col-sm-6">
-                    <div class="input-group">
-                      <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut">
-                      <span class="input-group-text">et</span>
-                      <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">Paiements de :</label>
-                  <div class="col-sm-10">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByInvoice">
-                      <label class="form-check-label" for="groupByInvoice">Ventes</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByClient">
-                      <label class="form-check-label" for="groupByClient">Dépenses</label>
-                    </div>
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">Calculer par :</label>
-                  <div class="col-sm-10">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByInvoice">
-                      <label class="form-check-label" for="groupByInvoice">Montants</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByInvoice1">
-                      <label class="form-check-label" for="groupByInvoice1">Nombre de paiements</label>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab">
-          <div class="table-responsive">
-            <table class="table table-hover mb-4">
-              <thead class="mb-2">
-                <tr>
-                  <th scope="col">Moyen paiement</th>
-                  <th scope="col">Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  *ngFor="let facture of factureListe | paginate: { itemsPerPage: 2, currentPage: pageFactures }; let j = index">
-                  <td>{{facture.nom_payement}}</td>
-                  <td>{{facture.montant}}</td>
-                </tr>
-              </tbody>
-            </table>
-            <!-- Ajout des contrôles de pagination -->
-            <div class="pagination-controls d-flex justify-content-end">
-              <pagination-controls (pageChange)="pageFactures = $event"></pagination-controls>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- rapport tva -->
-      <div *ngIf="selectedRapport.id === 'tva'">
-        <div class="container mt-4">
-          <div class="card">
-            <div class="card-body">
-              <form>
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">{{selectedRapport.label }} entre :</label>
-                  <div class="col-sm-6">
-                    <div class="input-group">
-                      <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut">
-                      <span class="input-group-text">et</span>
-                      <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">Grouper par :</label>
-                  <div class="col-sm-10">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByInvoice">
-                      <label class="form-check-label" for="groupByInvoice">Pourcentage</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByInvoice1">
-                      <label class="form-check-label" for="groupByInvoice1">
-                        Vente/Facture</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByClient">
-                      <label class="form-check-label" for="groupByClient">Client</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByDepense">
-                      <label class="form-check-label" for="groupByDepense">Dépense</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByFournisseur">
-                      <label class="form-check-label" for="groupByFournisseur">Fournisseur</label>
-                    </div>
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label class="col-form-label col-sm-2">Afficher:</label>
-                  <div class="col-sm-10">
-                    <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="groupBy" id="groupByInvoice">
-                      <label class="form-check-label" for="groupByInvoice">Ventes annulées et leurs notes de
-                        crédit</label>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
-        <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab">
-          <div class="table-responsive">
-            <table class="table table-hover mb-4">
-              <thead class="mb-2">
-                <tr>
-                  <th scope="col">Pourcentage de TVA</th>
-                  <th scope="col">Reçue</th>
-                  <th scope="col">Payée</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr
-                  *ngFor="let facture of tvasSeparees | paginate: { itemsPerPage: 2, currentPage: pageFactures }; let j = index">
-                  <ng-container>
-                    <td>{{facture.taux_tva}}</td>
-                    <td>{{facture.montant_totalTVAFacture}}</td>
-                    <td>{{facture.montant_totalTVADepense}}</td>
-                  </ng-container>
-                </tr>
-              </tbody>
-            </table>
-            <!-- Ajout des contrôles de pagination -->
-            <div class="pagination-controls d-flex justify-content-end">
-              <pagination-controls (pageChange)="pageFactures = $event"></pagination-controls>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div *ngIf="selectedRapport.type === 'none'">
-        <!-- rapport journal de  vente(facture) -->
-        <div *ngIf="selectedRapport.id === 'journalVente'">
+        </ng-container>
+        <ng-template #resultat>
           <div class="container mt-4">
             <div class="card">
               <div class="card-body">
@@ -943,20 +436,36 @@
                       </div>
                     </div>
                   </div>
-                  <div class="row mb-3">
-                    <label class="col-form-label col-sm-2">Afficher:</label>
-                    <div class="col-sm-10">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="groupBy" id="groupByInvoice">
-                        <label class="form-check-label" for="groupByInvoice">Ventes annulées et leurs notes de
-                          crédit</label>
-                      </div>
-                    </div>
-                  </div>
                 </form>
               </div>
             </div>
           </div>
+        </ng-template>
+
+      </div>
+      <!-- rapport Paiement Reçu -->
+      <div *ngIf="selectedRapport.id === 'pRecu'">
+        <div class="container mt-4">
+          <div class="card">
+            <div class="card-body">
+              <form>
+                <div class="row mb-3">
+                  <label class="col-form-label col-sm-2">{{selectedRapport.label }} entre :</label>
+                  <div class="col-sm-6">
+                    <div class="input-group">
+                      <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut"
+                        (change)="updateDateRangePaiementRecu()">
+                      <span class="input-group-text">et</span>
+                      <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin"
+                        (change)="updateDateRangePaiementRecu()">
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <ng-container *ngIf="factureListe && factureListe.length > 0; else pRecu">
           <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab">
             <div class="table-responsive">
               <table class="table table-hover mb-4">
@@ -964,28 +473,28 @@
                   <tr>
                     <th scope="col">Vente - Date</th>
                     <th scope="col">Vente - N°</th>
-                    <th scope="col">Compte</th>
-                    <th scope="col">Libellé Compte</th>
-                    <th scope="col">Client - N°</th>
                     <th scope="col">Client - Nom</th>
-                    <th scope="col">Débit</th>
-                    <th scope="col">Crédit</th>
+                    <th scope="col">Statut</th>
+                    <th scope="col">Paiement - Moyen de paiement</th>
+                    <th scope="col">Paiement - Montant</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr
-                    *ngFor="let facture of journalVente | paginate: { itemsPerPage: 9, currentPage: pageFactures }; let j = index">
-                    <td>{{facture.facture.date_creation}}</td>
+                    *ngFor="let facture of factureListe | paginate: { itemsPerPage: 2, currentPage: pageFactures }; let j = index">
+                    <td>{{facture.date_recu}}</td>
                     <td>{{facture.facture.num_facture}}</td>
-                    <td>{{facture.compte_comptable.code_compte_comptable}}</td>
-                    <td>{{facture.compte_comptable.nom_compte_comptable}}</td>
-                    <td>{{facture.facture.client.num_client}}</td>
                     <td>{{facture.facture.client.prenom_client}} {{facture.facture.client.nom_client}}</td>
-                    <td>{{facture.credit}}</td>
-                    <td>{{facture.debit}}</td>
-
+                    <td>{{facture.facture.statut_paiement}}</td>
+                    <td>{{facture.paiement.nom_payement}}</td>
+                    <td>{{facture.montant}}</td>
                   </tr>
-
+                  <tr>
+                    <td>Total</td>
+                    <td colspan="3"></td>
+                    <td>{{factureHT}}</td>
+                    <td>{{factureTTC}}</td>
+                  </tr>
                 </tbody>
               </table>
               <!-- Ajout des contrôles de pagination -->
@@ -994,6 +503,478 @@
               </div>
             </div>
           </div>
+        </ng-container>
+        <ng-template #pRecu>
+          <div class="contenu text-center">
+            <i class="bi bi-emoji-frown-fill"></i>
+            <h5>Pas de données dans la fourchette de dates sélectionnées</h5>
+          </div>
+        </ng-template>
+      </div>
+      <!-- rapport Paiement en attente -->
+      <div *ngIf="selectedRapport.id === 'pAttente'">
+        <div class="container mt-4">
+          <div class="card">
+            <div class="card-body">
+              <form>
+                <div class="row mb-3">
+                  <label class="col-form-label col-sm-2">{{selectedRapport.label }} entre :</label>
+                  <div class="col-sm-6">
+                    <div class="input-group">
+                      <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut"
+                        (change)="updateDateRangePaiementEnAttente()">
+                      <span class="input-group-text">et</span>
+                      <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin"
+                        (change)="updateDateRangePaiementEnAttente()">
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <ng-container *ngIf="factureListe && factureListe.length > 0; else pAttente">
+          <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab">
+            <div class="table-responsive">
+              <table class="table table-hover mb-4">
+                <thead class="mb-2">
+                  <tr>
+                    <th scope="col">Vente - N°</th>
+                    <th scope="col">Client - Nom</th>
+                    <th scope="col">Paiement - Prévu</th>
+                    <th scope="col">Paiement - Montant</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let facture of factureListe | paginate: { itemsPerPage: 2, currentPage: pageFactures }; let j = index">
+                    <td>{{facture.facture.num_facture}}</td>
+                    <td>{{facture.facture.client.prenom_client}} {{facture.facture.client.nom_client}}</td>
+                    <td>{{facture.date_pay_echeance}}</td>
+                    <td>{{facture.montant_echeance}}</td>
+                  </tr>
+                  <tr>
+                    <td>Total</td>
+                    <td colspan="2"></td>
+                    <td>{{factureTTC}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- Ajout des contrôles de pagination -->
+              <div class="pagination-controls d-flex justify-content-end">
+                <pagination-controls (pageChange)="pageFactures = $event"></pagination-controls>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #pAttente>
+          <div class="contenu text-center">
+            <i class="bi bi-emoji-frown-fill"></i>
+            <h5>Pas de données dans la fourchette de dates sélectionnées</h5>
+          </div>
+        </ng-template>
+
+      </div>
+      <!-- rapport commande vente -->
+      <div *ngIf="selectedRapport.id === 'commandes'">
+        <div class="container mt-4">
+          <div class="card">
+            <div class="card-body">
+              <form>
+                <div class="row mb-3">
+                  <label class="col-form-label col-sm-2">{{selectedRapport.label }} entre :</label>
+                  <div class="col-sm-6">
+                    <div class="input-group">
+                      <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut"
+                        (change)="updateDateRangeCommandeVente()">
+                      <span class="input-group-text">et</span>
+                      <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin"
+                        (change)="updateDateRangeCommandeVente()">
+                    </div>
+                  </div>
+                </div>
+                <div class="row mb-3">
+                  <label class="col-form-label col-sm-2">Grouper par :</label>
+                  <div class="col-sm-10">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="groupBy" id="groupByCommandeVente"
+                        (change)="onGroupByChangeCommandeVente($event)" checked>
+                      <label class="form-check-label" for="groupByCommandeVente">Commande</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="groupBy" id="groupByClientCommande"
+                        (change)="onGroupByChangeCommandeVente($event)">
+                      <label class="form-check-label" for="groupByClientCommande">Client</label>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <ng-container *ngIf="factureListe && factureListe.length > 0; else CommandeVente">
+          <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab"  *ngIf="currentViewCommandeVente === 'commande'">
+            <div class="table-responsive">
+              <table class="table table-hover mb-4">
+                <thead class="mb-2">
+                  <tr>
+                    <th scope="col">Commande - Date</th>
+                    <th scope="col">Commande - N°</th>
+                    <th scope="col">Client - Nom</th>
+                    <th scope="col">Total HT</th>
+                    <th scope="col">Total TTC</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let facture of factureListe | paginate: { itemsPerPage: 2, currentPage: pageFactures }; let j = index">
+                    <td>{{facture.date_limite_commande}}</td>
+                    <td>{{facture.num_commande}}</td>
+                    <td>{{facture.client?.prenom_client}} {{facture.client?.nom_client}}</td>
+                    <td>{{facture.prix_HT}}</td>
+                    <td>{{facture.prix_TTC}}</td>
+                  </tr>
+                  <tr>
+                    <td>Total</td>
+                    <td colspan="2"></td>
+                    <td>{{factureHT}}</td>
+                    <td>{{factureTTC}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- Ajout des contrôles de pagination -->
+              <div class="pagination-controls d-flex justify-content-end">
+                <pagination-controls (pageChange)="pageFactures = $event"></pagination-controls>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab" *ngIf="currentViewCommandeVente === 'client'">
+            <div class="table-responsive">
+              <table class="table table-hover mb-4" id="tableDataVente">
+                <thead class="mb-2">
+                  <tr>
+                    <th scope="col">Client - Nom</th>
+                    <th scope="col">Total HT</th>
+                    <th scope="col">Total TTC</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let client of clientsSommes | paginate: { itemsPerPage: itemsPerPage, currentPage: pageFactures }; let j = index">
+                    <td>{{client.nomClient}}</td>
+                    <td>{{client.total_HT}}</td>
+                    <td>{{client.total_TTC}}</td>
+                  </tr>
+                  <tr>
+                    <td>Total</td>
+                    <td>{{factureHT}}</td>
+                    <td>{{factureTTC}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- Ajout des contrôles de pagination -->
+              <div class="pagination-controls d-flex justify-content-end">
+                <pagination-controls (pageChange)="pageFactures = $event"></pagination-controls>
+              </div>
+            </div>
+          </div>
+
+        </ng-container>
+        <ng-template #CommandeVente>
+          <div class="contenu text-center">
+            <i class="bi bi-emoji-frown-fill"></i>
+            <h5>Pas de données dans la fourchette de dates sélectionnées</h5>
+          </div>
+        </ng-template>
+      </div>
+      <!-- rapport livraison -->
+      <div *ngIf="selectedRapport.id === 'livraison'">
+        <div class="container mt-4">
+          <div class="card">
+            <div class="card-body">
+              <form>
+                <div class="row mb-3">
+                  <label class="col-form-label col-sm-2">{{selectedRapport.label }} entre :</label>
+                  <div class="col-sm-6">
+                    <div class="input-group">
+                      <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut" (change)="updateDateRangeLivraison()">
+                      <span class="input-group-text">et</span>
+                      <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin"  (change)="updateDateRangeLivraison()">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-form-label col-sm-2">Grouper par :</label>
+                  <div class="col-sm-10">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="groupBy" id="groupByLivraison"  (change)="onGroupByChangeLivraison($event)" checked>
+                      <label class="form-check-label" for="groupByLivraison">Livraison</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="groupBy" id="groupByClientLivraison" (change)="onGroupByChangeLivraison($event)">
+                      <label class="form-check-label" for="groupByClientLivraison">Client</label>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <ng-container *ngIf="factureListe && factureListe.length > 0; else livraison">
+          <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab" *ngIf="currentViewLivraison === 'livraison'">
+            <div class="table-responsive">
+              <table class="table table-hover mb-4">
+                <thead class="mb-2">
+                  <tr>
+                    <th scope="col">Livraison - Date</th>
+                    <th scope="col">Livraison - N°</th>
+                    <th scope="col">Client - Nom</th>
+                    <th scope="col">Total HT</th>
+                    <th scope="col">Total TTC</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let facture of factureListe | paginate: { itemsPerPage: 2, currentPage: pageFactures }; let j = index">
+                    <td>{{facture.date_livraison}}</td>
+                    <td>{{facture.num_livraison}}</td>
+                    <td>{{facture.client.prenom_client}} {{facture.client.nom_client}}</td>
+                    <td>{{facture.prix_HT}}</td>
+                    <td>{{facture.prix_TTC}}</td>
+                  </tr>
+                  <tr>
+                    <td>Total</td>
+                    <td colspan="2"></td>
+                    <td>{{factureHT}}</td>
+                    <td>{{factureTTC}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- Ajout des contrôles de pagination -->
+              <div class="pagination-controls d-flex justify-content-end">
+                <pagination-controls (pageChange)="pageFactures = $event"></pagination-controls>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab" *ngIf="currentViewLivraison === 'client'">
+            <div class="table-responsive">
+              <table class="table table-hover mb-4" id="tableDataVente">
+                <thead class="mb-2">
+                  <tr>
+                    <th scope="col">Client - Nom</th>
+                    <th scope="col">Total HT</th>
+                    <th scope="col">Total TTC</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let client of clientsSommes | paginate: { itemsPerPage: itemsPerPage, currentPage: pageFactures }; let j = index">
+                    <td>{{client.nomClient}}</td>
+                    <td>{{client.total_HT}}</td>
+                    <td>{{client.total_TTC}}</td>
+                  </tr>
+                  <tr>
+                    <td>Total</td>
+                    <td>{{factureHT}}</td>
+                    <td>{{factureTTC}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- Ajout des contrôles de pagination -->
+              <div class="pagination-controls d-flex justify-content-end">
+                <pagination-controls (pageChange)="pageFactures = $event"></pagination-controls>
+              </div>
+            </div>
+          </div>
+
+        </ng-container>
+        <ng-template #livraison>
+          <div class="contenu text-center">
+            <i class="bi bi-emoji-frown-fill"></i>
+            <h5>Pas de données dans la fourchette de dates sélectionnées</h5>
+          </div>
+        </ng-template>
+      
+      </div>
+      <!-- rapport moyen de paiement  -->
+      <div *ngIf="selectedRapport.id === 'paiements'">
+        <div class="container mt-4">
+          <div class="card">
+            <div class="card-body">
+              <form>
+                <div class="row mb-3">
+                  <label class="col-form-label col-sm-2">{{selectedRapport.label }} entre :</label>
+                  <div class="col-sm-6">
+                    <div class="input-group">
+                      <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut"  (change)="updateDateRangePaiement()">
+                      <span class="input-group-text">et</span>
+                      <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin" (change)="updateDateRangePaiement()">
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <ng-container *ngIf="factureListe && factureListe.length > 0; else paiements">
+          <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab">
+            <div class="table-responsive">
+              <table class="table table-hover mb-4">
+                <thead class="mb-2">
+                  <tr>
+                    <th scope="col">Moyen paiement</th>
+                    <th scope="col">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let facture of factureListe | paginate: { itemsPerPage: 2, currentPage: pageFactures }; let j = index">
+                    <td>{{facture.nom_payement}}</td>
+                    <td>{{facture.montant}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- Ajout des contrôles de pagination -->
+              <div class="pagination-controls d-flex justify-content-end">
+                <pagination-controls (pageChange)="pageFactures = $event"></pagination-controls>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #paiements>
+          <div class="contenu text-center">
+            <i class="bi bi-emoji-frown-fill"></i>
+            <h5>Pas de données dans la fourchette de dates sélectionnées</h5>
+          </div>
+        </ng-template>
+      </div>
+      <!-- rapport tva -->
+      <div *ngIf="selectedRapport.id === 'tva'">
+        <div class="container mt-4">
+          <div class="card">
+            <div class="card-body">
+              <form>
+                <div class="row mb-3">
+                  <label class="col-form-label col-sm-2">{{selectedRapport.label }} entre :</label>
+                  <div class="col-sm-6">
+                    <div class="input-group">
+                      <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut" (change)="updateDateRangeTva()">
+                      <span class="input-group-text">et</span>
+                      <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin" (change)="updateDateRangeTva()">
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <ng-container *ngIf="tvasSeparees && tvasSeparees.length > 0; else tva">
+          <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab">
+            <div class="table-responsive">
+              <table class="table table-hover mb-4">
+                <thead class="mb-2">
+                  <tr>
+                    <th scope="col">Pourcentage de TVA</th>
+                    <th scope="col">Reçue</th>
+                    <th scope="col">Payée</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    *ngFor="let facture of tvasSeparees | paginate: { itemsPerPage: 2, currentPage: pageFactures }; let j = index">
+                    <ng-container>
+                      <td>{{facture.taux_tva}}</td>
+                      <td>{{facture.montant_totalTVAFacture}}</td>
+                      <td>{{facture.montant_totalTVADepense}}</td>
+                    </ng-container>
+                  </tr>
+                </tbody>
+              </table>
+              <!-- Ajout des contrôles de pagination -->
+              <div class="pagination-controls d-flex justify-content-end">
+                <pagination-controls (pageChange)="pageFactures = $event"></pagination-controls>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #tva>
+          <div class="contenu text-center">
+            <i class="bi bi-emoji-frown-fill"></i>
+            <h5>Pas de données dans la fourchette de dates sélectionnées</h5>
+          </div>
+        </ng-template>
+      
+      </div>
+
+      </div>
+      <!-- les rapports sans graphes -->
+      <div *ngIf="selectedRapport.type === 'none'">
+        <!-- rapport journal de  vente(facture) -->
+        <div *ngIf="selectedRapport.id === 'journalVente'">
+          <div class="container mt-4">
+            <div class="card">
+              <div class="card-body">
+                <form>
+                  <div class="row mb-3">
+                    <label class="col-form-label col-sm-2">{{selectedRapport.label }} entre :</label>
+                    <div class="col-sm-6">
+                      <div class="input-group">
+                        <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut" (change)="updateDateRangeJournalVente()">
+                        <span class="input-group-text">et</span>
+                        <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin"  (change)="updateDateRangeJournalVente()">
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <ng-container *ngIf="journalVente && journalVente.length > 0; else vente">
+            <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab">
+              <div class="table-responsive">
+                <table class="table table-hover mb-4">
+                  <thead class="mb-2">
+                    <tr>
+                      <th scope="col">Vente - Date</th>
+                      <th scope="col">Vente - N°</th>
+                      <th scope="col">Compte</th>
+                      <th scope="col">Libellé Compte</th>
+                      <th scope="col">Client - N°</th>
+                      <th scope="col">Client - Nom</th>
+                      <th scope="col">Débit</th>
+                      <th scope="col">Crédit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let facture of journalVente | paginate: { itemsPerPage: 9, currentPage: pageFactures }; let j = index">
+                      <td>{{facture.facture.date_creation}}</td>
+                      <td>{{facture.facture.num_facture}}</td>
+                      <td>{{facture.compte_comptable.code_compte_comptable}}</td>
+                      <td>{{facture.compte_comptable.nom_compte_comptable}}</td>
+                      <td>{{facture.facture.client.num_client}}</td>
+                      <td>{{facture.facture.client.prenom_client}} {{facture.facture.client.nom_client}}</td>
+                      <td>{{facture.credit}}</td>
+                      <td>{{facture.debit}}</td>
+  
+                    </tr>
+  
+                  </tbody>
+                </table>
+                <!-- Ajout des contrôles de pagination -->
+                <div class="pagination-controls d-flex justify-content-end">
+                  <pagination-controls (pageChange)="pageFactures = $event"></pagination-controls>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #vente>
+            <div class="contenu text-center">
+              <i class="bi bi-emoji-frown-fill"></i>
+              <h5>Pas de données dans la fourchette de dates sélectionnées</h5>
+            </div>
+          </ng-template>
         </div>
         <!-- rapport journal d'achat -->
         <div *ngIf="selectedRapport.id === 'journalAchat'">
@@ -1002,66 +983,134 @@
               <div class="card-body">
                 <form>
                   <div class="row mb-3">
-                    <label class="col-form-label col-sm-2">Dépenses entre :</label>
+                    <label class="col-form-label col-sm-2">{{selectedRapport.label }} entre :</label>
                     <div class="col-sm-6">
                       <div class="input-group">
-                        <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut">
+                        <input type="date" class="form-control" name="dateDebut" [(ngModel)]="dateDebut" (change)="updateDateRangeJournalDachat()">
                         <span class="input-group-text">et</span>
-                        <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin">
+                        <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin" (change)="updateDateRangeJournalDachat()">
                       </div>
                     </div>
                   </div>
-                  <div class="row mb-3">
-                    <label class="col-form-label col-sm-2">Factures entre :</label>
-                    <div class="col-sm-6">
-                      <div class="input-group">
-                        <input type="date" class="form-control" name="dateD" [(ngModel)]="dateD">
-                        <span class="input-group-text">et</span>
-                        <input type="date" class="form-control" name="dateF" [(ngModel)]="dateF">
-                      </div>
-                    </div>
-                  </div>
-
                 </form>
               </div>
             </div>
           </div>
+          <ng-container *ngIf="journalDachat && journalDachat.length > 0; else achat">
+            <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab">
+              <div class="table-responsive">
+                <table class="table table-hover mb-4">
+                  <thead class="mb-2">
+                    <tr>
+                      <th scope="col">Dépense - Date</th>
+                      <th scope="col">Dépense - N°</th>
+                      <th scope="col">Date Facture°</th>
+                      <th scope="col">N° Facture</th>
+                      <th scope="col">Dépense - Catégorie</th>
+                      <th scope="col">Compte</th>
+                      <th scope="col">Libellé Compte</th>
+                      <th scope="col">Fournisseur - N°</th>
+                      <th scope="col">Fournisseur - Nom</th>
+                      <th scope="col">Débit</th>
+                      <th scope="col">Crédit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      *ngFor="let facture of journalDachat | paginate: { itemsPerPage: 9, currentPage: pageFactures }; let j = index">
+                      <td>{{facture.depense.date_paiement}}</td>
+                      <td>{{facture.depense.num_depense}}</td>
+                      <td>{{facture.depense.date_facture}}</td>
+                      <td>{{facture.depense.num_facture}}</td>
+                      <td>{{facture.depense.categorie_depense.nom_categorie_depense}}</td>
+                      <td>{{facture.compte_comptable.code_compte_comptable}}</td>
+                      <td>{{facture.compte_comptable.nom_compte_comptable}}({{facture.depense.tva_depense}}%)</td>
+                      <td>{{facture.depense.fournisseur?.num_fournisseur}}</td>
+                      <td>{{facture.depense.fournisseur?.prenom_fournisseur}}
+                        {{facture.depense.fournisseur?.nom_fournisseur}}</td>
+                      <td>{{facture.credit}}</td>
+                      <td>{{facture.debit}}</td>
+  
+                    </tr>
+  
+                  </tbody>
+                </table>
+                <!-- Ajout des contrôles de pagination -->
+                <div class="pagination-controls d-flex justify-content-end">
+                  <pagination-controls (pageChange)="pageFactures = $event"></pagination-controls>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <ng-template #achat>
+            <div class="contenu text-center">
+              <i class="bi bi-emoji-frown-fill"></i>
+              <h5>Pas de données dans la fourchette de dates sélectionnées</h5>
+            </div>
+          </ng-template>
+         
+        </div>
+          <!-- rapport valeur de stock -->
+      <div *ngIf="selectedRapport.id === 'stock'">
+        <div class="container mt-4">
+          <div class="card">
+            <div class="card-body">
+              <form>
+                <div class="row mb-3">
+                  <label class="col-form-label col-sm-2">{{selectedRapport.label }}  :</label>
+                  <div class="col-sm-6">
+                    <div class="input-group">
+                      <input type="date" class="form-control" name="dateFin" [(ngModel)]="dateFin"
+                        (change)="updateDateRangestock()">
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-form-label col-sm-2">Grouper par :</label>
+                  <div class="col-sm-10">
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="groupBy" id="groupByFIFO"
+                        (change)="onGroupByChangeStok($event)" checked>
+                      <label class="form-check-label" for="groupByFIFO">FIFO</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="groupBy" id="groupByAchat"
+                        (change)="onGroupByChangeStok($event)">
+                      <label class="form-check-label" for="groupByAchat">Prix d'achat moyen</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="groupBy" id="groupByActuel"
+                        (change)="onGroupByChangeStok($event)">
+                      <label class="form-check-label" for="groupByActuel">Prix d'achat actuel</label>
+                    </div>
+
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <ng-container *ngIf="ValeurStock && ValeurStock.length > 0; else stock">
           <div class="card mb-4 mt-5 px-2 py-2 pt-4 rounded-4 spacetab">
             <div class="table-responsive">
-              <table class="table table-hover mb-4">
+              <table class="table table-hover mb-4" id="tableDataVente">
                 <thead class="mb-2">
                   <tr>
-                    <th scope="col">Dépense - Date</th>
-                    <th scope="col">Dépense - N°</th>
-                    <th scope="col">Date Facture°</th>
-                    <th scope="col">N° Facture</th>
-                    <th scope="col">Dépense - Catégorie</th>
-                    <th scope="col">Compte</th>
-                    <th scope="col">Libellé Compte</th>
-                    <th scope="col">Fournisseur - N°</th>
-                    <th scope="col">Fournisseur - Nom</th>
-                    <th scope="col">Débit</th>
-                    <th scope="col">Crédit</th>
+                    <th scope="col">Code</th>
+                    <th scope="col">Produits</th>
+                    <th scope="col">quantité</th>
+                    <th scope="col">Dernière entrée</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr
-                    *ngFor="let facture of journalDachat | paginate: { itemsPerPage: 9, currentPage: pageFactures }; let j = index">
-                    <td>{{facture.depense.date_paiement}}</td>
-                    <td>{{facture.depense.num_depense}}</td>
-                    <td>{{facture.depense.date_facture}}</td>
-                    <td>{{facture.depense.num_facture}}</td>
-                    <td>{{facture.depense.categorie_depense.nom_categorie_depense}}</td>
-                    <td>{{facture.compte_comptable.code_compte_comptable}}</td>
-                    <td>{{facture.compte_comptable.nom_compte_comptable}}({{facture.depense.tva_depense}}%)</td>
-                    <td>{{facture.depense.fournisseur?.num_fournisseur}}</td>
-                    <td>{{facture.depense.fournisseur?.prenom_fournisseur}}
-                      {{facture.depense.fournisseur?.nom_fournisseur}}</td>
-                    <td>{{facture.credit}}</td>
-                    <td>{{facture.debit}}</td>
-
+                    *ngFor="let stock of ValeurStock | paginate: { itemsPerPage: itemsPerPage, currentPage: pageFactures }; let j = index">
+                    <td>{{stock.code}}</td>
+                    <td>{{stock.produit}}</td>
+                    <td>{{stock.quantite}}</td>
+                    <td>{{stock.date_derniere_entree}}</td>
                   </tr>
-
                 </tbody>
               </table>
               <!-- Ajout des contrôles de pagination -->
@@ -1070,9 +1119,16 @@
               </div>
             </div>
           </div>
-        </div>
+        </ng-container>
+        <ng-template #stock>
+          <div class="contenu text-center">
+            <i class="bi bi-emoji-frown-fill"></i>
+            <h5>Pas de données dans la fourchette de dates sélectionnées</h5>
+          </div>
+        </ng-template>
       </div>
-
+      </div>
+      <!-- exportation des données en excel -->
       <div (click)="exportExcel()">
         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0,0,256,256"
           width="30px" height="30px">

@@ -54,27 +54,27 @@
         <div class="banner"></div>
         <div class="statistique">
             <div class="sta">
-                <div class="itemSta" style="background-color: #F19A33;">
+                <div class="itemSta" style="background-color: #F19A33;" *ngIf="tabArticle">
                     <span>Nombre de Produits </span><br><br>
                     <h4 class="text-center">{{tabArticle.length}}</h4>
                 </div>
-                <div class="itemSta" style="background-color: #F19A33;">
+                <div class="itemSta" style="background-color: #F19A33;" *ngIf="tabService">
                     <span>Nombre de Services</span><br><br>
                     <h4 class="text-center">{{tabService.length}}</h4>
                 </div>
             </div>
             <div class="sta">
-                <div class="itemSta" style="background-color: #33372C;">
+                <div class="itemSta" style="background-color: #33372C;" *ngIf="tabUserNoArchiver">
                     <span>Utilisateurs no archiver</span><br>
                     <h4 class="text-center">{{tabUserNoArchiver.length}}</h4>
                 </div>
-                <div class="itemSta"  style="background-color: #33372C;">
+                <div class="itemSta"  style="background-color: #33372C;" *ngIf="tabUserArchiver">
                     <span>Utilisateurs archiver</span><br><br>
                     <h4 class="text-center">{{tabUserArchiver.length}}</h4>
                 </div>
             </div>
             <div class="sta">
-                <div class="itemSta"  style="background-color: #0d6efd;">
+                <div class="itemSta"  style="background-color: #0d6efd;" *ngIf="tabBonCommande">
                     <span>Bon de commande realiser</span> <br>
                     <h4 class="text-center">{{tabBonCommande.length}}</h4>
                 </div>
@@ -84,11 +84,11 @@
                 </div>
             </div>
             <div class="sta">
-                <div class="itemSta" style="background-color: #73717172;">
+                <div class="itemSta" style="background-color: #73717172;" *ngIf="facturePayer">
                     <span>Facture payer</span><br><br>
                     <h4 class="text-center">{{facturePayer.length}}</h4>
                 </div>
-                <div class="itemSta" style="background-color: #73717172;">
+                <div class="itemSta" style="background-color: #73717172;" *ngIf="factureImpayer">
                     <span>Facture impayer</span><br><br>
                     <h4 class="text-center">{{factureImpayer.length}}</h4>
                 </div>
