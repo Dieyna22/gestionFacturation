@@ -46,7 +46,7 @@
         </div>
         <div class="row sectionEspace ligneReseauSearch mb-3">
           <div class="col-md-5">
-            <h3 class="fw-bold">Listes Fournisseurs</h3>
+            <h3 class="fw-bold">Liste Fournisseurs</h3>
           </div>
           <div class="col-md-7">
           </div>
@@ -134,7 +134,7 @@
 
         <div class="row sectionEspace ligneReseauSearch mb-3">
           <div class="col-md-5">
-            <h3 class="fw-bold">Listes Dépenses</h3>
+            <h3 class="fw-bold">Liste Dépenses</h3>
           </div>
           <div class="col-md-7">
           </div>
@@ -206,14 +206,13 @@
         </div>
       </div>
     </div>
-     <!-- btn exporter docs -->
-     <div (click)="exportExcel()" class="mt-5">
+    <!-- btn exporter docs -->
+    <div (click)="exportExcel()" class="mt-5">
       <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0,0,256,256"
         width="30px" height="30px">
         <g fill-opacity="0.32941" fill="#000000" fill-rule="nonzero" stroke="none" stroke-width="1"
-          stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray=""
-          stroke-dashoffset="0" font-family="none" font-weight="none" font-size="none" text-anchor="none"
-          style="mix-blend-mode: normal">
+          stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+          font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode: normal">
           <g transform="scale(5.12,5.12)">
             <path
               d="M28.875,0c-0.01953,0.00781 -0.04297,0.01953 -0.0625,0.03125l-28,5.3125c-0.47656,0.08984 -0.82031,0.51172 -0.8125,1v37.3125c-0.00781,0.48828 0.33594,0.91016 0.8125,1l28,5.3125c0.28906,0.05469 0.58984,-0.01953 0.82031,-0.20703c0.22656,-0.1875 0.36328,-0.46484 0.36719,-0.76172v-5h17c1.09375,0 2,-0.90625 2,-2v-34c0,-1.09375 -0.90625,-2 -2,-2h-17v-5c0.00391,-0.28906 -0.12109,-0.5625 -0.33594,-0.75391c-0.21484,-0.19141 -0.50391,-0.28125 -0.78906,-0.24609zM28,2.1875v4.34375c-0.13281,0.27734 -0.13281,0.59766 0,0.875v35.40625c-0.02734,0.13281 -0.02734,0.27344 0,0.40625v4.59375l-26,-4.96875v-35.6875zM30,8h17v34h-17v-5h4v-2h-4v-6h4v-2h-4v-5h4v-2h-4v-5h4v-2h-4zM36,13v2h8v-2zM6.6875,15.6875l5.46875,9.34375l-5.96875,9.34375h5l3.25,-6.03125c0.22656,-0.58203 0.375,-1.02734 0.4375,-1.3125h0.03125c0.12891,0.60938 0.25391,1.02344 0.375,1.25l3.25,6.09375h4.96875l-5.75,-9.4375l5.59375,-9.25h-4.6875l-2.96875,5.53125c-0.28516,0.72266 -0.48828,1.29297 -0.59375,1.65625h-0.03125c-0.16406,-0.60937 -0.35156,-1.15234 -0.5625,-1.59375l-2.6875,-5.59375zM36,20v2h8v-2zM36,27v2h8v-2zM36,35v2h8v-2z">
@@ -464,13 +463,18 @@
             <input type="text" class="form-control" placeholder="Pays" name="pays" [(ngModel)]="pays">
             <input type="text" class="form-control" placeholder="Téléphone " name="tel" [(ngModel)]="tel"><br><br>
 
-            <input type="text" class="form-control" placeholder="N° Compte doit avoir 12 chiffres" name="compte" [(ngModel)]="compte">
+            <input type="text" class="form-control" placeholder="N° Compte doit avoir 12 chiffres" name="compte"
+              [(ngModel)]="compte">
             <div class="row p-2">
-              <input type="text" class="form-control" placeholder="Code Banque doit contenir 5 caractéres" name="banque" [(ngModel)]="banque">
-              <input type="text" class="form-control" placeholder="Code Guichet doit avoir 5 chiffres" name="guichet" [(ngModel)]="guichet">
+              <input type="text" class="form-control" placeholder="Code Banque doit contenir 5 caractéres" name="banque"
+                [(ngModel)]="banque">
+              <input type="text" class="form-control" placeholder="Code Guichet doit avoir 5 chiffres" name="guichet"
+                [(ngModel)]="guichet">
             </div>
-            <input type="text" class="form-control" placeholder="Clé RIB doit avoir 2 chiffres." name="rib" [(ngModel)]="rib">
-            <input type="text" class="form-control" placeholder="IBAN  doit contenir 34 caractéres" name="iban" [(ngModel)]="iban"><br><br>
+            <input type="text" class="form-control" placeholder="Clé RIB doit avoir 2 chiffres." name="rib"
+              [(ngModel)]="rib">
+            <input type="text" class="form-control" placeholder="IBAN  doit contenir 34 caractéres" name="iban"
+              [(ngModel)]="iban"><br><br>
             <textarea placeholder="Commentaire :" name="note" [(ngModel)]="note"></textarea>
           </form>
         </div>
@@ -558,13 +562,18 @@
             <input type="text" class="form-control" placeholder="Pays" name="pays" [(ngModel)]="pays">
             <input type="text" class="form-control" placeholder="Téléphone " name="tel" [(ngModel)]="tel"><br><br>
 
-            <input type="text" class="form-control" placeholder="N° Compte doit avoir 12 chiffres" name="compte" [(ngModel)]="compte">
+            <input type="text" class="form-control" placeholder="N° Compte doit avoir 12 chiffres" name="compte"
+              [(ngModel)]="compte">
             <div class="row p-2">
-              <input type="text" class="form-control" placeholder="Code Banque doit contenir 5 caractéres" name="banque" [(ngModel)]="banque">
-              <input type="text" class="form-control" placeholder="Code Guichet doit avoir 5 chiffres" name="guichet" [(ngModel)]="guichet">
+              <input type="text" class="form-control" placeholder="Code Banque doit contenir 5 caractéres" name="banque"
+                [(ngModel)]="banque">
+              <input type="text" class="form-control" placeholder="Code Guichet doit avoir 5 chiffres" name="guichet"
+                [(ngModel)]="guichet">
             </div>
-            <input type="text" class="form-control" placeholder="Clé RIB doit avoir 2 chiffres." name="rib" [(ngModel)]="rib">
-            <input type="text" class="form-control" placeholder="IBAN  doit contenir 34 caractéres" name="iban" [(ngModel)]="iban"><br><br>
+            <input type="text" class="form-control" placeholder="Clé RIB doit avoir 2 chiffres." name="rib"
+              [(ngModel)]="rib">
+            <input type="text" class="form-control" placeholder="IBAN  doit contenir 34 caractéres" name="iban"
+              [(ngModel)]="iban"><br><br>
             <textarea placeholder="Commentaire :" name="note" [(ngModel)]="note"></textarea>
           </form>
         </div>
@@ -682,10 +691,9 @@
           <div class="form-group">
             <label for="category">Catégorie :</label>
             <select id="category" name="categorie" [(ngModel)]="categorie">
-              <option data-bs-toggle="modal" data-bs-target="#categorie">+ Ajouter une catégorie...</option>
               <option value="" disabled selected>Sélectionnez une catégorie...</option>
-              <option *ngFor="let categorie of tabCategorie" [value]="categorie.id">{{categorie.nom_categorie_depense}}
-              </option>
+              <option *ngFor="let categorie of tabCategorie" [value]="categorie.id">{{categorie.nom_categorie_depense}} </option>
+              <option data-bs-toggle="modal" data-bs-target="#categorie">+ Ajouter une catégorie...</option>
             </select>
           </div>
 
@@ -825,7 +833,7 @@
           <a (click)='showInfosFacture()'>+ Saisir information de facturation</a>
 
           <div class="payment-info mx-auto p-2 mt-3" *ngIf="infosFacture">
-            <h3>Information de facturation</h3>
+            <h3>Informations de facturation</h3>
             <div class="mb-3 row">
               <label for="numero" class="col-sm-2 col-form-label">Numéro :</label>
               <div class="col-sm-10">

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-import { Report } from 'notiflix/build/notiflix-report-aio';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 @Component({
   selector: 'app-register',
@@ -55,8 +55,9 @@ tabError: any;
   };
   this.authAdmin.inscription(user).subscribe(
     (reponse) => {
-      Report.success('Notiflix Success',reponse.message,'Okay',);
+      Notify.success(reponse.message);
       this.viderChamps();
+      localStorage.removeItem('isAdmin');
       this.route.navigate(['connexion']);
     },
     (error) => {
