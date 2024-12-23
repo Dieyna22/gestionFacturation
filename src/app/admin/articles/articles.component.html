@@ -18,9 +18,12 @@
         <button class="btn btnSearch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
       </div>
       <div class="d-flex filtre">
-        <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 1}" (click)="listeArticles(); actif = 1">Tout</button>
-        <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 2}" (click)="filterProduits('0'); actif = 2">Produits actifs</button>
-        <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 3}"(click)="filterProduits('3'); actif = 1">Produits inactifs</button>
+        <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 1}"
+          (click)="listeArticles(); actif = 1">Tout</button>
+        <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 2}"
+          (click)="filterProduits('0'); actif = 2">Produits actifs</button>
+        <button type="button" class="btn btnOutline" [ngClass]="{'btnOutlineActive': actif === 3}"
+          (click)="filterProduits('3'); actif = 1">Produits inactifs</button>
       </div>
     </div>
     <div class="row contenu px-5">
@@ -35,34 +38,41 @@
         <button type="button" class="btn  btnOutline me-2 mb-2" routerLink="/stock">
           Stock
         </button>
-        <button
-          *ngIf="permissionsService.isAdmin || permissionsService.canFonctionAdmin || !permissionsService.canVisibiliteGlobale"
-          type="button" class="btn ajouter mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="changeValueModal('ajout')">
-          Ajouter Produit
-        </button>
+
+        <div class="btn-group ajouterVente">
+          <button
+            *ngIf="permissionsService.isAdmin || permissionsService.canFonctionAdmin || !permissionsService.canVisibiliteGlobale"
+            type="button" class="btn ajouter mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal"
+            (click)="changeValueModal('ajout')">
+            Ajouter Produit
+          </button>
+          <button type="button" class="btn ajouter dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <span class="visually-hidden">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu">
+            <li>
+              <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">importer client</a>
+            </li>
+          </ul>
+        </div>
       </div>
 
-      <div class="paramPagination d-flex justify-content-end  mb-2" data-bs-toggle="modal" data-bs-target="#pagination">
-        <i class="bi bi-gear"></i>
-      </div>
+
       <!-- Liste des Utilisateurs  -->
       <div class="col-md-12">
         <div class="card px-2 py-2 pt-4 rounded-4">
           <!-- Recherhcer une utilisateur  -->
           <div class="row sectionEspace ligneReseauSearch mb-3">
             <div class="col-md-9">
-              <h3 class="fw-bold">Listes des Articles</h3>
+              <h3 class="fw-bold">Liste des Articles</h3>
             </div>
             <div class="col-md-3">
-              <span
-                *ngIf="permissionsService.isAdmin || permissionsService.canFonctionAdmin || !permissionsService.canVisibiliteGlobale || permissionsService.canExportExcel"
-                class="import" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">importer article</span>
-            </div>
           </div>
 
           <!-- Le tableau des réseaux -->
           <div class="table-responsive ">
-            <table class="table table-hover mb-4"  id="tabArticle">
+            <table class="table table-hover mb-4" id="tabArticle">
               <thead>
                 <tr>
                   <th scope="col">Nom </th>
@@ -76,29 +86,36 @@
               </thead>
               <tbody *ngFor="let article of getItemsPage()">
                 <tr>
-                  <td (click)="chargerInfosArticle(article);changeValueModal('modif')" data-bs-toggle="modal" data-bs-target="#ModalModifier">
+                  <td (click)="chargerInfosArticle(article);changeValueModal('modif')" data-bs-toggle="modal"
+                    data-bs-target="#ModalModifier">
                     {{article.nom_article}}
                     <span *ngIf="article.etiquettes && article.etiquettes.length > 0" class="etiquettes">
-                      <span *ngFor="let etiq of article.etiquettes; let i = index" [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2" >
+                      <span *ngFor="let etiq of article.etiquettes; let i = index"
+                        [ngStyle]="{'background-color': etiq.code_etiquette}" class="etiquette me-2">
                         {{ etiq.nom_etiquette }}<span *ngIf="i < article.etiquettes.length - 1">, </span>
                       </span>
                     </span>
                   </td>
                   <!-- <td>{{article.nom_categorie}}</td> -->
-                  <td (click)="chargerInfosArticle(article);changeValueModal('modif')" data-bs-toggle="modal" data-bs-target="#ModalModifier">
+                  <td (click)="chargerInfosArticle(article);changeValueModal('modif')" data-bs-toggle="modal"
+                    data-bs-target="#ModalModifier">
                     {{article.prix_ht_achat}}</td>
-                  <td (click)="chargerInfosArticle(article);changeValueModal('modif')" data-bs-toggle="modal" data-bs-target="#ModalModifier">
+                  <td (click)="chargerInfosArticle(article);changeValueModal('modif')" data-bs-toggle="modal"
+                    data-bs-target="#ModalModifier">
                     {{article.prix_unitaire}}</td>
-                  <td (click)="chargerInfosArticle(article);changeValueModal('modif')" data-bs-toggle="modal" data-bs-target="#ModalModifier">
+                  <td (click)="chargerInfosArticle(article);changeValueModal('modif')" data-bs-toggle="modal"
+                    data-bs-target="#ModalModifier">
                     {{article.quantite}}</td>
-                  <td (click)="chargerInfosArticle(article);changeValueModal('modif')" data-bs-toggle="modal" data-bs-target="#ModalModifier">
+                  <td (click)="chargerInfosArticle(article);changeValueModal('modif')" data-bs-toggle="modal"
+                    data-bs-target="#ModalModifier">
                     {{article.quantite_alert}}</td>
                   <td>
                     <div class="action-container">
                       <i class="bi bi-three-dots me-2" title="action" (click)="toggleActions(article)"></i>
                       <div *ngIf="article.actionsVisible" class="action-menu d-flex">
-                        <i class="bi bi-pencil-square me-2" title="modifier" (click)="chargerInfosArticle(article);changeValueModal('modif')"
-                          data-bs-toggle="modal" data-bs-target="#ModalModifier"></i>
+                        <i class="bi bi-pencil-square me-2" title="modifier"
+                          (click)="chargerInfosArticle(article);changeValueModal('modif')" data-bs-toggle="modal"
+                          data-bs-target="#ModalModifier"></i>
                         <i class="bi bi-trash3 me-2" title="Supprimer" (click)="deleteAricle(article.id)"></i>
                         <!-- <i class="bi bi-plus-circle me-2" title="Affecter promo" (click)="recupIdArticle(article.id)"
                           data-bs-toggle="modal" data-bs-target="#affecterPromo"></i>
@@ -340,7 +357,7 @@
                   [disabled]="active === 'non'" [(ngModel)]="stockType" value="entrepot"
                   (change)="afficherChampsStock('afficherChampsEntrepot')">
                 <label class="form-check-label" for="flexRadioDefault1">
-                  Ce produit est stocké dans un entrepôt
+                  Ce produit est stocké dans plusieur entrepôt
                 </label>
               </div>
               <div class="form-check">
@@ -478,7 +495,8 @@
               </div>
               <div class="mb-3 col-6">
                 <label for="validationServer02" class="form-label">Tva Prix d'achat</label>
-                <input type="text" class="form-control" id="validationServer02" name="tvaPrix" [(ngModel)]="inputTvaPrix">
+                <input type="text" class="form-control" id="validationServer02" name="tvaPrix"
+                  [(ngModel)]="inputTvaPrix">
               </div>
             </div>
             <div class="row">
@@ -907,7 +925,8 @@
               <button class="btn btnAction me-2" (click)="ajouterEtiquette();ouvrirModal()">
                 Sauvegarder
               </button>
-              <button *ngIf="addNewEtiquette" class="btn btn-secondary" (click)="annulerAjout();ouvrirModal()">Annuler</button>
+              <button *ngIf="addNewEtiquette" class="btn btn-secondary"
+                (click)="annulerAjout();ouvrirModal()">Annuler</button>
             </div>
 
             <!-- Formulaire de modification -->

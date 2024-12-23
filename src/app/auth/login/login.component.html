@@ -13,16 +13,16 @@
 
                 <div class="mb-3">
                     <label for="" class="form-label">Email:<span class="etoile">*</span></label>
-                    <input type="text" name="email" [(ngModel)]="emailLogin"(input)="this.verifEmailFonction()" >
+                    <input type="text" name="email" [(ngModel)]="emailLogin" (input)="this.verifEmailFonction()">
                     <p class="text-danger" *ngIf="!exactEmail">{{verifEmail}}</p>
                     <p class="text-success" *ngIf="exactEmail"><i class="bi bi-check2-all"></i> OK!</p>
                 </div>
                 <div class="mb-3 between">
                     <label for="" class="lab form-label">Mot de passe:<span class="etoile">*</span></label>
                     <div class="input-group">
-                        <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput" name="password" [(ngModel)]="passwordLogin" class="form-control"
-                        (input)="this.verifPassFonction()">
-                        <button class="btn btn-outline-secondary" type="button"(click)="togglePasswordVisibility()">
+                        <input type="{{showPassword ? 'text' : 'password'}}" id="passwordInput" name="password"
+                            [(ngModel)]="passwordLogin" class="form-control" (input)="this.verifPassFonction()">
+                        <button class="btn btn-outline-secondary" type="button" (click)="togglePasswordVisibility()">
                             <ng-container *ngIf="showPassword; else hideIcon">
                                 <i class="bi bi-eye"></i>
                             </ng-container>
@@ -35,15 +35,17 @@
                     <p class="text-success" *ngIf="exactPass"><i class="bi bi-check2-all"></i> OK!</p>
                 </div>
                 <div class="mdp-forget">
-                    <a href="#">Mot de passe oublié</a>
+                    <!-- <a href="#">Mot de passe oublié</a> -->
                 </div>
 
                 <button class="btn btnLogin" [disabled]="!exactEmail || !exactPass" (click)="connexion()">
                     Se connecter
                 </button>
                 <br>
-                <p class="bas">Vous ne disposez pas de compte. <a href=""
-                        routerLink="/register"><i>Inscrivez-vous</i></a></p>
+                <p class="bas">
+                    <!-- Vous ne disposez pas de compte. <a href=""
+                        routerLink="/register"><i>Inscrivez-vous</i></a> -->
+                </p>
             </form>
         </div>
     </div>

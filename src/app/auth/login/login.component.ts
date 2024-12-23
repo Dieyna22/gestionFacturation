@@ -46,6 +46,10 @@ export class LoginComponent {
     if (!localStorage.getItem("userOnline")) {
       localStorage.setItem("userOnline", JSON.stringify(""))
     }
+
+    if (!localStorage.getItem("isAdmin")) {
+      localStorage.setItem("isAdmin", JSON.stringify(""))
+    }
   }
 
   constructor(private route: Router, private authAdmin: AuthService, private permissionsService: PermissionsService, private session: ConfigurationService) { }
@@ -56,7 +60,7 @@ export class LoginComponent {
     this.passwordLogin = "";
   }
 
-
+  users = [{ login: 'admin@gmail.com', password: 'admin123@', role: 'admin', nom: 'Diop', prenom: 'Moussa' },];
   // connexion 
   connexion() {
     let user = {
@@ -68,39 +72,46 @@ export class LoginComponent {
     });
     Loading.hourglass();
 
-    // Connexion en tant qu'admin
-    this.authAdmin.connexionAdmin(user).subscribe(
-      (response) => {
-        Notify.success('connexion reussie', { position: 'center-center' });
-        const token = response;
-        localStorage.setItem("isUsers", JSON.stringify(true));
-        // Démarrer la session avec le token
-        this.session.startSession(token);
-        this.route.navigate(['/admin']);
-        Loading.remove();
-      },
-      (err) => {
-        // Connexion en tant qu'utilisateur normal
-        this.authAdmin.connexionUser(user).subscribe(
-          (response) => {
-            Notify.success('connexion reussie');
-            const token = response;
-            localStorage.setItem("isUsers", JSON.stringify(true));
-            // Démarrer la session avec le token
-            this.session.startSession(token);
-            // Charger les permissions après connexion
-            this.permissionsService.loadPermissions();
-            this.route.navigate(['/admin']);
-            Loading.remove();
-          },
-          (err) => {
-            Notify.failure(err.error.message, { position: 'center-center' });
-            Loading.remove();
-          }
-        )
-      }
-    );
+    if (this.emailLogin == "admin@gmail.com" || this.passwordLogin == "admin123@") {
+      const userAdmin = this.users.find((u) => u.login === user.email && u.password === user.password);
+      localStorage.setItem("isUsers", JSON.stringify(userAdmin));
+      this.route.navigate(['register']);
+      Loading.remove();
 
+    } else {
+      // Connexion en tant qu'admin
+      this.authAdmin.connexionAdmin(user).subscribe(
+        (response) => {
+          Notify.success('connexion reussie', { position: 'center-center' });
+          const token = response;
+          localStorage.setItem("isUsers", JSON.stringify(true));
+          // Démarrer la session avec le token
+          this.session.startSession(token);
+          this.route.navigate(['/admin']);
+          Loading.remove();
+        },
+        (err) => {
+          // Connexion en tant qu'utilisateur normal
+          this.authAdmin.connexionUser(user).subscribe(
+            (response) => {
+              Notify.success('connexion reussie');
+              const token = response;
+              localStorage.setItem("isUsers", JSON.stringify(true));
+              // Démarrer la session avec le token
+              this.session.startSession(token);
+              // Charger les permissions après connexion
+              this.permissionsService.loadPermissions();
+              this.route.navigate(['/admin']);
+              Loading.remove();
+            },
+            (err) => {
+              Notify.failure(err.error.message, { position: 'center-center' });
+              Loading.remove();
+            }
+          )
+        }
+      );
+    }
 
   }
 

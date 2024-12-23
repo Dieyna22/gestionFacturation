@@ -35,20 +35,27 @@
   <div class="row contenu px-5" id="client">
     <div class="d-grid gap-2  mb-4 d-md-flex justify-content-md-end">
       <!-- Button modal Ajout Utilisateurs -->
-      <button type="button" class="btn ajouter" data-bs-toggle="modal" data-bs-target="#exampleModal"
-        (click)="changeValueModal('ajout')">
-        Ajouter Client
-      </button>
+      <div class="btn-group ajouterVente">
+        <button type="button" class="btn text-light">Ajouter Client</button>
+        <button type="button" class="btn ajouter dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
+          aria-expanded="false">
+          <span class="visually-hidden">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">importer client</a>
+          </li>
+        </ul>
+      </div>
     </div>
     <!-- Liste des Utilisateurs  -->
     <div class="col-md-12">
       <div class="card mb-4 px-2 py-2 pt-4 rounded-4 spacetab ">
         <div class="row sectionEspace ligneReseauSearch mb-3">
           <div class="col-md-9">
-            <h3 class="fw-bold">Listes des Clients</h3>
+            <h3 class="fw-bold">Liste des Clients</h3>
           </div>
           <div class="col-md-3">
-            <span class="import" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">importer client</span>
           </div>
         </div>
 
@@ -320,13 +327,6 @@
                 </div>
               </div>
             </div>
-            <div class="config zone">
-              <p class="text-decoration-underline">Conditions spécifiques</p>
-              <span class="text-decoration-underline" data-bs-toggle="modal" data-bs-target="#mentionSpec"
-                style="cursor:pointer;">Configurer mention spécifique</span><br>
-              <span class="text-decoration-underline" data-bs-toggle="modal" data-bs-target="#conditions"
-                style="cursor:pointer;"> Configurer conditions de paiement spécifiques</span>
-            </div>
           </div>
         </div>
         <form>
@@ -547,13 +547,6 @@
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="config zone">
-                <p>Conditions spécifiques</p>
-                <span class="text-decoration-underline" data-bs-toggle="modal" data-bs-target="#mentionSpec"
-                  style="cursor:pointer;">Configurer mention spécifique</span><br>
-                <span class="text-decoration-underline" data-bs-toggle="modal" data-bs-target="#conditions"
-                  style="cursor:pointer;"> Configurer conditions de paiement spécifiques</span>
               </div>
             </div>
           </div>
