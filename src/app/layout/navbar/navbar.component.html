@@ -48,7 +48,7 @@
             (click)="getInfoAdmin()">Profil<i class="bi bi-person-circle ms-2"></i></a>
           <a *ngIf="role=='super_admin'" [routerLink]="['/user']" class="text-end">Utilisateur <i
               class="bi bi-people-fill ms-2"></i></a>
-          <a *ngIf="role=='super_admin'" routerLink="/userArchive" class="text-end">Utilisateurs Archiver <i
+          <a *ngIf="role=='super_admin'" routerLink="/userArchive" class="text-end">Utilisateurs Archivés <i
               class="bi bi-person-fill-exclamation ms-2"></i></a>
           <a [routerLink]="['/model']" class="text-end">Modéles documents <i class="bi bi-file-text ms-2"></i></a>
           <a style="cursor: pointer;" class="text-end" data-bs-toggle="modal" data-bs-target="#mail">Modéles mail <i
@@ -185,14 +185,14 @@
               <input type="text" class="form-control" id="objectInput" [(ngModel)]="currentTemplate.object">
               <label for="objectInput">Objet :</label>
             </div>
-            <button class="btn btnAction mt-2" (click)="insertVariable('object')">Insérer variable dans l'objet</button>
+            <button class="btn ajouter mt-2" (click)="insertVariable('object')">Insérer variable dans l'objet</button>
           </div>
 
           <div class="corps container">
             <textarea class="form-control p-3" rows="10" id="bodyTextarea"
               [(ngModel)]="currentTemplate.body"></textarea>
           </div>
-          <button class="btn btnAction mt-2 mb-2" (click)="insertVariable('body')">Insérer variable dans le
+          <button class="btn ajouter mt-2 mb-2" (click)="insertVariable('body')">Insérer variable dans le
             corps</button>
         </div>
         <div class="attach p-2">

@@ -237,7 +237,7 @@ textarea {
 
   .add-recipient {
     display: inline-block;
-    color: #2196F3;
+    color: #7BC2E9;
     text-decoration: none;
     font-size: 14px;
     margin-top: 8px;
@@ -298,7 +298,7 @@ textarea {
   .attachment {
     display: flex;
     align-items: center;
-    color: #2196F3;
+    color: #7BC2E9;
     margin-top: 15px;
   }
 
@@ -312,7 +312,7 @@ textarea {
   }
 
   .btn-send {
-    background: #2196F3;
+    background: #7BC2E9;
     color: white;
     border: none;
     padding: 8px 20px;
@@ -325,8 +325,8 @@ textarea {
   }
 
   .modal-button.primary {
-    border-color: #2196F3;
-    color: #2196F3;
+    border-color: #7BC2E9;
+    color: #7BC2E9;
   }
   
   .modal-button.primary:hover {

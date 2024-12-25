@@ -27,7 +27,7 @@
   margin-bottom: 10px;
 }
 .containerFacture  .section-title {
-  background-color: #0d6efd;
+  background-color: #7BC2E9;
   color: white;
   padding: 10px;
   margin: -15px -15px 15px -15px;
@@ -56,8 +56,8 @@
 }
 .containerFacture  .icon-btn {
   background-color: transparent;
-  border: 2px solid #0088cc;
-  color: #0088cc;
+  border: 2px solid #7BC2E9;
+  color: #7BC2E9;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -582,7 +582,7 @@ textarea {
   font-size: 0.9em;
 }
 .submit-btn {
-  background-color: #0088cc;
+  background-color: #7BC2E9;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -600,7 +600,7 @@ textarea {
   margin: 0 auto;
 }
 .config  h1 {
-  color: #0088cc;
+  color: #7BC2E9;
   margin-top: 0;
   font-size: 1.2em;
 }
@@ -631,12 +631,12 @@ textarea {
   margin-top: 20px;
 }
 .config  .modify-link {
-  color: #0088cc;
+  color: #7BC2E9;
   text-decoration: none;
   font-size: 0.9em;
 }
 .config  .save-btn {
-  background-color: #0088cc;
+  background-color: #7BC2E9;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -686,7 +686,7 @@ textarea {
   width: 250px;
 }
 .buttons .btn-primary {
-  background-color: #0088cc;
+  background-color: #7BC2E9;
   color: white;
 }
 .buttons .btn-success {
@@ -898,7 +898,7 @@ input[type="date"], input[type="text"], input[type="number"], textarea {
   cursor: pointer;
 }
 .solde  .btn-primary {
-  background-color: #0088cc;
+  background-color: #7BC2E9;
   color: white;
 }
 
@@ -1158,7 +1158,7 @@ th, td {
 
 .add-recipient {
   display: inline-block;
-  color: #2196F3;
+  color: #7BC2E9;
   text-decoration: none;
   font-size: 14px;
   margin-top: 8px;
@@ -1219,7 +1219,7 @@ th, td {
 .attachment {
   display: flex;
   align-items: center;
-  color: #2196F3;
+  color: #7BC2E9;
   margin-top: 15px;
 }
 
@@ -1233,7 +1233,7 @@ th, td {
 }
 
 .btn-send {
-  background: #2196F3;
+  background: #7BC2E9;
   color: white;
   border: none;
   padding: 8px 20px;

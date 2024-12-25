@@ -4,7 +4,7 @@
 }
 
 .headerNav {
-  background-color: #eee;
+  background-color: #F97316;
   padding: 10px 8px;
 }
 
@@ -24,7 +24,7 @@
 }
 
 .nav li a {
-  color: #222;
+  color: #fff;
   text-decoration: none;
   cursor: pointer;
 }
@@ -109,7 +109,7 @@ img {
 }
 
 .btnEnregistrer {
-  background-color: #02016F !important;
+  background-color: #7BC2E9 !important;
   color: white !important;
   border: none;
 }
@@ -256,7 +256,7 @@ footer {
 }
 
 footer p {
-  color: #0070c0;
+  color: #7BC2E9;
 }
 
 .new-container header {
@@ -313,7 +313,7 @@ footer p {
 }
 
 .addnewModel {
-  background-color: #0070c0;
+  background-color: #7BC2E9;
   color: #fff !important;
   font-weight: bold;
   font-size: 18px;
@@ -366,7 +366,7 @@ textarea {
 }
 
 .titre {
-  color: #467aea;
+  color: #7BC2E9;
 }
 
 .addOption {
@@ -425,7 +425,7 @@ label {
 
 .signature-box .titre {
   cursor: pointer;
-  color: #0d6efd;
+  color: #7BC2E9;
 }
 
 .signature-box .titre:hover {
@@ -441,7 +441,7 @@ textarea.form-control {
 }
 
 span[style*="cursor: pointer"] {
-  color: #0d6efd;
+  color: #7BC2E9;
 }
 
 span[style*="cursor: pointer"]:hover {

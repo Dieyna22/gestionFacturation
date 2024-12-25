@@ -109,7 +109,7 @@ label{
 }
 
 .resume{
-    color: #2457C5;
+    color: #7BC2E9;
     text-decoration: underline;
 }
 
@@ -121,7 +121,7 @@ label{
 }
 
 .colormail{
-    color: #2457C5;
+    color: #7BC2E9;
 }
 .slider-container {
     display: flex;
@@ -151,7 +151,7 @@ label{
   }
 
   .config{
-    border: thin solid #2457C5;
+    border: thin solid #7BC2E9;
   }
 
   .disabled {
