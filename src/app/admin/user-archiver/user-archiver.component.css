@@ -8,11 +8,11 @@
 }
 .btnClose{
     background-color: #FFFFFF;
-    color: #5C6FFF!important;
-    border: thin solid #5C6FFF;
+    color: #7BC2E9!important;
+    border: thin solid #7BC2E9;
 }
 .fondText{
-    color: #5C6FFF;
+    color: #7BC2E9;
 }
 
 .containerReseau .card {
@@ -51,8 +51,8 @@ thead th:first-child {
   }
 
 .btnAction {
-    border: 1px solid #5C6FFF!important;
-    background-color: #5C6FFF!important;
+    border: 1px solid #7BC2E9!important;
+    background-color: #7BC2E9!important;
     color: #fff!important;
 }
 
@@ -67,7 +67,7 @@ thead th:first-child {
 }
 
 .titre {
-    color: #5C6FFF;
+    color: #7BC2E9;
 }
 
 .require {

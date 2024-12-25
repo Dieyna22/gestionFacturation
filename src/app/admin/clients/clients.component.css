@@ -229,7 +229,7 @@ textarea {
 
 .info {
     background-color: #f8f8f8;
-    border-left: 4px solid #2196F3;
+    border-left: 4px solid #7BC2E9;
     padding: 10px;
     margin-bottom: 20px;
     font-size: 14px;
@@ -308,7 +308,7 @@ textarea {
     gap: 10px;
 }
 .modify-btn {
-    background-color: #2196F3;
+    background-color: #7BC2E9;
     color: white;
     border: none;
     padding: 10px 20px;

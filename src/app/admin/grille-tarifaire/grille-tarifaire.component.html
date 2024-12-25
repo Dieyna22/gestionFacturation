@@ -25,13 +25,15 @@
                         <h3 class="fw-bold">Listes Grille Tarifaire</h3>
                     </div>
                     <div class="col-md-3">
+                      <label for="client-select"> Sélectionner client</label>
                       <select class="form-select form-select-lg" id="client-select" [(ngModel)]="idClient">
                         <option value="0">Sélectionnez un client</option>
                         <option *ngFor="let client of tabClient" [value]="client.id">{{client.prenom_client}} {{client.nom_client}}</option>
                       </select>
                     </div>
                     <div class="col-md-3">
-                      <select class="form-control form-select-lg" id="client-select" [(ngModel)]="idArticle" >
+                      <label for="produit-select"> Sélectionner produit</label>
+                      <select class="form-control form-select-lg" id="produit-select" [(ngModel)]="idArticle" >
                         <option value="0">Sélectionnez un produit/service</option>
                         <option *ngFor="let product of products" [value]="product.id">{{ product.nom_article }}</option>
                       </select>

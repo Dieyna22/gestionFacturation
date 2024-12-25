@@ -19,7 +19,6 @@ import { GrilleTarifaireComponent } from './admin/grille-tarifaire/grille-tarifa
 import { PayementComponent } from './admin/payement/payement.component';
 import { DepenseComponent } from './admin/depense/depense.component';
 import { CommandeDachatComponent } from './admin/commande-dachat/commande-dachat.component';
-import { ComptableComponent } from './admin/comptable/comptable.component';
 import { RapportComponent } from './admin/rapport/rapport.component';
 import { StockComponent } from './admin/stock/stock.component';
 import {  UsersGuard } from './services/guard';
@@ -45,7 +44,6 @@ const routes: Routes = [
   { path: 'payement', component: PayementComponent, title: 'Payement' , canActivate: [UsersGuard]},
   { path: 'depense', component: DepenseComponent, title: 'depense' , canActivate: [UsersGuard]},
   { path: 'achat', component: CommandeDachatComponent, title: 'commande d"achat' , canActivate: [UsersGuard]},
-  { path: 'comptable', component: ComptableComponent, title: 'configuration comptable' , canActivate: [UsersGuard]},
   { path: 'rapport', component: RapportComponent, title: 'Rapports' , canActivate: [UsersGuard]},
   { path: 'stock', component: StockComponent, title: 'stock' , canActivate: [UsersGuard]},
 

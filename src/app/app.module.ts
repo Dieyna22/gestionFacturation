@@ -32,7 +32,6 @@ import { PayementComponent } from './admin/payement/payement.component';
 import { DepenseComponent } from './admin/depense/depense.component';
 import { DatePipe } from '@angular/common';
 import { CommandeDachatComponent } from './admin/commande-dachat/commande-dachat.component';
-import { ComptableComponent } from './admin/comptable/comptable.component';
 import { RapportComponent } from './admin/rapport/rapport.component';
 import { StockComponent } from './admin/stock/stock.component';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -64,7 +63,6 @@ import { NgxPaginationModule } from 'ngx-pagination';
     PayementComponent,
     DepenseComponent,
     CommandeDachatComponent,
-    ComptableComponent,
     RapportComponent,
     StockComponent,
   ],
