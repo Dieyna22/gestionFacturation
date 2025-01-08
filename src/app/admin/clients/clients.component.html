@@ -36,7 +36,8 @@
     <div class="d-grid gap-2  mb-4 d-md-flex justify-content-md-end">
       <!-- Button modal Ajout Utilisateurs -->
       <div class="btn-group ajouterVente">
-        <button type="button" class="btn text-light">Ajouter Client</button>
+        <button type="button" class="btn ajouter mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal">Ajouter
+          Client</button>
         <button type="button" class="btn ajouter dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown"
           aria-expanded="false">
           <span class="visually-hidden">Toggle Dropdown</span>
@@ -68,8 +69,8 @@
                 <th scope="col">Nom </th>
                 <th scope="col">Nom Entreprise </th>
                 <th scope="col">Adresse </th>
-                <th scope="col">Téléphone </th>
                 <th scope="col">Adresse Email </th>
+                <th scope="col">Téléphone </th>
                 <th scope="col">Statut </th>
                 <th scope="col">Action </th>
               </tr>
@@ -200,55 +201,58 @@
               </div>
               <div class="row">
                 <div class="mb-3 col-md-6">
-                  <label for="validationServer01" class="form-label">Prénom</label>
+                  <label for="validationServer01" class="form-label">Prénom <span style="color: brown;">*</span></label>
                   <input type="text" class="form-control" id="validationServer01" name="prenom" [(ngModel)]="prenom">
                 </div>
                 <div class="mb-3 col-md-6">
-                  <label for="validationServer02" class="form-label">Nom</label>
+                  <label for="validationServer02" class="form-label">Nom <span style="color: brown;">*</span></label>
                   <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="nom">
                 </div>
               </div>
               <div class="row">
                 <div class="mb-3 col-md-6">
-                  <label for="validationServer02" class="form-label">Nom Entreprise</label>
+                  <label for="validationServer02" class="form-label">Nom Entreprise <span style="color: brown;">*</span></label>
                   <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="entreprise">
                 </div>
                 <div class="mb-3 col-md-6">
-                  <label for="validationServer02" class="form-label">Adresse</label>
+                  <label for="validationServer02" class="form-label">Adresse <span style="color: brown;">*</span></label>
                   <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="adress">
                 </div>
               </div>
               <div class="row">
                 <div class="mb-3 col-md-6">
-                  <label for="validationServer02" class="form-label">Téléphone</label>
+                  <label for="validationServer02" class="form-label">Téléphone <span style="color: brown;">*</span></label>
                   <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="telephone">
                 </div>
                 <div class="mb-3 col-md-6">
-                  <label for="validationServer02" class="form-label">Email</label>
+                  <label for="validationServer02" class="form-label">Email <span style="color: brown;">*</span></label>
                   <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="mail">
                 </div>
               </div>
             </div>
+
+          </div>
+          <div class="zoneRigth">
             <div class="address zone">
               <div class="row mb-3">
                 <div class="form-check ms-3" (click)="afficherChampsAddressPrincipal()">
                   <input class="form-check-input" type="checkbox" value="" id="flexCheckIndeterminate">
                   <label class="form-check-label" for="flexCheckIndeterminate">
-                    Adresse Principal
+                    Adresse Principal <span style="color: brown;">*</span>
                   </label>
                 </div>
                 <form class="row g-3 needs-validation" novalidate *ngIf="showChampsAddressPrincipal">
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <label for="validationCustom01" class="form-label">Pays</label>
                     <input type="text" class="form-control" id="validationCustom01" name="paysClient"
                       [(ngModel)]="paysClient">
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <label for="validationCustom02" class="form-label">Ville</label>
                     <input type="text" class="form-control" id="validationCustom02" name="villeClient"
                       [(ngModel)]="villeClient">
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <label for="validationCustomUsername" class="form-label">Numéro fiscal</label>
                     <input type="text" class="form-control" id="validationCustom02" name="fiscal" [(ngModel)]="fiscal">
                   </div>
@@ -262,31 +266,31 @@
                   </label>
                 </div>
                 <form class="row g-3 needs-validation" novalidate *ngIf="showChampsAddressLivraison">
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <label for="validationCustom01" class="form-label">Nom </label>
                     <input type="text" class="form-control" id="validationCustom01" name="nomDestinataire"
                       [(ngModel)]="nomDestinataire">
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <label for="validationCustomUsername" class="form-label">code postal</label>
                     <input type="text" class="form-control" id="validationCustom02" name="postal" [(ngModel)]="postal">
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <label for="validationCustomUsername" class="form-label">Pays de livraison</label>
                     <input type="text" class="form-control" id="validationCustom02" name="paysLivraison"
                       [(ngModel)]="paysLivraison">
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <label for="validationCustomUsername" class="form-label">ville de livraison</label>
                     <input type="text" class="form-control" id="validationCustom02" name="villeLivraison"
                       [(ngModel)]="villeLivraison">
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <label for="validationCustom03" class="form-label">Téléphone</label>
                     <input type="text" class="form-control" id="validationCustom03" name="telDestinataire"
                       [(ngModel)]="telDestinataire">
                   </div>
-                  <div class="col-md-4">
+                  <div class="col-md-6">
                     <label for="validationCustom03" class="form-label">Email</label>
                     <input type="text" class="form-control" id="validationCustom03" name="emailDestinataire"
                       [(ngModel)]="emailDestinataire">
@@ -299,8 +303,6 @@
                 </form>
               </div>
             </div>
-          </div>
-          <div class="zoneRigth">
             <div class="other zone">
               <div class="row">
                 <div class="form-check ms-3" (click)="afficherChampsOther(); listeCategorie() ">
@@ -423,107 +425,39 @@
                 </div>
                 <div class="row">
                   <div class="mb-3 col-md-6">
-                    <label for="validationServer01" class="form-label">Prénom</label>
+                    <label for="validationServer01" class="form-label">Prénom <span style="color: brown;">*</span></label>
                     <input type="text" class="form-control" id="validationServer01" name="prenom"
                       [(ngModel)]="inputprenom">
                   </div>
                   <div class="mb-3 col-md-6">
-                    <label for="validationServer02" class="form-label">Nom</label>
+                    <label for="validationServer02" class="form-label">Nom <span style="color: brown;">*</span></label>
                     <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="inputnom">
                   </div>
                 </div>
                 <div class="row">
                   <div class="mb-3 col-md-6">
-                    <label for="validationServer02" class="form-label">Nom Entreprise</label>
+                    <label for="validationServer02" class="form-label">Nom Entreprise <span style="color: brown;">*</span></label>
                     <input type="text" class="form-control" id="validationServer02" name="nom"
                       [(ngModel)]="inputEntreprise">
                   </div>
                   <div class="mb-3 col-md-6">
-                    <label for="validationServer02" class="form-label">Adresse</label>
+                    <label for="validationServer02" class="form-label">Adresse <span style="color: brown;">*</span></label>
                     <input type="text" class="form-control" id="validationServer02" name="nom"
                       [(ngModel)]="inputAdress">
                   </div>
                 </div>
                 <div class="row">
                   <div class="mb-3 col-md-6">
-                    <label for="validationServer02" class="form-label">Téléphone</label>
+                    <label for="validationServer02" class="form-label">Téléphone <span style="color: brown;">*</span></label>
                     <input type="text" class="form-control" id="validationServer02" name="nom"
                       [(ngModel)]="inputTelephone">
                   </div>
                   <div class="mb-3 col-md-6">
-                    <label for="validationServer02" class="form-label">Email</label>
+                    <label for="validationServer02" class="form-label">Email <span style="color: brown;">*</span></label>
                     <input type="text" class="form-control" id="validationServer02" name="nom" [(ngModel)]="inputmail">
                   </div>
                 </div>
               </div>
-              <div class="address zone">
-                <div class="row mb-3">
-                  <label class="form-check-label" for="flexCheckIndeterminate">
-                    Adresse Principal
-                  </label>
-                  <form class="row g-3 needs-validation" novalidate>
-                    <div class="col-md-4">
-                      <label for="validationCustom01" class="form-label">Pays</label>
-                      <input type="text" class="form-control" id="validationCustom01" name="paysClient"
-                        [(ngModel)]="inputpaysClient">
-                    </div>
-                    <div class="col-md-4">
-                      <label for="validationCustom02" class="form-label">Ville</label>
-                      <input type="text" class="form-control" id="validationCustom02" name="villeClient"
-                        [(ngModel)]="inputvilleClient">
-                    </div>
-                    <div class="col-md-4">
-                      <label for="validationCustomUsername" class="form-label">Numéro fiscal</label>
-                      <input type="text" class="form-control" id="validationCustom02" name="fiscal"
-                        [(ngModel)]="inputfiscal">
-                    </div>
-                  </form>
-                </div>
-                <div class="row mb-3">
-                  <label class="form-check-label" for="flexCheckIndeterminate">
-                    Adresse de livraison
-                  </label>
-                  <form class="row g-3 needs-validation" novalidate>
-                    <div class="col-md-4">
-                      <label for="validationCustom01" class="form-label">Nom </label>
-                      <input type="text" class="form-control" id="validationCustom01" name="nomDestinataire"
-                        [(ngModel)]="inputnomDestinataire">
-                    </div>
-                    <div class="col-md-4">
-                      <label for="validationCustomUsername" class="form-label">code postal</label>
-                      <input type="text" class="form-control" id="validationCustom02" name="postal"
-                        [(ngModel)]="inputpostal">
-                    </div>
-                    <div class="col-md-4">
-                      <label for="validationCustomUsername" class="form-label">Pays de livraison</label>
-                      <input type="text" class="form-control" id="validationCustom02" name="paysLivraison"
-                        [(ngModel)]="inputpaysLivraison">
-                    </div>
-                    <div class="col-md-4">
-                      <label for="validationCustomUsername" class="form-label">ville de livraison</label>
-                      <input type="text" class="form-control" id="validationCustom02" name="villeLivraison"
-                        [(ngModel)]="inputvilleLivraison">
-                    </div>
-                    <div class="col-md-4">
-                      <label for="validationCustom03" class="form-label">Téléphone</label>
-                      <input type="text" class="form-control" id="validationCustom03" name="telDestinataire"
-                        [(ngModel)]="inputtelDestinataire">
-                    </div>
-                    <div class="col-md-4">
-                      <label for="validationCustom03" class="form-label">Email</label>
-                      <input type="text" class="form-control" id="validationCustom03" name="emailDestinataire"
-                        [(ngModel)]="inputemailDestinataire">
-                    </div>
-                    <div class="form-floating col-md-12">
-                      <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-                        style="height: 100px" name="infos" [(ngModel)]="inputinfos"></textarea>
-                      <label for="floatingTextarea2">Informations supplémentaires</label>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-            <div class="zoneRigth">
               <div class="other zone">
                 <div class="row">
                   <div>
@@ -546,6 +480,74 @@
                       <label for="floatingTextarea2">Notes</label>
                     </div>
                   </div>
+                </div>
+              </div>
+            </div>
+            <div class="zoneRigth">
+              <div class="address zone">
+                <div class="row mb-3">
+                  <label class="form-check-label" for="flexCheckIndeterminate">
+                    Adresse Principal <span style="color: brown;">*</span>
+                  </label>
+                  <form class="row g-3 needs-validation" novalidate>
+                    <div class="col-md-6">
+                      <label for="validationCustom01" class="form-label">Pays</label>
+                      <input type="text" class="form-control" id="validationCustom01" name="paysClient"
+                        [(ngModel)]="inputpaysClient">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="validationCustom02" class="form-label">Ville</label>
+                      <input type="text" class="form-control" id="validationCustom02" name="villeClient"
+                        [(ngModel)]="inputvilleClient">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="validationCustomUsername" class="form-label">Numéro fiscal</label>
+                      <input type="text" class="form-control" id="validationCustom02" name="fiscal"
+                        [(ngModel)]="inputfiscal">
+                    </div>
+                  </form>
+                </div>
+                <div class="row mb-3">
+                  <label class="form-check-label" for="flexCheckIndeterminate">
+                    Adresse de livraison
+                  </label>
+                  <form class="row g-3 needs-validation" novalidate>
+                    <div class="col-md-6">
+                      <label for="validationCustom01" class="form-label">Nom </label>
+                      <input type="text" class="form-control" id="validationCustom01" name="nomDestinataire"
+                        [(ngModel)]="inputnomDestinataire">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="validationCustomUsername" class="form-label">code postal</label>
+                      <input type="text" class="form-control" id="validationCustom02" name="postal"
+                        [(ngModel)]="inputpostal">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="validationCustomUsername" class="form-label">Pays de livraison</label>
+                      <input type="text" class="form-control" id="validationCustom02" name="paysLivraison"
+                        [(ngModel)]="inputpaysLivraison">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="validationCustomUsername" class="form-label">ville de livraison</label>
+                      <input type="text" class="form-control" id="validationCustom02" name="villeLivraison"
+                        [(ngModel)]="inputvilleLivraison">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="validationCustom03" class="form-label">Téléphone</label>
+                      <input type="text" class="form-control" id="validationCustom03" name="telDestinataire"
+                        [(ngModel)]="inputtelDestinataire">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="validationCustom03" class="form-label">Email</label>
+                      <input type="text" class="form-control" id="validationCustom03" name="emailDestinataire"
+                        [(ngModel)]="inputemailDestinataire">
+                    </div>
+                    <div class="form-floating col-md-12">
+                      <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                        style="height: 100px" name="infos" [(ngModel)]="inputinfos"></textarea>
+                      <label for="floatingTextarea2">Informations supplémentaires</label>
+                    </div>
+                  </form>
                 </div>
               </div>
             </div>
