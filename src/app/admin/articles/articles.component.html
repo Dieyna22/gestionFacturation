@@ -52,7 +52,7 @@
           </button>
           <ul class="dropdown-menu">
             <li>
-              <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">importer client</a>
+              <a class="dropdown-item" data-bs-toggle="modal" data-bs-target="#exampleModalToggle">importer produits</a>
             </li>
           </ul>
         </div>
@@ -216,27 +216,27 @@
             </div>
             <div class="row">
               <div class="mb-3 col-6">
-                <label for="validationServer01" class="form-label">Nom</label>
+                <label for="validationServer01" class="form-label">Nom <span style="color: brown;">*</span></label>
                 <input type="text" class="form-control" id="validationServer01" name="nom" [(ngModel)]="nom">
               </div>
               <div class="mb-3 col-6">
-                <label for="validationServer02" class="form-label">Description</label>
+                <label for="validationServer02" class="form-label">Description <span style="color: brown;">*</span></label>
                 <input type="text" class="form-control" id="validationServer02" name="desc" [(ngModel)]="desc">
               </div>
             </div>
             <div class="row">
               <div class="mb-3 col-6">
-                <label for="validationServer02" class="form-label">Prix d'achat</label>
+                <label for="validationServer02" class="form-label">Prix d'achat <span style="color: brown;">*</span></label>
                 <input type="text" class="form-control" id="validationServer02" name="achat" [(ngModel)]="achat">
               </div>
               <div class="mb-3 col-6">
-                <label for="validationServer02" class="form-label">Tva Prix d'achat</label>
+                <label for="validationServer02" class="form-label">Tva Prix d'achat <span style="color: brown;">*</span></label>
                 <input type="text" class="form-control" id="validationServer02" name="tvaPrix" [(ngModel)]="tvaPrix">
               </div>
             </div>
             <div class="row">
               <div class="mb-3 col-12">
-                <label for="validationServer02" class="form-label">Prix de vente</label>
+                <label for="validationServer02" class="form-label">Prix de vente  <span style="color: brown;">*</span></label>
                 <input type="text" class="form-control" id="validationServer02" name="vente" [(ngModel)]="vente">
               </div>
             </div>
@@ -246,18 +246,18 @@
                 <input type="text" class="form-control" id="validationServer02" name="quantite" [(ngModel)]="quantite">
               </div>
               <div class="mb-3 col-6 ">
-                <label for="validationServer02" class="form-label">Quantité Alerte</label>
+                <label for="validationServer02" class="form-label">Quantité Alerte <span style="color: brown;">*</span></label>
                 <input type="text" class="form-control" id="validationServer02" name="quantiteAlerte"
                   [(ngModel)]="quantiteAlerte">
               </div>
             </div>
             <div class="row mb-3">
               <div class="col-md-6">
-                <label for="validationDefault03" class="form-label">TVA</label>
+                <label for="validationDefault03" class="form-label">TVA <span style="color: brown;">*</span></label>
                 <input type="text" class="form-control" id="validationDefault03" name="tva" [(ngModel)]="tva">
               </div>
               <div class="col-md-6">
-                <label for="validationDefault04" class="form-label">Unité</label>
+                <label for="validationDefault04" class="form-label">Unité <span style="color: brown;">*</span></label>
                 <select class="form-select" id="validationDefault04" name="unite" [(ngModel)]="unite">
                   <option selected disabled value="">Sélectionner une unité...</option>
                   <option value="g">gramme</option>
@@ -280,7 +280,7 @@
             <div class="row mb-3">
               <div class="col-md-12">
                 <label for="validationDefault01" class="form-label">Code bares <span><i
-                      class="bi bi-upc"></i></span></label>
+                      class="bi bi-upc"></i></span> <span style="color: brown;">*</span></label>
                 <input type="text" class="form-control" id="validationDefault01" name="codeBarres"
                   [(ngModel)]="codeBarres">
               </div>
@@ -480,50 +480,50 @@
             </div>
             <div class="row">
               <div class="mb-3 col-6">
-                <label for="validationServer01" class="form-label">Nom</label>
+                <label for="validationServer01" class="form-label">Nom <span style="color: brown;">*</span></label>
                 <input type="text" class="form-control" id="validationServer01" name="nom" [(ngModel)]="inputnom">
               </div>
               <div class="mb-3 col-6">
-                <label for="validationServer02" class="form-label">Description</label>
+                <label for="validationServer02" class="form-label">Description <span style="color: brown;">*</span></label>
                 <input type="text" class="form-control" id="validationServer02" name="desc" [(ngModel)]="inputdesc">
               </div>
             </div>
             <div class="row">
               <div class="mb-3 col-6">
-                <label for="validationServer02" class="form-label">Prix d'achat</label>
+                <label for="validationServer02" class="form-label">Prix d'achat <span style="color: brown;">*</span></label>
                 <input type="text" class="form-control" id="validationServer02" name="achat" [(ngModel)]="inputachat">
               </div>
               <div class="mb-3 col-6">
-                <label for="validationServer02" class="form-label">Tva Prix d'achat</label>
+                <label for="validationServer02" class="form-label">Tva Prix d'achat <span style="color: brown;">*</span></label>
                 <input type="text" class="form-control" id="validationServer02" name="tvaPrix"
                   [(ngModel)]="inputTvaPrix">
               </div>
             </div>
             <div class="row">
               <div class="mb-3 col-12">
-                <label for="validationServer02" class="form-label">Prix de vente</label>
+                <label for="validationServer02" class="form-label">Prix de vente <span style="color: brown;">*</span></label>
                 <input type="text" class="form-control" id="validationServer02" name="vente" [(ngModel)]="inputvente">
               </div>
             </div>
             <div class="row">
               <div class="mb-3 col-6 ">
-                <label for="validationServer02" class="form-label">Quantité</label>
+                <label for="validationServer02" class="form-label">Quantité <span style="color: brown;">*</span></label>
                 <input type="text" class="form-control" id="validationServer02" name="quantite"
                   [(ngModel)]="inputquantite">
               </div>
               <div class="mb-3 col-6 ">
-                <label for="validationServer02" class="form-label">Quantité Alerte</label>
+                <label for="validationServer02" class="form-label">Quantité Alerte <span style="color: brown;">*</span></label>
                 <input type="text" class="form-control" id="validationServer02" name="quantiteAlerte"
                   [(ngModel)]="inputquantiteAlerte">
               </div>
             </div>
             <div class="row mb-3">
               <div class="col-md-6">
-                <label for="validationDefault03" class="form-label">TVA</label>
+                <label for="validationDefault03" class="form-label">TVA <span style="color: brown;">*</span></label>
                 <input type="text" class="form-control" id="validationDefault03" name="tva" [(ngModel)]="inputtva">
               </div>
               <div class="col-md-6">
-                <label for="validationDefault04" class="form-label">Unité</label>
+                <label for="validationDefault04" class="form-label">Unité <span style="color: brown;">*</span></label>
                 <select class="form-select" id="validationDefault04" name="unite" [(ngModel)]="inputunite">
                   <option selected disabled value="">Sélectionner une unité...</option>
                   <option value="g">gramme</option>
@@ -546,7 +546,7 @@
             <div class="row mb-3">
               <div class="col-md-12">
                 <label for="validationDefault01" class="form-label">Code bares <span><i
-                      class="bi bi-upc"></i></span></label>
+                      class="bi bi-upc"></i></span> <span style="color: brown;">*</span></label>
                 <input type="text" class="form-control" id="validationDefault01" name="inputcodeBarres"
                   [(ngModel)]="inputcodeBarres">
               </div>

@@ -62,13 +62,13 @@
             </div>
         </div>
         <div class="sta">
-            <div class="itemSta" style="background-color: #33372C;" *ngIf="tabUserNoArchiver">
-                <span>Utilisateurs no archivés</span><br><br>
-                <h4 class="text-center">{{tabUserNoArchiver.length}}</h4>
-            </div>
-            <div class="itemSta" style="background-color: #33372C;" *ngIf="tabUserArchiver">
+            <div class="itemSta" style="background-color: #582900;" *ngIf="tabUserArchiver">
                 <span>Utilisateurs archivés</span><br><br>
                 <h4 class="text-center">{{tabUserArchiver.length}}</h4>
+            </div>
+            <div class="itemSta" style="background-color: #582900;" *ngIf="tabUserNoArchiver">
+                <span>Utilisateurs non archivés</span><br><br>
+                <h4 class="text-center">{{tabUserNoArchiver.length}}</h4>
             </div>
         </div>
         <div class="sta">
@@ -82,11 +82,11 @@
             </div>
         </div>
         <div class="sta">
-            <div class="itemSta" style="background-color: #73717172;" *ngIf="facturePayer">
+            <div class="itemSta" style="background-color: #c8ad7f;" *ngIf="facturePayer">
                 <span>Facture payées</span><br><br>
                 <h4 class="text-center">{{facturePayer.length}}</h4>
             </div>
-            <div class="itemSta" style="background-color: #73717172;" *ngIf="factureImpayer">
+            <div class="itemSta" style="background-color: #c8ad7f;" *ngIf="factureImpayer">
                 <span>Facture impayées</span><br><br>
                 <h4 class="text-center">{{factureImpayer.length}}</h4>
             </div>
